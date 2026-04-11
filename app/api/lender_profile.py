@@ -1,12 +1,19 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, status
+from pydantic import BaseModel, ConfigDict
 
 from app.domain.lender_profile import LenderProfile
 from app.services.lender_profile import FileLenderProfileService
 
 router = APIRouter(prefix="/lender-profiles", tags=["lender-profiles"])
 service = FileLenderProfileService()
+
+
+class DeleteResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    deleted: bool
 
 
 @router.post("", response_model=LenderProfile, status_code=status.HTTP_201_CREATED)
@@ -38,8 +45,9 @@ def update_lender_profile(lender_id: str, lender_profile: LenderProfile) -> Lend
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
 
 
-@router.delete("/{lender_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_lender_profile(lender_id: str) -> None:
+@router.delete("/{lender_id}", response_model=DeleteResponse, status_code=status.HTTP_200_OK)
+def delete_lender_profile(lender_id: str) -> DeleteResponse:
     deleted = service.delete_lender_profile(lender_id)
     if not deleted:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lender profile not found")
+    return DeleteResponse(deleted=True)

@@ -1,0 +1,7 @@
+# plan.md
+# roadmap.md
+__pycache__/
+.pytest_cache/
+.venv/
+data/*.json
+.codex

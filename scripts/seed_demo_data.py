@@ -20,9 +20,11 @@ from app.domain.borrower_case import (
 )
 from app.domain.borrower_profile import BorrowerProfile
 from app.domain.lender_profile import LenderProfile
+from app.domain.lender_policy import LenderPolicy
 from app.domain.loan import Loan
 from app.services.borrower_case import FileBorrowerCaseService
 from app.services.borrower_profile import FileBorrowerProfileService
+from app.services.lender_policy import FileLenderPolicyService
 from app.services.lender_profile import FileLenderProfileService
 from app.services.loan import FileLoanService
 
@@ -48,6 +50,17 @@ borrowers = [
 lenders = [
     LenderProfile(lender_id="nira", lender_name="Nira Finance"),
     LenderProfile(lender_id="slice", lender_name="Slice"),
+]
+
+lender_policies = [
+    LenderPolicy(
+        lender_id="nira",
+        policy="We do not provide extensions beyond 30 days. Reduced closure and structured payment plans require policy-compliant approvals only.",
+    ),
+    LenderPolicy(
+        lender_id="slice",
+        policy="We do not provide extensions beyond 21 days. Payment plans may be discussed only within approved policy bands.",
+    ),
 ]
 
 loans = [
@@ -209,6 +222,16 @@ def upsert_lenders() -> None:
             service.update_lender_profile(lender.lender_id, lender)
 
 
+def upsert_lender_policies() -> None:
+    service = FileLenderPolicyService()
+    for lender_policy in lender_policies:
+        existing = service.get_lender_policy(lender_policy.lender_id)
+        if existing is None:
+            service.create_lender_policy(lender_policy)
+        else:
+            service.update_lender_policy(lender_policy.lender_id, lender_policy)
+
+
 def upsert_loans() -> None:
     service = FileLoanService()
     for loan in loans:
@@ -232,9 +255,10 @@ def upsert_borrower_cases() -> None:
 def main() -> None:
     upsert_borrowers()
     upsert_lenders()
+    upsert_lender_policies()
     upsert_loans()
     upsert_borrower_cases()
-    print("Seeded borrowers, lenders, loans, and borrower cases.")
+    print("Seeded borrowers, lenders, lender policies, loans, and borrower cases.")
 
 
 if __name__ == "__main__":

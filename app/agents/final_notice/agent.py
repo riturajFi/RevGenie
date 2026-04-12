@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 
+import experiment_harness.logger as logger
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -79,6 +80,11 @@ class FinalNoticeAgent:
                 "input": agent_input,
                 "chat_history": self._to_langchain_messages(chat_history),
             }
+        )
+        logger.log(
+            response["output"],
+            workflow_id=borrower_case.workflow_id,
+            actor="agent_3",
         )
         return parse_agent_turn_result(response["output"])
 

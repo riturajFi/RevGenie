@@ -5,7 +5,10 @@ from datetime import datetime
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
 
-from prompt_storage import PromptStorageVersion, in_memory_prompt_storage_service
+from prompt_management_service.prompt_storage import (
+    PromptStorageVersion,
+    in_memory_prompt_storage_service,
+)
 
 app = FastAPI(title="Experiment Harness Prompt Manager")
 prompt_service = in_memory_prompt_storage_service

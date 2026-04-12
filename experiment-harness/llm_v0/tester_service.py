@@ -8,6 +8,8 @@ from urllib import request
 
 import experiment_harness.logger as logger
 from pydantic import BaseModel, Field
+from app.domain.borrower_case import Stage
+from app.services.borrower_case import FileBorrowerCaseService
 
 
 THIS_DIR = Path(__file__).resolve().parent
@@ -43,6 +45,7 @@ class WorkflowMessageResponse(BaseModel):
 
 
 class TesterRunResult(BaseModel):
+    experiment_id: str
     workflow_id: str
     borrower_id: str
     scenario_id: str
@@ -79,12 +82,14 @@ class TesterAgent:
     api_url: str = DEFAULT_API_URL
     project_context_repository: ProjectContextRepository = ProjectContextRepository(DEFAULT_PROJECT_CONTEXTS_PATH)
     scenario_repository: ScenarioRepository = ScenarioRepository(DEFAULT_SCENARIOS_PATH)
+    borrower_case_service: FileBorrowerCaseService = FileBorrowerCaseService()
 
     def run(
         self,
         borrower_id: str,
         workflow_id: str,
         max_turns: int,
+        experiment_id: str | None = None,
         project_context_id: str | None = None,
         scenario_id: str | None = None,
         project_context: ProjectContext | None = None,
@@ -92,6 +97,7 @@ class TesterAgent:
     ) -> TesterRunResult:
         project_context = project_context or self.project_context_repository.get(project_context_id or "")
         scenario = scenario or self.scenario_repository.get(scenario_id or "")
+        experiment_id = experiment_id or workflow_id
 
         turn_count = 0
         borrower_message = scenario.opening_message
@@ -99,9 +105,10 @@ class TesterAgent:
         stop_reason = "max_turns_reached"
 
         while turn_count < max_turns:
+            current_actor = self._current_agent_actor(borrower_id)
             logger.log(
                 borrower_message,
-                experiment_id=project_context.project_context_id,
+                experiment_id=experiment_id,
                 workflow_id=workflow_id,
                 actor="borrower",
             )
@@ -110,6 +117,13 @@ class TesterAgent:
                 workflow_id=workflow_id,
                 message=borrower_message,
             )
+            if response.reply:
+                logger.log(
+                    response.reply,
+                    experiment_id=experiment_id,
+                    workflow_id=workflow_id,
+                    actor=current_actor,
+                )
             turn_count += 1
 
             if response.final_result:
@@ -134,6 +148,7 @@ class TesterAgent:
             follow_up_index += 1
 
         return TesterRunResult(
+            experiment_id=experiment_id,
             workflow_id=workflow_id,
             borrower_id=borrower_id,
             scenario_id=scenario.scenario_id,
@@ -180,6 +195,18 @@ class TesterAgent:
         normalized = reply.lower()
         return "conversation is now closed" in normalized or "this case is closed" in normalized
 
+    def _current_agent_actor(self, borrower_id: str) -> str:
+        borrower_case = self.borrower_case_service.get_borrower_case(borrower_id)
+        if borrower_case is None:
+            return "unknown_agent"
+        if borrower_case.stage == Stage.ASSESSMENT:
+            return "agent_1"
+        if borrower_case.stage == Stage.RESOLUTION:
+            return "agent_2"
+        if borrower_case.stage == Stage.FINAL_NOTICE:
+            return "agent_3"
+        return "unknown_agent"
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run one tester scenario against the workflow API")
@@ -187,6 +214,7 @@ def main() -> None:
     parser.add_argument("--scenario-id", required=True)
     parser.add_argument("--borrower-id", required=True)
     parser.add_argument("--workflow-id", required=True)
+    parser.add_argument("--experiment-id")
     parser.add_argument("--max-turns", type=int, default=5)
     parser.add_argument("--api-url", default=DEFAULT_API_URL)
     args = parser.parse_args()
@@ -197,6 +225,7 @@ def main() -> None:
         scenario_id=args.scenario_id,
         borrower_id=args.borrower_id,
         workflow_id=args.workflow_id,
+        experiment_id=args.experiment_id,
         max_turns=args.max_turns,
     )
     print(json.dumps(result.model_dump(), indent=2))

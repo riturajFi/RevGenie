@@ -50,7 +50,7 @@ class BorrowerCollectionsWorkflow:
             pending_messages=[],
         )
 
-        await self._start_assessment_stage()
+        self.state.pending_messages.append(input.initial_message)
         await self._run_assessment_stage(input.response_timeout_seconds)
 
         if self.state.final_result is not None:
@@ -152,20 +152,6 @@ class BorrowerCollectionsWorkflow:
             if turn_result.stage_result.stage_outcome == AgentStageOutcome.NO_RESOLUTION:
                 await self._complete_workflow("FLAG_FOR_LEGAL_WRITE_OFF", CaseStatus.CLOSED)
                 return
-
-    async def _start_assessment_stage(self) -> None:
-        assert self.state is not None
-        prompt_reply = await self._activity(
-            send_assessment_prompt,
-            AgentPromptActivityInput(
-                borrower_case=self.state.borrower_case,
-                instruction=(
-                    "Start the assessment stage. Ask for identity verification using partial account information "
-                    "and ask for the borrower's current financial situation."
-                ),
-            ),
-        )
-        self.state.last_agent_reply = prompt_reply
 
     async def _start_resolution_stage(self) -> None:
         assert self.state is not None

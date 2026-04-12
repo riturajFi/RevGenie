@@ -14,6 +14,7 @@ from app.temporal.workflows import BorrowerCollectionsWorkflow
 class StartWorkflowRequest(BaseModel):
     borrower_id: str
     workflow_id: str | None = None
+    initial_message: str
     response_timeout_seconds: int = 60
 
 
@@ -47,6 +48,7 @@ async def start_workflow(payload: StartWorkflowRequest) -> StartWorkflowResponse
             CollectionsWorkflowInput(
                 borrower_id=payload.borrower_id,
                 workflow_id=workflow_id,
+                initial_message=payload.initial_message,
                 response_timeout_seconds=payload.response_timeout_seconds,
             ),
             id=workflow_id,

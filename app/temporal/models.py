@@ -8,6 +8,7 @@ from app.domain.borrower_case import AgentTurnResult, BorrowerCase, Stage
 class CollectionsWorkflowInput(BaseModel):
     borrower_id: str
     workflow_id: str
+    initial_message: str
     response_timeout_seconds: int = 60
 
 

@@ -9,7 +9,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 
-from experiment_harness.logging_service.logger import get_logs
+from experiment_harness.logging_service.logger import get_logs, get_logs_by_workflow
 
 
 THIS_DIR = Path(__file__).resolve().parent
@@ -95,11 +95,19 @@ class JudgeService:
         self.judgment_store = judgment_store or JudgmentStore()
         self.model_name = model or os.getenv("OPENAI_JUDGE_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
 
-    def judge_experiment(self, experiment_id: str, metrics_key: str) -> JudgeResult:
-        transcript = self._load_transcript(experiment_id)
+    def judge_experiment(
+        self,
+        experiment_id: str | None = None,
+        metrics_key: str = "collections_agent_eval",
+        workflow_id: str | None = None,
+    ) -> JudgeResult:
+        transcript, result_experiment_id = self._load_transcript(
+            experiment_id=experiment_id,
+            workflow_id=workflow_id,
+        )
         metrics = self.metric_registry.get_active_metrics(metrics_key)
         result = self._call_judge_llm(
-            experiment_id=experiment_id,
+            experiment_id=result_experiment_id,
             transcript=transcript,
             metrics=metrics,
         )
@@ -109,15 +117,28 @@ class JudgeService:
     def get_judgment(self, experiment_id: str) -> JudgeResult:
         return self.judgment_store.get(experiment_id)
 
-    def _load_transcript(self, experiment_id: str) -> str:
-        events = get_logs(experiment_id)
-        if not events:
-            raise ValueError(f"No transcript logs found for experiment_id: {experiment_id}")
+    def _load_transcript(
+        self,
+        experiment_id: str | None = None,
+        workflow_id: str | None = None,
+    ) -> tuple[str, str]:
+        if workflow_id:
+            events = get_logs_by_workflow(workflow_id)
+            if not events:
+                raise ValueError(f"No transcript logs found for workflow_id: {workflow_id}")
+            resolved_experiment_id = events[0].experiment_id or workflow_id
+        elif experiment_id:
+            events = get_logs(experiment_id)
+            if not events:
+                raise ValueError(f"No transcript logs found for experiment_id: {experiment_id}")
+            resolved_experiment_id = experiment_id
+        else:
+            raise ValueError("Either experiment_id or workflow_id is required")
         lines = []
         for event in events:
             actor = event.actor or "unknown"
             lines.append(f"[{event.created_at}] {actor}: {event.message_text}")
-        return "\n".join(lines)
+        return "\n".join(lines), resolved_experiment_id
 
     def _call_judge_llm(
         self,

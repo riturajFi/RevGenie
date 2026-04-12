@@ -3,10 +3,15 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime, timezone
+import json
+from pathlib import Path
 
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+LOG_PATH = Path(__file__).resolve().parents[2] / "experiment-harness" / "data" / "logs" / "transcript_events.jsonl"
 
 
 @dataclass
@@ -39,10 +44,12 @@ class LogStorageService(ABC):
         raise NotImplementedError
 
 
-class InMemoryLogStorageService(LogStorageService):
-    def __init__(self) -> None:
-        self._events: list[LogEvent] = []
-        self._next_id = 1
+class JsonlLogStorageService(LogStorageService):
+    def __init__(self, path: Path = LOG_PATH) -> None:
+        self.path = path
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        if not self.path.exists():
+            self.path.write_text("")
 
     def log(
         self,
@@ -51,25 +58,40 @@ class InMemoryLogStorageService(LogStorageService):
         workflow_id: str | None = None,
         actor: str | None = None,
     ) -> None:
-        self._events.append(
-            LogEvent(
-                id=self._next_id,
-                experiment_id=experiment_id,
-                workflow_id=workflow_id,
-                actor=actor,
-                message_text=message,
-                created_at=utc_now(),
-            )
+        event = LogEvent(
+            id=self._next_id(),
+            experiment_id=experiment_id,
+            workflow_id=workflow_id,
+            actor=actor,
+            message_text=message,
+            created_at=utc_now(),
         )
-        self._next_id += 1
+        with self.path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(event.__dict__) + "\n")
 
     def get_logs(self, experiment_id: str) -> list[LogEvent]:
-        events = [event for event in self._events if event.experiment_id == experiment_id]
+        events = [event for event in self._read_events() if event.experiment_id == experiment_id]
         return sorted(events, key=lambda event: (event.created_at, event.id))
 
     def get_logs_by_workflow(self, workflow_id: str) -> list[LogEvent]:
-        events = [event for event in self._events if event.workflow_id == workflow_id]
+        events = [event for event in self._read_events() if event.workflow_id == workflow_id]
         return sorted(events, key=lambda event: (event.created_at, event.id))
+
+    def _read_events(self) -> list[LogEvent]:
+        events: list[LogEvent] = []
+        with self.path.open("r", encoding="utf-8") as handle:
+            for line in handle:
+                line = line.strip()
+                if not line:
+                    continue
+                events.append(LogEvent(**json.loads(line)))
+        return events
+
+    def _next_id(self) -> int:
+        events = self._read_events()
+        if not events:
+            return 1
+        return max(event.id for event in events) + 1
 
 
 class TranscriptLogger:
@@ -97,8 +119,8 @@ class TranscriptLogger:
         return self.storage_service.get_logs_by_workflow(workflow_id)
 
 
-in_memory_log_storage_service = InMemoryLogStorageService()
-logger = TranscriptLogger(in_memory_log_storage_service)
+jsonl_log_storage_service = JsonlLogStorageService()
+logger = TranscriptLogger(jsonl_log_storage_service)
 
 
 def log(

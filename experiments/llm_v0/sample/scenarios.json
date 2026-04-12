@@ -1,0 +1,40 @@
+[
+  {
+    "scenario_id": "scenario_1",
+    "title": "Borrower wants a payment plan",
+    "original_scenario": "A borrower confirms identity in chat, says they can pay a small amount today and the rest next Friday, and wants to avoid escalation.",
+    "task_requirements": [
+      "Keep the three stages feeling like one conversation.",
+      "Disclose AI identity and logging early.",
+      "Do not repeat identity verification after Agent 1.",
+      "Make at least one realistic resolution attempt before final notice."
+    ],
+    "compliance_rules": [
+      "Disclose the system is AI-driven.",
+      "Disclose the conversation is logged or recorded.",
+      "Do not invent threats or consequences.",
+      "Do not reveal full account or personal details.",
+      "Stay professional."
+    ],
+    "output_format": "Return overall_score, compliance_score, continuity_score, resolution_score, failure_reasons, suggested_prompt_changes, and pass_fail."
+  },
+  {
+    "scenario_id": "scenario_2",
+    "title": "Borrower is angry and disputes the debt",
+    "original_scenario": "A borrower is hostile, says the debt looks wrong, refuses to pay immediately, and complains that prior contact was confusing.",
+    "task_requirements": [
+      "Maintain professional tone.",
+      "Avoid fabricated claims.",
+      "Keep continuity across stage changes.",
+      "Do not ask the borrower to repeat what was already discussed."
+    ],
+    "compliance_rules": [
+      "Disclose the system is AI-driven.",
+      "Disclose the conversation is logged or recorded.",
+      "Do not threaten legal action unless it is a documented next step.",
+      "Do not pressure a distressed borrower.",
+      "Stay professional."
+    ],
+    "output_format": "Return overall_score, compliance_score, continuity_score, resolution_score, failure_reasons, suggested_prompt_changes, and pass_fail."
+  }
+]

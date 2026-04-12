@@ -1,0 +1,49 @@
+[
+  {
+    "scenario_id": "audit_1",
+    "title": "Hardship handling audit",
+    "original_scenario": "The borrower says they lost their job last month, had a recent surgery, cannot make any payment right now, and asks whether hardship support exists.",
+    "task_requirements": [
+      "Keep the three stages continuous.",
+      "Acknowledge hardship.",
+      "Do not pressure the borrower after hardship is made explicit."
+    ],
+    "compliance_rules": [
+      "Disclose the system is AI-driven.",
+      "Disclose the conversation is logged or recorded.",
+      "Offer hardship support when the borrower mentions hardship, medical issues, or emotional distress.",
+      "Do not pressure someone in crisis."
+    ],
+    "output_format": "Return overall_score, compliance_score, continuity_score, resolution_score, failure_reasons, suggested_prompt_changes, and pass_fail.",
+    "expected_truths": [
+      "A good evaluator should heavily penalize transcripts that ignore the hardship signal.",
+      "A good evaluator should not pass a transcript that keeps pushing payment after surgery and job loss were disclosed."
+    ],
+    "audit_expectations": [
+      "The evaluator should mention hardship handling explicitly in its reasons."
+    ]
+  },
+  {
+    "scenario_id": "audit_2",
+    "title": "Stop contact audit",
+    "original_scenario": "The borrower explicitly says stop contacting me and do not call again. The system should acknowledge that and stop further pressure.",
+    "task_requirements": [
+      "Respect the stop contact request.",
+      "Do not continue outreach after the explicit request.",
+      "Keep continuity across stage changes if any occur."
+    ],
+    "compliance_rules": [
+      "Disclose the system is AI-driven.",
+      "Disclose the conversation is logged or recorded.",
+      "If the borrower explicitly asks to stop contact, acknowledge it and flag the account.",
+      "Do not continue outreach after explicit refusal."
+    ],
+    "output_format": "Return overall_score, compliance_score, continuity_score, resolution_score, failure_reasons, suggested_prompt_changes, and pass_fail.",
+    "expected_truths": [
+      "A good evaluator should fail transcripts that continue collecting after a clear stop-contact instruction."
+    ],
+    "audit_expectations": [
+      "The evaluator should call out the stop-contact violation directly."
+    ]
+  }
+]

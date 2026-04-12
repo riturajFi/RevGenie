@@ -3,12 +3,14 @@ from __future__ import annotations
 import os
 
 from langchain.agents import AgentExecutor, create_tool_calling_agent
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 
 from app.agents.structured_output import parse_agent_turn_result
 from app.agents.resolution.tools import build_resolution_tools
 from app.domain.borrower_case import AgentTurnResult, BorrowerCase
+from app.domain.chat_message import ChatMessage
 
 
 class ResolutionAgent:
@@ -34,8 +36,8 @@ class ResolutionAgent:
                         "You can discuss resolution options, but only within lender policy. "
                         "You do not comfort the borrower. You do not improvise unauthorized offers. "
                         "You handle objections by restating terms, constraints, and deadlines. "
-                        "You will receive a summary from Agent 1 that contains the prior context for this borrower. "
-                        "Treat that summary as the handoff context instead of relying on prior chat history. "
+                        "The chat history for this stage starts with a system handoff summary from Agent 1. "
+                        "Continue from that handoff and from the messages already exchanged in this stage. "
                         "Use tools to fetch borrower information, lender-scoped loan information, lender information, and lender policy. "
                         "Never invent account details or policy terms. If data is missing, say so plainly. "
                         "Keep replies concise, direct, and operational. "
@@ -46,6 +48,7 @@ class ResolutionAgent:
                         "Return only changed BorrowerCase fields in case_delta using dotted field paths mapped to their changed values."
                     ),
                 ),
+                MessagesPlaceholder("chat_history", optional=True),
                 ("human", "{input}"),
                 MessagesPlaceholder("agent_scratchpad"),
             ]
@@ -56,37 +59,52 @@ class ResolutionAgent:
     def invoke(
         self,
         borrower_id: str,
-        assessment_summary: str,
         message: str,
         borrower_case: BorrowerCase,
+        chat_history: list[ChatMessage] | None = None,
     ) -> AgentTurnResult:
-        return self._invoke(borrower_id, assessment_summary, message, borrower_case, None)
+        return self._invoke(borrower_id, message, borrower_case, chat_history or [], None)
 
     def invoke_with_instruction(
         self,
         borrower_id: str,
-        assessment_summary: str,
         borrower_case: BorrowerCase,
         instruction: str,
         message: str | None = None,
+        chat_history: list[ChatMessage] | None = None,
     ) -> AgentTurnResult:
-        return self._invoke(borrower_id, assessment_summary, message or "", borrower_case, instruction)
+        return self._invoke(borrower_id, message or "", borrower_case, chat_history or [], instruction)
 
     def _invoke(
         self,
         borrower_id: str,
-        assessment_summary: str,
         message: str,
         borrower_case: BorrowerCase,
+        chat_history: list[ChatMessage],
         instruction: str | None,
     ) -> AgentTurnResult:
         agent_input = (
             f"Borrower ID: {borrower_id}\n"
             f"Configured lender ID: {self.lender_id}\n"
             f"Current borrower case JSON: {borrower_case.model_dump_json()}\n"
-            f"Assessment handoff summary from Agent 1:\n{assessment_summary}\n\n"
             f"Operational instruction:\n{instruction or 'Handle the current borrower turn.'}\n\n"
             f"Latest borrower message:\n{message}"
         )
-        response = self.executor.invoke({"input": agent_input})
+        response = self.executor.invoke(
+            {
+                "input": agent_input,
+                "chat_history": self._to_langchain_messages(chat_history),
+            }
+        )
         return parse_agent_turn_result(response["output"])
+
+    def _to_langchain_messages(self, chat_history: list[ChatMessage]) -> list[BaseMessage]:
+        messages: list[BaseMessage] = []
+        for item in chat_history:
+            if item.sender_type == "system":
+                messages.append(SystemMessage(content=item.message))
+            elif item.sender_type == "agent":
+                messages.append(AIMessage(content=item.message))
+            else:
+                messages.append(HumanMessage(content=item.message))
+        return messages

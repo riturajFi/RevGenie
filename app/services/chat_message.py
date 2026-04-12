@@ -1,42 +1,51 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 from datetime import datetime, timezone
 
 from app.domain.chat_message import ChatMessage
 from app.storage.chat_message.base import ChatMessageStorage
-from app.storage.chat_message.json_file import JsonFileChatMessageStorage
+from app.storage.chat_message.in_memory import InMemoryChatMessageStorage
 
 
-class ChatMessageService(ABC):
-    @abstractmethod
-    def append_chat_message(self, user_id: str, chat_message: str) -> ChatMessage:
-        raise NotImplementedError
+class ChatMessageService:
+    def __init__(self, storage: ChatMessageStorage) -> None:
+        self.storage = storage
 
-    @abstractmethod
-    def list_chat_messages_for_conversation(self, borrower_id: str) -> list[ChatMessage]:
-        raise NotImplementedError
-
-
-class FileChatMessageService(ChatMessageService):
-    def __init__(self, file_path: str = "data/chat_messages.json") -> None:
-        self.storage: ChatMessageStorage = JsonFileChatMessageStorage(file_path)
-
-    def append_chat_message(self, user_id: str, chat_message: str) -> ChatMessage:
-        message = ChatMessage(
+    def append_message(
+        self,
+        user_id: str,
+        agent_id: str,
+        sender_type: str,
+        message: str,
+    ) -> ChatMessage:
+        chat_message = ChatMessage(
+            message=message,
             user_id=user_id,
-            chat_message=chat_message,
+            agent_id=agent_id,
+            sender_type=sender_type,
             created_at=datetime.now(timezone.utc),
         )
-        return self.storage.append_chat_message(message)
+        return self.storage.append_message(chat_message)
 
-    def list_chat_messages_for_conversation(self, borrower_id: str) -> list[ChatMessage]:
-        borrower_messages = self.storage.list_chat_messages_for_user(borrower_id)
-        agent_messages = self.storage.list_chat_messages_for_user(self._agent_user_id(borrower_id))
-        return sorted(
-            borrower_messages + agent_messages,
-            key=lambda message: message.created_at,
+    def list_messages(self, user_id: str, agent_id: str) -> list[ChatMessage]:
+        messages = self.storage.list_messages(user_id, agent_id)
+        return sorted(messages, key=lambda item: item.created_at)
+
+    def append_handoff_message(self, user_id: str, agent_id: str, summary: str | None) -> None:
+        if not summary:
+            return
+        if self.list_messages(user_id, agent_id):
+            return
+        self.append_message(
+            user_id=user_id,
+            agent_id=agent_id,
+            sender_type="system",
+            message=summary,
         )
 
-    def _agent_user_id(self, borrower_id: str) -> str:
-        return f"agent:{borrower_id}"
+
+_chat_message_service = ChatMessageService(storage=InMemoryChatMessageStorage())
+
+
+def get_chat_message_service() -> ChatMessageService:
+    return _chat_message_service

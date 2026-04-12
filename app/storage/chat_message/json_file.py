@@ -14,15 +14,19 @@ class JsonFileChatMessageStorage(ChatMessageStorage):
         if not self.path.exists():
             self._write([])
 
-    def append_chat_message(self, chat_message: ChatMessage) -> ChatMessage:
+    def append_message(self, chat_message: ChatMessage) -> ChatMessage:
         records = self._read()
         records.append(chat_message.model_dump(mode="json"))
         self._write(records)
         return chat_message
 
-    def list_chat_messages_for_user(self, user_id: str) -> list[ChatMessage]:
+    def list_messages(self, user_id: str, agent_id: str) -> list[ChatMessage]:
         messages = [ChatMessage.model_validate(item) for item in self._read()]
-        return [message for message in messages if message.user_id == user_id]
+        return [
+            message
+            for message in messages
+            if message.user_id == user_id and message.agent_id == agent_id
+        ]
 
     def _read(self) -> list[dict]:
         with self.path.open("r", encoding="utf-8") as file:

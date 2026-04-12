@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 
 from langchain.agents import AgentExecutor, create_tool_calling_agent
-from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 
@@ -106,8 +106,10 @@ class AssessmentAgent:
     def _to_langchain_messages(self, chat_history: list[ChatMessage]) -> list[BaseMessage]:
         messages: list[BaseMessage] = []
         for item in chat_history:
-            if item.user_id.startswith("agent:"):
-                messages.append(AIMessage(content=item.chat_message))
+            if item.sender_type == "system":
+                messages.append(SystemMessage(content=item.message))
+            elif item.sender_type == "agent":
+                messages.append(AIMessage(content=item.message))
             else:
-                messages.append(HumanMessage(content=item.chat_message))
+                messages.append(HumanMessage(content=item.message))
         return messages

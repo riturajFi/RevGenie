@@ -4,9 +4,10 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from app.agents.assessment.agent import AssessmentAgent
+from app.domain.borrower_case import Stage
 from app.services.borrower_case import FileBorrowerCaseService
 from app.services.borrower_case_state import BorrowerCaseStateService
-from app.services.chat_message import FileChatMessageService
+from app.services.chat_message import get_chat_message_service
 
 
 class AssessmentAgentRequest(BaseModel):
@@ -22,7 +23,7 @@ class AssessmentAgentResponse(BaseModel):
 
 
 router = APIRouter(prefix="/agents/assessment", tags=["assessment-agent"])
-chat_service = FileChatMessageService()
+chat_service = get_chat_message_service()
 borrower_case_service = FileBorrowerCaseService()
 borrower_case_state_service = BorrowerCaseStateService()
 
@@ -33,10 +34,12 @@ def run_assessment_agent(payload: AssessmentAgentRequest) -> AssessmentAgentResp
         borrower_case = borrower_case_service.get_borrower_case(payload.borrower_id)
         if borrower_case is None:
             raise HTTPException(status_code=404, detail="Borrower case not found")
-        chat_history = chat_service.list_chat_messages_for_conversation(payload.borrower_id)
-        chat_service.append_chat_message(
+        chat_history = chat_service.list_messages(payload.borrower_id, Stage.ASSESSMENT.value)
+        chat_service.append_message(
             user_id=payload.borrower_id,
-            chat_message=payload.message,
+            agent_id=Stage.ASSESSMENT.value,
+            sender_type="borrower",
+            message=payload.message,
         )
         agent = AssessmentAgent()
         result = agent.invoke(
@@ -52,9 +55,11 @@ def run_assessment_agent(payload: AssessmentAgentRequest) -> AssessmentAgentResp
             latest_handoff_summary=result.latest_handoff_summary,
         )
         borrower_case_service.update_borrower_case(payload.borrower_id, updated_case)
-        chat_service.append_chat_message(
-            user_id=f"agent:{payload.borrower_id}",
-            chat_message=result.reply,
+        chat_service.append_message(
+            user_id=payload.borrower_id,
+            agent_id=Stage.ASSESSMENT.value,
+            sender_type="agent",
+            message=result.reply,
         )
     except ValueError as error:
         raise HTTPException(status_code=500, detail=str(error)) from error

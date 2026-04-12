@@ -100,3 +100,13 @@ class VersionAuditEvent(BaseModel):
     version_id: str
     created_at: str
     details: dict[str, Any] = Field(default_factory=dict)
+
+
+class TokenCountRecord(BaseModel):
+    created_at: str
+    model: str
+    input_text: str
+    input_chars: int
+    input_tokens: int
+    caller_cwd: str
+    raw_response: dict[str, Any] = Field(default_factory=dict)

@@ -37,6 +37,10 @@ def build_parser() -> argparse.ArgumentParser:
     log_parser.add_argument("--message", required=True)
     log_parser.add_argument("--metadata", default="{}")
 
+    tokens_parser = subparsers.add_parser("tokens")
+    tokens_parser.add_argument("--input", required=True)
+    tokens_parser.add_argument("--model", default="gpt-5")
+
     revert_parser = subparsers.add_parser("revert")
     revert_parser.add_argument("kind", choices=["prompt", "evaluator"])
     revert_parser.add_argument("--version-id")
@@ -67,6 +71,10 @@ def main() -> None:
     if args.command == "log":
         metadata = json.loads(args.metadata)
         print(json.dumps(api.collect_log(args.source, args.message, metadata=metadata).model_dump(), indent=2))
+        return
+
+    if args.command == "tokens":
+        print(json.dumps(api.calculate_prompt_tokens(args.input, model=args.model).model_dump(), indent=2))
         return
 
     if args.kind == "prompt":

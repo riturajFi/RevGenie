@@ -6,7 +6,6 @@ import sys
 from pathlib import Path
 
 from temporalio.client import Client
-from temporalio.contrib.pydantic import pydantic_data_converter
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
@@ -24,7 +23,6 @@ async def main() -> None:
     client = await Client.connect(
         os.getenv("TEMPORAL_ADDRESS", "localhost:7233"),
         namespace=os.getenv("TEMPORAL_NAMESPACE", "default"),
-        data_converter=pydantic_data_converter,
     )
     handle = client.get_workflow_handle(workflow_id)
     await handle.execute_update(BorrowerCollectionsWorkflow.handle_borrower_message, message)

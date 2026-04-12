@@ -23,28 +23,23 @@ with workflow.unsafe.imports_passed_through():
 
 @workflow.defn
 class BorrowerCollectionsWorkflow:
-    def __init__(self) -> None:
+    @workflow.init
+    def __init__(self, input: CollectionsWorkflowInput) -> None:
+        self.input = input
         self.state: CollectionsWorkflowState | None = None
 
     @workflow.run
     async def run(self, input: CollectionsWorkflowInput) -> CollectionsWorkflowState:
-        borrower_case = await self._activity(load_borrower_case, input.borrower_id)
-        borrower_case.workflow_id = input.workflow_id
-        borrower_case.case_status = CaseStatus.OPEN
-        borrower_case.final_disposition = None
-        borrower_case = await self._activity(save_borrower_case, borrower_case)
-
-        self.state = CollectionsWorkflowState(
-            borrower_case=borrower_case,
-            last_agent_reply=None,
-            final_result=None,
-        )
+        await self._ensure_state(input)
 
         await workflow.wait_condition(lambda: self.state is not None and self.state.final_result is not None)
         return self.state
 
     @workflow.update
     async def handle_borrower_message(self, message: str) -> CollectionsWorkflowState:
+        if self.state is None:
+            await self._ensure_state(self.input)
+
         assert self.state is not None
 
         if self.state.borrower_case.stage == Stage.ASSESSMENT:
@@ -100,6 +95,20 @@ class BorrowerCollectionsWorkflow:
     @workflow.query
     def get_state(self) -> CollectionsWorkflowState | None:
         return self.state
+
+    async def _ensure_state(self, input: CollectionsWorkflowInput) -> None:
+        if self.state is not None:
+            return
+        borrower_case = await self._activity(load_borrower_case, input.borrower_id)
+        borrower_case.workflow_id = input.workflow_id
+        borrower_case.case_status = CaseStatus.OPEN
+        borrower_case.final_disposition = None
+        borrower_case = await self._activity(save_borrower_case, borrower_case)
+        self.state = CollectionsWorkflowState(
+            borrower_case=borrower_case,
+            last_agent_reply=None,
+            final_result=None,
+        )
 
     async def _complete_workflow(self, result: str, case_status: CaseStatus) -> None:
         assert self.state is not None

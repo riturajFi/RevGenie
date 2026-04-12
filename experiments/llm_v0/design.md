@@ -23,6 +23,7 @@ Files:
 - `models.py`: Pydantic models
 - `store.py`: file storage helpers
 - `logs.py`: log collector
+- `tokens.py`: prompt token calculator
 - `versioning.py`: linked-list version managers
 - `runtime.py`: shared LLM calls and experiment execution helpers
 - `loop1.py`: Loop 1 runner
@@ -71,6 +72,7 @@ Under `data/`:
 - `logs/events.jsonl`
 - `history/prompt_history.jsonl`
 - `history/evaluator_history.jsonl`
+- `token_counts/token_counts.jsonl`
 
 `state.json` tracks active versions and counters:
 
@@ -338,6 +340,26 @@ Ordering rule:
 
 This means callers do not depend on their current working directory.
 
+## Prompt token calculator
+
+There is now a dedicated `PromptTokenCalculator`.
+
+Purpose:
+
+- call OpenAI's `responses/input_tokens` endpoint
+- return prompt token counts for any input string
+- store those counts as a metrics table under this module
+
+Main API:
+
+- `ExperimentApi.calculate_prompt_tokens(input_text: str, model: str = "gpt-5")`
+
+Storage:
+
+- `data/token_counts/token_counts.jsonl`
+
+The calculator also writes a normal log event through the shared logger.
+
 ## Init API
 
 There is now a dedicated `ExperimentApi`.
@@ -347,6 +369,7 @@ Main methods:
 - `init_experiment()`
 - `get_state()`
 - `collect_log()`
+- `calculate_prompt_tokens()`
 - `run_loop1()`
 - `run_loop2()`
 - `revert_loop1()`

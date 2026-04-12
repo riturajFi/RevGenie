@@ -5,9 +5,16 @@ from pathlib import Path
 from experiments.llm_v0.logs import LogCollector
 from experiments.llm_v0.loop1 import Loop1Runner
 from experiments.llm_v0.loop2 import Loop2Runner
-from experiments.llm_v0.models import ExperimentState, LinkedVersion, LogEntry, LoopSummary
+from experiments.llm_v0.models import (
+    ExperimentState,
+    LinkedVersion,
+    LogEntry,
+    LoopSummary,
+    TokenCountRecord,
+)
 from experiments.llm_v0.runtime import ExperimentRuntime
 from experiments.llm_v0.store import JsonStore
+from experiments.llm_v0.tokens import PromptTokenCalculator
 from experiments.llm_v0.versioning import Loop1ChangeManager, Loop2ChangeManager
 
 
@@ -20,6 +27,7 @@ class ExperimentApi:
     ) -> None:
         self.store = JsonStore(root_dir)
         self.logs = LogCollector(self.store)
+        self.token_calculator = PromptTokenCalculator(self.store, self.logs)
         self.prompt_manager = Loop1ChangeManager(self.store)
         self.evaluator_manager = Loop2ChangeManager(self.store)
         self.runtime = ExperimentRuntime(self.store, model=model, judge_model=judge_model)
@@ -70,6 +78,19 @@ class ExperimentApi:
     def run_loop2(self, audits_path: str) -> LoopSummary:
         self.init_experiment()
         return self.loop2_runner.run(audits_path)
+
+    def calculate_prompt_tokens(
+        self,
+        input_text: str,
+        model: str = "gpt-5",
+        caller_cwd: str | None = None,
+    ) -> TokenCountRecord:
+        self.init_experiment()
+        return self.token_calculator.calculate_prompt_tokens(
+            input_text=input_text,
+            model=model,
+            caller_cwd=caller_cwd,
+        )
 
     def revert_loop1(self, version_id: str | None = None) -> LinkedVersion:
         self.init_experiment()

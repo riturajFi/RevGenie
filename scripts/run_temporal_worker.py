@@ -7,7 +7,6 @@ import sys
 from pathlib import Path
 
 from temporalio.client import Client
-from temporalio.contrib.pydantic import pydantic_data_converter
 from temporalio.worker import Worker
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -28,7 +27,6 @@ async def main() -> None:
     client = await Client.connect(
         os.getenv("TEMPORAL_ADDRESS", "localhost:7233"),
         namespace=os.getenv("TEMPORAL_NAMESPACE", "default"),
-        data_converter=pydantic_data_converter,
     )
     task_queue = os.getenv("TEMPORAL_TASK_QUEUE", "collections-task-queue")
     with concurrent.futures.ThreadPoolExecutor(max_workers=20) as activity_executor:

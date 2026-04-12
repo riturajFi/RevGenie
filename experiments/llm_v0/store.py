@@ -11,6 +11,7 @@ from experiments.llm_v0.models import (
     LinkedVersion,
     LogEntry,
     Scenario,
+    TokenCountRecord,
     VersionAuditEvent,
 )
 
@@ -42,6 +43,7 @@ class JsonStore:
         self.audit_runs_dir = self.data_dir / "audit_runs"
         self.logs_dir = self.data_dir / "logs"
         self.history_dir = self.data_dir / "history"
+        self.token_counts_dir = self.data_dir / "token_counts"
         self.state_path = self.data_dir / "state.json"
 
     def bootstrap(self) -> None:
@@ -52,6 +54,7 @@ class JsonStore:
             self.audit_runs_dir,
             self.logs_dir,
             self.history_dir,
+            self.token_counts_dir,
         ]:
             path.mkdir(parents=True, exist_ok=True)
 
@@ -105,6 +108,9 @@ class JsonStore:
 
     def append_history(self, event: VersionAuditEvent) -> None:
         self._append_jsonl(self.history_dir / f"{event.version_kind}_history.jsonl", event.model_dump())
+
+    def append_token_count(self, record: TokenCountRecord) -> None:
+        self._append_jsonl(self.token_counts_dir / "token_counts.jsonl", record.model_dump())
 
     def save_run(self, record: ExperimentRunRecord) -> None:
         target_dir = self.audit_runs_dir if record.loop_name.startswith("loop2") else self.runs_dir

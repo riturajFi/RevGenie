@@ -17,6 +17,7 @@ It implements the bare minimum version of the two loops you described:
 - `data/logs/events.jsonl`
 - `data/history/prompt_history.jsonl`
 - `data/history/evaluator_history.jsonl`
+- `data/token_counts/token_counts.jsonl`
 
 `state.json` tracks:
 
@@ -76,6 +77,7 @@ api.init_experiment()
 api.run_loop1("experiments/llm_v0/sample/scenarios.json")
 api.run_loop2("experiments/llm_v0/sample/audits.json")
 api.collect_log("manual", "hello from anywhere")
+api.calculate_prompt_tokens("Tell me a joke.")
 api.revert_loop1()
 api.revert_loop2()
 ```
@@ -89,6 +91,18 @@ collect_log("manual", "hello from anywhere")
 ```
 
 The log collector always writes into this module's storage, not the caller's current directory.
+
+Prompt token calculator:
+
+```python
+from experiments.llm_v0 import ExperimentHarness
+
+experiment_harness = ExperimentHarness()
+token_record = experiment_harness.calculate_prompt_tokens("Tell me a joke.")
+print(token_record.input_tokens)
+```
+
+This uses the OpenAI `responses/input_tokens` endpoint and stores the result in `data/token_counts/token_counts.jsonl`.
 
 ## Commands
 
@@ -121,6 +135,12 @@ If your current folder is not the repo root, call the CLI by absolute file path 
 
 ```bash
 .venv/bin/python /home/riturajtripathy/Documents/_Code/personal_projects/Take\ Home\ Tasks/Riverline/RevGenie/experiments/llm_v0/engine.py log --source manual --message "test log"
+```
+
+Calculate prompt tokens:
+
+```bash
+.venv/bin/python -m experiments.llm_v0.engine tokens --input "Tell me a joke." --model gpt-5
 ```
 
 Revert prompt or evaluator chain:

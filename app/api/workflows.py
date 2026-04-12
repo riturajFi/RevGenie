@@ -65,14 +65,14 @@ async def submit_borrower_message(payload: WorkflowMessageRequest) -> WorkflowMe
     )
 
 
-@router.get("/{workflow_id}", response_model=CollectionsWorkflowState)
-async def get_workflow_state(workflow_id: str) -> CollectionsWorkflowState:
-    client = await get_temporal_client()
-    handle = client.get_workflow_handle(workflow_id)
-    try:
-        state = await handle.query(BorrowerCollectionsWorkflow.get_state)
-    except Exception as error:
-        raise HTTPException(status_code=500, detail=str(error)) from error
-    if state is None:
-        raise HTTPException(status_code=404, detail="Workflow state not found")
-    return state
+# @router.get("/{workflow_id}", response_model=CollectionsWorkflowState)
+# async def get_workflow_state(workflow_id: str) -> CollectionsWorkflowState:
+#     client = await get_temporal_client()
+#     handle = client.get_workflow_handle(workflow_id)
+#     try:
+#         state = await handle.query(BorrowerCollectionsWorkflow.get_state)
+#     except Exception as error:
+#         raise HTTPException(status_code=500, detail=str(error)) from error
+#     if state is None:
+#         raise HTTPException(status_code=404, detail="Workflow state not found")
+#     return state

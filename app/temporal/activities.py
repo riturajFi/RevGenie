@@ -5,12 +5,11 @@ from temporalio import activity
 from app.agents.assessment.agent import AssessmentAgent
 from app.agents.final_notice.agent import FinalNoticeAgent
 from app.agents.resolution.agent import ResolutionAgent
-from app.domain.borrower_case import AgentTurnResult, BorrowerCase, ContactChannel, Stage
+from app.domain.borrower_case import BorrowerCase, ContactChannel, Stage
 from app.services.borrower_case import FileBorrowerCaseService
 from app.services.borrower_case_state import BorrowerCaseStateService
 from app.services.chat_message import get_chat_message_service
 from app.temporal.models import (
-    AgentPromptActivityInput,
     AgentTurnActivityInput,
     AgentTurnActivityResult,
 )
@@ -64,21 +63,6 @@ def save_borrower_case(borrower_case: BorrowerCase) -> BorrowerCase:
 
 
 @activity.defn
-def send_assessment_prompt(input: AgentPromptActivityInput) -> str:
-    borrower_case = input.borrower_case
-    chat_history = _list_stage_messages(borrower_case.borrower_id, Stage.ASSESSMENT)
-    agent = AssessmentAgent(lender_id=borrower_case.lender_id)
-    result = agent.invoke_with_instruction(
-        borrower_id=borrower_case.borrower_id,
-        borrower_case=borrower_case,
-        instruction=input.instruction,
-        chat_history=chat_history,
-    )
-    _append_message(borrower_case.borrower_id, Stage.ASSESSMENT, "agent", result.reply)
-    return result.reply
-
-
-@activity.defn
 def run_assessment_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResult:
     borrower_case = input.borrower_case
     chat_history = _list_stage_messages(borrower_case.borrower_id, Stage.ASSESSMENT)
@@ -103,22 +87,6 @@ def run_assessment_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
         borrower_case=updated_case,
         stage_result=result,
     )
-
-
-@activity.defn
-def send_resolution_prompt(input: AgentPromptActivityInput) -> str:
-    borrower_case = input.borrower_case
-    _ensure_handoff_message(borrower_case, Stage.RESOLUTION)
-    chat_history = _list_stage_messages(borrower_case.borrower_id, Stage.RESOLUTION)
-    agent = ResolutionAgent(lender_id=borrower_case.lender_id)
-    result = agent.invoke_with_instruction(
-        borrower_id=borrower_case.borrower_id,
-        borrower_case=borrower_case,
-        instruction=input.instruction,
-        chat_history=chat_history,
-    )
-    _append_message(borrower_case.borrower_id, Stage.RESOLUTION, "agent", result.reply)
-    return result.reply
 
 
 @activity.defn
@@ -147,22 +115,6 @@ def run_resolution_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
         borrower_case=updated_case,
         stage_result=result,
     )
-
-
-@activity.defn
-def send_final_notice_prompt(input: AgentPromptActivityInput) -> str:
-    borrower_case = input.borrower_case
-    _ensure_handoff_message(borrower_case, Stage.FINAL_NOTICE)
-    chat_history = _list_stage_messages(borrower_case.borrower_id, Stage.FINAL_NOTICE)
-    agent = FinalNoticeAgent(lender_id=borrower_case.lender_id)
-    result = agent.invoke_with_instruction(
-        borrower_id=borrower_case.borrower_id,
-        borrower_case=borrower_case,
-        instruction=input.instruction,
-        chat_history=chat_history,
-    )
-    _append_message(borrower_case.borrower_id, Stage.FINAL_NOTICE, "agent", result.reply)
-    return result.reply
 
 
 @activity.defn

@@ -4,6 +4,8 @@ import os
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+from temporalio.client import WithStartWorkflowOperation
+from temporalio.common import WorkflowIDConflictPolicy
 
 from app.services.borrower_case import FileBorrowerCaseService
 from app.temporal.client import get_temporal_client
@@ -11,64 +13,56 @@ from app.temporal.models import CollectionsWorkflowInput, CollectionsWorkflowSta
 from app.temporal.workflows import BorrowerCollectionsWorkflow
 
 
-class StartWorkflowRequest(BaseModel):
+class WorkflowMessageRequest(BaseModel):
     borrower_id: str
     workflow_id: str | None = None
-    initial_message: str
-    response_timeout_seconds: int = 60
-
-
-class StartWorkflowResponse(BaseModel):
-    workflow_id: str
-
-
-class BorrowerMessageRequest(BaseModel):
     message: str
 
 
-class BorrowerMessageResponse(BaseModel):
-    sent: bool
+class WorkflowMessageResponse(BaseModel):
+    workflow_id: str
+    reply: str | None = None
+    stage: str
+    final_result: str | None = None
 
 
 router = APIRouter(prefix="/workflows", tags=["workflows"])
 borrower_case_service = FileBorrowerCaseService()
 
 
-@router.post("/start", response_model=StartWorkflowResponse)
-async def start_workflow(payload: StartWorkflowRequest) -> StartWorkflowResponse:
+@router.post("/messages", response_model=WorkflowMessageResponse)
+async def submit_borrower_message(payload: WorkflowMessageRequest) -> WorkflowMessageResponse:
     borrower_case = borrower_case_service.get_borrower_case(payload.borrower_id)
     if borrower_case is None:
         raise HTTPException(status_code=404, detail="Borrower case not found")
 
     workflow_id = payload.workflow_id or borrower_case.workflow_id
     client = await get_temporal_client()
+
     try:
-        await client.start_workflow(
-            BorrowerCollectionsWorkflow.run,
-            CollectionsWorkflowInput(
-                borrower_id=payload.borrower_id,
-                workflow_id=workflow_id,
-                initial_message=payload.initial_message,
-                response_timeout_seconds=payload.response_timeout_seconds,
+        state = await client.execute_update_with_start_workflow(
+            BorrowerCollectionsWorkflow.handle_borrower_message,
+            payload.message,
+            start_workflow_operation=WithStartWorkflowOperation(
+                BorrowerCollectionsWorkflow.run,
+                CollectionsWorkflowInput(
+                    borrower_id=payload.borrower_id,
+                    workflow_id=workflow_id,
+                ),
+                id=workflow_id,
+                task_queue=os.getenv("TEMPORAL_TASK_QUEUE", "collections-task-queue"),
+                id_conflict_policy=WorkflowIDConflictPolicy.USE_EXISTING,
             ),
-            id=workflow_id,
-            task_queue=os.getenv("TEMPORAL_TASK_QUEUE", "collections-task-queue"),
         )
     except Exception as error:
         raise HTTPException(status_code=500, detail=str(error)) from error
 
-    return StartWorkflowResponse(workflow_id=workflow_id)
-
-
-@router.post("/{workflow_id}/messages", response_model=BorrowerMessageResponse)
-async def submit_borrower_message(workflow_id: str, payload: BorrowerMessageRequest) -> BorrowerMessageResponse:
-    client = await get_temporal_client()
-    handle = client.get_workflow_handle(workflow_id)
-    try:
-        await handle.signal(BorrowerCollectionsWorkflow.submit_borrower_message, payload.message)
-    except Exception as error:
-        raise HTTPException(status_code=500, detail=str(error)) from error
-    return BorrowerMessageResponse(sent=True)
+    return WorkflowMessageResponse(
+        workflow_id=workflow_id,
+        reply=state.last_agent_reply,
+        stage=state.borrower_case.stage.value,
+        final_result=state.final_result,
+    )
 
 
 @router.get("/{workflow_id}", response_model=CollectionsWorkflowState)

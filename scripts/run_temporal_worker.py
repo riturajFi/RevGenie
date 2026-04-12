@@ -20,9 +20,6 @@ from app.temporal.activities import (
     run_final_notice_turn,
     run_resolution_turn,
     save_borrower_case,
-    send_assessment_prompt,
-    send_final_notice_prompt,
-    send_resolution_prompt,
 )
 from app.temporal.workflows import BorrowerCollectionsWorkflow
 
@@ -42,11 +39,8 @@ async def main() -> None:
             activities=[
                 load_borrower_case,
                 save_borrower_case,
-                send_assessment_prompt,
                 run_assessment_turn,
-                send_resolution_prompt,
                 run_resolution_turn,
-                send_final_notice_prompt,
                 run_final_notice_turn,
             ],
             activity_executor=activity_executor,

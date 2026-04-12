@@ -32,7 +32,6 @@ async def main() -> None:
         CollectionsWorkflowInput(
             borrower_id=borrower_id,
             workflow_id=workflow_id,
-            response_timeout_seconds=int(os.getenv("WORKFLOW_RESPONSE_TIMEOUT_SECONDS", "60")),
         ),
         id=workflow_id,
         task_queue=os.getenv("TEMPORAL_TASK_QUEUE", "collections-task-queue"),

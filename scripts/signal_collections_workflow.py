@@ -27,8 +27,8 @@ async def main() -> None:
         data_converter=pydantic_data_converter,
     )
     handle = client.get_workflow_handle(workflow_id)
-    await handle.signal(BorrowerCollectionsWorkflow.submit_borrower_message, message)
-    print("signal_sent")
+    await handle.execute_update(BorrowerCollectionsWorkflow.handle_borrower_message, message)
+    print("update_sent")
 
 
 if __name__ == "__main__":

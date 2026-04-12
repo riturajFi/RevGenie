@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from app.domain.borrower_case import AgentTurnResult, BorrowerCase, Stage
 
@@ -8,16 +8,12 @@ from app.domain.borrower_case import AgentTurnResult, BorrowerCase, Stage
 class CollectionsWorkflowInput(BaseModel):
     borrower_id: str
     workflow_id: str
-    initial_message: str
-    response_timeout_seconds: int = 60
 
 
 class CollectionsWorkflowState(BaseModel):
     borrower_case: BorrowerCase
-    assessment_no_response_attempts: int = 0
     last_agent_reply: str | None = None
     final_result: str | None = None
-    pending_messages: list[str] = Field(default_factory=list)
 
 
 class AgentPromptActivityInput(BaseModel):

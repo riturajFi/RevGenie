@@ -7,7 +7,9 @@ from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 
+from app.agents.structured_output import parse_agent_turn_result
 from app.agents.assessment.tools import build_assessment_tools
+from app.domain.borrower_case import AgentTurnResult, BorrowerCase
 from app.domain.chat_message import ChatMessage
 
 
@@ -42,7 +44,13 @@ class AssessmentAgent:
                         "Never invent account details. If a record is missing, say so plainly. "
                         "If identity is not verified, ask the borrower to confirm the last four digits of the account reference. "
                         "If hardship or distress is mentioned, gather facts without pressure and note hardship. "
-                        "Keep responses concise, factual, and direct."
+                        "Keep responses concise, factual, and direct. "
+                        "Your final answer must be valid JSON only with this shape: "
+                        "{\"reply\": str, \"stage_outcome\": \"CONTINUE\"|\"ASSESSMENT_COMPLETE\", "
+                        "\"case_delta\": {}, "
+                        "\"latest_handoff_summary\": str|null}. "
+                        "Return only changed BorrowerCase fields in case_delta using dotted field paths mapped to their changed values. "
+                        "Do not update workflow-controlled fields such as workflow_id, lender_id, amount_due, principal_outstanding, dpd, stage, case_status, final_disposition, or last_contact_channel."
                     ),
                 ),
                 MessagesPlaceholder("chat_history", optional=True),
@@ -53,19 +61,47 @@ class AssessmentAgent:
         agent = create_tool_calling_agent(self.llm, self.tools, prompt)
         return AgentExecutor(agent=agent, tools=self.tools, verbose=False)
 
-    def invoke(self, borrower_id: str, message: str, chat_history: list[ChatMessage] | None = None) -> dict:
+    def invoke(
+        self,
+        borrower_id: str,
+        message: str,
+        borrower_case: BorrowerCase,
+        chat_history: list[ChatMessage] | None = None,
+    ) -> AgentTurnResult:
+        return self._invoke(borrower_id, message, borrower_case, chat_history or [], None)
+
+    def invoke_with_instruction(
+        self,
+        borrower_id: str,
+        borrower_case: BorrowerCase,
+        instruction: str,
+        message: str | None = None,
+        chat_history: list[ChatMessage] | None = None,
+    ) -> AgentTurnResult:
+        return self._invoke(borrower_id, message or "", borrower_case, chat_history or [], instruction)
+
+    def _invoke(
+        self,
+        borrower_id: str,
+        message: str,
+        borrower_case: BorrowerCase,
+        chat_history: list[ChatMessage],
+        instruction: str | None,
+    ) -> AgentTurnResult:
         agent_input = (
             f"Borrower ID: {borrower_id}\n"
             f"Configured lender ID: {self.lender_id}\n"
+            f"Current borrower case JSON: {borrower_case.model_dump_json()}\n"
+            f"Operational instruction: {instruction or 'Handle the current borrower turn.'}\n"
             f"Borrower message: {message}"
         )
         response = self.executor.invoke(
             {
                 "input": agent_input,
-                "chat_history": self._to_langchain_messages(chat_history or []),
+                "chat_history": self._to_langchain_messages(chat_history),
             }
         )
-        return {"reply": response["output"]}
+        return parse_agent_turn_result(response["output"])
 
     def _to_langchain_messages(self, chat_history: list[ChatMessage]) -> list[BaseMessage]:
         messages: list[BaseMessage] = []

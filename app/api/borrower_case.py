@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, status
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 from app.domain.borrower_case import BorrowerCase
 from app.services.borrower_case import FileBorrowerCaseService
@@ -11,8 +11,6 @@ service = FileBorrowerCaseService()
 
 
 class DeleteResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
     deleted: bool
 
 

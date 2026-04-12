@@ -6,7 +6,9 @@ from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 
+from app.agents.structured_output import parse_agent_turn_result
 from app.agents.final_notice.tools import build_final_notice_tools
+from app.domain.borrower_case import AgentTurnResult, BorrowerCase
 
 
 class FinalNoticeAgent:
@@ -37,7 +39,12 @@ class FinalNoticeAgent:
                         "Treat that summary as the handoff context instead of relying on prior chat history. "
                         "Use tools to fetch borrower information, borrower case, lender-scoped loan information, lender information, and lender policy. "
                         "Never invent account details, policy terms, deadlines, or next steps. "
-                        "Keep replies concise, explicit, and final."
+                        "Keep replies concise, explicit, and final. "
+                        "Your final answer must be valid JSON only with this shape: "
+                        "{\"reply\": str, \"stage_outcome\": \"CONTINUE\"|\"RESOLVED\"|\"NO_RESOLUTION\", "
+                        "\"case_delta\": {}, "
+                        "\"latest_handoff_summary\": str|null}. "
+                        "Return only changed BorrowerCase fields in case_delta using dotted field paths mapped to their changed values."
                     ),
                 ),
                 ("human", "{input}"),
@@ -47,12 +54,40 @@ class FinalNoticeAgent:
         agent = create_tool_calling_agent(self.llm, self.tools, prompt)
         return AgentExecutor(agent=agent, tools=self.tools, verbose=False)
 
-    def invoke(self, borrower_id: str, resolution_summary: str, message: str) -> dict:
+    def invoke(
+        self,
+        borrower_id: str,
+        resolution_summary: str,
+        message: str,
+        borrower_case: BorrowerCase,
+    ) -> AgentTurnResult:
+        return self._invoke(borrower_id, resolution_summary, message, borrower_case, None)
+
+    def invoke_with_instruction(
+        self,
+        borrower_id: str,
+        resolution_summary: str,
+        borrower_case: BorrowerCase,
+        instruction: str,
+        message: str | None = None,
+    ) -> AgentTurnResult:
+        return self._invoke(borrower_id, resolution_summary, message or "", borrower_case, instruction)
+
+    def _invoke(
+        self,
+        borrower_id: str,
+        resolution_summary: str,
+        message: str,
+        borrower_case: BorrowerCase,
+        instruction: str | None,
+    ) -> AgentTurnResult:
         agent_input = (
             f"Borrower ID: {borrower_id}\n"
             f"Configured lender ID: {self.lender_id}\n"
+            f"Current borrower case JSON: {borrower_case.model_dump_json()}\n"
             f"Resolution handoff summary from Agent 2:\n{resolution_summary}\n\n"
+            f"Operational instruction:\n{instruction or 'Handle the current borrower turn.'}\n\n"
             f"Latest borrower message:\n{message}"
         )
         response = self.executor.invoke({"input": agent_input})
-        return {"reply": response["output"]}
+        return parse_agent_turn_result(response["output"])

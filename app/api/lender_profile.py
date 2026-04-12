@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, status
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 from app.domain.lender_profile import LenderProfile
 from app.services.lender_profile import FileLenderProfileService
@@ -11,8 +11,6 @@ service = FileLenderProfileService()
 
 
 class DeleteResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
     deleted: bool
 
 

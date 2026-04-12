@@ -1,9 +1,7 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 
 class BorrowerProfile(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
     borrower_id: str
     full_name: str
     phone_number: str

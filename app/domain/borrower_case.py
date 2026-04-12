@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import List, Optional
+from typing import Any, List, Optional
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 
 
 class Stage(str, Enum):
@@ -58,8 +58,6 @@ class ApprovalState(BaseModel):
 
 
 class BorrowerCase(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
     borrower_id: str
     workflow_id: str
     loan_id_masked: str
@@ -75,8 +73,33 @@ class BorrowerCase(BaseModel):
     hardship_flags: HardshipFlags
     dispute_flags: DisputeFlags
     approval_state: ApprovalState
-    offers_made: List[dict] = Field(default_factory=list)
+    offers_made: List[str] = Field(default_factory=list)
+    borrower_objections: List[str] = Field(default_factory=list)
+    borrower_stated_position: Optional[str] = None
+    last_deadline_offered: Optional[str] = None
     next_allowed_actions: List[str] = Field(default_factory=list)
     stop_contact_flag: bool
     identity_verified: bool
     last_contact_channel: ContactChannel
+    assessment_notes: Optional[str] = None
+    resolution_notes: Optional[str] = None
+    final_notice_notes: Optional[str] = None
+    latest_handoff_summary: Optional[str] = None
+    latest_handoff_stage: Optional[Stage] = None
+    final_disposition: Optional[str] = None
+
+
+class AgentStageOutcome(str, Enum):
+    CONTINUE = "CONTINUE"
+    ASSESSMENT_COMPLETE = "ASSESSMENT_COMPLETE"
+    DEAL_AGREED = "DEAL_AGREED"
+    NO_DEAL = "NO_DEAL"
+    RESOLVED = "RESOLVED"
+    NO_RESOLUTION = "NO_RESOLUTION"
+
+
+class AgentTurnResult(BaseModel):
+    reply: str
+    stage_outcome: AgentStageOutcome
+    case_delta: dict[str, Any] = Field(default_factory=dict)
+    latest_handoff_summary: Optional[str] = None

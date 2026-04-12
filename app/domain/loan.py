@@ -1,9 +1,7 @@
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 
 
 class Loan(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
     account_id: str
     borrower_id: str
     lender_id: str

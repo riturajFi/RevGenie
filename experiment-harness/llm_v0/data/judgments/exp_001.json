@@ -11,13 +11,13 @@
       "metric_id": "m_002",
       "name": "continuity",
       "score": 4.0,
-      "reason": "The conversation lacked continuity as the agent repeatedly pushed the same options despite the borrower's clear rejection, causing frustration."
+      "reason": "The conversation lacked continuity as the agent repeatedly pushed for information despite the borrower's clear rejection, causing frustration."
     },
     {
       "metric_id": "m_003",
       "name": "resolution_quality",
       "score": 2.0,
-      "reason": "The conversation did not progress towards a resolution, as the agent did not adapt to the borrower's needs or provide alternative solutions."
+      "reason": "The conversation did not progress towards a resolution, as the agent continued to insist on options that the borrower had already rejected."
     }
   ],
   "overall_score": 3.0,

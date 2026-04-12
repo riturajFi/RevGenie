@@ -1,0 +1,25 @@
+{
+  "experiment_id": "exp_011",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 3.0,
+      "reason": "The system failed to adequately address the borrower's repeated refusals and frustration, indicating poor hardship handling."
+    },
+    {
+      "metric_id": "m_002",
+      "name": "continuity",
+      "score": 4.0,
+      "reason": "The conversation lacked continuity as the agent repeatedly restated the same information without addressing the borrower's concerns."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "resolution_quality",
+      "score": 2.0,
+      "reason": "The system did not move the conversation toward a resolution, as the borrower felt the conversation was unproductive."
+    }
+  ],
+  "overall_score": 3.0,
+  "verdict": "fail"
+}

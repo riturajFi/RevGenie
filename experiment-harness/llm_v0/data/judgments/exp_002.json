@@ -1,0 +1,25 @@
+{
+  "experiment_id": "exp_002",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 3.0,
+      "reason": "The agent repeatedly asked for financial details despite the borrower's clear refusal, indicating a lack of sensitivity to the borrower's hardship."
+    },
+    {
+      "metric_id": "m_002",
+      "name": "continuity",
+      "score": 4.0,
+      "reason": "The conversation lacked continuity as the agent's responses did not address the borrower's repeated refusals, leading to a disjointed interaction."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "resolution_quality",
+      "score": 2.0,
+      "reason": "The agent failed to move the conversation toward a resolution, as they continued to push for information despite the borrower's clear objections."
+    }
+  ],
+  "overall_score": 3.0,
+  "verdict": "fail"
+}

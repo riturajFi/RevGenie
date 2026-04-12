@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import os
 
+from experiment_harness.prompt_management_service.prompt_storage import (
+    json_prompt_storage_service,
+)
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 
-from app.agents.prompts import RESOLUTION_SYSTEM_PROMPT
 from app.agents.structured_output import parse_agent_turn_result
 from app.agents.resolution.tools import build_resolution_tools
 from app.domain.borrower_case import AgentTurnResult, BorrowerCase
@@ -26,12 +28,10 @@ class ResolutionAgent:
         self.executor = self._build_executor()
 
     def _build_executor(self) -> AgentExecutor:
+        system_prompt = json_prompt_storage_service.get_active_prompt("agent_2").prompt_text
         prompt = ChatPromptTemplate.from_messages(
             [
-                (
-                    "system",
-                    RESOLUTION_SYSTEM_PROMPT,
-                ),
+                SystemMessage(content=system_prompt),
                 MessagesPlaceholder("chat_history", optional=True),
                 ("human", "{input}"),
                 MessagesPlaceholder("agent_scratchpad"),

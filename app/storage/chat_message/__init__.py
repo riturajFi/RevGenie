@@ -1,1 +1,1 @@
-"""ChatMessage storage implementations."""
+"""ChatMessage storage."""

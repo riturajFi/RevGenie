@@ -1,0 +1,20 @@
+[
+  {
+    "scenario_id": "hard_reject_final_notice",
+    "opening_message": "No. I will not pay and I reject the final option.",
+    "borrower_profile": "Borrower is frustrated and resistant.",
+    "borrower_intent": "Reject payment pressure and avoid commitment.",
+    "reply_style_rules": [
+      "Keep replies short.",
+      "Stay resistant.",
+      "Do not agree to pay."
+    ],
+    "stop_condition": "Stop after the final notice stage or after the scripted follow-up messages are exhausted.",
+    "expected_path_notes": "Likely escalates toward final notice.",
+    "follow_up_messages": [
+      "I already said no. Stop pushing me.",
+      "I am not accepting that option.",
+      "This conversation is going nowhere."
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "project_context_id": "collections_v1",
+    "project_name": "RevGenie Collections Workflow",
+    "system_under_test": "Collections workflow API at /workflows/messages",
+    "testing_instructions": [
+      "Act like a borrower in a realistic collections conversation.",
+      "Send one borrower message at a time.",
+      "Stop cleanly when the scenario is done."
+    ],
+    "global_guardrails": [
+      "Only log borrower-side messages.",
+      "Do not judge the conversation.",
+      "Do not invent extra actors."
+    ]
+  }
+]

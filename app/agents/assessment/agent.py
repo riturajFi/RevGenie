@@ -46,9 +46,9 @@ class AssessmentAgent:
                         "If hardship or distress is mentioned, gather facts without pressure and note hardship. "
                         "Keep responses concise, factual, and direct. "
                         "Your final answer must be valid JSON only with this shape: "
-                        "{\"reply\": str, \"stage_outcome\": \"CONTINUE\"|\"ASSESSMENT_COMPLETE\", "
-                        "\"case_delta\": {}, "
-                        "\"latest_handoff_summary\": str|null}. "
+                        "{{\"reply\": str, \"stage_outcome\": \"CONTINUE\"|\"ASSESSMENT_COMPLETE\", "
+                        "\"case_delta\": {{}}, "
+                        "\"latest_handoff_summary\": str|null}}. "
                         "Return only changed BorrowerCase fields in case_delta using dotted field paths mapped to their changed values. "
                         "Do not update workflow-controlled fields such as workflow_id, lender_id, amount_due, principal_outstanding, dpd, stage, case_status, final_disposition, or last_contact_channel."
                     ),

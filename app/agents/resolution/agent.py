@@ -42,9 +42,9 @@ class ResolutionAgent:
                         "Never invent account details or policy terms. If data is missing, say so plainly. "
                         "Keep replies concise, direct, and operational. "
                         "Your final answer must be valid JSON only with this shape: "
-                        "{\"reply\": str, \"stage_outcome\": \"CONTINUE\"|\"DEAL_AGREED\"|\"NO_DEAL\", "
-                        "\"case_delta\": {}, "
-                        "\"latest_handoff_summary\": str|null}. "
+                        "{{\"reply\": str, \"stage_outcome\": \"CONTINUE\"|\"DEAL_AGREED\"|\"NO_DEAL\", "
+                        "\"case_delta\": {{}}, "
+                        "\"latest_handoff_summary\": str|null}}. "
                         "Return only changed BorrowerCase fields in case_delta using dotted field paths mapped to their changed values."
                     ),
                 ),

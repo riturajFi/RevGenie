@@ -30,4 +30,17 @@ class BorrowerCaseStateService:
         parts = field_path.split(".")
         for part in parts[:-1]:
             current = current[part]
+        existing_value = current.get(parts[-1])
+        if isinstance(existing_value, dict) and isinstance(value, dict):
+            current[parts[-1]] = self._merge_dict(existing_value, value)
+            return
         current[parts[-1]] = value
+
+    def _merge_dict(self, existing: dict[str, Any], update: dict[str, Any]) -> dict[str, Any]:
+        merged = deepcopy(existing)
+        for key, value in update.items():
+            if isinstance(merged.get(key), dict) and isinstance(value, dict):
+                merged[key] = self._merge_dict(merged[key], value)
+            else:
+                merged[key] = value
+        return merged

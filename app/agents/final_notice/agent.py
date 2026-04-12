@@ -43,9 +43,9 @@ class FinalNoticeAgent:
                         "Never invent account details, policy terms, deadlines, or next steps. "
                         "Keep replies concise, explicit, and final. "
                         "Your final answer must be valid JSON only with this shape: "
-                        "{\"reply\": str, \"stage_outcome\": \"CONTINUE\"|\"RESOLVED\"|\"NO_RESOLUTION\", "
-                        "\"case_delta\": {}, "
-                        "\"latest_handoff_summary\": str|null}. "
+                        "{{\"reply\": str, \"stage_outcome\": \"CONTINUE\"|\"RESOLVED\"|\"NO_RESOLUTION\", "
+                        "\"case_delta\": {{}}, "
+                        "\"latest_handoff_summary\": str|null}}. "
                         "Return only changed BorrowerCase fields in case_delta using dotted field paths mapped to their changed values."
                     ),
                 ),

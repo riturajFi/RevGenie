@@ -7,6 +7,18 @@ from app.domain.borrower_case import BorrowerCase, Stage
 
 
 class BorrowerCaseStateService:
+    BLOCKED_FIELDS = {
+        "workflow_id",
+        "lender_id",
+        "amount_due",
+        "principal_outstanding",
+        "dpd",
+        "stage",
+        "case_status",
+        "final_disposition",
+        "last_contact_channel",
+    }
+
     def apply_delta(
         self,
         borrower_case: BorrowerCase,
@@ -17,6 +29,9 @@ class BorrowerCaseStateService:
         case_data = deepcopy(borrower_case.model_dump(mode="python"))
 
         for field_path, value in case_delta.items():
+            root_field = field_path.split(".")[0]
+            if field_path in self.BLOCKED_FIELDS or root_field in self.BLOCKED_FIELDS:
+                continue
             self._set_path(case_data, field_path, value)
 
         if latest_handoff_summary:

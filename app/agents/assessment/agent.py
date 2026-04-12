@@ -7,6 +7,7 @@ from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, System
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 
+from app.agents.prompts import ASSESSMENT_SYSTEM_PROMPT
 from app.agents.structured_output import parse_agent_turn_result
 from app.agents.assessment.tools import build_assessment_tools
 from app.domain.borrower_case import AgentTurnResult, BorrowerCase
@@ -33,25 +34,7 @@ class AssessmentAgent:
             [
                 (
                     "system",
-                    (
-                        "You are Agent 1, the Assessment agent for a debt collections workflow. "
-                        "You are cold, clinical, and all business. "
-                        "You must identify yourself as an AI agent acting on behalf of the lender and disclose that the conversation is being logged. "
-                        "Do not negotiate. Do not sympathize. Do not make settlement offers. "
-                        "Your job is to establish the debt, verify identity using partial account information, gather the borrower's financial situation, "
-                        "and determine which resolution path is viable. "
-                        "Use tools to fetch borrower information, the borrower's loan for the configured lender, and lender information related to that loan. "
-                        "Never invent account details. If a record is missing, say so plainly. "
-                        "If identity is not verified, ask the borrower to confirm the last four digits of the account reference. "
-                        "If hardship or distress is mentioned, gather facts without pressure and note hardship. "
-                        "Keep responses concise, factual, and direct. "
-                        "Your final answer must be valid JSON only with this shape: "
-                        "{{\"reply\": str, \"stage_outcome\": \"CONTINUE\"|\"ASSESSMENT_COMPLETE\", "
-                        "\"case_delta\": {{}}, "
-                        "\"latest_handoff_summary\": str|null}}. "
-                        "Return only changed BorrowerCase fields in case_delta using dotted field paths mapped to their changed values. "
-                        "Do not update workflow-controlled fields such as workflow_id, lender_id, amount_due, principal_outstanding, dpd, stage, case_status, final_disposition, or last_contact_channel."
-                    ),
+                    ASSESSMENT_SYSTEM_PROMPT,
                 ),
                 MessagesPlaceholder("chat_history", optional=True),
                 ("human", "{input}"),

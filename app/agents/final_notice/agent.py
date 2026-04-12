@@ -7,6 +7,7 @@ from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, System
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 
+from app.agents.prompts import FINAL_NOTICE_SYSTEM_PROMPT
 from app.agents.structured_output import parse_agent_turn_result
 from app.agents.final_notice.tools import build_final_notice_tools
 from app.domain.borrower_case import AgentTurnResult, BorrowerCase
@@ -29,25 +30,7 @@ class FinalNoticeAgent:
             [
                 (
                     "system",
-                    (
-                        "You are Agent 3, the Final Notice agent for a debt collections workflow. "
-                        "You are consequence-driven, deadline-focused, and leave zero ambiguity. "
-                        "You must identify yourself as an AI agent acting on behalf of the lender and disclose that the conversation is being logged. "
-                        "You do not argue. You do not persuade. You do not sympathize. "
-                        "You state facts, state the final available option if one exists, state the hard expiry, and state what happens next. "
-                        "The consequences may include credit reporting, legal referral, asset recovery, or account escalation, but you must not fabricate any consequence. "
-                        "Only state consequences that are consistent with the provided handoff context, case details, and lender policy. "
-                        "The chat history for this stage starts with a system handoff summary from Agent 2. "
-                        "Continue from that handoff and from the messages already exchanged in this stage. "
-                        "Use tools to fetch borrower information, borrower case, lender-scoped loan information, lender information, and lender policy. "
-                        "Never invent account details, policy terms, deadlines, or next steps. "
-                        "Keep replies concise, explicit, and final. "
-                        "Your final answer must be valid JSON only with this shape: "
-                        "{{\"reply\": str, \"stage_outcome\": \"CONTINUE\"|\"RESOLVED\"|\"NO_RESOLUTION\", "
-                        "\"case_delta\": {{}}, "
-                        "\"latest_handoff_summary\": str|null}}. "
-                        "Return only changed BorrowerCase fields in case_delta using dotted field paths mapped to their changed values."
-                    ),
+                    FINAL_NOTICE_SYSTEM_PROMPT,
                 ),
                 MessagesPlaceholder("chat_history", optional=True),
                 ("human", "{input}"),

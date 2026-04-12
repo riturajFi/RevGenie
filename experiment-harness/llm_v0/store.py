@@ -44,6 +44,7 @@ class JsonStore:
         self.logs_dir = self.data_dir / "logs"
         self.history_dir = self.data_dir / "history"
         self.token_counts_dir = self.data_dir / "token_counts"
+        self.prompt_store_dir = self.root_dir / "prompt_store"
         self.state_path = self.data_dir / "state.json"
 
     def bootstrap(self) -> None:
@@ -55,6 +56,7 @@ class JsonStore:
             self.logs_dir,
             self.history_dir,
             self.token_counts_dir,
+            self.prompt_store_dir,
         ]:
             path.mkdir(parents=True, exist_ok=True)
 
@@ -111,6 +113,23 @@ class JsonStore:
 
     def append_token_count(self, record: TokenCountRecord) -> None:
         self._append_jsonl(self.token_counts_dir / "token_counts.jsonl", record.model_dump())
+
+    def prompt_file_path(self, version_id: str) -> Path:
+        return self.prompt_store_dir / f"{version_id}.txt"
+
+    def write_prompt_text(self, version_id: str, text: str) -> Path:
+        path = self.prompt_file_path(version_id)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text)
+        return path
+
+    def read_prompt_text(self, version_id: str) -> str:
+        return self.prompt_file_path(version_id).read_text()
+
+    def delete_prompt_text(self, version_id: str) -> None:
+        path = self.prompt_file_path(version_id)
+        if path.exists():
+            path.unlink()
 
     def save_run(self, record: ExperimentRunRecord) -> None:
         target_dir = self.audit_runs_dir if record.loop_name.startswith("loop2") else self.runs_dir

@@ -18,6 +18,7 @@ It implements the bare minimum version of the two loops you described:
 - `data/history/prompt_history.jsonl`
 - `data/history/evaluator_history.jsonl`
 - `data/token_counts/token_counts.jsonl`
+- `prompt_store/prompt_v*.txt`
 
 `state.json` tracks:
 
@@ -74,6 +75,7 @@ from experiments.llm_v0 import ExperimentApi
 
 api = ExperimentApi()
 api.init_experiment()
+active_prompt = api.get_active_prompt()
 api.run_loop1("experiments/llm_v0/sample/scenarios.json")
 api.run_loop2("experiments/llm_v0/sample/audits.json")
 api.collect_log("manual", "hello from anywhere")
@@ -91,6 +93,19 @@ collect_log("manual", "hello from anywhere")
 ```
 
 The log collector always writes into this module's storage, not the caller's current directory.
+
+Prompt object:
+
+```python
+from experiments.llm_v0 import ExperimentHarness
+
+experiment_harness = ExperimentHarness()
+prompt = experiment_harness.get_active_prompt()
+print(prompt.version_id)
+print(prompt.text)
+```
+
+Prompt files live in `prompt_store/`. Prompt metadata still lives in `data/prompts/`.
 
 Prompt token calculator:
 

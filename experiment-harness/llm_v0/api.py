@@ -12,6 +12,7 @@ from experiments.llm_v0.models import (
     LoopSummary,
     TokenCountRecord,
 )
+from experiments.llm_v0.prompt import Prompt
 from experiments.llm_v0.runtime import ExperimentRuntime
 from experiments.llm_v0.store import JsonStore
 from experiments.llm_v0.tokens import PromptTokenCalculator
@@ -55,6 +56,10 @@ class ExperimentApi:
     def get_state(self) -> ExperimentState:
         self.init_experiment()
         return self.store.load_state()
+
+    def get_active_prompt(self) -> Prompt:
+        self.init_experiment()
+        return self.prompt_manager.get_active()
 
     def collect_log(
         self,

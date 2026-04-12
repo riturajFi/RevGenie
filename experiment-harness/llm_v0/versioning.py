@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from experiments.llm_v0.defaults import DEFAULT_EVALUATOR_TEXT, DEFAULT_PROMPT_TEXT
 from experiments.llm_v0.models import ExperimentState, LinkedVersion, VersionAuditEvent
+from experiments.llm_v0.prompt import Prompt
 from experiments.llm_v0.store import JsonStore, utc_now
 
 
@@ -206,6 +207,54 @@ class LinkedVersionManager:
 class PromptVersionManager(LinkedVersionManager):
     def __init__(self, store: JsonStore) -> None:
         super().__init__(store=store, kind="prompt", initial_text=DEFAULT_PROMPT_TEXT)
+
+    def bootstrap(self) -> Prompt:
+        version = super().bootstrap()
+        if not self.store.prompt_file_path(version.version_id).exists():
+            self.store.write_prompt_text(version.version_id, version.text)
+        return self.get_active()
+
+    def get(self, version_id: str) -> Prompt:
+        version = super().get(version_id)
+        path = self.store.prompt_file_path(version.version_id)
+        if not path.exists():
+            self.store.write_prompt_text(version.version_id, version.text)
+        return Prompt(
+            version_id=version.version_id,
+            text=self.store.read_prompt_text(version.version_id),
+            file_path=path,
+        )
+
+    def get_active(self) -> Prompt:
+        state = self.store.load_state()
+        return self.get(state.active_prompt_version)
+
+    def create_candidate(self, text: str, diff: str, parent_version_id: str) -> Prompt:
+        version = super().create_candidate(text=text, diff=diff, parent_version_id=parent_version_id)
+        self.store.write_prompt_text(version.version_id, text)
+        return self.get(version.version_id)
+
+    def reject_candidate(self, version_id: str, reason: str | None = None) -> None:
+        self.store.delete_prompt_text(version_id)
+        super().reject_candidate(version_id, reason)
+
+    def revert_to(self, version_id: str | None = None) -> Prompt:
+        chain = super().list_chain()
+        active = super().get_active()
+        if version_id is None:
+            if not active.previous_version_id:
+                raise ValueError(f"Cannot revert {self.kind}_v1")
+            version_id = active.previous_version_id
+
+        if version_id not in [version.version_id for version in chain]:
+            raise ValueError(f"Unknown {self.kind} chain version: {version_id}")
+
+        keep_index = [version.version_id for version in chain].index(version_id)
+        removed_versions = chain[keep_index + 1 :]
+        target = super().revert_to(version_id)
+        for removed_version in removed_versions:
+            self.store.delete_prompt_text(removed_version.version_id)
+        return self.get(target.version_id)
 
 
 class EvaluatorVersionManager(LinkedVersionManager):

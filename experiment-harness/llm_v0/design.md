@@ -32,6 +32,7 @@ Files:
 - `sample/scenarios.json`: sample Loop 1 input
 - `sample/audits.json`: sample Loop 2 input
 - `data/`: version files, active pointers, logs, history, and stored run outputs
+- `prompt_store/`: actual prompt text files
 
 ## Core idea
 
@@ -73,6 +74,7 @@ Under `data/`:
 - `history/prompt_history.jsonl`
 - `history/evaluator_history.jsonl`
 - `token_counts/token_counts.jsonl`
+- `../prompt_store/prompt_v1.txt`, `prompt_v2.txt`, ...
 
 `state.json` tracks active versions and counters:
 
@@ -133,6 +135,8 @@ new_version_text = old_version_text + "\n\n" + diff
 ```
 
 In code this happens in `ExperimentRuntime.apply_diff()`.
+
+For prompts specifically, the actual text also lives in `prompt_store/` and is wrapped by a `Prompt` class.
 
 ## Transcript model
 
@@ -359,6 +363,27 @@ Storage:
 - `data/token_counts/token_counts.jsonl`
 
 The calculator also writes a normal log event through the shared logger.
+
+## Prompt class
+
+There is now a dedicated `Prompt` class in `prompt.py`.
+
+It contains:
+
+- `version_id`
+- `text`
+- `file_path`
+
+It also has:
+
+- `update(diff, parent_version_id=None)`
+- `save()`
+
+The main API exposes:
+
+- `ExperimentApi.get_active_prompt()`
+
+That is the intended way for another agent or a future main agent to fetch the current prompt object.
 
 ## Init API
 

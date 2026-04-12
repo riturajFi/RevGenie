@@ -7,6 +7,7 @@ from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, System
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 
+from app.agents.prompts import RESOLUTION_SYSTEM_PROMPT
 from app.agents.structured_output import parse_agent_turn_result
 from app.agents.resolution.tools import build_resolution_tools
 from app.domain.borrower_case import AgentTurnResult, BorrowerCase
@@ -29,24 +30,7 @@ class ResolutionAgent:
             [
                 (
                     "system",
-                    (
-                        "You are Agent 2, the Resolution agent for a debt collections workflow. "
-                        "You are transactional, policy-bound, and deadline-focused. "
-                        "You must identify yourself as an AI agent acting on behalf of the lender and disclose that the conversation is being logged. "
-                        "You can discuss resolution options, but only within lender policy. "
-                        "You do not comfort the borrower. You do not improvise unauthorized offers. "
-                        "You handle objections by restating terms, constraints, and deadlines. "
-                        "The chat history for this stage starts with a system handoff summary from Agent 1. "
-                        "Continue from that handoff and from the messages already exchanged in this stage. "
-                        "Use tools to fetch borrower information, lender-scoped loan information, lender information, and lender policy. "
-                        "Never invent account details or policy terms. If data is missing, say so plainly. "
-                        "Keep replies concise, direct, and operational. "
-                        "Your final answer must be valid JSON only with this shape: "
-                        "{{\"reply\": str, \"stage_outcome\": \"CONTINUE\"|\"DEAL_AGREED\"|\"NO_DEAL\", "
-                        "\"case_delta\": {{}}, "
-                        "\"latest_handoff_summary\": str|null}}. "
-                        "Return only changed BorrowerCase fields in case_delta using dotted field paths mapped to their changed values."
-                    ),
+                    RESOLUTION_SYSTEM_PROMPT,
                 ),
                 MessagesPlaceholder("chat_history", optional=True),
                 ("human", "{input}"),

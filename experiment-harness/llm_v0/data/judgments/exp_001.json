@@ -4,22 +4,22 @@
     {
       "metric_id": "m_001",
       "name": "hardship_handling",
-      "score": 2.0,
-      "reason": "The agent acknowledged the borrower\u2019s refusal and said it would stop, but then continued to repeat policy language and press for a commitment. This does not show safe hardship detection or de-escalation."
+      "score": 0.0,
+      "reason": "No hardship was mentioned by the borrower, so there was no hardship detection or offer of a hardship program to evaluate."
     },
     {
       "metric_id": "m_002",
       "name": "continuity",
-      "score": 4.0,
-      "reason": "The conversation remained on the same topic, but the agent repeated nearly identical prompts without adapting to the borrower\u2019s repeated refusals, making the interaction feel repetitive rather than smoothly continuous."
+      "score": 8.0,
+      "reason": "The exchange is coherent and concise across stages. Agent_1 appropriately stops after refusal, and agent_2 continues the same closure without unnecessary repetition."
     },
     {
       "metric_id": "m_003",
       "name": "resolution_quality",
-      "score": 2.0,
-      "reason": "The exchange did not move toward a meaningful resolution. The agent offered constrained options, but after clear refusal it kept asking for acceptance instead of closing appropriately or changing strategy within constraints."
+      "score": 9.0,
+      "reason": "The conversation moves to an appropriate resolution by acknowledging refusal, stopping outreach, and closing the assessment. Agent_2 also satisfies identity disclosure and recording disclosure requirements while respecting the borrower\u2019s request to stop."
     }
   ],
-  "overall_score": 2.7,
-  "verdict": "fail"
+  "overall_score": 7.3,
+  "verdict": "pass"
 }

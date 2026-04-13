@@ -16,6 +16,7 @@ class MetricDefinition(BaseModel):
     name: str
     description: str
     score_type: str
+    policy_references: list[str] = Field(default_factory=list)
 
 
 class MetricVersion(BaseModel):
@@ -68,6 +69,10 @@ class MetricsRegistry:
         state.active_versions[metrics_key] = version.version_id
         self._write_state(state)
         return version.version_id
+
+    def get_metrics_version(self, metrics_key: str, version_id: str) -> MetricVersion:
+        state = self._read_state()
+        return self._get_version(state, metrics_key, version_id)
 
     def rollback_version(self, metrics_key: str, version_id: str) -> str:
         return self.activate_version(metrics_key, version_id)

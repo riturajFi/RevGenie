@@ -12,6 +12,7 @@ def utc_now() -> str:
 
 
 LOG_PATH = Path(__file__).resolve().parents[2] / "experiment-harness" / "data" / "logs" / "transcript_events.jsonl"
+EXPERIMENT_LOGS_DIR = LOG_PATH.parent / "experiments"
 
 
 @dataclass
@@ -48,6 +49,7 @@ class JsonlLogStorageService(LogStorageService):
     def __init__(self, path: Path = LOG_PATH) -> None:
         self.path = path
         self.path.parent.mkdir(parents=True, exist_ok=True)
+        EXPERIMENT_LOGS_DIR.mkdir(parents=True, exist_ok=True)
         if not self.path.exists():
             self.path.write_text("")
 
@@ -68,18 +70,28 @@ class JsonlLogStorageService(LogStorageService):
         )
         with self.path.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(event.__dict__) + "\n")
+        if experiment_id:
+            experiment_path = self._experiment_log_path(experiment_id)
+            with experiment_path.open("a", encoding="utf-8") as handle:
+                handle.write(json.dumps(event.__dict__) + "\n")
 
     def get_logs(self, experiment_id: str) -> list[LogEvent]:
-        events = [event for event in self._read_events() if event.experiment_id == experiment_id]
+        experiment_path = self._experiment_log_path(experiment_id)
+        if experiment_path.exists():
+            events = self._read_events(experiment_path)
+        else:
+            events = [event for event in self._read_events(self.path) if event.experiment_id == experiment_id]
         return sorted(events, key=lambda event: (event.created_at, event.id))
 
     def get_logs_by_workflow(self, workflow_id: str) -> list[LogEvent]:
-        events = [event for event in self._read_events() if event.workflow_id == workflow_id]
+        events = [event for event in self._read_events(self.path) if event.workflow_id == workflow_id]
         return sorted(events, key=lambda event: (event.created_at, event.id))
 
-    def _read_events(self) -> list[LogEvent]:
+    def _read_events(self, path: Path) -> list[LogEvent]:
         events: list[LogEvent] = []
-        with self.path.open("r", encoding="utf-8") as handle:
+        if not path.exists():
+            return events
+        with path.open("r", encoding="utf-8") as handle:
             for line in handle:
                 line = line.strip()
                 if not line:
@@ -88,10 +100,14 @@ class JsonlLogStorageService(LogStorageService):
         return events
 
     def _next_id(self) -> int:
-        events = self._read_events()
+        events = self._read_events(self.path)
         if not events:
             return 1
         return max(event.id for event in events) + 1
+
+    def _experiment_log_path(self, experiment_id: str) -> Path:
+        safe_name = experiment_id.replace("/", "_")
+        return EXPERIMENT_LOGS_DIR / f"{safe_name}.jsonl"
 
 
 class TranscriptLogger:

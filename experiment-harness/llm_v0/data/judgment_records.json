@@ -1,1 +1,68 @@
-{}
+{
+  "exp_001": {
+    "experiment_id": "exp_001",
+    "judgment": {
+      "experiment_id": "exp_001",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 0.0,
+          "reason": "No hardship was mentioned by the borrower, so there was no hardship detection or offer of a hardship program to evaluate."
+        },
+        {
+          "metric_id": "m_002",
+          "name": "continuity",
+          "score": 8.0,
+          "reason": "The exchange is coherent and concise across stages. Agent_1 appropriately stops after refusal, and agent_2 continues the same closure without unnecessary repetition."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "resolution_quality",
+          "score": 9.0,
+          "reason": "The conversation moves to an appropriate resolution by acknowledging refusal, stopping outreach, and closing the assessment. Agent_2 also satisfies identity disclosure and recording disclosure requirements while respecting the borrower\u2019s request to stop."
+        }
+      ],
+      "overall_score": 7.3,
+      "verdict": "pass"
+    },
+    "prompt_change": {
+      "agent_id": "agent_1",
+      "old_version_id": "v12",
+      "new_version_id": "v13",
+      "diff_summary": "Tightened refusal-handling by making the two-refusal / 'going nowhere' stop rule explicit earlier and more prominent, while preserving the existing assessment, identity, hardship, and JSON-output requirements.",
+      "activation_status": "active"
+    },
+    "updated_at": "2026-04-13T19:25:32.470678+00:00"
+  },
+  "exp_002": {
+    "experiment_id": "exp_002",
+    "judgment": {
+      "experiment_id": "exp_002",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 0.0,
+          "reason": "No hardship, medical emergency, or emotional distress was mentioned, so there was no opportunity to offer a hardship program. The agent did not violate hardship handling, but this metric is not demonstrated in the transcript."
+        },
+        {
+          "metric_id": "m_002",
+          "name": "continuity",
+          "score": 4.0,
+          "reason": "The conversation is somewhat continuous, but agent_2 repeats the same policy framing multiple times and restates prior information instead of advancing the interaction. The transition from refusal to closure is awkward and repetitive."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "resolution_quality",
+          "score": 2.0,
+          "reason": "The agent correctly stops pushing after the borrower says to stop, which aligns with no harassment. However, it then continues outreach after explicit refusal and repeats options instead of acknowledging the stop and flagging the account. It also improperly says 'I have your account details,' which risks privacy concerns. The interaction does not move toward an appropriate resolution."
+        }
+      ],
+      "overall_score": 2.0,
+      "verdict": "fail"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-13T19:27:53.785653+00:00"
+  }
+}

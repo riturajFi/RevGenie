@@ -1,6 +1,5 @@
-from meta_eval_service.service import MetaEvaluatorApplyResult, MetaEvaluatorService
+from meta_eval_service.service import MetaEvaluatorService
 
 __all__ = [
     "MetaEvaluatorService",
-    "MetaEvaluatorApplyResult",
 ]

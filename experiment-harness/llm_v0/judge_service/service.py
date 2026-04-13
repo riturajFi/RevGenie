@@ -66,21 +66,28 @@ class JudgeService:
         metrics_key: str = "collections_agent_eval",
         workflow_id: str | None = None,
         lender_id: str | None = None,
+        metrics_version_id: str | None = None,
+        persist: bool = True,
     ) -> JudgeResult:
         transcript, result_experiment_id = self._load_transcript(
             experiment_id=experiment_id,
             workflow_id=workflow_id,
         )
-        metrics = self.metric_registry.get_active_metrics(metrics_key).metrics
+        metrics_version = (
+            self.metric_registry.get_metrics_version(metrics_key, metrics_version_id)
+            if metrics_version_id
+            else self.metric_registry.get_active_metrics(metrics_key)
+        )
         company_policy = get_company_policy_text(lender_id)
         result = self._call_judge_llm(
             experiment_id=result_experiment_id,
             transcript=transcript,
-            metrics=metrics,
+            metrics=metrics_version.metrics,
             company_policy=company_policy,
         )
-        self.judgment_store.save(result)
-        self.judgment_record_service.save_judgment_result(result)
+        if persist:
+            self.judgment_store.save(result)
+            self.judgment_record_service.save_judgment_result(result)
         return result
 
     def get_judgment(self, experiment_id: str) -> JudgeResult:

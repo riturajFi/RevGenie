@@ -11,8 +11,8 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from app.temporal.models import CollectionsWorkflowInput
-from app.temporal.workflows import BorrowerCollectionsWorkflow
+from app.orchestrator.models import CollectionsWorkflowInput
+from app.orchestrator.workflows import BorrowerCollectionsWorkflow
 
 
 async def main() -> None:

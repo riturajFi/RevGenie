@@ -8,9 +8,9 @@ from temporalio.client import WithStartWorkflowOperation
 from temporalio.common import WorkflowIDConflictPolicy
 
 from app.services.borrower_case import FileBorrowerCaseService
-from app.temporal.client import get_temporal_client
-from app.temporal.models import CollectionsWorkflowInput, CollectionsWorkflowState
-from app.temporal.workflows import BorrowerCollectionsWorkflow
+from app.orchestrator.client import get_temporal_client
+from app.orchestrator.models import CollectionsWorkflowInput, CollectionsWorkflowState
+from app.orchestrator.workflows import BorrowerCollectionsWorkflow
 
 
 class WorkflowMessageRequest(BaseModel):

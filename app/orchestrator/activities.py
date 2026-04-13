@@ -9,7 +9,7 @@ from app.domain.borrower_case import BorrowerCase, ContactChannel, Stage
 from app.services.borrower_case import FileBorrowerCaseService
 from app.services.borrower_case_state import BorrowerCaseStateService
 from app.services.chat_message import get_chat_message_service
-from app.temporal.models import (
+from app.orchestrator.models import (
     AgentTurnActivityInput,
     AgentTurnActivityResult,
 )

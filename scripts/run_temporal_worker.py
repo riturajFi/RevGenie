@@ -13,14 +13,14 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from app.temporal.activities import (
+from app.orchestrator.activities import (
     load_borrower_case,
     run_assessment_turn,
     run_final_notice_turn,
     run_resolution_turn,
     save_borrower_case,
 )
-from app.temporal.workflows import BorrowerCollectionsWorkflow
+from app.orchestrator.workflows import BorrowerCollectionsWorkflow
 
 
 async def main() -> None:

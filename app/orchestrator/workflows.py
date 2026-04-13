@@ -7,14 +7,14 @@ from temporalio.common import RetryPolicy
 
 with workflow.unsafe.imports_passed_through():
     from app.domain.borrower_case import AgentStageOutcome, CaseStatus, Stage
-    from app.temporal.activities import (
+    from app.orchestrator.activities import (
         load_borrower_case,
         run_assessment_turn,
         run_final_notice_turn,
         run_resolution_turn,
         save_borrower_case,
     )
-    from app.temporal.models import (
+    from app.orchestrator.models import (
         AgentTurnActivityInput,
         CollectionsWorkflowInput,
         CollectionsWorkflowState,

@@ -8,6 +8,7 @@ from langchain_openai import ChatOpenAI
 from pydantic import BaseModel
 
 from experiment_harness.logging_service.logger import get_logs
+from meta_eval_service.company_policy import CompanyPolicyManager
 from judge_service.service import JudgeService
 from metrics_management_service.service import MetricDefinition, MetricsRegistry
 from proposer_prompt_management_service.service import ProposerPromptManager
@@ -40,11 +41,13 @@ class MetaEvaluatorService:
         judge_service: JudgeService | None = None,
         metrics_registry: MetricsRegistry | None = None,
         proposer_prompt_manager: ProposerPromptManager | None = None,
+        company_policy_manager: CompanyPolicyManager | None = None,
         model: str | None = None,
     ) -> None:
         self.judge_service = judge_service or JudgeService()
         self.metrics_registry = metrics_registry or MetricsRegistry()
         self.proposer_prompt_manager = proposer_prompt_manager or ProposerPromptManager()
+        self.company_policy_manager = company_policy_manager or CompanyPolicyManager()
         self.model_name = model or os.getenv("OPENAI_JUDGE_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
 
     def apply_meta_change(
@@ -60,6 +63,7 @@ class MetaEvaluatorService:
         after_transcript = self._load_transcript(after_experiment_id)
         active_metrics = self.metrics_registry.get_active_metrics(metrics_key)
         active_proposer_prompt = self.proposer_prompt_manager.get_active_prompt()
+        company_policy = self.company_policy_manager.get_policy()
         draft = self._propose_meta_change(
             before_judgment=before_judgment.model_dump(),
             after_judgment=after_judgment.model_dump(),
@@ -67,6 +71,7 @@ class MetaEvaluatorService:
             after_transcript=after_transcript,
             active_metrics=active_metrics.model_dump(),
             active_proposer_prompt=active_proposer_prompt.prompt_text,
+            company_policy=company_policy.policy_text,
         )
         new_metrics_version = self.metrics_registry.create_metrics_version(
             metrics_key=metrics_key,
@@ -102,6 +107,7 @@ class MetaEvaluatorService:
         after_transcript: str,
         active_metrics: dict,
         active_proposer_prompt: str,
+        company_policy: str,
     ) -> MetaEvalDraft:
         prompt = ChatPromptTemplate.from_messages(
             [
@@ -115,6 +121,7 @@ class MetaEvaluatorService:
             {
                 "system_prompt": (
                     "You are the meta evaluator for a collections evaluation loop. "
+                    "Use the company policy as the source of truth for what the evaluator judge should care about. "
                     "Compare before and after judged runs and improve only the judge metrics and proposer prompt. "
                     "Return strict JSON only."
                 ),
@@ -125,6 +132,7 @@ class MetaEvaluatorService:
                     after_transcript=after_transcript,
                     active_metrics=active_metrics,
                     active_proposer_prompt=active_proposer_prompt,
+                    company_policy=company_policy,
                 ),
             }
         )
@@ -137,8 +145,10 @@ class MetaEvaluatorService:
         after_transcript: str,
         active_metrics: dict,
         active_proposer_prompt: str,
+        company_policy: str,
     ) -> str:
         return (
+            f"Company policy reference:\n{company_policy}\n\n"
             f"Before judgment:\n{json.dumps(before_judgment, indent=2)}\n\n"
             f"After judgment:\n{json.dumps(after_judgment, indent=2)}\n\n"
             f"Before transcript:\n{before_transcript}\n\n"

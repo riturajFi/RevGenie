@@ -32,7 +32,11 @@ class BorrowerCollectionsWorkflow:
     async def run(self, input: CollectionsWorkflowInput) -> CollectionsWorkflowState:
         await self._ensure_state(input)
 
-        await workflow.wait_condition(lambda: self.state is not None and self.state.final_result is not None)
+        await workflow.wait_condition(
+            lambda: self.state is not None
+            and self.state.final_result is not None
+            and workflow.all_handlers_finished()
+        )
         return self.state
 
     @workflow.update

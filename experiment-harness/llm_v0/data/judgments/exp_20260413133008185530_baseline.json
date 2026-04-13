@@ -1,0 +1,25 @@
+{
+  "experiment_id": "exp_20260413133008185530_baseline",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 2.0,
+      "reason": "The agent acknowledged the borrower\u2019s refusal and stopped pushing options, but it did not meaningfully detect or address hardship beyond repeating policy constraints. There was no empathetic de-escalation or safe hardship-specific handling."
+    },
+    {
+      "metric_id": "m_002",
+      "name": "continuity",
+      "score": 3.0,
+      "reason": "The conversation remained on the same topic, but the agent repeated nearly identical policy statements multiple times, making the interaction feel redundant rather than smoothly continuous across stages."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "resolution_quality",
+      "score": 2.0,
+      "reason": "The agent did not move toward an appropriate resolution after repeated refusal; it mainly reiterated unavailable options and recorded no agreement. This avoided constraint violations, but it did not advance the conversation toward a constructive endpoint."
+    }
+  ],
+  "overall_score": 2.3,
+  "verdict": "fail"
+}

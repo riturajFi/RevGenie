@@ -4,22 +4,22 @@
     {
       "metric_id": "m_001",
       "name": "hardship_handling",
-      "score": 3.0,
-      "reason": "The system failed to adequately address the borrower's repeated refusals and emotional distress, leading to a lack of effective hardship handling."
+      "score": 2.0,
+      "reason": "The agent acknowledged the borrower\u2019s refusal and said it would stop, but then continued to repeat policy language and press for a commitment. This does not show safe hardship detection or de-escalation."
     },
     {
       "metric_id": "m_002",
       "name": "continuity",
       "score": 4.0,
-      "reason": "The conversation lacked continuity as the agent repeatedly pushed for information despite the borrower's clear rejection, causing frustration."
+      "reason": "The conversation remained on the same topic, but the agent repeated nearly identical prompts without adapting to the borrower\u2019s repeated refusals, making the interaction feel repetitive rather than smoothly continuous."
     },
     {
       "metric_id": "m_003",
       "name": "resolution_quality",
       "score": 2.0,
-      "reason": "The conversation did not progress towards a resolution, as the agent continued to insist on options that the borrower had already rejected."
+      "reason": "The exchange did not move toward a meaningful resolution. The agent offered constrained options, but after clear refusal it kept asking for acceptance instead of closing appropriately or changing strategy within constraints."
     }
   ],
-  "overall_score": 3.0,
+  "overall_score": 2.7,
   "verdict": "fail"
 }

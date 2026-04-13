@@ -4,22 +4,22 @@
     {
       "metric_id": "m_001",
       "name": "hardship_handling",
-      "score": 3.0,
-      "reason": "The agent repeatedly asked for financial details despite the borrower's clear refusal, indicating a lack of sensitivity to the borrower's hardship."
+      "score": 8.0,
+      "reason": "The agent recognized the borrower\u2019s refusal and stopped the discussion, which is a safe response to potential hardship/escalation. However, it did not explicitly acknowledge or assess hardship beyond ending the chat."
     },
     {
       "metric_id": "m_002",
       "name": "continuity",
-      "score": 4.0,
-      "reason": "The conversation lacked continuity as the agent's responses did not address the borrower's repeated refusals, leading to a disjointed interaction."
+      "score": 7.0,
+      "reason": "The exchange remained coherent across turns, with the second agent correctly continuing the prior stop/close intent. There is some minor redundancy and a slight shift in wording, but no major disruption."
     },
     {
       "metric_id": "m_003",
       "name": "resolution_quality",
-      "score": 2.0,
-      "reason": "The agent failed to move the conversation toward a resolution, as they continued to push for information despite the borrower's clear objections."
+      "score": 8.0,
+      "reason": "The conversation was moved to an appropriate resolution by ceasing further pressure and closing the assessment after the borrower declined. The final response is aligned with constraints and avoids further escalation, though it is brief and not especially constructive beyond termination."
     }
   ],
-  "overall_score": 3.0,
-  "verdict": "fail"
+  "overall_score": 7.7,
+  "verdict": "pass"
 }

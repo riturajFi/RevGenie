@@ -13,6 +13,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
+from env_loader import load_env_file
 from app.orchestrator.activities import (
     load_borrower_case,
     run_assessment_turn,
@@ -21,6 +22,8 @@ from app.orchestrator.activities import (
     save_borrower_case,
 )
 from app.orchestrator.workflows import BorrowerCollectionsWorkflow
+
+load_env_file()
 
 
 async def main() -> None:

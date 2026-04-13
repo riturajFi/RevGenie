@@ -1,11 +1,14 @@
 from fastapi import FastAPI
 
+from env_loader import load_env_file
 from app.api.borrower_case import router as borrower_case_router
 from app.api.borrower_profile import router as borrower_profile_router
 from app.api.lender_policy import router as lender_policy_router
 from app.api.lender_profile import router as lender_profile_router
 from app.api.loan import router as loan_router
 from app.api.workflows import router as workflows_router
+
+load_env_file()
 
 app = FastAPI(title="RevGenie")
 app.include_router(borrower_case_router)

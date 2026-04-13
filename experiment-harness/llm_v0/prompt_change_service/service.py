@@ -13,6 +13,7 @@ from experiment_harness.prompt_management_service.prompt_storage import (
     json_prompt_storage_service,
 )
 from judge_service.service import JudgeService
+from proposer_prompt_management_service.service import ProposerPromptManager
 
 
 class PromptChangeApplyRequest(BaseModel):
@@ -40,10 +41,12 @@ class PromptChangeProposer:
         self,
         prompt_service: PromptStorageService | None = None,
         judge_service: JudgeService | None = None,
+        proposer_prompt_manager: ProposerPromptManager | None = None,
         model: str | None = None,
     ) -> None:
         self.prompt_service = prompt_service or json_prompt_storage_service
         self.judge_service = judge_service or JudgeService()
+        self.proposer_prompt_manager = proposer_prompt_manager or ProposerPromptManager()
         self.model_name = model or os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
     def apply_change(
@@ -92,12 +95,10 @@ class PromptChangeProposer:
         )
         llm = ChatOpenAI(model=self.model_name, temperature=0)
         chain = prompt | llm.with_structured_output(PromptChangeDraft)
+        proposer_prompt = self.proposer_prompt_manager.get_active_prompt()
         return chain.invoke(
             {
-                "system_prompt": (
-                    "You improve one collections agent prompt. "
-                    "Preserve intent, improve failures, and do not make it longer than needed."
-                ),
+                "system_prompt": proposer_prompt.prompt_text,
                 "human_prompt": self._build_human_prompt(
                     current_prompt=current_prompt,
                     judge_result=judge_result.model_dump(),

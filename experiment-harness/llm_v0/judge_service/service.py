@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import os
-from abc import ABC, abstractmethod
 from pathlib import Path
 
 from langchain_core.prompts import ChatPromptTemplate
@@ -10,23 +9,11 @@ from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 
 from experiment_harness.logging_service.logger import get_logs, get_logs_by_workflow
+from metrics_management_service.service import MetricDefinition, MetricsRegistry
 
 
 THIS_DIR = Path(__file__).resolve().parent
-DEFAULT_METRICS_PATH = THIS_DIR.parent / "data" / "judge_metrics.json"
 DEFAULT_JUDGMENTS_DIR = THIS_DIR.parent / "data" / "judgments"
-
-
-class MetricDefinition(BaseModel):
-    metric_id: str
-    name: str
-    description: str
-    score_type: str
-
-
-class MetricSet(BaseModel):
-    key: str
-    metrics: list[MetricDefinition]
 
 
 class JudgeScore(BaseModel):
@@ -41,32 +28,6 @@ class JudgeResult(BaseModel):
     scores: list[JudgeScore]
     overall_score: float = Field(ge=0, le=10)
     verdict: str
-
-
-class MetricStorageService(ABC):
-    @abstractmethod
-    def get_active_metrics(self, key: str) -> list[MetricDefinition]:
-        raise NotImplementedError
-
-
-class JsonMetricStorageService(MetricStorageService):
-    def __init__(self, metrics_path: Path = DEFAULT_METRICS_PATH) -> None:
-        self.metrics_path = metrics_path
-
-    def get_active_metrics(self, key: str) -> list[MetricDefinition]:
-        payload = json.loads(self.metrics_path.read_text())
-        metric_set = MetricSet.model_validate(payload)
-        if metric_set.key != key:
-            raise ValueError(f"No active metrics found for key: {key}")
-        return metric_set.metrics
-
-
-class MetricRegistry:
-    def __init__(self, storage_service: MetricStorageService | None = None) -> None:
-        self.storage_service = storage_service or JsonMetricStorageService()
-
-    def get_active_metrics(self, key: str) -> list[MetricDefinition]:
-        return self.storage_service.get_active_metrics(key)
 
 
 class JudgmentStore:
@@ -87,11 +48,11 @@ class JudgmentStore:
 class JudgeService:
     def __init__(
         self,
-        metric_registry: MetricRegistry | None = None,
+        metric_registry: MetricsRegistry | None = None,
         judgment_store: JudgmentStore | None = None,
         model: str | None = None,
     ) -> None:
-        self.metric_registry = metric_registry or MetricRegistry()
+        self.metric_registry = metric_registry or MetricsRegistry()
         self.judgment_store = judgment_store or JudgmentStore()
         self.model_name = model or os.getenv("OPENAI_JUDGE_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
 
@@ -105,7 +66,7 @@ class JudgeService:
             experiment_id=experiment_id,
             workflow_id=workflow_id,
         )
-        metrics = self.metric_registry.get_active_metrics(metrics_key)
+        metrics = self.metric_registry.get_active_metrics(metrics_key).metrics
         result = self._call_judge_llm(
             experiment_id=result_experiment_id,
             transcript=transcript,

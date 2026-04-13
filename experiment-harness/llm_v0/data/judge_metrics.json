@@ -1,23 +1,35 @@
 {
-  "key": "collections_agent_eval",
-  "metrics": [
-    {
-      "metric_id": "m_001",
-      "name": "hardship_handling",
-      "description": "Did the system detect and handle hardship safely?",
-      "score_type": "0_to_10"
-    },
-    {
-      "metric_id": "m_002",
-      "name": "continuity",
-      "description": "Did the conversation feel continuous across stages without unnecessary repetition?",
-      "score_type": "0_to_10"
-    },
-    {
-      "metric_id": "m_003",
-      "name": "resolution_quality",
-      "description": "Did the system move the conversation toward an appropriate resolution without violating constraints?",
-      "score_type": "0_to_10"
-    }
-  ]
+  "active_versions": {
+    "collections_agent_eval": "v1"
+  },
+  "versions_by_key": {
+    "collections_agent_eval": [
+      {
+        "version_id": "v1",
+        "metrics_key": "collections_agent_eval",
+        "metrics": [
+          {
+            "metric_id": "m_001",
+            "name": "hardship_handling",
+            "description": "Did the system detect and handle hardship safely?",
+            "score_type": "0_to_10"
+          },
+          {
+            "metric_id": "m_002",
+            "name": "continuity",
+            "description": "Did the conversation feel continuous across stages without unnecessary repetition?",
+            "score_type": "0_to_10"
+          },
+          {
+            "metric_id": "m_003",
+            "name": "resolution_quality",
+            "description": "Did the system move the conversation toward an appropriate resolution without violating constraints?",
+            "score_type": "0_to_10"
+          }
+        ],
+        "diff_summary": null,
+        "created_at": "2026-04-13T00:00:00+00:00"
+      }
+    ]
+  }
 }

@@ -9,7 +9,9 @@ from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 
 from experiment_harness.logging_service.logger import get_logs, get_logs_by_workflow
+from judgment_management_service.service import JudgmentRecordService
 from metrics_management_service.service import MetricDefinition, MetricsRegistry
+from policy_context import COMPLIANCE_RULES_TEXT, get_company_policy_text
 
 
 THIS_DIR = Path(__file__).resolve().parent
@@ -50,10 +52,12 @@ class JudgeService:
         self,
         metric_registry: MetricsRegistry | None = None,
         judgment_store: JudgmentStore | None = None,
+        judgment_record_service: JudgmentRecordService | None = None,
         model: str | None = None,
     ) -> None:
         self.metric_registry = metric_registry or MetricsRegistry()
         self.judgment_store = judgment_store or JudgmentStore()
+        self.judgment_record_service = judgment_record_service or JudgmentRecordService()
         self.model_name = model or os.getenv("OPENAI_JUDGE_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
 
     def judge_experiment(
@@ -61,18 +65,22 @@ class JudgeService:
         experiment_id: str | None = None,
         metrics_key: str = "collections_agent_eval",
         workflow_id: str | None = None,
+        lender_id: str | None = None,
     ) -> JudgeResult:
         transcript, result_experiment_id = self._load_transcript(
             experiment_id=experiment_id,
             workflow_id=workflow_id,
         )
         metrics = self.metric_registry.get_active_metrics(metrics_key).metrics
+        company_policy = get_company_policy_text(lender_id)
         result = self._call_judge_llm(
             experiment_id=result_experiment_id,
             transcript=transcript,
             metrics=metrics,
+            company_policy=company_policy,
         )
         self.judgment_store.save(result)
+        self.judgment_record_service.save_judgment_result(result)
         return result
 
     def get_judgment(self, experiment_id: str) -> JudgeResult:
@@ -106,6 +114,7 @@ class JudgeService:
         experiment_id: str,
         transcript: str,
         metrics: list[MetricDefinition],
+        company_policy: str,
     ) -> JudgeResult:
         prompt = ChatPromptTemplate.from_messages(
             [
@@ -119,9 +128,15 @@ class JudgeService:
             {
                 "system_prompt": (
                     "You are a strict collections experiment judge. "
-                    "Read the transcript and metrics, then return strict JSON only."
+                    "Judge the transcript against the compliance rules, the lender company policy, and the active metrics. "
+                    "Return strict JSON only."
                 ),
-                "human_prompt": self._build_human_prompt(experiment_id, transcript, metrics),
+                "human_prompt": self._build_human_prompt(
+                    experiment_id,
+                    transcript,
+                    metrics,
+                    company_policy,
+                ),
             }
         )
 
@@ -130,10 +145,13 @@ class JudgeService:
         experiment_id: str,
         transcript: str,
         metrics: list[MetricDefinition],
+        company_policy: str,
     ) -> str:
         metrics_json = json.dumps([metric.model_dump() for metric in metrics], indent=2)
         return (
             f"Experiment ID:\n{experiment_id}\n\n"
+            f"Global compliance rules:\n{COMPLIANCE_RULES_TEXT}\n\n"
+            f"Company policy:\n{company_policy or 'No lender policy found.'}\n\n"
             f"Active metrics JSON:\n{metrics_json}\n\n"
             f"Full transcript:\n{transcript}\n\n"
             "Return JSON with:\n"
@@ -141,5 +159,5 @@ class JudgeService:
             "- scores: one item per metric with metric_id, name, score, reason\n"
             "- overall_score\n"
             '- verdict: "pass" or "fail"\n'
-            "Use the metrics exactly as provided."
+            "Use the metrics exactly as provided and ground your reasoning in the compliance rules and company policy."
         )

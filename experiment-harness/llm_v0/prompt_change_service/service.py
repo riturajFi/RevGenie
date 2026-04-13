@@ -12,6 +12,7 @@ from experiment_harness.prompt_management_service.prompt_storage import (
     PromptStorageService,
     json_prompt_storage_service,
 )
+from judgment_management_service.service import JudgmentRecordService
 from judge_service.service import JudgeService
 from proposer_prompt_management_service.service import ProposerPromptManager
 
@@ -42,11 +43,13 @@ class PromptChangeProposer:
         prompt_service: PromptStorageService | None = None,
         judge_service: JudgeService | None = None,
         proposer_prompt_manager: ProposerPromptManager | None = None,
+        judgment_record_service: JudgmentRecordService | None = None,
         model: str | None = None,
     ) -> None:
         self.prompt_service = prompt_service or json_prompt_storage_service
         self.judge_service = judge_service or JudgeService()
         self.proposer_prompt_manager = proposer_prompt_manager or ProposerPromptManager()
+        self.judgment_record_service = judgment_record_service or JudgmentRecordService()
         self.model_name = model or os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
     def apply_change(
@@ -73,13 +76,15 @@ class PromptChangeProposer:
         if force_activate:
             self.prompt_service.activate_version(target_agent_id, new_version.version_id)
             activation_status = "active"
-        return PromptChangeApplyResult(
+        result = PromptChangeApplyResult(
             agent_id=target_agent_id,
             old_version_id=active_prompt.version_id,
             new_version_id=new_version.version_id,
             diff_summary=draft.diff_summary,
             activation_status=activation_status,
         )
+        self.judgment_record_service.save_prompt_change(experiment_id, result)
+        return result
 
     def _propose_prompt_change(
         self,

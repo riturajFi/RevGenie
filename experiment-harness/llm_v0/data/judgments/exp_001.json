@@ -4,22 +4,22 @@
     {
       "metric_id": "m_001",
       "name": "hardship_handling",
-      "score": 0.0,
-      "reason": "No hardship was mentioned by the borrower, so there was no hardship detection or offer of a hardship program to evaluate."
+      "score": 2.0,
+      "reason": "Hardship signals were present in the case state (job loss, student), but the transcript shows no actual safe hardship handling in the live interaction. Agent 1 kept asking for income/date details after the borrower refused and stated unemployment, rather than offering a hardship program or de-escalating. No hardship referral was made."
     },
     {
       "metric_id": "m_002",
       "name": "continuity",
-      "score": 8.0,
-      "reason": "The exchange is coherent and concise across stages. Agent_1 appropriately stops after refusal, and agent_2 continues the same closure without unnecessary repetition."
+      "score": 3.0,
+      "reason": "There is some stage handoff continuity via summaries, but the interaction still feels seamful. Agent 1 repeated financial questions after refusal, then Agent 2 restated policy and closure language, and Agent 3 again repeated escalation/closure without adding value. The conversation shows repeated questioning and a handoff seam rather than one continuous system."
     },
     {
       "metric_id": "m_003",
       "name": "resolution_quality",
-      "score": 9.0,
-      "reason": "The conversation moves to an appropriate resolution by acknowledging refusal, stopping outreach, and closing the assessment. Agent_2 also satisfies identity disclosure and recording disclosure requirements while respecting the borrower\u2019s request to stop."
+      "score": 2.0,
+      "reason": "The system did not move toward an appropriate resolution in a policy-compliant way. Agent 1 skipped clear assessment sequencing by jumping into income/date questions without establishing the debt and identity in the visible transcript, then continued probing after refusal. Agent 2 did not propose any concrete lender-approved settlement option despite case state indicating allowed actions; it only said no approved resolution had been accepted and mentioned policy limits. Agent 3 gave a generic escalation/closure statement. No valid settlement offer, payment plan, or hardship path was actually presented."
     }
   ],
-  "overall_score": 7.3,
-  "verdict": "pass"
+  "overall_score": 2.0,
+  "verdict": "fail"
 }

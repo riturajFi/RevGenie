@@ -7,7 +7,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel
 
-from experiment_harness.logging_service.logger import get_logs
+from experiment_harness.logging_service.logger import LogEvent, get_logs
 from experiment_harness.prompt_management_service.prompt_storage import (
     PromptStorageService,
     json_prompt_storage_service,
@@ -60,8 +60,9 @@ class PromptChangeProposer:
     ) -> PromptChangeApplyResult:
         active_prompt = self.prompt_service.get_active_prompt(target_agent_id)
         judge_result = self.judge_service.get_judgment(experiment_id)
-        transcript = self._load_transcript(experiment_id)
+        transcript = self._load_transcript(experiment_id, target_agent_id)
         draft = self._propose_prompt_change(
+            target_agent_id=target_agent_id,
             current_prompt=active_prompt.prompt_text,
             judge_result=judge_result,
             transcript=transcript,
@@ -88,6 +89,7 @@ class PromptChangeProposer:
 
     def _propose_prompt_change(
         self,
+        target_agent_id: str,
         current_prompt: str,
         judge_result,
         transcript: str,
@@ -105,6 +107,7 @@ class PromptChangeProposer:
             {
                 "system_prompt": proposer_prompt.prompt_text,
                 "human_prompt": self._build_human_prompt(
+                    target_agent_id=target_agent_id,
                     current_prompt=current_prompt,
                     judge_result=judge_result.model_dump(),
                     transcript=transcript,
@@ -114,23 +117,107 @@ class PromptChangeProposer:
 
     def _build_human_prompt(
         self,
+        target_agent_id: str,
         current_prompt: str,
         judge_result: dict,
         transcript: str,
     ) -> str:
         return (
+            f"Target agent: {target_agent_id}\n\n"
             f"Current prompt:\n{current_prompt}\n\n"
             f"Judge output:\n{json.dumps(judge_result, indent=2)}\n\n"
-            f"Transcript:\n{transcript}\n\n"
+            f"Relevant transcript for this target agent only:\n{transcript}\n\n"
             "Return JSON with:\n"
             "- new_prompt_text\n"
             "- diff_summary\n"
             "- why_this_change\n"
         )
 
-    def _load_transcript(self, experiment_id: str) -> str:
+    def _load_transcript(self, experiment_id: str, target_agent_id: str) -> str:
         events = get_logs(experiment_id)
+        events = self._filter_events_for_target_agent(events, target_agent_id)
         return "\n".join(
             f"[{event.created_at}] {event.actor or 'unknown'}: {event.message_text}"
             for event in events
         )
+
+    def _filter_events_for_target_agent(
+        self,
+        events: list[LogEvent],
+        target_agent_id: str,
+    ) -> list[LogEvent]:
+        if target_agent_id == "agent_1":
+            end_index = self._first_index(
+                events,
+                {
+                    "agent_1_handoff",
+                    "agent_1_case_state",
+                    "agent_2",
+                    "agent_2_handoff",
+                    "agent_2_case_state",
+                    "agent_3",
+                    "agent_3_handoff",
+                    "agent_3_case_state",
+                },
+            )
+            selected = self._slice_with_handoff_tail(events, 0, end_index, {"agent_1_handoff", "agent_1_case_state"})
+            allowed = {"borrower", "agent_1", "agent_1_handoff", "agent_1_case_state"}
+            return [event for event in selected if (event.actor or "") in allowed]
+
+        if target_agent_id == "agent_2":
+            start_index = self._first_index(events, {"agent_1_handoff", "agent_1_case_state", "agent_2"})
+            if start_index is None:
+                return [event for event in events if (event.actor or "") in {"borrower", "agent_2"}]
+            end_index = self._first_index(
+                events[start_index:],
+                {"agent_2_handoff", "agent_2_case_state", "agent_3", "agent_3_handoff", "agent_3_case_state"},
+            )
+            absolute_end_index = start_index + end_index if end_index is not None else None
+            selected = self._slice_with_handoff_tail(
+                events,
+                start_index,
+                absolute_end_index,
+                {"agent_2_handoff", "agent_2_case_state"},
+            )
+            allowed = {
+                "borrower",
+                "agent_2",
+                "agent_1_handoff",
+                "agent_1_case_state",
+                "agent_2_handoff",
+                "agent_2_case_state",
+            }
+            return [event for event in selected if (event.actor or "") in allowed]
+
+        if target_agent_id == "agent_3":
+            start_index = self._first_index(events, {"agent_2_handoff", "agent_2_case_state", "agent_3"})
+            if start_index is None:
+                return events
+            selected = events[start_index:]
+            allowed = {"borrower", "agent_3", "agent_2_handoff", "agent_2_case_state"}
+            return [event for event in selected if (event.actor or "") in allowed]
+
+        return events
+
+    def _first_index(self, events: list[LogEvent], actors: set[str]) -> int | None:
+        for index, event in enumerate(events):
+            if (event.actor or "") in actors:
+                return index
+        return None
+
+    def _slice_with_handoff_tail(
+        self,
+        events: list[LogEvent],
+        start_index: int,
+        end_index: int | None,
+        tail_actors: set[str],
+    ) -> list[LogEvent]:
+        if end_index is None:
+            return events[start_index:]
+
+        selected = events[start_index:end_index]
+        index = end_index
+        while index < len(events) and (events[index].actor or "") in tail_actors:
+            selected.append(events[index])
+            index += 1
+        return selected

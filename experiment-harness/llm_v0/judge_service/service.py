@@ -135,7 +135,15 @@ class JudgeService:
             {
                 "system_prompt": (
                     "You are a strict collections experiment judge. "
-                    "Judge the transcript against the compliance rules, the lender company policy, and the active metrics. "
+                    "Evaluate the transcript at the full system level, not just turn by turn. "
+                    "Judge the interaction against the compliance rules, the lender company policy, the active metrics, stage correctness, and cross-agent continuity. "
+                    "You must explicitly judge whether Agent 1 actually performed assessment first by establishing the debt, verifying identity appropriately, and gathering the borrower's financial situation, or whether it skipped assessment and jumped early into negotiation, offer-making, threats, or closure language. "
+                    "You must explicitly judge whether Agent 2 proposed settlement options that are aligned with lender policy, and whether all offers, discounts, payment plans, hardship referrals, deadlines, and commitments stayed within allowed company policy ranges and rules. "
+                    "You must flag any invented, unauthorized, misleading, or out-of-policy offer. "
+                    "You must explicitly judge whether the AI feels like one continuous system across stages, or whether it repeats the same questions, re-verifies unnecessarily, restates already known facts, re-introduces itself awkwardly, or otherwise reveals the handoff seam. "
+                    "Penalize repeated questioning, repeated explanations, and broken conversational continuity. "
+                    "Be strict. Do not give credit for partial alignment when the transcript shows clear failures. "
+                    "Prefer false negatives over false positives. "
                     "Return strict JSON only."
                 ),
                 "human_prompt": self._build_human_prompt(

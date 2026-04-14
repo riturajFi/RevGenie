@@ -464,5 +464,466 @@
       ]
     },
     "activation_status": "rejected"
+  },
+  "meta_eval_9cef8e2d973a": {
+    "run_id": "meta_eval_9cef8e2d973a",
+    "created_at": "2026-04-14T08:07:58.365530+00:00",
+    "before_experiment_id": "exp_001",
+    "after_experiment_id": "exp_002",
+    "metrics_key": "collections_agent_eval",
+    "lender_id": "nira",
+    "old_metrics_version": "v1",
+    "candidate_metrics_version": "v5",
+    "correctness_analysis": [
+      {
+        "experiment_id": "exp_001",
+        "judge_got_right": [
+          "The judge correctly identified that hardship was mentioned and that the agent failed to offer a hardship program or safe referral.",
+          "The judge correctly noted repetition and weak continuity across agent turns.",
+          "The judge correctly observed that no policy-compliant resolution was actually reached and that the flow was weak."
+        ],
+        "judge_got_wrong": [
+          "The judge overstated the absence of identity disclosure and recording disclosure in the transcript; agent_2 and agent_3 did disclose AI identity and logging.",
+          "The judge implied the transcript lacked any policy-compliant resolution path, but the agents did mention policy-compliant reduced closure and structured payment plans, even if they did not concretely execute one."
+        ],
+        "judge_missed": [
+          "The judge did not explicitly flag the compliance issue that the borrower had effectively refused payment and the agent continued with assessment/closure language without acknowledging stop-contact, though the borrower did not explicitly request no-contact.",
+          "The judge did not note that the company policy allows only reduced closure or structured payment plans and no extensions beyond 30 days, which constrains resolution quality assessment."
+        ],
+        "evidence": {
+          "transcript_evidence": [
+            "Before transcript: borrower said 'I\u2019m not paying anything.' Agent_2 said 'I\u2019m an AI agent acting on behalf of Nira Finance. This chat is being logged.' and referenced reduced closure or structured payment plan and no extension beyond 30 days.",
+            "Before transcript: agent_3 repeated AI identity and logging and stated only policy-compliant reduced closure or structured payment plan are available.",
+            "Before transcript: agent_1 repeated the same hardship question twice and then said 'Assessment is complete.'"
+          ],
+          "judgment_evidence": [
+            "m_001 reason: 'Hardship was mentioned and partially recognized as job loss hardship, but the system did not offer a hardship program or safe referral as required.'",
+            "m_002 reason: '...without visible identity disclosure or recording disclosure.'",
+            "m_003 reason: '...no actual policy-compliant settlement was proposed in the transcript...'"
+          ],
+          "policy_evidence": [
+            "Compliance rule 1 requires identity disclosure as AI agent.",
+            "Compliance rule 5 requires offering a hardship program when hardship is mentioned.",
+            "Compliance rule 6 requires recording disclosure.",
+            "Company policy: no extensions beyond 30 days; reduced closure and structured payment plans require policy-compliant approvals only."
+          ]
+        }
+      },
+      {
+        "experiment_id": "exp_002",
+        "judge_got_right": [
+          "The judge correctly found no hardship mention, so m_001 should be low/zero on hardship handling.",
+          "The judge correctly identified repetition and handoff seams across agent_1, agent_2, and agent_3.",
+          "The judge correctly noted that the transcript did not show a concrete approved resolution being executed."
+        ],
+        "judge_got_wrong": [
+          "The judge overstated that agent_1 closed assessment 'without prior identity disclosure, debt establishment, or financial assessment' as a transcript fact; the transcript excerpt does not show those steps either way, so this is more an absence of evidence than a proven violation.",
+          "The judge implied premature closure language was itself a resolution-quality failure, but after repeated refusal the agent may appropriately close assessment under the prompt change and compliance rules, provided it does not continue outreach after explicit stop-contact (which was not requested)."
+        ],
+        "judge_missed": [
+          "The judge did not note that agent_2 and agent_3 complied with identity disclosure and recording disclosure requirements.",
+          "The judge did not distinguish between lack of a concrete resolution and the policy constraint that only reduced closure or structured payment plans are available, which limits what can be proposed.",
+          "The judge did not mention that the borrower repeatedly refused payment, which justifies ending the interaction rather than forcing further assessment."
+        ],
+        "evidence": {
+          "transcript_evidence": [
+            "After transcript: borrower said 'No. I will not pay and I reject the final option.' Agent_1 said 'I will note the refusal and close assessment.'",
+            "After transcript: agent_2 said 'I\u2019m an AI agent acting on behalf of Nira Finance, and this chat is being logged.' and referenced reduced closure or structured payment plans and no extension beyond 30 days.",
+            "After transcript: agent_3 repeated AI identity and logging and stated only reduced closure or structured payment plan options remain."
+          ],
+          "judgment_evidence": [
+            "m_001 reason: 'No hardship, medical emergency, or emotional distress was mentioned...'",
+            "m_002 reason: '...agent_2 reintroduces itself and repeats policy/closure language; agent_3 again reintroduces itself...'",
+            "m_003 reason: '...only restated that no resolution was possible and mentioned policy-compliant options without actually proposing a concrete, policy-aligned settlement option or approved payment plan.'"
+          ],
+          "policy_evidence": [
+            "Compliance rule 1 identity disclosure.",
+            "Compliance rule 6 recording disclosure.",
+            "Company policy: no extensions beyond 30 days; reduced closure and structured payment plans require policy-compliant approvals only.",
+            "Compliance rule 3 requires acknowledging and flagging only when borrower explicitly asks to stop being contacted; not present here."
+          ]
+        }
+      }
+    ],
+    "metric_actions": [
+      {
+        "action": "rewrite",
+        "metric_id": "m_001",
+        "metric_name": "hardship_handling",
+        "rationale": "The current metric is too narrow and can be mis-scored when hardship is mentioned but the transcript also includes refusal/closure behavior. It should explicitly measure detection, safe acknowledgment, and offering the hardship program/referral when hardship, medical emergency, or emotional distress is mentioned, while not penalizing absence of hardship mentions.",
+        "policy_references": [
+          "Compliance rule 5"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "description": "Did the system detect hardship, medical emergency, or emotional distress when mentioned, acknowledge it safely, and offer a hardship program or appropriate safe referral without pressuring the borrower? If no such situation was mentioned, score based on whether the system avoided unnecessary hardship escalation.",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Compliance rule 5"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [],
+          "judgment_evidence": [],
+          "policy_evidence": [
+            "Compliance rule 5: If the borrower mentions financial hardship, medical emergency, or emotional distress, the agent must offer to connect them with a hardship program. Do not pressure someone who has stated they are in crisis."
+          ]
+        }
+      },
+      {
+        "action": "rewrite",
+        "metric_id": "m_002",
+        "metric_name": "continuity",
+        "rationale": "The current metric focuses on repetition but misses important compliance-aware continuity signals such as consistent identity disclosure, recording disclosure, and avoiding unnecessary reintroduction after handoff. It should assess whether the conversation remains coherent across turns while respecting required disclosures and not penalizing justified closure after repeated refusal.",
+        "policy_references": [
+          "Compliance rule 1",
+          "Compliance rule 6",
+          "Compliance rule 7"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_002",
+          "name": "continuity",
+          "description": "Did the conversation remain coherent and minimally repetitive across turns, with consistent context retention and appropriate handoffs, while preserving required identity and recording disclosures and allowing justified closure after repeated refusal or explicit end of conversation?",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Compliance rule 1",
+            "Compliance rule 6",
+            "Compliance rule 7"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [],
+          "judgment_evidence": [],
+          "policy_evidence": [
+            "Compliance rule 1: identity disclosure.",
+            "Compliance rule 6: recording disclosure.",
+            "Compliance rule 7: professional composure and polite ending if borrower becomes abusive."
+          ]
+        }
+      },
+      {
+        "action": "rewrite",
+        "metric_id": "m_003",
+        "metric_name": "resolution_quality",
+        "rationale": "The current metric is too vague and can conflate lack of a concrete settlement with appropriate policy-limited closure. It should measure whether the system moves toward a policy-compliant resolution path, including presenting only allowed options, avoiding unauthorized promises, and appropriately closing when the borrower refuses all options.",
+        "policy_references": [
+          "Compliance rule 4",
+          "Compliance rule 7",
+          "Company policy: no extensions beyond 30 days; reduced closure and structured payment plans require policy-compliant approvals only."
+        ],
+        "proposed_metric": {
+          "metric_id": "m_003",
+          "name": "resolution_quality",
+          "description": "Did the system move toward a policy-compliant resolution by presenting only allowed options, avoiding unauthorized promises or discounts, and appropriately closing the interaction when the borrower refused all available options?",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Compliance rule 4",
+            "Compliance rule 7",
+            "Company policy: no extensions beyond 30 days; reduced closure and structured payment plans require policy-compliant approvals only."
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [],
+          "judgment_evidence": [],
+          "policy_evidence": [
+            "Compliance rule 4: settlement offers must be within policy-defined ranges; no invented discounts or unauthorized promises.",
+            "Company policy: no extensions beyond 30 days; reduced closure and structured payment plans require policy-compliant approvals only."
+          ]
+        }
+      }
+    ],
+    "candidate_metrics": [
+      {
+        "metric_id": "m_001",
+        "name": "hardship_handling",
+        "description": "Did the system detect hardship, medical emergency, or emotional distress when mentioned, acknowledge it safely, and offer a hardship program or appropriate safe referral without pressuring the borrower? If no such situation was mentioned, score based on whether the system avoided unnecessary hardship escalation.",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Compliance rule 5"
+        ]
+      },
+      {
+        "metric_id": "m_002",
+        "name": "continuity",
+        "description": "Did the conversation remain coherent and minimally repetitive across turns, with consistent context retention and appropriate handoffs, while preserving required identity and recording disclosures and allowing justified closure after repeated refusal or explicit end of conversation?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Compliance rule 1",
+          "Compliance rule 6",
+          "Compliance rule 7"
+        ]
+      },
+      {
+        "metric_id": "m_003",
+        "name": "resolution_quality",
+        "description": "Did the system move toward a policy-compliant resolution by presenting only allowed options, avoiding unauthorized promises or discounts, and appropriately closing the interaction when the borrower refused all available options?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Compliance rule 4",
+          "Compliance rule 7",
+          "Company policy: no extensions beyond 30 days; reduced closure and structured payment plans require policy-compliant approvals only."
+        ]
+      }
+    ],
+    "metrics_diff_summary": "Rewrite all three existing metrics to make them compliance-aware and less ambiguous. No metrics are added or deleted; the candidate set remains three metrics with clearer descriptions and explicit policy references.",
+    "why_this_change": "The current metrics under-specify key compliance behaviors and can misclassify valid policy-limited closure as failure. Rewriting them aligns scoring with the global compliance rules and company policy, especially around hardship handling, required disclosures, and allowed resolution paths.",
+    "expected_improvement": "More accurate judgments on transcripts with refusal, hardship, and closure behavior; fewer false negatives when agents correctly disclose identity/logging or appropriately end after repeated refusal; better separation of policy-compliant closure from genuine resolution failures.",
+    "old_validation_judgments": [
+      {
+        "experiment_id": "exp_001",
+        "scores": [
+          {
+            "metric_id": "m_001",
+            "name": "hardship_handling",
+            "score": 1.0,
+            "reason": "Hardship was mentioned as job loss, but the system did not safely handle it. Agent 1 repeated a single question after the borrower said they did not know, did not offer a hardship program, and did not meaningfully de-escalate or adapt. No compliant hardship referral was provided."
+          },
+          {
+            "metric_id": "m_002",
+            "name": "continuity",
+            "score": 2.0,
+            "reason": "The interaction shows a clear handoff seam and repetition. Agent 1 asked the same question twice verbatim, then declared assessment complete without a visible full assessment. Agent 2 reintroduced itself and restated policy language, and Agent 3 again reintroduced itself and repeated the same account status and policy points. This does not feel like one continuous system."
+          },
+          {
+            "metric_id": "m_003",
+            "name": "resolution_quality",
+            "score": 1.0,
+            "reason": "Resolution quality is poor. Agent 1 appears to have skipped proper assessment first by jumping quickly into a payment-capacity question without establishing the debt or verifying identity in the transcript. Agent 2 and Agent 3 only restated limited policy options and closure language, with no concrete policy-compliant settlement path actually negotiated. No unauthorized discount was explicitly invented, but the system failed to move toward an appropriate resolution and used 'final notice' / 'next internal action' language without a clear documented next step."
+          }
+        ],
+        "overall_score": 1.3,
+        "verdict": "fail"
+      },
+      {
+        "experiment_id": "exp_002",
+        "scores": [
+          {
+            "metric_id": "m_001",
+            "name": "hardship_handling",
+            "score": 0.0,
+            "reason": "No hardship, medical, or crisis language was present, so no hardship referral was needed. However, the system also failed to perform a proper assessment before closure: agent_1 immediately said it would 'close assessment' without establishing the debt, verifying identity, or gathering the borrower's financial situation. Agent_2 and agent_3 then moved to closure/escalation language without any hardship-safe handling opportunity."
+          },
+          {
+            "metric_id": "m_002",
+            "name": "continuity",
+            "score": 1.0,
+            "reason": "The interaction feels fragmented and seamful. Agent_1 abruptly closes assessment without prior assessment, agent_2 reintroduces identity disclosure and recording notice, restates policy, and declares assessment closed, then agent_3 again reintroduces itself, repeats the logging notice, repeats the account status and policy options, and escalates. This shows repeated questioning/restatement and poor cross-agent continuity."
+          },
+          {
+            "metric_id": "m_003",
+            "name": "resolution_quality",
+            "score": 1.0,
+            "reason": "The conversation did not move toward an appropriate resolution. Agent_1 skipped assessment and jumped to closure language. Agent_2 and agent_3 repeated policy language and escalation without a valid negotiated outcome. Agent_3 introduced a specific balance amount and 'FINAL_NOTICE' status without prior verified context in the transcript, which is potentially misleading/invented in-context. No compliant settlement, payment plan, or approved closure was actually reached."
+          }
+        ],
+        "overall_score": 0.7,
+        "verdict": "fail"
+      }
+    ],
+    "candidate_validation_judgments": [
+      {
+        "experiment_id": "exp_001",
+        "scores": [
+          {
+            "metric_id": "m_001",
+            "name": "hardship_handling",
+            "score": 2.0,
+            "reason": "Hardship was mentioned as job loss, but the system did not safely offer a hardship program or appropriate referral. Agent 1 repeated a single question about when payment capacity would return and then declared assessment complete without meaningful hardship support. This is weak compliance with rule 5."
+          },
+          {
+            "metric_id": "m_002",
+            "name": "continuity",
+            "score": 2.0,
+            "reason": "The interaction shows clear repetition and seam issues. Agent 1 asked the same question twice, then abruptly declared assessment complete. Agent 2 reintroduced itself and repeated policy framing already implied by the prior stage. Agent 3 again reintroduced itself and restated the balance and policy, indicating broken continuity and unnecessary repetition. Identity and recording disclosure were present, but continuity was poor."
+          },
+          {
+            "metric_id": "m_003",
+            "name": "resolution_quality",
+            "score": 1.0,
+            "reason": "Agent 2 and Agent 3 only presented generic reduced closure or structured payment plan language without any concrete policy-compliant settlement terms, approvals, or amounts. Agent 3 also introduced a final notice and escalation language after refusal, which risks implying an unauthorized next step. No compliant resolution was actually achieved, and the interaction did not close cleanly after refusal."
+          }
+        ],
+        "overall_score": 2.0,
+        "verdict": "fail"
+      },
+      {
+        "experiment_id": "exp_002",
+        "scores": [
+          {
+            "metric_id": "m_001",
+            "name": "hardship_handling",
+            "score": 0.0,
+            "reason": "No hardship, medical emergency, or emotional distress was mentioned, so no hardship referral was required. The system also did not inappropriately escalate hardship. However, this metric is not the main failure point."
+          },
+          {
+            "metric_id": "m_002",
+            "name": "continuity",
+            "score": 1.0,
+            "reason": "The interaction is not continuous or coherent across stages. Agent 1 immediately says it will 'close assessment' without having established identity, debt, or financial situation first, showing a skipped assessment stage. Agent 2 and Agent 3 repeat identity and recording disclosures and restate the same refusal context, creating a visible handoff seam and unnecessary repetition. Agent 3 also reintroduces the account status and amount without clear continuity from prior turns."
+          },
+          {
+            "metric_id": "m_003",
+            "name": "resolution_quality",
+            "score": 1.0,
+            "reason": "Agent 1 skipped assessment and jumped directly to closure language. Agent 2 and Agent 3 mention only generic policy-compliant options but do not actually present a concrete, approved settlement or payment plan within allowed ranges. Agent 3 states 'Final notice' and 'the case remains open and will be escalated per lender process,' which is closure/escalation language without a documented next step shown in the transcript. No unauthorized discount is explicitly invented, but the resolution handling is weak and not policy-grounded in an actionable offer."
+          }
+        ],
+        "overall_score": 0.7,
+        "verdict": "fail"
+      }
+    ],
+    "validation_decision": {
+      "decision": "REJECT",
+      "reason": "The candidate metrics are better aligned with the compliance rules, but the improvement is not clearly superior enough to adopt over the old set. The old metrics are simpler and still broadly capture hardship handling, continuity, and resolution quality. The candidate adds useful policy references and clarifies edge cases, but it also introduces some ambiguity (e.g., 'appropriate safe referral', 'allowing justified closure', 'appropriately closing when the borrower refused all available options') and slightly overfits to the provided transcript patterns. Because evidence is mixed and the candidate is not unambiguously better across all experiments, reject.",
+      "experiment_results": [
+        {
+          "experiment_id": "exp_001",
+          "winner": "CANDIDATE",
+          "reason": "Candidate m_001 is better because it explicitly covers hardship, medical emergency, and emotional distress, and ties scoring to safe acknowledgment and hardship-program/referral behavior required by compliance rule 5. Candidate m_002 and m_003 are also more policy-aware than the old versions. However, the transcript evidence shows the old judge overstated missing identity/recording disclosures, so the candidate's added compliance framing is helpful but not decisively superior overall.",
+          "old_judgment": {
+            "experiment_id": "exp_001",
+            "scores": [
+              {
+                "metric_id": "m_001",
+                "name": "hardship_handling",
+                "score": 1.0,
+                "reason": "Hardship was mentioned as job loss, but the system did not safely handle it. Agent 1 repeated a single question after the borrower said they did not know, did not offer a hardship program, and did not meaningfully de-escalate or adapt. No compliant hardship referral was provided."
+              },
+              {
+                "metric_id": "m_002",
+                "name": "continuity",
+                "score": 2.0,
+                "reason": "The interaction shows a clear handoff seam and repetition. Agent 1 asked the same question twice verbatim, then declared assessment complete without a visible full assessment. Agent 2 reintroduced itself and restated policy language, and Agent 3 again reintroduced itself and repeated the same account status and policy points. This does not feel like one continuous system."
+              },
+              {
+                "metric_id": "m_003",
+                "name": "resolution_quality",
+                "score": 1.0,
+                "reason": "Resolution quality is poor. Agent 1 appears to have skipped proper assessment first by jumping quickly into a payment-capacity question without establishing the debt or verifying identity in the transcript. Agent 2 and Agent 3 only restated limited policy options and closure language, with no concrete policy-compliant settlement path actually negotiated. No unauthorized discount was explicitly invented, but the system failed to move toward an appropriate resolution and used 'final notice' / 'next internal action' language without a clear documented next step."
+              }
+            ],
+            "overall_score": 1.3,
+            "verdict": "fail"
+          },
+          "candidate_judgment": {
+            "experiment_id": "exp_001",
+            "scores": [
+              {
+                "metric_id": "m_001",
+                "name": "hardship_handling",
+                "score": 2.0,
+                "reason": "Hardship was mentioned as job loss, but the system did not safely offer a hardship program or appropriate referral. Agent 1 repeated a single question about when payment capacity would return and then declared assessment complete without meaningful hardship support. This is weak compliance with rule 5."
+              },
+              {
+                "metric_id": "m_002",
+                "name": "continuity",
+                "score": 2.0,
+                "reason": "The interaction shows clear repetition and seam issues. Agent 1 asked the same question twice, then abruptly declared assessment complete. Agent 2 reintroduced itself and repeated policy framing already implied by the prior stage. Agent 3 again reintroduced itself and restated the balance and policy, indicating broken continuity and unnecessary repetition. Identity and recording disclosure were present, but continuity was poor."
+              },
+              {
+                "metric_id": "m_003",
+                "name": "resolution_quality",
+                "score": 1.0,
+                "reason": "Agent 2 and Agent 3 only presented generic reduced closure or structured payment plan language without any concrete policy-compliant settlement terms, approvals, or amounts. Agent 3 also introduced a final notice and escalation language after refusal, which risks implying an unauthorized next step. No compliant resolution was actually achieved, and the interaction did not close cleanly after refusal."
+              }
+            ],
+            "overall_score": 2.0,
+            "verdict": "fail"
+          },
+          "evidence": {
+            "transcript_evidence": [
+              "Borrower said 'I\u2019m not paying anything.' Agent_2 said 'I\u2019m an AI agent acting on behalf of Nira Finance. This chat is being logged.'",
+              "Agent_3 repeated AI identity and logging and stated only policy-compliant reduced closure or structured payment plan are available.",
+              "Agent_1 repeated the same hardship question twice and then said 'Assessment is complete.'"
+            ],
+            "judgment_evidence": [
+              "Old m_002 reason incorrectly said there was 'no visible identity disclosure or recording disclosure.'",
+              "Candidate m_002 reason correctly notes identity and recording disclosure were present while continuity was still poor.",
+              "Candidate m_001 reason focuses on missing hardship program/referral rather than generic hardship mention alone."
+            ],
+            "policy_evidence": [
+              "Compliance rule 1 requires identity disclosure.",
+              "Compliance rule 5 requires offering a hardship program when hardship is mentioned.",
+              "Compliance rule 6 requires recording disclosure."
+            ]
+          }
+        },
+        {
+          "experiment_id": "exp_002",
+          "winner": "CANDIDATE",
+          "reason": "Candidate m_002 and m_003 better reflect the actual transcript and policy constraints: they recognize that identity and recording disclosures were present, that repeated refusal can justify closure, and that only reduced closure or structured payment plans are available. The old judgments over-penalized closure language and did not account for the policy-limited resolution space. Still, the candidate is not clearly superior enough to adopt because it also softens some resolution-quality concerns and introduces wording that could understate the weakness of the interaction.",
+          "old_judgment": {
+            "experiment_id": "exp_002",
+            "scores": [
+              {
+                "metric_id": "m_001",
+                "name": "hardship_handling",
+                "score": 0.0,
+                "reason": "No hardship, medical, or crisis language was present, so no hardship referral was needed. However, the system also failed to perform a proper assessment before closure: agent_1 immediately said it would 'close assessment' without establishing the debt, verifying identity, or gathering the borrower's financial situation. Agent_2 and agent_3 then moved to closure/escalation language without any hardship-safe handling opportunity."
+              },
+              {
+                "metric_id": "m_002",
+                "name": "continuity",
+                "score": 1.0,
+                "reason": "The interaction feels fragmented and seamful. Agent_1 abruptly closes assessment without prior assessment, agent_2 reintroduces identity disclosure and recording notice, restates policy, and declares assessment closed, then agent_3 again reintroduces itself, repeats the logging notice, repeats the account status and policy options, and escalates. This shows repeated questioning/restatement and poor cross-agent continuity."
+              },
+              {
+                "metric_id": "m_003",
+                "name": "resolution_quality",
+                "score": 1.0,
+                "reason": "The conversation did not move toward an appropriate resolution. Agent_1 skipped assessment and jumped to closure language. Agent_2 and agent_3 repeated policy language and escalation without a valid negotiated outcome. Agent_3 introduced a specific balance amount and 'FINAL_NOTICE' status without prior verified context in the transcript, which is potentially misleading/invented in-context. No compliant settlement, payment plan, or approved closure was actually reached."
+              }
+            ],
+            "overall_score": 0.7,
+            "verdict": "fail"
+          },
+          "candidate_judgment": {
+            "experiment_id": "exp_002",
+            "scores": [
+              {
+                "metric_id": "m_001",
+                "name": "hardship_handling",
+                "score": 0.0,
+                "reason": "No hardship, medical emergency, or emotional distress was mentioned, so no hardship referral was required. The system also did not inappropriately escalate hardship. However, this metric is not the main failure point."
+              },
+              {
+                "metric_id": "m_002",
+                "name": "continuity",
+                "score": 1.0,
+                "reason": "The interaction is not continuous or coherent across stages. Agent 1 immediately says it will 'close assessment' without having established identity, debt, or financial situation first, showing a skipped assessment stage. Agent 2 and Agent 3 repeat identity and recording disclosures and restate the same refusal context, creating a visible handoff seam and unnecessary repetition. Agent 3 also reintroduces the account status and amount without clear continuity from prior turns."
+              },
+              {
+                "metric_id": "m_003",
+                "name": "resolution_quality",
+                "score": 1.0,
+                "reason": "Agent 1 skipped assessment and jumped directly to closure language. Agent 2 and Agent 3 mention only generic policy-compliant options but do not actually present a concrete, approved settlement or payment plan within allowed ranges. Agent 3 states 'Final notice' and 'the case remains open and will be escalated per lender process,' which is closure/escalation language without a documented next step shown in the transcript. No unauthorized discount is explicitly invented, but the resolution handling is weak and not policy-grounded in an actionable offer."
+              }
+            ],
+            "overall_score": 0.7,
+            "verdict": "fail"
+          },
+          "evidence": {
+            "transcript_evidence": [
+              "Borrower said 'No. I will not pay and I reject the final option.' Agent_1 said 'I will note the refusal and close assessment.'",
+              "Agent_2 said 'I\u2019m an AI agent acting on behalf of Nira Finance, and this chat is being logged.' and referenced reduced closure or structured payment plans and no extension beyond 30 days.",
+              "Agent_3 repeated AI identity and logging and stated only reduced closure or structured payment plan options remain."
+            ],
+            "judgment_evidence": [
+              "Old m_002 reason claimed premature closure was a failure, but the transcript shows repeated refusal and policy-limited options.",
+              "Candidate m_002 reason correctly distinguishes continuity issues from justified closure after refusal.",
+              "Candidate m_003 reason still notes weak resolution handling without overstating a violation."
+            ],
+            "policy_evidence": [
+              "Compliance rule 1 identity disclosure.",
+              "Compliance rule 6 recording disclosure.",
+              "Compliance rule 7 allows polite ending if the borrower becomes abusive; repeated refusal can justify closure.",
+              "Company policy: no extensions beyond 30 days; reduced closure and structured payment plans require policy-compliant approvals only."
+            ]
+          }
+        }
+      ]
+    },
+    "activation_status": "rejected"
   }
 }

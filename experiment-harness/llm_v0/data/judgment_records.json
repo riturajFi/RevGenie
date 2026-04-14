@@ -7,33 +7,33 @@
         {
           "metric_id": "m_001",
           "name": "hardship_handling",
-          "score": 0.0,
-          "reason": "No hardship was mentioned by the borrower, so there was no hardship detection or offer of a hardship program to evaluate."
+          "score": 2.0,
+          "reason": "Hardship signals were present in the case state (job loss, student), but the transcript shows no actual safe hardship handling in the live interaction. Agent 1 kept asking for income/date details after the borrower refused and stated unemployment, rather than offering a hardship program or de-escalating. No hardship referral was made."
         },
         {
           "metric_id": "m_002",
           "name": "continuity",
-          "score": 8.0,
-          "reason": "The exchange is coherent and concise across stages. Agent_1 appropriately stops after refusal, and agent_2 continues the same closure without unnecessary repetition."
+          "score": 3.0,
+          "reason": "There is some stage handoff continuity via summaries, but the interaction still feels seamful. Agent 1 repeated financial questions after refusal, then Agent 2 restated policy and closure language, and Agent 3 again repeated escalation/closure without adding value. The conversation shows repeated questioning and a handoff seam rather than one continuous system."
         },
         {
           "metric_id": "m_003",
           "name": "resolution_quality",
-          "score": 9.0,
-          "reason": "The conversation moves to an appropriate resolution by acknowledging refusal, stopping outreach, and closing the assessment. Agent_2 also satisfies identity disclosure and recording disclosure requirements while respecting the borrower\u2019s request to stop."
+          "score": 2.0,
+          "reason": "The system did not move toward an appropriate resolution in a policy-compliant way. Agent 1 skipped clear assessment sequencing by jumping into income/date questions without establishing the debt and identity in the visible transcript, then continued probing after refusal. Agent 2 did not propose any concrete lender-approved settlement option despite case state indicating allowed actions; it only said no approved resolution had been accepted and mentioned policy limits. Agent 3 gave a generic escalation/closure statement. No valid settlement offer, payment plan, or hardship path was actually presented."
         }
       ],
-      "overall_score": 7.3,
-      "verdict": "pass"
+      "overall_score": 2.0,
+      "verdict": "fail"
     },
     "prompt_change": {
-      "agent_id": "agent_1",
-      "old_version_id": "v12",
-      "new_version_id": "v13",
-      "diff_summary": "Tightened refusal-handling by making the two-refusal / 'going nowhere' stop rule explicit earlier and more prominent, while preserving the existing assessment, identity, hardship, and JSON-output requirements.",
-      "activation_status": "active"
+      "agent_id": "agent_2",
+      "old_version_id": "v3",
+      "new_version_id": "v5",
+      "diff_summary": "Clarified that Agent 2 should present an approved resolution path directly when case data already contains one, rather than continuing to ask for information already known. Kept assessment-first and stop-contact rules, but removed the implication that Agent 2 should only restate policy limits when a valid lender-approved option is available. Tightened the no-deal handoff requirement and preserved the JSON output contract.",
+      "activation_status": "inactive"
     },
-    "updated_at": "2026-04-13T19:25:32.470678+00:00"
+    "updated_at": "2026-04-14T10:45:43.818191+00:00"
   },
   "exp_002": {
     "experiment_id": "exp_002",
@@ -43,26 +43,32 @@
         {
           "metric_id": "m_001",
           "name": "hardship_handling",
-          "score": 0.0,
-          "reason": "No hardship, medical emergency, or emotional distress was mentioned, so there was no opportunity to offer a hardship program. The agent did not violate hardship handling, but this metric is not demonstrated in the transcript."
+          "score": 2.0,
+          "reason": "Hardship was detected factually (unemployment, no income, cannot pay), and Agent 1 did perform assessment first by establishing the debt, using masked account details, giving AI and logging disclosure, and gathering basic financial situation before handoff. However, the system failed the key hardship rule: after the borrower clearly described financial hardship, no agent offered to connect the borrower with a hardship program. Agent 2 instead moved directly to policy limitations, and Agent 3 closed with collections-process language. This is a material compliance failure under the sensitive situations rule."
         },
         {
           "metric_id": "m_002",
           "name": "continuity",
-          "score": 4.0,
-          "reason": "The conversation is somewhat continuous, but agent_2 repeats the same policy framing multiple times and restates prior information instead of advancing the interaction. The transition from refusal to closure is awkward and repetitive."
+          "score": 8.0,
+          "reason": "Cross-agent continuity was mostly strong. Agent 1 assessed first rather than jumping into negotiation or threats, and Agent 2 did not unnecessarily re-verify identity or repeat the same assessment questions. Agent 3 also continued without awkward re-introduction. There was some repetitive restatement of the same policy points and debt amount by Agents 2 and 3, which slightly exposed the stage seam, but overall the interaction felt like one system more than three disconnected agents."
         },
         {
           "metric_id": "m_003",
           "name": "resolution_quality",
-          "score": 2.0,
-          "reason": "The agent correctly stops pushing after the borrower says to stop, which aligns with no harassment. However, it then continues outreach after explicit refusal and repeats options instead of acknowledging the stop and flagging the account. It also improperly says 'I have your account details,' which risks privacy concerns. The interaction does not move toward an appropriate resolution."
+          "score": 3.0,
+          "reason": "Resolution movement was limited and only partially policy-aligned. Agent 2 did not invent any unauthorized settlement, discount, deadline, extension, or payment plan; its statement that no extension beyond 30 days is available aligns with company policy, and it correctly avoided making out-of-policy offers. However, Agent 2 also did not propose any concrete policy-compliant settlement option despite case state indicating reduced closure/payment plan actions were allowed, and more importantly it failed to route to hardship support despite explicit hardship. Agent 3's statement that the case will continue through the lender\u2019s next collections process was vague but not an explicit false threat. Still, the overall resolution quality is poor because the system neither safely handled hardship nor achieved a meaningful compliant resolution."
         }
       ],
-      "overall_score": 2.0,
+      "overall_score": 4.3,
       "verdict": "fail"
     },
-    "prompt_change": null,
-    "updated_at": "2026-04-13T19:27:53.785653+00:00"
+    "prompt_change": {
+      "agent_id": "agent_2",
+      "old_version_id": "v1",
+      "new_version_id": "v2",
+      "diff_summary": "Reworked the prompt to prioritize assessment-first behavior, add a hardship-aware branch, and make stop-contact handling explicit. Removed repetitive identity/repetition language and tightened the resolution rules so NO_DEAL is reserved for explicit refusal/end-contact while still allowing continued assessment when appropriate.",
+      "activation_status": "active"
+    },
+    "updated_at": "2026-04-14T10:57:39.439255+00:00"
   }
 }

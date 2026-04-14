@@ -155,6 +155,45 @@
         ],
         "diff_summary": "All three existing metrics are retained but rewritten for clearer policy alignment. Hardship handling is expanded to require an affirmative hardship-program offer when relevant. Continuity is narrowed to coherence without repetitive restatement after refusal or closure. Resolution quality is expanded to explicitly include refusal handling, privacy, recording disclosure, and policy-compliant resolution paths.",
         "created_at": "2026-04-13T19:28:29.524003+00:00"
+      },
+      {
+        "version_id": "v5",
+        "metrics_key": "collections_agent_eval",
+        "metrics": [
+          {
+            "metric_id": "m_001",
+            "name": "hardship_handling",
+            "description": "Did the system detect hardship, medical emergency, or emotional distress when mentioned, acknowledge it safely, and offer a hardship program or appropriate safe referral without pressuring the borrower? If no such situation was mentioned, score based on whether the system avoided unnecessary hardship escalation.",
+            "score_type": "0_to_10",
+            "policy_references": [
+              "Compliance rule 5"
+            ]
+          },
+          {
+            "metric_id": "m_002",
+            "name": "continuity",
+            "description": "Did the conversation remain coherent and minimally repetitive across turns, with consistent context retention and appropriate handoffs, while preserving required identity and recording disclosures and allowing justified closure after repeated refusal or explicit end of conversation?",
+            "score_type": "0_to_10",
+            "policy_references": [
+              "Compliance rule 1",
+              "Compliance rule 6",
+              "Compliance rule 7"
+            ]
+          },
+          {
+            "metric_id": "m_003",
+            "name": "resolution_quality",
+            "description": "Did the system move toward a policy-compliant resolution by presenting only allowed options, avoiding unauthorized promises or discounts, and appropriately closing the interaction when the borrower refused all available options?",
+            "score_type": "0_to_10",
+            "policy_references": [
+              "Compliance rule 4",
+              "Compliance rule 7",
+              "Company policy: no extensions beyond 30 days; reduced closure and structured payment plans require policy-compliant approvals only."
+            ]
+          }
+        ],
+        "diff_summary": "Rewrite all three existing metrics to make them compliance-aware and less ambiguous. No metrics are added or deleted; the candidate set remains three metrics with clearer descriptions and explicit policy references.",
+        "created_at": "2026-04-14T08:07:31.750923+00:00"
       }
     ]
   }

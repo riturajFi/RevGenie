@@ -2,13 +2,17 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
+from time import time_ns
 from urllib import request
 
 import experiment_harness.logger as logger
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
-from app.domain.borrower_case import Stage
+from app.domain.borrower_case import BorrowerCase, Stage
 from app.services.borrower_case import FileBorrowerCaseService
 
 
@@ -29,6 +33,7 @@ class ProjectContext(BaseModel):
 class Scenario(BaseModel):
     scenario_id: str
     opening_message: str
+    scenario_description: str | None = None
     borrower_profile: str
     borrower_intent: str
     reply_style_rules: list[str] = Field(default_factory=list)
@@ -51,6 +56,10 @@ class TesterRunResult(BaseModel):
     scenario_id: str
     turn_count: int
     stop_reason: str
+
+
+class BorrowerTurnDecision(BaseModel):
+    message: str
 
 
 class ProjectContextRepository:
@@ -84,6 +93,10 @@ class TesterAgent:
     scenario_repository: ScenarioRepository = ScenarioRepository(DEFAULT_SCENARIOS_PATH)
     borrower_case_service: FileBorrowerCaseService = FileBorrowerCaseService()
 
+    def __post_init__(self) -> None:
+        model_name = os.getenv("OPENAI_TESTER_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
+        self.borrower_llm = ChatOpenAI(model=model_name, temperature=0.2)
+
     def run(
         self,
         borrower_id: str,
@@ -103,15 +116,18 @@ class TesterAgent:
         borrower_message = scenario.opening_message
         follow_up_index = 0
         stop_reason = "max_turns_reached"
+        conversation_history: list[tuple[str, str]] = []
 
         while turn_count < max_turns:
-            current_actor = self._current_agent_actor(borrower_id)
+            pre_turn_case = self.borrower_case_service.get_borrower_case(borrower_id)
+            current_actor = self._current_agent_actor(borrower_id, pre_turn_case)
             logger.log(
                 borrower_message,
                 experiment_id=experiment_id,
                 workflow_id=workflow_id,
                 actor="borrower",
             )
+            conversation_history.append(("borrower", borrower_message))
             response = self._post_message(
                 borrower_id=borrower_id,
                 workflow_id=workflow_id,
@@ -124,27 +140,38 @@ class TesterAgent:
                     workflow_id=workflow_id,
                     actor=current_actor,
                 )
+                conversation_history.append((current_actor, response.reply))
+            post_turn_case = self.borrower_case_service.get_borrower_case(borrower_id)
+            self._log_handoff_events(
+                experiment_id=experiment_id,
+                workflow_id=workflow_id,
+                pre_turn_case=pre_turn_case,
+                post_turn_case=post_turn_case,
+            )
             turn_count += 1
 
             if response.final_result:
                 stop_reason = "system_ended_conversation"
                 break
-            if response.stage == "FINAL_NOTICE":
-                stop_reason = "final_notice_stage_reached"
-                break
             if self._system_clearly_ended(response.reply):
                 stop_reason = "system_clearly_ended_conversation"
                 break
-            if follow_up_index >= len(scenario.follow_up_messages):
-                stop_reason = "scenario_goal_reached"
-                break
 
-            borrower_message = self._build_next_message(
+            decision = self._build_next_message(
                 project_context=project_context,
                 scenario=scenario,
+                conversation_history=conversation_history,
                 system_reply=response.reply,
                 follow_up_index=follow_up_index,
             )
+            borrower_message = self._normalize_borrower_message(
+                decision.message.strip(),
+                conversation_history=conversation_history,
+                follow_up_index=follow_up_index,
+            )
+            if not borrower_message:
+                stop_reason = "scenario_goal_reached"
+                break
             follow_up_index += 1
 
         return TesterRunResult(
@@ -160,12 +187,89 @@ class TesterAgent:
         self,
         project_context: ProjectContext,
         scenario: Scenario,
+        conversation_history: list[tuple[str, str]],
         system_reply: str | None,
         follow_up_index: int,
+    ) -> BorrowerTurnDecision:
+        prompt = ChatPromptTemplate.from_messages(
+            [
+                (
+                    "system",
+                    (
+                        "You are the borrower simulator for a debt-collections test harness. "
+                        "Generate only the next borrower turn from the scenario persona and intent. "
+                        "Do not roleplay as the lender. "
+                        "If the scenario objective is achieved or the stop condition is met, set continue_conversation to false."
+                    ),
+                ),
+                ("human", "{input_prompt}"),
+            ]
+        )
+        chain = prompt | self.borrower_llm.with_structured_output(BorrowerTurnDecision)
+        scenario_description = scenario.scenario_description or (
+            f"{scenario.borrower_profile} Intent: {scenario.borrower_intent}. "
+            f"{scenario.expected_path_notes or ''}"
+        ).strip()
+        history_text = self._format_history(conversation_history)
+        try:
+            return chain.invoke(
+                {
+                    "input_prompt": (
+                        f"Project context:\n{project_context.system_under_test}\n\n"
+                        f"Testing instructions:\n{json.dumps(project_context.testing_instructions, indent=2)}\n\n"
+                        f"Global guardrails:\n{json.dumps(project_context.global_guardrails, indent=2)}\n\n"
+                        f"Scenario id: {scenario.scenario_id}\n"
+                        f"Scenario description:\n{scenario_description}\n\n"
+                        f"Borrower profile:\n{scenario.borrower_profile}\n\n"
+                        f"Borrower intent:\n{scenario.borrower_intent}\n\n"
+                        f"Reply style rules:\n{json.dumps(scenario.reply_style_rules, indent=2)}\n\n"
+                        f"Stop condition:\n{scenario.stop_condition}\n\n"
+                        f"Conversation so far:\n{history_text}\n\n"
+                        f"Latest system reply:\n{system_reply or ''}\n\n"
+                        f"Turn nonce: {follow_up_index}-{time_ns()}\n\n"
+                        "Do not repeat the exact same borrower line as the previous borrower turn. "
+                        "If the system keeps repeating itself, escalate the borrower's refusal naturally in one concise sentence.\n\n"
+                        "Return JSON with field:\n"
+                        "- message: string\n"
+                        "Keep the borrower message concise and consistent with persona."
+                    )
+                }
+            )
+        except Exception:
+            # Backward-compatible fallback if dynamic generation fails.
+            if follow_up_index < len(scenario.follow_up_messages):
+                return BorrowerTurnDecision(message=scenario.follow_up_messages[follow_up_index])
+            return BorrowerTurnDecision(message="")
+
+    def _format_history(self, conversation_history: list[tuple[str, str]]) -> str:
+        if not conversation_history:
+            return "(empty)"
+        return "\n".join(f"{actor}: {message}" for actor, message in conversation_history)
+
+    def _normalize_borrower_message(
+        self,
+        message: str,
+        conversation_history: list[tuple[str, str]],
+        follow_up_index: int,
     ) -> str:
-        _ = project_context
-        _ = system_reply
-        return scenario.follow_up_messages[follow_up_index]
+        if not message:
+            return message
+        last_borrower = ""
+        for actor, text in reversed(conversation_history):
+            if actor == "borrower":
+                last_borrower = text
+                break
+        if self._normalize_text(message) != self._normalize_text(last_borrower):
+            return message
+        variants = [
+            "I already answered. I cannot pay anything.",
+            "I cannot pay and I will not commit to any amount.",
+            "Please stop repeating this. I am not agreeing to pay.",
+        ]
+        return variants[follow_up_index % len(variants)]
+
+    def _normalize_text(self, value: str) -> str:
+        return " ".join(value.lower().split())
 
     def _post_message(
         self,
@@ -195,8 +299,8 @@ class TesterAgent:
         normalized = reply.lower()
         return "conversation is now closed" in normalized or "this case is closed" in normalized
 
-    def _current_agent_actor(self, borrower_id: str) -> str:
-        borrower_case = self.borrower_case_service.get_borrower_case(borrower_id)
+    def _current_agent_actor(self, borrower_id: str, borrower_case: BorrowerCase | None = None) -> str:
+        borrower_case = borrower_case or self.borrower_case_service.get_borrower_case(borrower_id)
         if borrower_case is None:
             return "unknown_agent"
         if borrower_case.stage == Stage.ASSESSMENT:
@@ -206,6 +310,48 @@ class TesterAgent:
         if borrower_case.stage == Stage.FINAL_NOTICE:
             return "agent_3"
         return "unknown_agent"
+
+    def _log_handoff_events(
+        self,
+        experiment_id: str,
+        workflow_id: str,
+        pre_turn_case: BorrowerCase | None,
+        post_turn_case: BorrowerCase | None,
+    ) -> None:
+        if pre_turn_case is None or post_turn_case is None:
+            return
+        if pre_turn_case.stage == post_turn_case.stage:
+            return
+        if post_turn_case.latest_handoff_stage != pre_turn_case.stage:
+            return
+        if not post_turn_case.latest_handoff_summary:
+            return
+
+        source_actor = self._current_agent_actor(pre_turn_case.borrower_id, pre_turn_case)
+        logger.log(
+            json.dumps(
+                {
+                    "from_stage": pre_turn_case.stage.value,
+                    "to_stage": post_turn_case.stage.value,
+                    "summary": post_turn_case.latest_handoff_summary,
+                }
+            ),
+            experiment_id=experiment_id,
+            workflow_id=workflow_id,
+            actor=f"{source_actor}_handoff",
+        )
+        logger.log(
+            json.dumps(
+                {
+                    "from_stage": pre_turn_case.stage.value,
+                    "to_stage": post_turn_case.stage.value,
+                    "borrower_case_state": post_turn_case.model_dump(mode="json"),
+                }
+            ),
+            experiment_id=experiment_id,
+            workflow_id=workflow_id,
+            actor=f"{source_actor}_case_state",
+        )
 
 
 def main() -> None:

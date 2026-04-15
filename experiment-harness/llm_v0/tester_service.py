@@ -121,6 +121,14 @@ class TesterAgent:
         while turn_count < max_turns:
             pre_turn_case = self.borrower_case_service.get_borrower_case(borrower_id)
             current_actor = self._current_agent_actor(borrower_id, pre_turn_case)
+            # self._log_case_snapshot(
+            #     experiment_id=experiment_id,
+            #     workflow_id=workflow_id,
+            #     actor=f"{current_actor}_case_state_before",
+            #     borrower_case=pre_turn_case,
+            #     turn_count=turn_count,
+            #     borrower_message=borrower_message,
+            # )
             logger.log(
                 borrower_message,
                 experiment_id=experiment_id,
@@ -142,6 +150,15 @@ class TesterAgent:
                 )
                 conversation_history.append((current_actor, response.reply))
             post_turn_case = self.borrower_case_service.get_borrower_case(borrower_id)
+            # self._log_case_snapshot(
+            #     experiment_id=experiment_id,
+            #     workflow_id=workflow_id,
+            #     actor=f"{current_actor}_case_state_after",
+            #     borrower_case=post_turn_case,
+            #     turn_count=turn_count,
+            #     borrower_message=borrower_message,
+            #     agent_reply=response.reply,
+            # )
             self._log_handoff_events(
                 experiment_id=experiment_id,
                 workflow_id=workflow_id,
@@ -351,6 +368,32 @@ class TesterAgent:
             experiment_id=experiment_id,
             workflow_id=workflow_id,
             actor=f"{source_actor}_case_state",
+        )
+
+    def _log_case_snapshot(
+        self,
+        experiment_id: str,
+        workflow_id: str,
+        actor: str,
+        borrower_case: BorrowerCase | None,
+        turn_count: int,
+        borrower_message: str,
+        agent_reply: str | None = None,
+    ) -> None:
+        if borrower_case is None:
+            return
+
+        payload = {
+            "turn": turn_count + 1,
+            "borrower_message": borrower_message,
+            "agent_reply": agent_reply,
+            "borrower_case_state": borrower_case.model_dump(mode="json"),
+        }
+        logger.log(
+            json.dumps(payload),
+            experiment_id=experiment_id,
+            workflow_id=workflow_id,
+            actor=actor,
         )
 
 

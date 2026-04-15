@@ -8,7 +8,6 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from app.domain.borrower_case import (
-    ApprovalState,
     BorrowerCapacity,
     BorrowerCase,
     BorrowerIntent,
@@ -102,11 +101,6 @@ borrower_cases = [
             claims_paid=False,
             claims_wrong_commitment=False,
         ),
-        approval_state=ApprovalState(
-            required=True,
-            type="PENALTY_WAIVER",
-            status="APPROVED",
-        ),
         offers_made=[],
         next_allowed_actions=["OFFER_REDUCED_CLOSURE", "OFFER_PAYMENT_PLAN"],
         stop_contact_flag=False,
@@ -145,11 +139,6 @@ borrower_cases = [
             claims_paid=False,
             claims_wrong_commitment=False,
         ),
-        approval_state=ApprovalState(
-            required=False,
-            type=None,
-            status=None,
-        ),
         offers_made=[],
         next_allowed_actions=["OFFER_PAYMENT_PLAN"],
         stop_contact_flag=False,
@@ -187,11 +176,6 @@ borrower_cases = [
         dispute_flags=DisputeFlags(
             claims_paid=False,
             claims_wrong_commitment=True,
-        ),
-        approval_state=ApprovalState(
-            required=True,
-            type="SPECIAL_SETTLEMENT",
-            status="PENDING",
         ),
         offers_made=[],
         next_allowed_actions=["SEND_FINAL_NOTICE", "FLAG_FOR_REVIEW"],

@@ -31,22 +31,28 @@ def _save_case(borrower_case: BorrowerCase) -> BorrowerCase:
     return borrower_case_service.update_borrower_case(borrower_case.borrower_id, borrower_case)
 
 
-def _append_message(borrower_id: str, stage: Stage, sender_type: str, message: str) -> None:
+def _append_message(borrower_case: BorrowerCase, stage: Stage, sender_type: str, message: str) -> None:
     chat_message_service.append_message(
-        user_id=borrower_id,
+        user_id=borrower_case.borrower_id,
+        workflow_id=borrower_case.workflow_id,
         agent_id=stage.value,
         sender_type=sender_type,
         message=message,
     )
 
 
-def _list_stage_messages(borrower_id: str, stage: Stage):
-    return chat_message_service.list_messages(user_id=borrower_id, agent_id=stage.value)
+def _list_stage_messages(borrower_case: BorrowerCase, stage: Stage):
+    return chat_message_service.list_messages(
+        user_id=borrower_case.borrower_id,
+        workflow_id=borrower_case.workflow_id,
+        agent_id=stage.value,
+    )
 
 
 def _ensure_handoff_message(borrower_case: BorrowerCase, stage: Stage) -> None:
     chat_message_service.append_handoff_message(
         user_id=borrower_case.borrower_id,
+        workflow_id=borrower_case.workflow_id,
         agent_id=stage.value,
         summary=borrower_case.latest_handoff_summary,
     )
@@ -65,8 +71,8 @@ def save_borrower_case(borrower_case: BorrowerCase) -> BorrowerCase:
 @activity.defn
 def run_assessment_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResult:
     borrower_case = input.borrower_case
-    chat_history = _list_stage_messages(borrower_case.borrower_id, Stage.ASSESSMENT)
-    _append_message(borrower_case.borrower_id, Stage.ASSESSMENT, "borrower", input.message)
+    chat_history = _list_stage_messages(borrower_case, Stage.ASSESSMENT)
+    _append_message(borrower_case, Stage.ASSESSMENT, "borrower", input.message)
     agent = AssessmentAgent(lender_id=borrower_case.lender_id)
     result = agent.invoke(
         borrower_id=borrower_case.borrower_id,
@@ -82,7 +88,7 @@ def run_assessment_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
     )
     updated_case.stage = Stage.ASSESSMENT
     updated_case.last_contact_channel = ContactChannel.CHAT
-    _append_message(borrower_case.borrower_id, Stage.ASSESSMENT, "agent", result.reply)
+    _append_message(borrower_case, Stage.ASSESSMENT, "agent", result.reply)
     return AgentTurnActivityResult(
         borrower_case=updated_case,
         stage_result=result,
@@ -93,8 +99,8 @@ def run_assessment_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
 def run_resolution_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResult:
     borrower_case = input.borrower_case
     _ensure_handoff_message(borrower_case, Stage.RESOLUTION)
-    chat_history = _list_stage_messages(borrower_case.borrower_id, Stage.RESOLUTION)
-    _append_message(borrower_case.borrower_id, Stage.RESOLUTION, "borrower", input.message)
+    chat_history = _list_stage_messages(borrower_case, Stage.RESOLUTION)
+    _append_message(borrower_case, Stage.RESOLUTION, "borrower", input.message)
     agent = ResolutionAgent(lender_id=borrower_case.lender_id)
     result = agent.invoke(
         borrower_id=borrower_case.borrower_id,
@@ -110,7 +116,7 @@ def run_resolution_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
     )
     updated_case.stage = Stage.RESOLUTION
     updated_case.last_contact_channel = ContactChannel.CHAT
-    _append_message(borrower_case.borrower_id, Stage.RESOLUTION, "agent", result.reply)
+    _append_message(borrower_case, Stage.RESOLUTION, "agent", result.reply)
     return AgentTurnActivityResult(
         borrower_case=updated_case,
         stage_result=result,
@@ -121,8 +127,8 @@ def run_resolution_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
 def run_final_notice_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResult:
     borrower_case = input.borrower_case
     _ensure_handoff_message(borrower_case, Stage.FINAL_NOTICE)
-    chat_history = _list_stage_messages(borrower_case.borrower_id, Stage.FINAL_NOTICE)
-    _append_message(borrower_case.borrower_id, Stage.FINAL_NOTICE, "borrower", input.message)
+    chat_history = _list_stage_messages(borrower_case, Stage.FINAL_NOTICE)
+    _append_message(borrower_case, Stage.FINAL_NOTICE, "borrower", input.message)
     agent = FinalNoticeAgent(lender_id=borrower_case.lender_id)
     result = agent.invoke(
         borrower_id=borrower_case.borrower_id,
@@ -138,7 +144,7 @@ def run_final_notice_turn(input: AgentTurnActivityInput) -> AgentTurnActivityRes
     )
     updated_case.stage = Stage.FINAL_NOTICE
     updated_case.last_contact_channel = ContactChannel.CHAT
-    _append_message(borrower_case.borrower_id, Stage.FINAL_NOTICE, "agent", result.reply)
+    _append_message(borrower_case, Stage.FINAL_NOTICE, "agent", result.reply)
     return AgentTurnActivityResult(
         borrower_case=updated_case,
         stage_result=result,

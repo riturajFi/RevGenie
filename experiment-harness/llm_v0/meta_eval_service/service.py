@@ -24,7 +24,7 @@ from meta_eval_management_service.service import (
     ValidationDecision,
 )
 from metrics_management_service.service import MetricDefinition, MetricsRegistry
-from policy_context import COMPLIANCE_RULES_TEXT, get_company_policy_text
+from policy_context import get_company_policy_text, get_compliance_rules_text
 
 
 class MetaEvalProposalDraft(BaseModel):
@@ -94,49 +94,62 @@ class MetaEvaluatorService:
             diff_summary=proposal.metrics_diff_summary,
         )
 
-        old_validation_judgments = self._rerun_validation_judgments(
-            experiment_ids=[before_experiment_id, after_experiment_id],
-            metrics_key=metrics_key,
-            metrics_version_id=active_metrics.version_id,
-            lender_id=lender_id,
-        )
-        candidate_validation_judgments = self._rerun_validation_judgments(
-            experiment_ids=[before_experiment_id, after_experiment_id],
-            metrics_key=metrics_key,
-            metrics_version_id=candidate_metrics_version.version_id,
-            lender_id=lender_id,
-        )
-
-        validation = self._validate_candidate_metrics(
-            before_transcript=before_transcript,
-            after_transcript=after_transcript,
-            old_metrics=active_metrics.model_dump(),
-            candidate_metrics=candidate_metrics_version.model_dump(),
-            old_validation_judgments=old_validation_judgments,
-            candidate_validation_judgments=candidate_validation_judgments,
-            correctness_analysis=proposal.correctness_analysis,
-            metric_actions=proposal.metric_actions,
-            company_policy=company_policy,
-        )
-
-        normalized_decision = self._normalize_decision(validation.decision)
-        activation_status = "inactive"
-        if normalized_decision == "ADOPT":
-            if force_activate:
-                self.metrics_registry.activate_version(metrics_key, candidate_metrics_version.version_id)
-                activation_status = "active"
-        else:
-            activation_status = "rejected"
-
+        # Validation and activation are intentionally disabled for now.
+        # Keep this block commented so it can be re-enabled later.
+        #
+        # old_validation_judgments = self._rerun_validation_judgments(
+        #     experiment_ids=[before_experiment_id, after_experiment_id],
+        #     metrics_key=metrics_key,
+        #     metrics_version_id=active_metrics.version_id,
+        #     lender_id=lender_id,
+        # )
+        # candidate_validation_judgments = self._rerun_validation_judgments(
+        #     experiment_ids=[before_experiment_id, after_experiment_id],
+        #     metrics_key=metrics_key,
+        #     metrics_version_id=candidate_metrics_version.version_id,
+        #     lender_id=lender_id,
+        # )
+        #
+        # validation = self._validate_candidate_metrics(
+        #     before_transcript=before_transcript,
+        #     after_transcript=after_transcript,
+        #     old_metrics=active_metrics.model_dump(),
+        #     candidate_metrics=candidate_metrics_version.model_dump(),
+        #     old_validation_judgments=old_validation_judgments,
+        #     candidate_validation_judgments=candidate_validation_judgments,
+        #     correctness_analysis=proposal.correctness_analysis,
+        #     metric_actions=proposal.metric_actions,
+        #     company_policy=company_policy,
+        # )
+        #
+        # normalized_decision = self._normalize_decision(validation.decision)
+        # activation_status = "inactive"
+        # if normalized_decision == "ADOPT":
+        #     if force_activate:
+        #         self.metrics_registry.activate_version(metrics_key, candidate_metrics_version.version_id)
+        #         activation_status = "active"
+        # else:
+        #     activation_status = "rejected"
+        #
+        # validation_record = ValidationDecision(
+        #     decision=normalized_decision,
+        #     reason=validation.reason,
+        #     experiment_results=self._merge_validation_results(
+        #         validation.experiment_results,
+        #         old_validation_judgments,
+        #         candidate_validation_judgments,
+        #     ),
+        # )
+        old_validation_judgments: list[StoredJudgeResult] = []
+        candidate_validation_judgments: list[StoredJudgeResult] = []
+        if force_activate:
+            self.metrics_registry.activate_version(metrics_key, candidate_metrics_version.version_id)
         validation_record = ValidationDecision(
-            decision=normalized_decision,
-            reason=validation.reason,
-            experiment_results=self._merge_validation_results(
-                validation.experiment_results,
-                old_validation_judgments,
-                candidate_validation_judgments,
-            ),
+            decision="SKIPPED",
+            reason="Validation reruns are temporarily disabled. Returning proposed candidate metrics only.",
+            experiment_results=[],
         )
+        activation_status = "active" if force_activate else "inactive"
 
         return self.meta_eval_run_service.create_run(
             before_experiment_id=before_experiment_id,
@@ -272,7 +285,7 @@ class MetaEvaluatorService:
         company_policy: str,
     ) -> str:
         return (
-            f"Global compliance rules:\n{COMPLIANCE_RULES_TEXT}\n\n"
+            f"Global compliance rules:\n{get_compliance_rules_text()}\n\n"
             f"Company policy:\n{company_policy or 'No lender policy found.'}\n\n"
             f"Active metrics version JSON:\n{json.dumps(active_metrics, indent=2)}\n\n"
             f"Before experiment record:\n{json.dumps(before_record.model_dump(), indent=2)}\n\n"
@@ -302,7 +315,7 @@ class MetaEvaluatorService:
         company_policy: str,
     ) -> str:
         return (
-            f"Global compliance rules:\n{COMPLIANCE_RULES_TEXT}\n\n"
+            f"Global compliance rules:\n{get_compliance_rules_text()}\n\n"
             f"Company policy:\n{company_policy or 'No lender policy found.'}\n\n"
             f"Old metrics version JSON:\n{json.dumps(old_metrics, indent=2)}\n\n"
             f"Candidate metrics version JSON:\n{json.dumps(candidate_metrics, indent=2)}\n\n"

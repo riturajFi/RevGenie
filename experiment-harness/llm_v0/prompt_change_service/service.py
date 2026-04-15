@@ -24,7 +24,7 @@ class PromptChangeApplyRequest(BaseModel):
 
 
 class PromptChangeDraft(BaseModel):
-    new_prompt_text: str
+    append_prompt_lines: list[str]
     diff_summary: str
     why_this_change: str
 
@@ -64,12 +64,14 @@ class PromptChangeProposer:
         draft = self._propose_prompt_change(
             target_agent_id=target_agent_id,
             current_prompt=active_prompt.prompt_text,
+            current_prompt_lines=active_prompt.prompt_lines,
             judge_result=judge_result,
             transcript=transcript,
         )
+        new_prompt_lines = self._append_prompt_lines(active_prompt.prompt_lines, draft.append_prompt_lines)
         new_version = self.prompt_service.create_prompt_version(
             agent_id=target_agent_id,
-            prompt_text=draft.new_prompt_text,
+            prompt_text=new_prompt_lines,
             parent_version_id=active_prompt.version_id,
             diff_summary=draft.diff_summary,
         )
@@ -91,6 +93,7 @@ class PromptChangeProposer:
         self,
         target_agent_id: str,
         current_prompt: str,
+        current_prompt_lines: list[str],
         judge_result,
         transcript: str,
     ) -> PromptChangeDraft:
@@ -109,6 +112,7 @@ class PromptChangeProposer:
                 "human_prompt": self._build_human_prompt(
                     target_agent_id=target_agent_id,
                     current_prompt=current_prompt,
+                    current_prompt_lines=current_prompt_lines,
                     judge_result=judge_result.model_dump(),
                     transcript=transcript,
                 ),
@@ -119,19 +123,38 @@ class PromptChangeProposer:
         self,
         target_agent_id: str,
         current_prompt: str,
+        current_prompt_lines: list[str],
         judge_result: dict,
         transcript: str,
     ) -> str:
         return (
             f"Target agent: {target_agent_id}\n\n"
-            f"Current prompt:\n{current_prompt}\n\n"
+            f"Current prompt as readable text:\n{current_prompt}\n\n"
+            f"Current prompt lines JSON:\n{json.dumps(current_prompt_lines, indent=2)}\n\n"
             f"Judge output:\n{json.dumps(judge_result, indent=2)}\n\n"
             f"Relevant transcript for this target agent only:\n{transcript}\n\n"
             "Return JSON with:\n"
-            "- new_prompt_text\n"
+            "- append_prompt_lines\n"
             "- diff_summary\n"
             "- why_this_change\n"
+            "Rules for append_prompt_lines:\n"
+            "- Return only new lines that can be appended to the existing prompt.\n"
+            "- Use one string per prompt line.\n"
+            "- Use empty strings for blank lines.\n"
+            "- Prefer adding new sections, examples, or clarifying instructions.\n"
+            "- Do not rewrite or repeat existing lines.\n"
+            "- Keep additions concise and readable.\n"
         )
+
+    def _append_prompt_lines(self, current_prompt_lines: list[str], append_prompt_lines: list[str]) -> list[str]:
+        if not append_prompt_lines:
+            return list(current_prompt_lines)
+
+        merged = list(current_prompt_lines)
+        if merged and merged[-1] != "":
+            merged.append("")
+        merged.extend(append_prompt_lines)
+        return merged
 
     def _load_transcript(self, experiment_id: str, target_agent_id: str) -> str:
         events = get_logs(experiment_id)

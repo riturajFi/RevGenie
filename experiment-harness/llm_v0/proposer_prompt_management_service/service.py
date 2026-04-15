@@ -10,8 +10,9 @@ from pydantic import BaseModel
 THIS_DIR = Path(__file__).resolve().parent
 DEFAULT_PROPOSER_PROMPT_PATH = THIS_DIR.parent / "data" / "proposer_prompt_versions.json"
 DEFAULT_PROPOSER_PROMPT_TEXT = (
-    "You improve one collections agent prompt. "
-    "Preserve intent, improve failures, and do not make it longer than needed."
+    "You improve one collections agent prompt by appending clean, line-based sections. "
+    "Preserve the existing prompt, do not rewrite it wholesale, and add only the minimum new instructions, examples, or clarifications needed. "
+    "Return additions as prompt lines that can be appended directly to the stored prompt."
 )
 
 

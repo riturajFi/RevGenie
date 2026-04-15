@@ -15,7 +15,7 @@ prompt_service = json_prompt_storage_service
 
 
 class CreatePromptVersionRequest(BaseModel):
-    prompt_text: str
+    prompt_text: str | list[str]
     parent_version_id: str | None = None
     diff_summary: str | None = None
 
@@ -34,6 +34,7 @@ class PromptVersionResponse(BaseModel):
     version_id: str
     parent_version_id: str | None
     prompt_text: str
+    prompt_lines: list[str]
     diff_summary: str | None
     created_at: datetime
 
@@ -45,6 +46,7 @@ class PromptVersionResponse(BaseModel):
             version_id=record.version_id,
             parent_version_id=record.parent_version_id,
             prompt_text=record.prompt_text,
+            prompt_lines=record.prompt_lines,
             diff_summary=record.diff_summary,
             created_at=record.created_at,
         )
@@ -54,6 +56,7 @@ class ActivePromptResponse(BaseModel):
     agent_id: str
     version_id: str
     prompt_text: str
+    prompt_lines: list[str]
 
 
 class ActivatePromptResponse(BaseModel):
@@ -71,6 +74,7 @@ def get_active_prompt(agent_id: str) -> ActivePromptResponse:
         agent_id=record.agent_id,
         version_id=record.version_id,
         prompt_text=record.prompt_text,
+        prompt_lines=record.prompt_lines,
     )
 
 

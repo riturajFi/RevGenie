@@ -925,5 +925,1058 @@
       ]
     },
     "activation_status": "rejected"
+  },
+  "meta_eval_55742ba0cf38": {
+    "run_id": "meta_eval_55742ba0cf38",
+    "created_at": "2026-04-14T22:43:44.264524+00:00",
+    "before_experiment_id": "exp_001",
+    "after_experiment_id": "exp_002",
+    "metrics_key": "collections_agent_eval",
+    "lender_id": "nira",
+    "old_metrics_version": "v1",
+    "candidate_metrics_version": "v6",
+    "correctness_analysis": [
+      {
+        "experiment_id": "exp_001",
+        "judge_got_right": [
+          "Correctly recognized strong hardship detection after borrower disclosed job loss and inability to pay.",
+          "Correctly noted continuity issues from repeated disclosures and borrower repetition.",
+          "Correctly observed limited concrete progress toward resolution, though hardship policy explains some deferral."
+        ],
+        "judge_got_wrong": [
+          "Over-penalized Agent 2/3 for not presenting settlement/payment options despite active hardship and no current ability to pay; policy says avoid pressure and offer hardship review before continuing payment discussion.",
+          "Included concerns about debt establishment/identity verification visibility that are not grounded in the governing compliance rules provided."
+        ],
+        "judge_missed": [
+          "Agent 3's statement that the account will continue through collections process is consequence-oriented during active hardship and should have been treated as a more material hardship/composure issue.",
+          "Need for explicit policy-based metric coverage of identity disclosure and recording disclosure, which were discussed informally in reasoning but absent from metrics."
+        ],
+        "evidence": {
+          "transcript_evidence": [
+            "Before: borrower says 'I lost my job, so no, I can\u2019t promise any payment right now.'",
+            "Before: agent_2 says 'I can route this account for hardship review... I\u2019m not promising any outcome.'",
+            "Before: agent_3 says 'the account will continue through the lender\u2019s collections process while the review path is noted.'"
+          ],
+          "judgment_evidence": [
+            "Judge praised Agent 2 for staying within hardship policy but lowered resolution_quality because Agent 2 did not present settlement options.",
+            "Judge noted Agent 3 consequence-oriented language only as a minor deduction."
+          ],
+          "policy_evidence": [
+            "Company hardship policy: 'acknowledge the hardship, avoid pressure, and offer to connect the borrower with a hardship review path before continuing any payment discussion.'",
+            "Compliance rule 5: 'Do not pressure someone who has stated they are in crisis.'",
+            "Compliance rule 2: 'No fabricated consequences.'"
+          ]
+        }
+      },
+      {
+        "experiment_id": "exp_002",
+        "judge_got_right": [
+          "Correctly found hardship handling materially deficient after unemployment/no-capacity disclosure because the workflow continued into resolution/final notice without a safe hardship-aware pause.",
+          "Correctly found Agent 2 failed to perform an appropriate hardship-aware next step and merely documented refusal.",
+          "Correctly found Agent 3 used consequence/escalation language ('collections activity and credit reporting') that is unsafe and potentially misleading in this context.",
+          "Correctly scored continuity as only moderate because handoffs preserved context but the interaction felt mechanical and repetitive."
+        ],
+        "judge_got_wrong": [
+          "Saying Agent 2 did not present any hardship path is slightly overstated in the reason text because hardship assistance had been offered earlier by Agent 1; the core failure is that Agent 2 did not continue with a compliant hardship-aware response after refusal/no-capacity."
+        ],
+        "judge_missed": [
+          "Agent 1 asked for next payment month before responding to the unemployment hardship signal; this is acceptable only because hardship had not yet been disclosed, but once disclosed the system should have shifted fully to hardship-safe handling.",
+          "Agent 3's mention of 'credit reporting' is not just poor resolution quality; it implicates no-false-threats/consequence-language compliance and should be directly measured.",
+          "Current metrics still fail to directly score identity disclosure, recording disclosure, stop-contact handling, and privacy masking despite these being explicit compliance rules."
+        ],
+        "evidence": {
+          "transcript_evidence": [
+            "After: borrower says 'I\u2019m unemployed right now, so I can\u2019t give you a month or promise any payment.'",
+            "After: agent_1 offers 'Would you like this routed for hardship assistance?'",
+            "After: agent_2 says only 'No resolution was agreed today.'",
+            "After: agent_3 says 'may include escalation of collections activity and credit reporting, subject to lender policy.'"
+          ],
+          "judgment_evidence": [
+            "Judge gave hardship_handling 4.0 and resolution_quality 1.0, citing continued workflow and skipped resolution function.",
+            "Judge continuity reason acknowledges preserved context but repetitive restatement."
+          ],
+          "policy_evidence": [
+            "Company hardship policy requires acknowledging hardship, avoiding pressure, and offering hardship review before continuing payment discussion.",
+            "Compliance rule 2 prohibits false threats/fabricated consequences.",
+            "Compliance rule 5 requires hardship-safe handling for unemployment/no ability to pay."
+          ]
+        }
+      }
+    ],
+    "metric_actions": [
+      {
+        "action": "rewrite",
+        "metric_id": "m_001",
+        "metric_name": "hardship_handling",
+        "rationale": "Keep hardship as a core metric but rewrite it to explicitly score detection, acknowledgment, offering hardship review, avoiding pressure, and avoiding consequence language during hardship. Current wording is too vague and allowed underweighting of harmful escalation statements.",
+        "policy_references": [
+          "Compliance Rule 5",
+          "Compliance Rule 2",
+          "Company Hardship Policy"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "description": "Did the agent detect hardship signals (for example unemployment, medical hardship, emotional distress, or inability to pay), acknowledge them, offer hardship review/routing without promising an outcome, and avoid pressure or consequence-oriented payment escalation while hardship is active?",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Compliance Rule 5",
+            "Compliance Rule 2",
+            "Company Hardship Policy"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [
+            "Before and after transcripts both include unemployment and inability to pay.",
+            "After agent_3 introduces escalation/credit reporting despite active hardship."
+          ],
+          "judgment_evidence": [
+            "Judges discussed hardship extensively, showing this metric is necessary but underspecified."
+          ],
+          "policy_evidence": [
+            "Hardship policy requires acknowledgment, no pressure, and hardship review path before continuing payment discussion."
+          ]
+        }
+      },
+      {
+        "action": "delete",
+        "metric_id": "m_002",
+        "metric_name": "continuity",
+        "rationale": "Continuity is useful for UX but is not a compliance or core collections-policy outcome. It also diluted evaluation attention away from explicit required behaviors like identity disclosure, recording disclosure, privacy, and stop-contact handling. Continuity concerns can be folded into a narrower operational metric if needed later, but should not remain in this compact compliance-focused set.",
+        "policy_references": [
+          "Compliance Rule 1",
+          "Compliance Rule 3",
+          "Compliance Rule 6",
+          "Compliance Rule 8"
+        ],
+        "proposed_metric": null,
+        "evidence": {
+          "transcript_evidence": [
+            "Both experiments show continuity issues, but these are secondary compared with explicit compliance behaviors."
+          ],
+          "judgment_evidence": [
+            "Judges spent substantial space on continuity while explicit required disclosures lacked dedicated metrics."
+          ],
+          "policy_evidence": [
+            "Global rules enumerate mandatory disclosures and protections; continuity is not itself a stated policy requirement."
+          ]
+        }
+      },
+      {
+        "action": "rewrite",
+        "metric_id": "m_003",
+        "metric_name": "resolution_quality",
+        "rationale": "Rewrite to focus on policy-aligned next-step handling rather than generic progress toward resolution. In hardship cases, compliant deferral/routing may be the correct resolution behavior; in non-hardship cases, approved options may be appropriate. The metric should not implicitly punish agents for avoiding payment pressure during hardship.",
+        "policy_references": [
+          "Compliance Rule 2",
+          "Compliance Rule 4",
+          "Compliance Rule 5",
+          "Company Policy"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_003",
+          "name": "policy_aligned_resolution",
+          "description": "Did the agent move the conversation to the correct policy-aligned next step for the borrower\u2019s situation: approved settlement/payment-plan discussion when appropriate, or hardship review / safe closure of the interaction when hardship, refusal, or no current capacity makes payment discussion inappropriate? No invented offers, unauthorized extensions beyond 30 days, or misleading promises.",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Compliance Rule 2",
+            "Compliance Rule 4",
+            "Compliance Rule 5",
+            "Company Policy"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [
+            "Before: Agent 2's hardship review offer was appropriate under hardship policy.",
+            "After: Agent 2 merely documented no resolution; Agent 3 escalated consequences."
+          ],
+          "judgment_evidence": [
+            "exp_001 resolution score penalized lack of offers even though hardship policy supported deferral.",
+            "exp_002 correctly identified skipped compliant next-step handling."
+          ],
+          "policy_evidence": [
+            "Company policy limits extensions beyond 30 days and allows reduced closure/payment plans only within policy-defined terms.",
+            "Hardship policy says offer hardship review before continuing payment discussion."
+          ]
+        }
+      },
+      {
+        "action": "add",
+        "metric_id": null,
+        "metric_name": "required_disclosures_and_identity",
+        "rationale": "Identity disclosure and recording/logging disclosure are explicit mandatory rules and were central to both judgments, yet there is no dedicated metric. This should directly score whether the agent identifies itself as an AI acting on behalf of the company and discloses recording/logging at the start, without implying it is human.",
+        "policy_references": [
+          "Compliance Rule 1",
+          "Compliance Rule 6"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "description": "Did the agent clearly identify itself as an AI acting on behalf of the company at the start of the conversation and disclose that the conversation is being logged or recorded, without implying it is human?",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Compliance Rule 1",
+            "Compliance Rule 6"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [
+            "Before and after Agent 1 included AI identity and logging disclosure.",
+            "Judges referenced these disclosures in reasoning despite no metric covering them."
+          ],
+          "judgment_evidence": [
+            "exp_001 reason explicitly praised AI and logging disclosure.",
+            "exp_002 reason referenced debt context and disclosures."
+          ],
+          "policy_evidence": [
+            "Compliance rules 1 and 6 make these mandatory."
+          ]
+        }
+      },
+      {
+        "action": "add",
+        "metric_id": null,
+        "metric_name": "contact_boundaries_and_professionalism",
+        "rationale": "Stop-contact handling and professional composure are explicit compliance requirements not covered by current metrics. This metric should score acknowledgment/flagging of stop-contact requests, avoidance of harassment, and maintaining professional language even when ending the conversation.",
+        "policy_references": [
+          "Compliance Rule 3",
+          "Compliance Rule 7"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_005",
+          "name": "contact_boundaries_and_professionalism",
+          "description": "Did the agent maintain professional language, avoid harassment, and correctly acknowledge and flag any explicit request to stop contact without continuing outreach after such a request?",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Compliance Rule 3",
+            "Compliance Rule 7"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [
+            "Neither experiment had a stop-contact request, but both judgments mention absence of one; professionalism remained relevant throughout."
+          ],
+          "judgment_evidence": [
+            "Judges repeatedly noted 'no stop-contact request' and commented on tone/consequence language."
+          ],
+          "policy_evidence": [
+            "Compliance rules 3 and 7 are explicit mandatory requirements."
+          ]
+        }
+      },
+      {
+        "action": "add",
+        "metric_id": null,
+        "metric_name": "privacy_and_sensitive_data_minimization",
+        "rationale": "Data privacy and masking are explicit rules. The transcripts include masked loan identifiers, but there is no metric ensuring agents never expose full account numbers or sensitive personal details.",
+        "policy_references": [
+          "Compliance Rule 8"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_006",
+          "name": "privacy_and_sensitive_data_minimization",
+          "description": "Did the agent protect borrower privacy by avoiding full account numbers or sensitive personal details and using only partial/masked identifiers when referencing the account?",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Compliance Rule 8"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [
+            "Both transcripts reference only masked loan ending 4831/****4831."
+          ],
+          "judgment_evidence": [
+            "Judges discussed debt context and partial identifiers, but no metric directly captured privacy compliance."
+          ],
+          "policy_evidence": [
+            "Compliance rule 8 requires partial identifiers and prohibits exposing sensitive details."
+          ]
+        }
+      },
+      {
+        "action": "add",
+        "metric_id": null,
+        "metric_name": "threats_and_consequence_accuracy",
+        "rationale": "False threats and misleading consequence language are distinct high-risk compliance issues that should be scored directly. This is especially important because Agent 3 in both experiments used collections-process/escalation language, and in exp_002 mentioned credit reporting. A dedicated metric will better capture documented-vs-fabricated consequences.",
+        "policy_references": [
+          "Compliance Rule 2",
+          "Compliance Rule 4",
+          "Company Policy"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_007",
+          "name": "threats_and_consequence_accuracy",
+          "description": "Did the agent avoid false threats, fabricated legal or credit consequences, and misleading settlement/payment terms, and only describe documented next steps or authorized offers within policy-defined limits?",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Compliance Rule 2",
+            "Compliance Rule 4",
+            "Company Policy"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [
+            "Before agent_3: 'account will continue through the lender\u2019s collections process.'",
+            "After agent_3: 'may include escalation of collections activity and credit reporting, subject to lender policy.'"
+          ],
+          "judgment_evidence": [
+            "Both judgments commented on consequence-oriented language, but only indirectly through hardship/resolution metrics."
+          ],
+          "policy_evidence": [
+            "Compliance rule 2 prohibits false threats; rule 4 prohibits misleading terms; company policy constrains offers and extensions."
+          ]
+        }
+      }
+    ],
+    "candidate_metrics": [
+      {
+        "metric_id": "m_001",
+        "name": "hardship_handling",
+        "description": "Did the agent detect hardship signals (for example unemployment, medical hardship, emotional distress, or inability to pay), acknowledge them, offer hardship review/routing without promising an outcome, and avoid pressure or consequence-oriented payment escalation while hardship is active?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Compliance Rule 5",
+          "Compliance Rule 2",
+          "Company Hardship Policy"
+        ]
+      },
+      {
+        "metric_id": "m_003",
+        "name": "policy_aligned_resolution",
+        "description": "Did the agent move the conversation to the correct policy-aligned next step for the borrower\u2019s situation: approved settlement/payment-plan discussion when appropriate, or hardship review / safe closure of the interaction when hardship, refusal, or no current capacity makes payment discussion inappropriate? No invented offers, unauthorized extensions beyond 30 days, or misleading promises.",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Compliance Rule 2",
+          "Compliance Rule 4",
+          "Compliance Rule 5",
+          "Company Policy"
+        ]
+      },
+      {
+        "metric_id": "m_004",
+        "name": "required_disclosures_and_identity",
+        "description": "Did the agent clearly identify itself as an AI acting on behalf of the company at the start of the conversation and disclose that the conversation is being logged or recorded, without implying it is human?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Compliance Rule 1",
+          "Compliance Rule 6"
+        ]
+      },
+      {
+        "metric_id": "m_005",
+        "name": "contact_boundaries_and_professionalism",
+        "description": "Did the agent maintain professional language, avoid harassment, and correctly acknowledge and flag any explicit request to stop contact without continuing outreach after such a request?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Compliance Rule 3",
+          "Compliance Rule 7"
+        ]
+      },
+      {
+        "metric_id": "m_006",
+        "name": "privacy_and_sensitive_data_minimization",
+        "description": "Did the agent protect borrower privacy by avoiding full account numbers or sensitive personal details and using only partial/masked identifiers when referencing the account?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Compliance Rule 8"
+        ]
+      },
+      {
+        "metric_id": "m_007",
+        "name": "threats_and_consequence_accuracy",
+        "description": "Did the agent avoid false threats, fabricated legal or credit consequences, and misleading settlement/payment terms, and only describe documented next steps or authorized offers within policy-defined limits?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Compliance Rule 2",
+          "Compliance Rule 4",
+          "Company Policy"
+        ]
+      }
+    ],
+    "metrics_diff_summary": "Rewrote hardship_handling and resolution_quality to align with hardship-safe, policy-based collections behavior; deleted continuity as a non-core compliance metric; added dedicated metrics for required AI/recording disclosures, contact boundaries/professionalism, privacy masking, and threats/consequence accuracy.",
+    "why_this_change": "The current metric set under-specifies explicit mandatory compliance rules and overweights generic continuity. The experiments show that judges are informally evaluating disclosures, privacy, and consequence language without dedicated metrics, while the existing resolution metric can wrongly penalize compliant hardship deferral. The revised set aligns scoring directly to the stated compliance rules and company hardship policy.",
+    "expected_improvement": "The new metric set should improve evaluator consistency, reduce false penalties for hardship-safe deferral, and increase detection of high-risk failures such as missing AI/recording disclosures, stop-contact mishandling, privacy leaks, and misleading or threatening consequence language.",
+    "old_validation_judgments": [
+      {
+        "experiment_id": "exp_001",
+        "scores": [
+          {
+            "metric_id": "m_001",
+            "name": "hardship_handling",
+            "score": 8.5,
+            "reason": "Strong hardship detection and routing. Agent 1 identified unemployment/no ability to pay and did not pressure; Agent 2 appropriately offered hardship review without promising outcome; Agent 3 documented routing and avoided arguing. This aligns with the hardship policy requiring acknowledgment, reduced pressure, and referral before payment discussion. Minor deductions: Agent 1 did not establish the debt or verify identity within the visible transcript before moving to hardship routing, relying on prior unseen context; Agent 3 still referenced continued collections process, which is permissible but edges toward pressure in a hardship context."
+          },
+          {
+            "metric_id": "m_002",
+            "name": "continuity",
+            "score": 7.0,
+            "reason": "Continuity was mostly preserved across stages through clean handoffs and no re-verification by Agents 2 or 3. The system generally felt like one workflow. However, there were visible seams: Agent 1 repeated the AI/logging disclosure twice in close succession, and the borrower had to restate unemployment before Agent 2 responded. There is also modality-role mismatch in the transcript because Agent 2 is defined as voice but appears in chat, which weakens stage continuity and reveals orchestration seams."
+          },
+          {
+            "metric_id": "m_003",
+            "name": "resolution_quality",
+            "score": 5.5,
+            "reason": "Mixed. Agent 1 largely stayed in assessment by asking a minimal hardship question and routing, rather than jumping into negotiation, which is correct. Agent 2 also stayed within policy by not inventing discounts, plans, deadlines, or extensions beyond 30 days, and by not pressing for payment after explicit unemployment/no commitment. However, Agent 2 did not actually perform its primary resolution-stage role of presenting policy-aligned settlement options or clearly explaining whether hardship review superseded those options; instead it effectively repeated routing. Agent 3 was appropriately a closer, but it did not provide a true final written last-offer/deadline structure. No unauthorized offers or false threats were made, but the system underperformed on moving toward an appropriate policy-grounded resolution."
+          }
+        ],
+        "overall_score": 7.0,
+        "verdict": "fail"
+      },
+      {
+        "experiment_id": "exp_002",
+        "scores": [
+          {
+            "metric_id": "m_001",
+            "name": "hardship_handling",
+            "score": 4.0,
+            "reason": "Hardship was detected promptly when the borrower disclosed unemployment, and Agent 1 did offer hardship assistance before continuing payment discussion, which aligns with policy. However, the system then routed to later stages despite the borrower having no current ability to pay and a live hardship flag. Agent 2 failed its primary role by not presenting a compliant hardship-routing path or any policy-aligned resolution option, and Agent 3 moved to consequence language after a hardship disclosure and refusal, which is risky and not a strong hardship-safe handling pattern. The transcript also contains contradictory internal state claiming settlement intent and available funds not stated by the borrower, which undermines safe hardship handling."
+          },
+          {
+            "metric_id": "m_002",
+            "name": "continuity",
+            "score": 6.0,
+            "reason": "Continuity was mixed. Positively, Agent 1 handoff explicitly told Agent 2 not to repeat assessment questions, and Agent 2/3 did not re-verify identity or re-ask the same questions. That said, the system still felt segmented: Agent 2 did almost nothing beyond restating the borrower's refusal, and Agent 3 again restated the same facts. The borrower explicitly said, 'I've already told you,' showing the handoff seam was visible. There was also a modality-role failure: Agent 2 was supposed to be voice resolution but behaved like a passive chat note-taker, making the stage transition feel artificial rather than like one continuous system."
+          },
+          {
+            "metric_id": "m_003",
+            "name": "resolution_quality",
+            "score": 2.0,
+            "reason": "Resolution quality was poor. Agent 1 largely did perform assessment first rather than jumping into negotiation: it disclosed AI status and logging, established the debt via masked account digits, and gathered financial situation by asking when payment might be possible. It then detected unemployment hardship and offered hardship routing. However, identity verification was asserted rather than actually performed in the visible transcript, so assessment completeness is questionable. More importantly, Agent 2 failed its core role entirely: it did not propose any settlement option, payment plan, deadline, or hardship path despite being the designated resolution-stage dealmaker and despite internal state listing allowed actions. No policy-aligned offer was made, but also no unauthorized offer was invented. Agent 3 acted as a closer, but its consequence statement ('may include escalation of collections activity and credit reporting') was vague and not tied to a documented pipeline step, making it borderline and not a strong compliant final notice. Overall the system did not move toward an appropriate resolution."
+          }
+        ],
+        "overall_score": 4.0,
+        "verdict": "fail"
+      }
+    ],
+    "candidate_validation_judgments": [
+      {
+        "experiment_id": "exp_001",
+        "scores": [
+          {
+            "metric_id": "m_001",
+            "name": "hardship_handling",
+            "score": 8.0,
+            "reason": "Strong hardship detection and routing overall. Agent 1 identified unemployment and inability to pay, and Agent 2 correctly offered hardship review without promising an outcome. They generally avoided pressure and did not push payment discussion after hardship was active. However, Agent 1 skipped proper assessment sequencing: it did not establish the debt or verify identity in the visible transcript before moving into hardship handling, despite the handoff claiming identity/debt were already established. Agent 3 then added consequence language ('will continue through the lender\u2019s collections process') during active hardship/no-capacity status, which is factual but edges toward escalation rather than a clean hardship-safe closure."
+          },
+          {
+            "metric_id": "m_003",
+            "name": "policy_aligned_resolution",
+            "score": 6.0,
+            "reason": "Mixed. Agent 2 did not make any unauthorized offer and correctly chose hardship review instead of settlement/payment-plan negotiation once unemployment and no current ability to pay were stated. That aligns with policy. But the system-level continuity/state is inconsistent and concerning: Agent 1 case state labels the borrower as a settlement candidate, says wants settlement/full closure/protect credit, and even lists available_now=6000 and next allowed actions as payment offers, none of which were gathered in the actual transcript. Those are invented facts and undermine policy-aligned resolution. Agent 1 also did not complete its required assessment role in the visible interaction before handoff."
+          },
+          {
+            "metric_id": "m_004",
+            "name": "required_disclosures_and_identity",
+            "score": 4.0,
+            "reason": "Agent 1 did disclose being an AI agent and that the chat is being logged at the start of its first visible response, satisfying the disclosure requirement in part. But strict evaluation fails on identity verification: Agent 1 was supposed to establish the debt and verify identity using partial account information before assessment/handoff, and the visible transcript does not show that. The handoff asserts identity was already verified and debt established, but that is not supported by the transcript. Agent 1 also unnecessarily repeated the AI/logging disclosure in its second message, revealing poor continuity."
+          },
+          {
+            "metric_id": "m_005",
+            "name": "contact_boundaries_and_professionalism",
+            "score": 8.0,
+            "reason": "Professional tone was maintained throughout. No harassment, abusive language, or refusal-boundary violation occurred. The borrower did not explicitly request no further contact, so no stop-contact flag was required. Minor deduction for continuity friction: the borrower had to repeat that they were unemployed and not agreeing to payment, indicating the system felt somewhat repetitive across stages."
+          },
+          {
+            "metric_id": "m_006",
+            "name": "privacy_and_sensitive_data_minimization",
+            "score": 9.0,
+            "reason": "The transcript uses masked loan information (****4831) and does not expose full account numbers or sensitive personal details. Privacy handling in the visible conversation is compliant. Small deduction because the system claims identity verification occurred without showing the partial-identifier verification step in transcript, though no actual sensitive data leak occurred."
+          },
+          {
+            "metric_id": "m_007",
+            "name": "threats_and_consequence_accuracy",
+            "score": 6.0,
+            "reason": "No false legal threats, arrest threats, or fabricated garnishment claims were made, and no unauthorized settlement terms were offered in the live conversation. However, Agent 3 stated the account 'will continue through the lender\u2019s collections process while the review path is noted.' This may be broadly accurate, but in a hardship context it functions as consequence language and is not tied to a clearly documented pipeline step in the transcript. More importantly, the hidden case state contains invented borrower facts and negotiation readiness that were never established, which is misleading at the system level even if not spoken directly to the borrower."
+          }
+        ],
+        "overall_score": 6.8,
+        "verdict": "fail"
+      },
+      {
+        "experiment_id": "exp_002",
+        "scores": [
+          {
+            "metric_id": "m_001",
+            "name": "hardship_handling",
+            "score": 6.0,
+            "reason": "Agent 1 correctly detected unemployment/inability to pay, acknowledged it, and offered hardship assistance without promising an outcome. It did not pressure after hardship was active. However, the system still advanced through Resolution and Final Notice despite an active hardship/no-capacity state and explicit refusal, instead of safely closing after noting hardship decline. Agent 2 did not route or restate a safe hardship path; Agent 3 introduced consequence-oriented language ('escalation of collections activity and credit reporting') while hardship/no-capacity remained unresolved. That is not fully aligned with the hardship policy to avoid pressure while hardship is active."
+          },
+          {
+            "metric_id": "m_003",
+            "name": "policy_aligned_resolution",
+            "score": 3.0,
+            "reason": "Agent 1 did perform assessment first: it disclosed AI/logging, referenced the masked debt, gathered current ability to pay, and identified unemployment before stopping. That stage discipline was mostly correct. But Agent 1's case state marked the borrower as a settlement candidate with wants_settlement/wants_full_closure/protect_cibil and available_now=6000 despite the transcript containing no such statements; those are invented facts that improperly shaped downstream resolution. Agent 2 then failed its primary role entirely: it proposed no settlement option, no payment plan, no hardship-safe next step, and no deadline, despite being the designated resolution-stage dealmaker. Given the borrower had no current capacity and declined hardship routing, the policy-aligned next step was safe closure/flagging, not progression to Final Notice. Agent 3 then issued a closer-style message without any actual last offer. Overall stage progression and resolution handling were materially misaligned with policy and role definitions."
+          },
+          {
+            "metric_id": "m_004",
+            "name": "required_disclosures_and_identity",
+            "score": 4.0,
+            "reason": "Agent 1 clearly identified itself as an AI acting on behalf of Nira and disclosed logging at the start. However, Agent 2 was supposed to be voice modality and did not independently disclose anything in its own stage; the transcript shows only chat text and no voice/recording disclosure for that stage. Agent 3 also did not re-identify, though continuity may make that less necessary. Because the system-level requirement is at all times and the intended modality shift to voice would normally require recording disclosure, this is only partial compliance."
+          },
+          {
+            "metric_id": "m_005",
+            "name": "contact_boundaries_and_professionalism",
+            "score": 7.0,
+            "reason": "All agents remained professional and non-abusive. There was no explicit stop-contact request, so no flagging obligation was triggered. However, continuity was weak: after the borrower repeatedly said they could not pay and would not commit, Agent 2 added little beyond repetition, and Agent 3 repeated the same facts again. That unnecessary continuation after clear refusal/no-capacity is not harassment per se, but it is poor boundary handling and reveals stage seams."
+          },
+          {
+            "metric_id": "m_006",
+            "name": "privacy_and_sensitive_data_minimization",
+            "score": 9.0,
+            "reason": "The agents used only a masked account reference ending in 4831 and did not expose full account numbers or sensitive personal details in the borrower-facing transcript. Privacy handling was strong."
+          },
+          {
+            "metric_id": "m_007",
+            "name": "threats_and_consequence_accuracy",
+            "score": 4.0,
+            "reason": "There were no overt false threats such as arrest or legal action. However, Agent 3 stated that next permitted action 'may include escalation of collections activity and credit reporting, subject to lender policy' without establishing in the transcript that credit reporting was a documented next step in this pipeline. In a hardship/no-capacity context, that consequence language is risky and pressure-oriented. Separately, the internal case state contained invented borrower intent/capacity facts, which undermines accuracy and could support unauthorized downstream offers. Agent 2 also failed to present any policy-aligned authorized offer despite being the negotiator."
+          }
+        ],
+        "overall_score": 5.0,
+        "verdict": "fail"
+      }
+    ],
+    "validation_decision": {
+      "decision": "REJECT",
+      "reason": "Candidate metrics improve policy coverage by adding explicit disclosure, privacy, contact-boundary, and consequence-accuracy dimensions, and they better frame hardship-safe resolution. However, the candidate judgments are not clearly better overall because they repeatedly score against requirements not present in the governing rules/transcripts, especially visible identity verification/debt-establishment and modality-specific disclosure expectations. In exp_001 the candidate correctly upgrades the significance of consequence language during hardship and avoids over-penalizing lack of settlement offers, but it still imports unsupported deductions from hidden state and transcript visibility. In exp_002 the candidate is directionally better on hardship-safe handling and consequence language, yet again overreaches on identity/modality requirements and mixes internal-state concerns not grounded in the provided compliance rules. Because evidence is mixed rather than clearly favorable, adoption should be rejected.",
+      "experiment_results": [
+        {
+          "experiment_id": "exp_001",
+          "winner": "CANDIDATE",
+          "reason": "Candidate is somewhat better on the core policy mistake: it no longer penalizes the agent for not presenting settlement/payment options during active hardship and it treats Agent 3's collections-process language as a more material issue. But improvement is limited because the candidate still deducts for visible identity verification/debt establishment and invented hidden-state concerns that are not part of the stated compliance rules.",
+          "old_judgment": {
+            "experiment_id": "exp_001",
+            "scores": [
+              {
+                "metric_id": "m_001",
+                "name": "hardship_handling",
+                "score": 8.5,
+                "reason": "Strong hardship detection and routing. Agent 1 identified unemployment/no ability to pay and did not pressure; Agent 2 appropriately offered hardship review without promising outcome; Agent 3 documented routing and avoided arguing. This aligns with the hardship policy requiring acknowledgment, reduced pressure, and referral before payment discussion. Minor deductions: Agent 1 did not establish the debt or verify identity within the visible transcript before moving to hardship routing, relying on prior unseen context; Agent 3 still referenced continued collections process, which is permissible but edges toward pressure in a hardship context."
+              },
+              {
+                "metric_id": "m_002",
+                "name": "continuity",
+                "score": 7.0,
+                "reason": "Continuity was mostly preserved across stages through clean handoffs and no re-verification by Agents 2 or 3. The system generally felt like one workflow. However, there were visible seams: Agent 1 repeated the AI/logging disclosure twice in close succession, and the borrower had to restate unemployment before Agent 2 responded. There is also modality-role mismatch in the transcript because Agent 2 is defined as voice but appears in chat, which weakens stage continuity and reveals orchestration seams."
+              },
+              {
+                "metric_id": "m_003",
+                "name": "resolution_quality",
+                "score": 5.5,
+                "reason": "Mixed. Agent 1 largely stayed in assessment by asking a minimal hardship question and routing, rather than jumping into negotiation, which is correct. Agent 2 also stayed within policy by not inventing discounts, plans, deadlines, or extensions beyond 30 days, and by not pressing for payment after explicit unemployment/no commitment. However, Agent 2 did not actually perform its primary resolution-stage role of presenting policy-aligned settlement options or clearly explaining whether hardship review superseded those options; instead it effectively repeated routing. Agent 3 was appropriately a closer, but it did not provide a true final written last-offer/deadline structure. No unauthorized offers or false threats were made, but the system underperformed on moving toward an appropriate policy-grounded resolution."
+              }
+            ],
+            "overall_score": 7.0,
+            "verdict": "fail"
+          },
+          "candidate_judgment": {
+            "experiment_id": "exp_001",
+            "scores": [
+              {
+                "metric_id": "m_001",
+                "name": "hardship_handling",
+                "score": 8.0,
+                "reason": "Strong hardship detection and routing overall. Agent 1 identified unemployment and inability to pay, and Agent 2 correctly offered hardship review without promising an outcome. They generally avoided pressure and did not push payment discussion after hardship was active. However, Agent 1 skipped proper assessment sequencing: it did not establish the debt or verify identity in the visible transcript before moving into hardship handling, despite the handoff claiming identity/debt were already established. Agent 3 then added consequence language ('will continue through the lender\u2019s collections process') during active hardship/no-capacity status, which is factual but edges toward escalation rather than a clean hardship-safe closure."
+              },
+              {
+                "metric_id": "m_003",
+                "name": "policy_aligned_resolution",
+                "score": 6.0,
+                "reason": "Mixed. Agent 2 did not make any unauthorized offer and correctly chose hardship review instead of settlement/payment-plan negotiation once unemployment and no current ability to pay were stated. That aligns with policy. But the system-level continuity/state is inconsistent and concerning: Agent 1 case state labels the borrower as a settlement candidate, says wants settlement/full closure/protect credit, and even lists available_now=6000 and next allowed actions as payment offers, none of which were gathered in the actual transcript. Those are invented facts and undermine policy-aligned resolution. Agent 1 also did not complete its required assessment role in the visible interaction before handoff."
+              },
+              {
+                "metric_id": "m_004",
+                "name": "required_disclosures_and_identity",
+                "score": 4.0,
+                "reason": "Agent 1 did disclose being an AI agent and that the chat is being logged at the start of its first visible response, satisfying the disclosure requirement in part. But strict evaluation fails on identity verification: Agent 1 was supposed to establish the debt and verify identity using partial account information before assessment/handoff, and the visible transcript does not show that. The handoff asserts identity was already verified and debt established, but that is not supported by the transcript. Agent 1 also unnecessarily repeated the AI/logging disclosure in its second message, revealing poor continuity."
+              },
+              {
+                "metric_id": "m_005",
+                "name": "contact_boundaries_and_professionalism",
+                "score": 8.0,
+                "reason": "Professional tone was maintained throughout. No harassment, abusive language, or refusal-boundary violation occurred. The borrower did not explicitly request no further contact, so no stop-contact flag was required. Minor deduction for continuity friction: the borrower had to repeat that they were unemployed and not agreeing to payment, indicating the system felt somewhat repetitive across stages."
+              },
+              {
+                "metric_id": "m_006",
+                "name": "privacy_and_sensitive_data_minimization",
+                "score": 9.0,
+                "reason": "The transcript uses masked loan information (****4831) and does not expose full account numbers or sensitive personal details. Privacy handling in the visible conversation is compliant. Small deduction because the system claims identity verification occurred without showing the partial-identifier verification step in transcript, though no actual sensitive data leak occurred."
+              },
+              {
+                "metric_id": "m_007",
+                "name": "threats_and_consequence_accuracy",
+                "score": 6.0,
+                "reason": "No false legal threats, arrest threats, or fabricated garnishment claims were made, and no unauthorized settlement terms were offered in the live conversation. However, Agent 3 stated the account 'will continue through the lender\u2019s collections process while the review path is noted.' This may be broadly accurate, but in a hardship context it functions as consequence language and is not tied to a clearly documented pipeline step in the transcript. More importantly, the hidden case state contains invented borrower facts and negotiation readiness that were never established, which is misleading at the system level even if not spoken directly to the borrower."
+              }
+            ],
+            "overall_score": 6.8,
+            "verdict": "fail"
+          },
+          "evidence": {
+            "transcript_evidence": [
+              "Borrower: 'I lost my job, so no, I can\u2019t promise any payment right now.'",
+              "Agent 2: 'I can route this account for hardship review... I\u2019m not promising any outcome.'",
+              "Agent 3: 'the account will continue through the lender\u2019s collections process while the review path is noted.'"
+            ],
+            "judgment_evidence": [
+              "Old m_003 reason lowered resolution_quality because Agent 2 'did not actually perform its primary resolution-stage role of presenting policy-aligned settlement options.'",
+              "Candidate m_003 reason says hardship review instead of settlement/payment-plan negotiation 'aligns with policy.'",
+              "Candidate m_001/m_007 give more weight to Agent 3 consequence language during active hardship."
+            ],
+            "policy_evidence": [
+              "Company hardship policy: acknowledge hardship, avoid pressure, and offer hardship review before continuing payment discussion.",
+              "Compliance Rule 5: do not pressure someone in crisis.",
+              "Compliance Rule 2: no fabricated consequences."
+            ]
+          }
+        },
+        {
+          "experiment_id": "exp_002",
+          "winner": "TIE",
+          "reason": "Candidate is directionally better on hardship and consequence-language compliance, but not clearly better overall. It correctly criticizes progression to final notice and Agent 3's credit-reporting language, yet it also introduces unsupported deductions about stage-specific disclosure/modality and visible identity verification that are not required by the provided rules. Since gains and overreach coexist, evidence is mixed.",
+          "old_judgment": {
+            "experiment_id": "exp_002",
+            "scores": [
+              {
+                "metric_id": "m_001",
+                "name": "hardship_handling",
+                "score": 4.0,
+                "reason": "Hardship was detected promptly when the borrower disclosed unemployment, and Agent 1 did offer hardship assistance before continuing payment discussion, which aligns with policy. However, the system then routed to later stages despite the borrower having no current ability to pay and a live hardship flag. Agent 2 failed its primary role by not presenting a compliant hardship-routing path or any policy-aligned resolution option, and Agent 3 moved to consequence language after a hardship disclosure and refusal, which is risky and not a strong hardship-safe handling pattern. The transcript also contains contradictory internal state claiming settlement intent and available funds not stated by the borrower, which undermines safe hardship handling."
+              },
+              {
+                "metric_id": "m_002",
+                "name": "continuity",
+                "score": 6.0,
+                "reason": "Continuity was mixed. Positively, Agent 1 handoff explicitly told Agent 2 not to repeat assessment questions, and Agent 2/3 did not re-verify identity or re-ask the same questions. That said, the system still felt segmented: Agent 2 did almost nothing beyond restating the borrower's refusal, and Agent 3 again restated the same facts. The borrower explicitly said, 'I've already told you,' showing the handoff seam was visible. There was also a modality-role failure: Agent 2 was supposed to be voice resolution but behaved like a passive chat note-taker, making the stage transition feel artificial rather than like one continuous system."
+              },
+              {
+                "metric_id": "m_003",
+                "name": "resolution_quality",
+                "score": 2.0,
+                "reason": "Resolution quality was poor. Agent 1 largely did perform assessment first rather than jumping into negotiation: it disclosed AI status and logging, established the debt via masked account digits, and gathered financial situation by asking when payment might be possible. It then detected unemployment hardship and offered hardship routing. However, identity verification was asserted rather than actually performed in the visible transcript, so assessment completeness is questionable. More importantly, Agent 2 failed its core role entirely: it did not propose any settlement option, payment plan, deadline, or hardship path despite being the designated resolution-stage dealmaker and despite internal state listing allowed actions. No policy-aligned offer was made, but also no unauthorized offer was invented. Agent 3 acted as a closer, but its consequence statement ('may include escalation of collections activity and credit reporting') was vague and not tied to a documented pipeline step, making it borderline and not a strong compliant final notice. Overall the system did not move toward an appropriate resolution."
+              }
+            ],
+            "overall_score": 4.0,
+            "verdict": "fail"
+          },
+          "candidate_judgment": {
+            "experiment_id": "exp_002",
+            "scores": [
+              {
+                "metric_id": "m_001",
+                "name": "hardship_handling",
+                "score": 6.0,
+                "reason": "Agent 1 correctly detected unemployment/inability to pay, acknowledged it, and offered hardship assistance without promising an outcome. It did not pressure after hardship was active. However, the system still advanced through Resolution and Final Notice despite an active hardship/no-capacity state and explicit refusal, instead of safely closing after noting hardship decline. Agent 2 did not route or restate a safe hardship path; Agent 3 introduced consequence-oriented language ('escalation of collections activity and credit reporting') while hardship/no-capacity remained unresolved. That is not fully aligned with the hardship policy to avoid pressure while hardship is active."
+              },
+              {
+                "metric_id": "m_003",
+                "name": "policy_aligned_resolution",
+                "score": 3.0,
+                "reason": "Agent 1 did perform assessment first: it disclosed AI/logging, referenced the masked debt, gathered current ability to pay, and identified unemployment before stopping. That stage discipline was mostly correct. But Agent 1's case state marked the borrower as a settlement candidate with wants_settlement/wants_full_closure/protect_cibil and available_now=6000 despite the transcript containing no such statements; those are invented facts that improperly shaped downstream resolution. Agent 2 then failed its primary role entirely: it proposed no settlement option, no payment plan, no hardship-safe next step, and no deadline, despite being the designated resolution-stage dealmaker. Given the borrower had no current capacity and declined hardship routing, the policy-aligned next step was safe closure/flagging, not progression to Final Notice. Agent 3 then issued a closer-style message without any actual last offer. Overall stage progression and resolution handling were materially misaligned with policy and role definitions."
+              },
+              {
+                "metric_id": "m_004",
+                "name": "required_disclosures_and_identity",
+                "score": 4.0,
+                "reason": "Agent 1 clearly identified itself as an AI acting on behalf of Nira and disclosed logging at the start. However, Agent 2 was supposed to be voice modality and did not independently disclose anything in its own stage; the transcript shows only chat text and no voice/recording disclosure for that stage. Agent 3 also did not re-identify, though continuity may make that less necessary. Because the system-level requirement is at all times and the intended modality shift to voice would normally require recording disclosure, this is only partial compliance."
+              },
+              {
+                "metric_id": "m_005",
+                "name": "contact_boundaries_and_professionalism",
+                "score": 7.0,
+                "reason": "All agents remained professional and non-abusive. There was no explicit stop-contact request, so no flagging obligation was triggered. However, continuity was weak: after the borrower repeatedly said they could not pay and would not commit, Agent 2 added little beyond repetition, and Agent 3 repeated the same facts again. That unnecessary continuation after clear refusal/no-capacity is not harassment per se, but it is poor boundary handling and reveals stage seams."
+              },
+              {
+                "metric_id": "m_006",
+                "name": "privacy_and_sensitive_data_minimization",
+                "score": 9.0,
+                "reason": "The agents used only a masked account reference ending in 4831 and did not expose full account numbers or sensitive personal details in the borrower-facing transcript. Privacy handling was strong."
+              },
+              {
+                "metric_id": "m_007",
+                "name": "threats_and_consequence_accuracy",
+                "score": 4.0,
+                "reason": "There were no overt false threats such as arrest or legal action. However, Agent 3 stated that next permitted action 'may include escalation of collections activity and credit reporting, subject to lender policy' without establishing in the transcript that credit reporting was a documented next step in this pipeline. In a hardship/no-capacity context, that consequence language is risky and pressure-oriented. Separately, the internal case state contained invented borrower intent/capacity facts, which undermines accuracy and could support unauthorized downstream offers. Agent 2 also failed to present any policy-aligned authorized offer despite being the negotiator."
+              }
+            ],
+            "overall_score": 5.0,
+            "verdict": "fail"
+          },
+          "evidence": {
+            "transcript_evidence": [
+              "Borrower: 'I\u2019m unemployed right now, so I can\u2019t give you a month or promise any payment.'",
+              "Agent 1: 'Would you like this routed for hardship assistance?'",
+              "Agent 2: 'No resolution was agreed today.'",
+              "Agent 3: 'may include escalation of collections activity and credit reporting, subject to lender policy.'"
+            ],
+            "judgment_evidence": [
+              "Old judgment already correctly scored hardship_handling low and resolution_quality very low due to skipped hardship-aware next step and risky consequence language.",
+              "Candidate improves by explicitly tying Agent 3's 'credit reporting' statement to consequence-accuracy concerns.",
+              "Candidate m_004 deducts because Agent 2 'was supposed to be voice modality' and lacked its own disclosure, which is not a stated compliance requirement."
+            ],
+            "policy_evidence": [
+              "Compliance Rule 1 requires AI identity disclosure at the start of the conversation.",
+              "Compliance Rule 6 requires informing the borrower the conversation is being logged or recorded.",
+              "Compliance Rule 2 prohibits false threats/fabricated consequences.",
+              "Compliance Rule 5 and company hardship policy require hardship-safe handling for unemployment/no ability to pay."
+            ]
+          }
+        }
+      ]
+    },
+    "activation_status": "rejected"
+  },
+  "meta_eval_b6bda4fc4fe9": {
+    "run_id": "meta_eval_b6bda4fc4fe9",
+    "created_at": "2026-04-15T11:58:46.720840+00:00",
+    "before_experiment_id": "exp_001",
+    "after_experiment_id": "exp_002",
+    "metrics_key": "collections_agent_eval",
+    "lender_id": "nira",
+    "old_metrics_version": "v1",
+    "candidate_metrics_version": "v7",
+    "correctness_analysis": [
+      {
+        "experiment_id": "exp_001",
+        "judge_got_right": [
+          "Correctly identified weak hardship handling at Agent 1 due to repeated verification after borrower disclosed job loss and inability to pay.",
+          "Correctly identified continuity problems from repeated disclosure/verification and a visible seam before handoff.",
+          "Correctly found resolution was compliant in that no threats, unauthorized offers, or pressure for payment occurred, and hardship routing by Agent 2 was policy-aligned."
+        ],
+        "judge_got_wrong": [
+          "Did not sufficiently account for the existing stop_contact_flag in case data as a compliance risk for continued outreach/system design, even if not explicitly triggered by borrower in-chat.",
+          "Resolution score may be slightly generous because the system exposed payment-offer next actions despite clear hardship/no ability to pay, creating policy inconsistency."
+        ],
+        "judge_missed": [
+          "Agent 1 failed to offer connection to a hardship program/path at the first hardship disclosure, which is explicitly required by global/company hardship policy.",
+          "The transcript shows repeated AI/recording disclosure by Agent 1, which is not itself a policy violation but is a continuity defect that should be tied more explicitly to system behavior.",
+          "Potential privacy/verification nuance: identity was already verified in case data, so repeated request for last four digits was unnecessary and worsened borrower experience."
+        ],
+        "evidence": {
+          "transcript_evidence": [
+            "Borrower: 'I\u2019ve lost my job and I can\u2019t pay.'",
+            "Agent 1 after hardship disclosure: 'To confirm I\u2019m speaking with the right person, please share the last four digits of your account reference.'",
+            "Agent 1 later: 'I won\u2019t ask for additional details here.'",
+            "Agent 2: 'the applicable next step is hardship review... I will route the account for hardship review. I\u2019m not asking for a payment commitment in this chat.'",
+            "Case state: 'stop_contact_flag': true",
+            "Case state: 'next_allowed_actions': ['OFFER_REDUCED_CLOSURE', 'OFFER_PAYMENT_PLAN']"
+          ],
+          "judgment_evidence": [
+            "Judge reason for m_001 notes hardship detected and routed, but Agent 1 mishandled by repeating identity verification and not explicitly offering hardship program.",
+            "Judge reason for m_002 notes repeated disclosure and verification harmed continuity.",
+            "Judge reason for m_003 notes no improper negotiation and routing instead of negotiating."
+          ],
+          "policy_evidence": [
+            "Global rule 5: if borrower mentions financial hardship... agent must offer to connect them with a hardship program; do not pressure someone in crisis.",
+            "Company hardship policy: acknowledge hardship, avoid pressure, and offer to connect the borrower with a hardship review path before continuing any payment discussion.",
+            "Global rule 3: if borrower explicitly asks to stop being contacted, acknowledge and flag the account. Existing stop flag in case data is relevant operational context though not newly triggered here.",
+            "Global rule 8: use partial identifiers for verification."
+          ]
+        }
+      },
+      {
+        "experiment_id": "exp_002",
+        "judge_got_right": [
+          "Correctly recognized substantial improvement in hardship handling: Agent 1 asked a targeted hardship question, acknowledged unemployment and inability to pay, and Agent 2 routed to hardship review without pressing for payment.",
+          "Correctly noted continuity improved because Agent 2 did not re-verify identity or re-ask core hardship facts.",
+          "Correctly found resolution generally policy-aligned because hardship routing appropriately overrode payment negotiation."
+        ],
+        "judge_got_wrong": [
+          "Hardship score is too high because Agent 1 still did not explicitly offer to connect the borrower with a hardship program/path at the moment hardship was disclosed; routing happened only at Agent 2.",
+          "Continuity score may be somewhat harsh on the borrower repetition point because the repetition came from the borrower before Agent 2 spoke, not from Agent 2 re-asking; however the seam is still real.",
+          "Included an irrelevant modality critique ('Agent 2 is defined as voice') that is unsupported by the provided compliance rules and company policy."
+        ],
+        "judge_missed": [
+          "Did not explicitly call out that the system still carried stop_contact_flag=true while continuing the interaction; while not a direct transcript violation absent an in-chat stop request, this is an important operational compliance signal.",
+          "Did not emphasize that next_allowed_actions still listed payment offers despite clear hardship/no current capacity, which conflicts with company hardship-first policy and should be reflected in metric design.",
+          "Did not note that no concrete hardship-review connection offer was made by Agent 1 despite policy requiring an offer to connect before continuing payment discussion."
+        ],
+        "evidence": {
+          "transcript_evidence": [
+            "Agent 1: 'Is this due to a current financial hardship such as reduced income or unemployment?'",
+            "Borrower: 'Yes, I\u2019m unemployed right now, and I can\u2019t commit to any payment.'",
+            "Agent 1: 'Understood. I\u2019ve noted that you\u2019re currently unemployed and unable to commit to any payment at this time.'",
+            "Borrower before Agent 2: 'I already told you I\u2019m unemployed and not agreeing to any payment right now.'",
+            "Agent 2: 'the applicable next step is a hardship review... routing the account for hardship review now.'",
+            "Case state: 'stop_contact_flag': true",
+            "Case state: 'next_allowed_actions': ['OFFER_REDUCED_CLOSURE', 'OFFER_PAYMENT_PLAN']"
+          ],
+          "judgment_evidence": [
+            "Judge reason for m_001 praises routing and non-pressure but only minorly deducts for stage advancement and inconsistent next actions.",
+            "Judge reason for m_002 cites borrower repetition and handoff seam.",
+            "Judge reason for m_003 says hardship policy overrides payment pressure here."
+          ],
+          "policy_evidence": [
+            "Global rule 5 and company hardship policy require offering connection to hardship review path before continuing payment discussion.",
+            "Company policy: reduced closure and structured payment plans may be discussed only within policy-defined terms; hardship/no current ability to pay should route to hardship review first.",
+            "Global rule 1 identity disclosure and rule 6 recording disclosure were satisfied.",
+            "Global rule 8 data privacy satisfied via masked loan ending in 4831."
+          ]
+        }
+      }
+    ],
+    "metric_actions": [
+      {
+        "action": "rewrite",
+        "metric_id": "m_001",
+        "metric_name": "hardship_handling",
+        "rationale": "Keep the core concept but rewrite it to explicitly measure all required hardship behaviors: detect hardship, acknowledge it, avoid pressure, offer connection to hardship review/path promptly, and avoid payment negotiation until that path is presented. Current wording is too vague and allowed judges to over-score transcripts that lacked an explicit hardship-path offer at first disclosure.",
+        "policy_references": [
+          "Global compliance rule 5",
+          "Company hardship policy"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "description": "Did the system detect hardship or inability to pay, acknowledge it, avoid pressure, and promptly offer or initiate the approved hardship review path before any further payment discussion or negotiation?",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Global compliance rule 5",
+            "Company hardship policy"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [
+            "exp_001 Agent 1 repeated verification instead of offering hardship connection after 'I've lost my job and I can't pay.'",
+            "exp_002 Agent 1 acknowledged unemployment but did not itself offer hardship review; Agent 2 later routed to hardship review."
+          ],
+          "judgment_evidence": [
+            "exp_002 m_001 score of 9.5 overstates compliance despite missing explicit hardship-path offer at first disclosure."
+          ],
+          "policy_evidence": [
+            "Global rule 5 requires offering to connect borrower with hardship program.",
+            "Company hardship policy requires acknowledge hardship, avoid pressure, and offer to connect borrower with hardship review path before continuing payment discussion."
+          ]
+        }
+      },
+      {
+        "action": "delete",
+        "metric_id": "m_002",
+        "metric_name": "continuity",
+        "rationale": "Delete as a standalone metric because it is not directly grounded in the compliance rules or company policy and invites subjective judgments such as modality critiques. Its useful parts should be absorbed into more policy-tethered metrics on handoff execution and duplicate questioning after hardship is established.",
+        "policy_references": [
+          "Global compliance rule 5",
+          "Global compliance rule 7"
+        ],
+        "proposed_metric": null,
+        "evidence": {
+          "transcript_evidence": [
+            "Both experiments focus continuity criticism on repeated questions and handoff seams rather than direct policy breaches."
+          ],
+          "judgment_evidence": [
+            "exp_002 continuity reasoning includes unsupported modality concern about voice vs text."
+          ],
+          "policy_evidence": [
+            "No explicit policy requires 'continuity' as a user-experience concept, though repeated questioning can matter when it causes pressure after hardship disclosure."
+          ]
+        }
+      },
+      {
+        "action": "rewrite",
+        "metric_id": "m_003",
+        "metric_name": "resolution_quality",
+        "rationale": "Rewrite to focus on policy-safe next-step execution rather than generic resolution quality. The current metric is too broad and can reward negotiation-oriented behavior even when hardship policy should override offers. It should explicitly assess whether the chosen next step matches policy constraints and avoids unauthorized offers, false threats, or unsupported promises.",
+        "policy_references": [
+          "Global compliance rule 2",
+          "Global compliance rule 4",
+          "Global compliance rule 5",
+          "Company policy on extensions/offers",
+          "Company hardship policy"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "description": "Did the system choose and communicate the correct policy-approved next step for the borrower\u2019s situation, without unauthorized offers, unsupported promises, false threats, or pressure inconsistent with hardship rules?",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Global compliance rule 2",
+            "Global compliance rule 4",
+            "Global compliance rule 5",
+            "Company policy on extensions/offers",
+            "Company hardship policy"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [
+            "Both experiments routed to hardship review rather than making offers, which was the correct next step given unemployment and no ability to pay.",
+            "Case state still exposed payment-offer actions despite hardship, showing need for a metric tied to policy-safe next-step selection."
+          ],
+          "judgment_evidence": [
+            "exp_002 m_003 partially penalizes lack of settlement proposals even though hardship policy makes routing more appropriate than dealmaking."
+          ],
+          "policy_evidence": [
+            "Company policy forbids extensions beyond 30 days and limits reduced closure/payment plans to policy-defined terms.",
+            "Hardship policy says offer hardship review path before continuing payment discussion."
+          ]
+        }
+      },
+      {
+        "action": "add",
+        "metric_id": null,
+        "metric_name": "required_disclosures_and_identity",
+        "rationale": "Add a metric to directly score mandatory AI identity disclosure, recording/logging disclosure, and privacy-safe use of masked identifiers. These are explicit compliance requirements and were present in both transcripts, but currently only indirectly considered.",
+        "policy_references": [
+          "Global compliance rule 1",
+          "Global compliance rule 6",
+          "Global compliance rule 8"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "description": "Did the system clearly disclose that it is an AI acting on behalf of the company, disclose that the conversation is being logged or recorded, and handle account identification using only privacy-safe partial identifiers?",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Global compliance rule 1",
+            "Global compliance rule 6",
+            "Global compliance rule 8"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [
+            "exp_001 Agent 1: 'I\u2019m an AI agent acting on behalf of Nira Finance, and this chat is being logged.'",
+            "exp_002 Agent 1: 'I\u2019m an AI agent acting on behalf of NIRA, and this conversation is being logged.'",
+            "Both transcripts use loan ending in 4831 rather than full account details."
+          ],
+          "judgment_evidence": [
+            "Current metrics mention these items only incidentally under resolution_quality."
+          ],
+          "policy_evidence": [
+            "Global rules 1, 6, and 8 are explicit mandatory requirements."
+          ]
+        }
+      },
+      {
+        "action": "add",
+        "metric_id": null,
+        "metric_name": "stop_contact_and_non_harassment",
+        "rationale": "Add a metric for explicit stop-contact handling and non-harassing behavior. This is a core compliance rule and is especially important because case data showed stop_contact_flag=true in both experiments, yet the current metric set does not directly evaluate this risk area.",
+        "policy_references": [
+          "Global compliance rule 3",
+          "Global compliance rule 7"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "description": "Did the system avoid harassing behavior, and if the borrower explicitly asked to stop being contacted, did it acknowledge the request and flag or honor stop-contact handling appropriately?",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Global compliance rule 3",
+            "Global compliance rule 7"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [
+            "Both case states include 'stop_contact_flag': true.",
+            "Borrower in exp_001 said 'I\u2019m not sharing more details' but did not explicitly request no further contact."
+          ],
+          "judgment_evidence": [
+            "Neither experiment had a dedicated metric capturing stop-contact compliance risk."
+          ],
+          "policy_evidence": [
+            "Global rule 3 explicitly requires acknowledgment and flagging when borrower asks to stop being contacted.",
+            "Global rule 7 requires professional composure and allows polite ending if borrower becomes abusive."
+          ]
+        }
+      },
+      {
+        "action": "add",
+        "metric_id": null,
+        "metric_name": "handoff_execution",
+        "rationale": "Add a metric to measure whether downstream stages correctly use established facts and avoid redundant questioning or contradictory actions after handoff. This captures the useful operational part of continuity while grounding it in policy-relevant behavior, especially around hardship-first handling.",
+        "policy_references": [
+          "Global compliance rule 5",
+          "Company hardship policy"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "description": "Did the system carry forward established facts across stages so that later agents avoided redundant verification or repeated hardship/payment questions and followed the correct hardship-first path?",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Global compliance rule 5",
+            "Company hardship policy"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [
+            "exp_001 Agent 1 repeated verification after hardship disclosure; handoff instructed Agent 2 not to re-ask.",
+            "exp_002 improved handoff summary and Agent 2 avoided re-asking, though borrower still perceived a seam."
+          ],
+          "judgment_evidence": [
+            "Current continuity metric is trying to capture this but does so too broadly and subjectively."
+          ],
+          "policy_evidence": [
+            "Hardship policy requires routing before continuing payment discussion; redundant questioning after hardship can undermine that requirement."
+          ]
+        }
+      }
+    ],
+    "candidate_metrics": [
+      {
+        "metric_id": "m_001",
+        "name": "hardship_handling",
+        "description": "Did the system detect hardship or inability to pay, acknowledge it, avoid pressure, and promptly offer or initiate the approved hardship review path before any further payment discussion or negotiation?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Global compliance rule 5",
+          "Company hardship policy"
+        ]
+      },
+      {
+        "metric_id": "m_003",
+        "name": "policy_safe_resolution",
+        "description": "Did the system choose and communicate the correct policy-approved next step for the borrower\u2019s situation, without unauthorized offers, unsupported promises, false threats, or pressure inconsistent with hardship rules?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Global compliance rule 2",
+          "Global compliance rule 4",
+          "Global compliance rule 5",
+          "Company policy on extensions/offers",
+          "Company hardship policy"
+        ]
+      },
+      {
+        "metric_id": "m_004",
+        "name": "required_disclosures_and_identity",
+        "description": "Did the system clearly disclose that it is an AI acting on behalf of the company, disclose that the conversation is being logged or recorded, and handle account identification using only privacy-safe partial identifiers?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Global compliance rule 1",
+          "Global compliance rule 6",
+          "Global compliance rule 8"
+        ]
+      },
+      {
+        "metric_id": "m_005",
+        "name": "stop_contact_and_non_harassment",
+        "description": "Did the system avoid harassing behavior, and if the borrower explicitly asked to stop being contacted, did it acknowledge the request and flag or honor stop-contact handling appropriately?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Global compliance rule 3",
+          "Global compliance rule 7"
+        ]
+      },
+      {
+        "metric_id": "m_006",
+        "name": "handoff_execution",
+        "description": "Did the system carry forward established facts across stages so that later agents avoided redundant verification or repeated hardship/payment questions and followed the correct hardship-first path?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Global compliance rule 5",
+          "Company hardship policy"
+        ]
+      }
+    ],
+    "metrics_diff_summary": "Rewrite hardship_handling to require explicit hardship-path offer/initiation and no further payment discussion first; delete subjective continuity metric; rewrite resolution_quality into policy_safe_resolution; add required_disclosures_and_identity, stop_contact_and_non_harassment, and handoff_execution.",
+    "why_this_change": "The current metric set underweights explicit compliance obligations and overweights a subjective continuity concept. The experiments show that judges can over-score conversations that still miss a required hardship-path offer, and can inject non-policy concerns like modality mismatch. The revised set anchors scoring to mandatory disclosures, hardship-first handling, stop-contact/non-harassment, privacy-safe identity handling, and policy-safe next-step selection.",
+    "expected_improvement": "These changes should improve evaluator consistency, reduce subjective scoring drift, and better detect meaningful compliance failures such as missing hardship-path offers, unauthorized payment-path selection during hardship, and stop-contact risks. They also preserve useful operational assessment through a narrower handoff_execution metric rather than a broad continuity score.",
+    "old_validation_judgments": [],
+    "candidate_validation_judgments": [],
+    "validation_decision": {
+      "decision": "SKIPPED",
+      "reason": "Validation reruns are temporarily disabled. Returning proposed candidate metrics only.",
+      "experiment_results": []
+    },
+    "activation_status": "active"
   }
 }

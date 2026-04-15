@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 
 from experiment_harness.prompt_management_service.prompt_storage import (
@@ -14,6 +15,7 @@ from app.agents.structured_output import parse_agent_turn_result
 from app.agents.assessment.tools import build_assessment_tools
 from app.domain.borrower_case import AgentTurnResult, BorrowerCase
 from app.domain.chat_message import ChatMessage
+from app.services.compliance import FileComplianceService
 
 
 class AssessmentAgent:
@@ -32,7 +34,9 @@ class AssessmentAgent:
         self.executor = self._build_executor()
 
     def _build_executor(self) -> AgentExecutor:
-        system_prompt = json_prompt_storage_service.get_active_prompt("agent_1").prompt_text
+        prompt_text = json_prompt_storage_service.get_active_prompt("agent_1").prompt_text
+        compliance_rules = FileComplianceService().get_rules_text()
+        system_prompt = self._compose_system_prompt(prompt_text, compliance_rules)
         prompt = ChatPromptTemplate.from_messages(
             [
                 SystemMessage(content=system_prompt),
@@ -43,6 +47,11 @@ class AssessmentAgent:
         )
         agent = create_tool_calling_agent(self.llm, self.tools, prompt)
         return AgentExecutor(agent=agent, tools=self.tools, verbose=False)
+
+    def _compose_system_prompt(self, prompt_text: str, compliance_rules: str) -> str:
+        if not compliance_rules:
+            return prompt_text
+        return f"{compliance_rules.strip()}\n\nAgent-specific instructions:\n{prompt_text}"
 
     def invoke(
         self,
@@ -74,7 +83,7 @@ class AssessmentAgent:
         agent_input = (
             f"Borrower ID: {borrower_id}\n"
             f"Configured lender ID: {self.lender_id}\n"
-            f"Current borrower case JSON: {borrower_case.model_dump_json()}\n"
+            f"Current borrower case context JSON: {json.dumps(borrower_case.to_agent_context(), ensure_ascii=True)}\n"
             f"Operational instruction: {instruction or 'Handle the current borrower turn.'}\n"
             f"Borrower message: {message}"
         )

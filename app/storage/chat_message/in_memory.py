@@ -12,9 +12,13 @@ class InMemoryChatMessageStorage(ChatMessageStorage):
         self.messages.append(chat_message)
         return chat_message
 
-    def list_messages(self, user_id: str, agent_id: str) -> list[ChatMessage]:
+    def list_messages(self, user_id: str, workflow_id: str, agent_id: str) -> list[ChatMessage]:
         return [
             message
             for message in self.messages
-            if message.user_id == user_id and message.agent_id == agent_id
+            if (
+                message.user_id == user_id
+                and message.workflow_id == workflow_id
+                and message.agent_id == agent_id
+            )
         ]

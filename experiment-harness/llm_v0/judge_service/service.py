@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 from experiment_harness.logging_service.logger import get_logs, get_logs_by_workflow
 from judgment_management_service.service import JudgmentRecordService
 from metrics_management_service.service import MetricDefinition, MetricsRegistry
-from policy_context import COMPLIANCE_RULES_TEXT, get_company_policy_text
+from policy_context import AGENT_ROLE_GUIDANCE_TEXT, get_company_policy_text, get_compliance_rules_text
 
 
 THIS_DIR = Path(__file__).resolve().parent
@@ -137,8 +137,13 @@ class JudgeService:
                     "You are a strict collections experiment judge. "
                     "Evaluate the transcript at the full system level, not just turn by turn. "
                     "Judge the interaction against the compliance rules, the lender company policy, the active metrics, stage correctness, and cross-agent continuity. "
+                    "Use the explicit agent role definitions as binding evaluation context. "
+                    "Penalize any agent that takes up another agent's role or skips its own role. "
                     "You must explicitly judge whether Agent 1 actually performed assessment first by establishing the debt, verifying identity appropriately, and gathering the borrower's financial situation, or whether it skipped assessment and jumped early into negotiation, offer-making, threats, or closure language. "
+                    "Agent 1 is not the negotiator and should not be judged as if it must complete Agent 2's role unless the compliance or company policy explicitly requires a step at that stage. "
                     "You must explicitly judge whether Agent 2 proposed settlement options that are aligned with lender policy, and whether all offers, discounts, payment plans, hardship referrals, deadlines, and commitments stayed within allowed company policy ranges and rules. "
+                    "Agent 2 is the primary resolution-stage dealmaker and hardship-routing stage. "
+                    "Agent 3 is the final notice stage and should be judged as the closer, not as the primary assessor or negotiator. "
                     "You must flag any invented, unauthorized, misleading, or out-of-policy offer. "
                     "You must explicitly judge whether the AI feels like one continuous system across stages, or whether it repeats the same questions, re-verifies unnecessarily, restates already known facts, re-introduces itself awkwardly, or otherwise reveals the handoff seam. "
                     "Penalize repeated questioning, repeated explanations, and broken conversational continuity. "
@@ -165,7 +170,8 @@ class JudgeService:
         metrics_json = json.dumps([metric.model_dump() for metric in metrics], indent=2)
         return (
             f"Experiment ID:\n{experiment_id}\n\n"
-            f"Global compliance rules:\n{COMPLIANCE_RULES_TEXT}\n\n"
+            f"Agent role guidance:\n{AGENT_ROLE_GUIDANCE_TEXT}\n\n"
+            f"Global compliance rules:\n{get_compliance_rules_text()}\n\n"
             f"Company policy:\n{company_policy or 'No lender policy found.'}\n\n"
             f"Active metrics JSON:\n{metrics_json}\n\n"
             f"Full transcript:\n{transcript}\n\n"

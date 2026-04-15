@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
 from pathlib import Path
@@ -19,15 +19,25 @@ def utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
+def normalize_prompt_lines(prompt_value: str | list[str]) -> list[str]:
+    if isinstance(prompt_value, list):
+        return [str(line) for line in prompt_value]
+    return prompt_value.splitlines()
+
+
 @dataclass
 class PromptStorageVersion:
     id: int
     agent_id: str
     version_id: str
     parent_version_id: str | None
-    prompt_text: str
+    prompt_lines: list[str]
     diff_summary: str | None
     created_at: datetime
+
+    @property
+    def prompt_text(self) -> str:
+        return "\n".join(self.prompt_lines)
 
 
 class PromptStorageService(ABC):
@@ -43,7 +53,7 @@ class PromptStorageService(ABC):
     def create_prompt_version(
         self,
         agent_id: str,
-        prompt_text: str,
+        prompt_text: str | list[str],
         parent_version_id: str | None = None,
         diff_summary: str | None = None,
     ) -> PromptStorageVersion:
@@ -82,7 +92,7 @@ class JsonPromptStorageService(PromptStorageService):
     def create_prompt_version(
         self,
         agent_id: str,
-        prompt_text: str,
+        prompt_text: str | list[str],
         parent_version_id: str | None = None,
         diff_summary: str | None = None,
     ) -> PromptStorageVersion:
@@ -96,7 +106,7 @@ class JsonPromptStorageService(PromptStorageService):
             agent_id=agent_id,
             version_id=f"v{len(versions) + 1}",
             parent_version_id=parent_version_id,
-            prompt_text=prompt_text,
+            prompt_lines=normalize_prompt_lines(prompt_text),
             diff_summary=diff_summary,
             created_at=utc_now(),
         )
@@ -125,7 +135,7 @@ class JsonPromptStorageService(PromptStorageService):
                         agent_id="agent_1",
                         version_id="v1",
                         parent_version_id=None,
-                        prompt_text=ASSESSMENT_SYSTEM_PROMPT,
+                        prompt_lines=normalize_prompt_lines(ASSESSMENT_SYSTEM_PROMPT),
                         diff_summary=None,
                         created_at=utc_now(),
                     )
@@ -138,7 +148,7 @@ class JsonPromptStorageService(PromptStorageService):
                         agent_id="agent_2",
                         version_id="v1",
                         parent_version_id=None,
-                        prompt_text=RESOLUTION_SYSTEM_PROMPT,
+                        prompt_lines=normalize_prompt_lines(RESOLUTION_SYSTEM_PROMPT),
                         diff_summary=None,
                         created_at=utc_now(),
                     )
@@ -151,7 +161,7 @@ class JsonPromptStorageService(PromptStorageService):
                         agent_id="agent_3",
                         version_id="v1",
                         parent_version_id=None,
-                        prompt_text=FINAL_NOTICE_SYSTEM_PROMPT,
+                        prompt_lines=normalize_prompt_lines(FINAL_NOTICE_SYSTEM_PROMPT),
                         diff_summary=None,
                         created_at=utc_now(),
                     )
@@ -186,17 +196,24 @@ class JsonPromptStorageService(PromptStorageService):
         raise KeyError("Version not found")
 
     def _serialize_version(self, version: PromptStorageVersion) -> dict:
-        payload = asdict(version)
-        payload["created_at"] = version.created_at.isoformat()
-        return payload
+        return {
+            "id": version.id,
+            "agent_id": version.agent_id,
+            "version_id": version.version_id,
+            "parent_version_id": version.parent_version_id,
+            "prompt_text": version.prompt_lines,
+            "diff_summary": version.diff_summary,
+            "created_at": version.created_at.isoformat(),
+        }
 
     def _deserialize_version(self, payload: dict) -> PromptStorageVersion:
+        prompt_payload = payload.get("prompt_text", payload.get("prompt_lines", ""))
         return PromptStorageVersion(
             id=payload["id"],
             agent_id=payload["agent_id"],
             version_id=payload["version_id"],
             parent_version_id=payload.get("parent_version_id"),
-            prompt_text=payload["prompt_text"],
+            prompt_lines=normalize_prompt_lines(prompt_payload),
             diff_summary=payload.get("diff_summary"),
             created_at=datetime.fromisoformat(payload["created_at"]),
         )

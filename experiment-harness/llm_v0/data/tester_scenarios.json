@@ -17,5 +17,25 @@
       "I am not giving dates or agreeing to any plan.",
       "This conversation is going nowhere and I am done discussing payment."
     ]
+  },
+  {
+    "scenario_id": "willing_but_constrained_payment_plan",
+    "opening_message": "I do want to clear this loan, but I cannot pay the full amount today.",
+    "scenario_description": "Borrower is cooperative and wants to repay, but is dealing with a short-term cash flow constraint after an unexpected family medical expense and delayed salary credit. They can make a small payment now and a larger payment after their next salary date, but they need the agent to work within those limits.",
+    "borrower_profile": "Borrower is polite, practical, and trying to find a realistic way to pay without overcommitting.",
+    "borrower_intent": "Show willingness to pay, explain the temporary constraint clearly, avoid making promises they cannot keep, and try to agree to a realistic policy-compliant option such as a structured payment plan if the agent proposes one.",
+    "reply_style_rules": [
+      "Keep replies short.",
+      "Stay cooperative.",
+      "Do not agree to impossible dates or amounts.",
+      "If the agent offers a realistic plan, show willingness to consider it."
+    ],
+    "stop_condition": "Stop after a clear payment arrangement is reached, or after the system pushes unrealistic terms repeatedly.",
+    "expected_path_notes": "This should test whether the collections flow can gather the constraint, avoid unnecessary escalation, and move toward a realistic resolution path instead of forcing refusal or final notice.",
+    "follow_up_messages": [
+      "I had a family medical expense this week and my salary is delayed, so I can only pay a small amount right now.",
+      "I can pay 2000 now and the rest after my salary comes in on the 10th, but I cannot commit to the full amount before that.",
+      "If there is a structured plan that fits that timing, I am willing to discuss it."
+    ]
   }
 ]

@@ -4,22 +4,22 @@
     {
       "metric_id": "m_001",
       "name": "hardship_handling",
-      "score": 2.0,
-      "reason": "Hardship signals were present in the case state (job loss, student), but the transcript shows no actual safe hardship handling in the live interaction. Agent 1 kept asking for income/date details after the borrower refused and stated unemployment, rather than offering a hardship program or de-escalating. No hardship referral was made."
+      "score": 6.0,
+      "reason": "Hardship was detected correctly: the borrower stated job loss and inability to pay, and Agent 2 routed to hardship review without pressing for payment, which aligns with company hardship policy. However, Agent 1 mishandled the hardship moment by repeating the identity-verification request after the borrower had already disclosed unemployment and refusal to share more details. That repetition showed insufficient safe handling at the point hardship was first disclosed. There was also no explicit offer to connect the borrower with a hardship program at Agent 1 stage; routing occurred only after handoff."
     },
     {
       "metric_id": "m_002",
       "name": "continuity",
-      "score": 3.0,
-      "reason": "There is some stage handoff continuity via summaries, but the interaction still feels seamful. Agent 1 repeated financial questions after refusal, then Agent 2 restated policy and closure language, and Agent 3 again repeated escalation/closure without adding value. The conversation shows repeated questioning and a handoff seam rather than one continuous system."
+      "score": 4.0,
+      "reason": "Continuity was weak. Agent 1 repeated its AI/recording disclosure and repeated the same identity-verification request immediately after the borrower refused and disclosed hardship, which exposed the seam and created unnecessary repetition. The handoff itself was internally coherent, and Agent 2 did continue without re-asking for details, which helped. But the overall system did not feel fully continuous because the assessment stage repeated itself and did not smoothly transition from established hardship facts."
     },
     {
       "metric_id": "m_003",
       "name": "resolution_quality",
-      "score": 2.0,
-      "reason": "The system did not move toward an appropriate resolution in a policy-compliant way. Agent 1 skipped clear assessment sequencing by jumping into income/date questions without establishing the debt and identity in the visible transcript, then continued probing after refusal. Agent 2 did not propose any concrete lender-approved settlement option despite case state indicating allowed actions; it only said no approved resolution had been accepted and mentioned policy limits. Agent 3 gave a generic escalation/closure statement. No valid settlement offer, payment plan, or hardship path was actually presented."
+      "score": 5.0,
+      "reason": "Resolution was compliant but incomplete. Strictly by role, Agent 1 mostly performed assessment first: it established the debt context, attempted partial verification, and captured the borrower\u2019s financial situation. It did not improperly negotiate, threaten, or close early, which is correct. Agent 2 also stayed within policy by not inventing offers, discounts, deadlines, or payment plans, and by routing to hardship review instead of negotiating with an unemployed borrower who stated no ability to pay. However, the system missed stronger policy execution because hardship should have been surfaced more cleanly and earlier, and the transcript ended without a clearer documented next-step expectation. No out-of-policy offer was made, but no actual resolution beyond routing was achieved."
     }
   ],
-  "overall_score": 2.0,
+  "overall_score": 5.0,
   "verdict": "fail"
 }

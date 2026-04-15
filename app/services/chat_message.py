@@ -14,6 +14,7 @@ class ChatMessageService:
     def append_message(
         self,
         user_id: str,
+        workflow_id: str,
         agent_id: str,
         sender_type: str,
         message: str,
@@ -21,23 +22,31 @@ class ChatMessageService:
         chat_message = ChatMessage(
             message=message,
             user_id=user_id,
+            workflow_id=workflow_id,
             agent_id=agent_id,
             sender_type=sender_type,
             created_at=datetime.now(timezone.utc),
         )
         return self.storage.append_message(chat_message)
 
-    def list_messages(self, user_id: str, agent_id: str) -> list[ChatMessage]:
-        messages = self.storage.list_messages(user_id, agent_id)
+    def list_messages(self, user_id: str, workflow_id: str, agent_id: str) -> list[ChatMessage]:
+        messages = self.storage.list_messages(user_id, workflow_id, agent_id)
         return sorted(messages, key=lambda item: item.created_at)
 
-    def append_handoff_message(self, user_id: str, agent_id: str, summary: str | None) -> None:
+    def append_handoff_message(
+        self,
+        user_id: str,
+        workflow_id: str,
+        agent_id: str,
+        summary: str | None,
+    ) -> None:
         if not summary:
             return
-        if self.list_messages(user_id, agent_id):
+        if self.list_messages(user_id, workflow_id, agent_id):
             return
         self.append_message(
             user_id=user_id,
+            workflow_id=workflow_id,
             agent_id=agent_id,
             sender_type="system",
             message=summary,

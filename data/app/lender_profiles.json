@@ -1,0 +1,10 @@
+{
+  "nira": {
+    "lender_id": "nira",
+    "lender_name": "Nira Finance"
+  },
+  "slice": {
+    "lender_id": "slice",
+    "lender_name": "Slice"
+  }
+}

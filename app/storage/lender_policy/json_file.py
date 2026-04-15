@@ -8,7 +8,7 @@ from app.storage.lender_policy.base import LenderPolicyStorage
 
 
 class JsonFileLenderPolicyStorage(LenderPolicyStorage):
-    def __init__(self, file_path: str = "data/lender_policies.json") -> None:
+    def __init__(self, file_path: str = "data/app/lender_policies.json") -> None:
         self.path = Path(file_path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         if not self.path.exists():

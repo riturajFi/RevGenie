@@ -30,7 +30,7 @@ class BorrowerProfileService(ABC):
 
 
 class FileBorrowerProfileService(BorrowerProfileService):
-    def __init__(self, file_path: str = "data/borrower_profiles.json") -> None:
+    def __init__(self, file_path: str = "data/app/borrower_profiles.json") -> None:
         self.storage: BorrowerProfileStorage = JsonFileBorrowerProfileStorage(file_path)
 
     def create_borrower_profile(self, borrower_profile: BorrowerProfile) -> BorrowerProfile:

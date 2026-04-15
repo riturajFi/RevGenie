@@ -1,0 +1,32 @@
+{
+  "acc_001": {
+    "account_id": "acc_001",
+    "amount_due": 12921,
+    "borrower_id": "b_001",
+    "lender_id": "nira"
+  },
+  "acc_001_20260413133008185530_baseline": {
+    "account_id": "acc_001_20260413133008185530_baseline",
+    "amount_due": 12921,
+    "borrower_id": "b_001_20260413133008185530_baseline",
+    "lender_id": "nira"
+  },
+  "acc_001_20260413133030109393_candidate": {
+    "account_id": "acc_001_20260413133030109393_candidate",
+    "amount_due": 12921,
+    "borrower_id": "b_001_20260413133030109393_candidate",
+    "lender_id": "nira"
+  },
+  "acc_002": {
+    "account_id": "acc_002",
+    "amount_due": 8400,
+    "borrower_id": "b_002",
+    "lender_id": "slice"
+  },
+  "acc_003": {
+    "account_id": "acc_003",
+    "amount_due": 22500,
+    "borrower_id": "b_003",
+    "lender_id": "nira"
+  }
+}

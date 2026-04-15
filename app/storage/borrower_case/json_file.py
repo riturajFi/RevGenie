@@ -8,7 +8,7 @@ from app.storage.borrower_case.base import BorrowerCaseStorage
 
 
 class JsonFileBorrowerCaseStorage(BorrowerCaseStorage):
-    def __init__(self, file_path: str = "data/borrower_cases.json") -> None:
+    def __init__(self, file_path: str = "data/app/borrower_cases.json") -> None:
         self.path = Path(file_path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         if not self.path.exists():

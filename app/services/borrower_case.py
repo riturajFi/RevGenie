@@ -30,7 +30,7 @@ class BorrowerCaseService(ABC):
 
 
 class FileBorrowerCaseService(BorrowerCaseService):
-    def __init__(self, file_path: str = "data/borrower_cases.json") -> None:
+    def __init__(self, file_path: str = "data/app/borrower_cases.json") -> None:
         self.storage: BorrowerCaseStorage = JsonFileBorrowerCaseStorage(file_path)
 
     def create_borrower_case(self, borrower_case: BorrowerCase) -> BorrowerCase:

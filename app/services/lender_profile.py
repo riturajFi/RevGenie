@@ -30,7 +30,7 @@ class LenderProfileService(ABC):
 
 
 class FileLenderProfileService(LenderProfileService):
-    def __init__(self, file_path: str = "data/lender_profiles.json") -> None:
+    def __init__(self, file_path: str = "data/app/lender_profiles.json") -> None:
         self.storage: LenderProfileStorage = JsonFileLenderProfileStorage(file_path)
 
     def create_lender_profile(self, lender_profile: LenderProfile) -> LenderProfile:

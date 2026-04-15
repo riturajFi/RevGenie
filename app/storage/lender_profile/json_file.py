@@ -8,7 +8,7 @@ from app.storage.lender_profile.base import LenderProfileStorage
 
 
 class JsonFileLenderProfileStorage(LenderProfileStorage):
-    def __init__(self, file_path: str = "data/lender_profiles.json") -> None:
+    def __init__(self, file_path: str = "data/app/lender_profiles.json") -> None:
         self.path = Path(file_path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         if not self.path.exists():

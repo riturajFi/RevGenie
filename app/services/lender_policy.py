@@ -30,7 +30,7 @@ class LenderPolicyService(ABC):
 
 
 class FileLenderPolicyService(LenderPolicyService):
-    def __init__(self, file_path: str = "data/lender_policies.json") -> None:
+    def __init__(self, file_path: str = "data/app/lender_policies.json") -> None:
         self.storage: LenderPolicyStorage = JsonFileLenderPolicyStorage(file_path)
 
     def create_lender_policy(self, lender_policy: LenderPolicy) -> LenderPolicy:

@@ -1,0 +1,331 @@
+{
+  "b_001": {
+    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage ASSESSMENT, status OPEN. Case type: SETTLEMENT_CANDIDATE. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
+    "attributes": {
+      "borrower_capacity": {
+        "available_now": 6000,
+        "can_pay_later": true,
+        "can_pay_now": false,
+        "expected_date": "2026-04-20"
+      },
+      "borrower_intent": {
+        "protect_cibil": true,
+        "wants_full_closure": true,
+        "wants_settlement": true
+      },
+      "dispute_flags": {
+        "claims_paid": false,
+        "claims_wrong_commitment": false
+      },
+      "dpd": 275,
+      "hardship_flags": {
+        "emotional_distress": false,
+        "job_loss": true,
+        "medical_issue": false,
+        "student": true
+      },
+      "last_contact_channel": "CHAT",
+      "offers_made": [],
+      "principal_outstanding": 10125,
+      "stop_contact_flag": false
+    },
+    "core": {
+      "amount_due": 12921,
+      "borrower_id": "b_001",
+      "case_status": "OPEN",
+      "case_type": [
+        "SETTLEMENT_CANDIDATE"
+      ],
+      "final_disposition": null,
+      "identity_verified": true,
+      "lender_id": "nira",
+      "loan_id_masked": "****4831",
+      "next_allowed_actions": [
+        "OFFER_REDUCED_CLOSURE",
+        "OFFER_PAYMENT_PLAN"
+      ],
+      "stage": "ASSESSMENT",
+      "workflow_id": "wf_001"
+    },
+    "latest_handoff_stage": null,
+    "latest_handoff_summary": null
+  },
+  "b_001_20260413133008185530_baseline": {
+    "amount_due": 12921,
+    "assessment_notes": "Borrower stated the conversation is going nowhere and did not accept any resolution option.",
+    "borrower_capacity": {
+      "available_now": 6000,
+      "can_pay_later": true,
+      "can_pay_now": false,
+      "expected_date": "2026-04-20"
+    },
+    "borrower_id": "b_001_20260413133008185530_baseline",
+    "borrower_intent": {
+      "protect_cibil": true,
+      "wants_full_closure": true,
+      "wants_settlement": true
+    },
+    "borrower_objections": [],
+    "borrower_stated_position": null,
+    "case_status": "OPEN",
+    "case_type": [
+      "SETTLEMENT_CANDIDATE"
+    ],
+    "dispute_flags": {
+      "claims_paid": false,
+      "claims_wrong_commitment": false
+    },
+    "dpd": 275,
+    "final_disposition": null,
+    "final_notice_notes": null,
+    "hardship_flags": {
+      "emotional_distress": false,
+      "job_loss": true,
+      "medical_issue": false,
+      "student": true
+    },
+    "identity_verified": true,
+    "last_contact_channel": "CHAT",
+    "last_deadline_offered": null,
+    "latest_handoff_stage": "RESOLUTION",
+    "latest_handoff_summary": "Borrower declined to engage further; no agreement reached. Policy remains: no extension beyond 30 days; reduced closure and structured payment plans require approval.",
+    "lender_id": "nira",
+    "loan_id_masked": "****4831",
+    "next_allowed_actions": [
+      "OFFER_REDUCED_CLOSURE",
+      "OFFER_PAYMENT_PLAN"
+    ],
+    "offers_made": [],
+    "principal_outstanding": 10125,
+    "resolution_notes": null,
+    "stage": "FINAL_NOTICE",
+    "stop_contact_flag": false,
+    "workflow_id": "wf_20260413133008185530_baseline"
+  },
+  "b_001_20260413133030109393_candidate": {
+    "amount_due": 12921,
+    "assessment_notes": null,
+    "borrower_capacity": {
+      "available_now": 6000,
+      "can_pay_later": true,
+      "can_pay_now": false,
+      "expected_date": "2026-04-20"
+    },
+    "borrower_id": "b_001_20260413133030109393_candidate",
+    "borrower_intent": {
+      "protect_cibil": true,
+      "wants_full_closure": true,
+      "wants_settlement": true
+    },
+    "borrower_objections": [],
+    "borrower_stated_position": null,
+    "case_status": "OPEN",
+    "case_type": [
+      "SETTLEMENT_CANDIDATE"
+    ],
+    "dispute_flags": {
+      "claims_paid": false,
+      "claims_wrong_commitment": false
+    },
+    "dpd": 275,
+    "final_disposition": null,
+    "final_notice_notes": null,
+    "hardship_flags": {
+      "emotional_distress": false,
+      "job_loss": true,
+      "medical_issue": false,
+      "student": true
+    },
+    "identity_verified": true,
+    "last_contact_channel": "CHAT",
+    "last_deadline_offered": null,
+    "latest_handoff_stage": "ASSESSMENT",
+    "latest_handoff_summary": "Borrower \u0631\u0641\u0636 payment and declined the final option; assessment stopped at borrower request.",
+    "lender_id": "nira",
+    "loan_id_masked": "****4831",
+    "next_allowed_actions": [
+      "OFFER_REDUCED_CLOSURE",
+      "OFFER_PAYMENT_PLAN"
+    ],
+    "offers_made": [],
+    "principal_outstanding": 10125,
+    "resolution_notes": null,
+    "stage": "RESOLUTION",
+    "stop_contact_flag": false,
+    "workflow_id": "wf_20260413133030109393_candidate"
+  },
+  "b_002": {
+    "agent_context_summary": "Borrower case for slice loan ****1184: identity is not yet verified, amount due 8400, stage ASSESSMENT, status OPEN. Case type: PAYMENT_PLAN_CANDIDATE. Next allowed actions: OFFER_PAYMENT_PLAN.",
+    "attributes": {
+      "borrower_capacity": {
+        "available_now": 2000,
+        "can_pay_later": true,
+        "can_pay_now": true,
+        "expected_date": "2026-04-25"
+      },
+      "borrower_intent": {
+        "protect_cibil": true,
+        "wants_full_closure": false,
+        "wants_settlement": false
+      },
+      "dispute_flags": {
+        "claims_paid": false,
+        "claims_wrong_commitment": false
+      },
+      "dpd": 94,
+      "hardship_flags": {
+        "emotional_distress": false,
+        "job_loss": false,
+        "medical_issue": false,
+        "student": false
+      },
+      "last_contact_channel": "CHAT",
+      "offers_made": [],
+      "principal_outstanding": 7000,
+      "stop_contact_flag": false
+    },
+    "core": {
+      "amount_due": 8400,
+      "borrower_id": "b_002",
+      "case_status": "OPEN",
+      "case_type": [
+        "PAYMENT_PLAN_CANDIDATE"
+      ],
+      "final_disposition": null,
+      "identity_verified": false,
+      "lender_id": "slice",
+      "loan_id_masked": "****1184",
+      "next_allowed_actions": [
+        "OFFER_PAYMENT_PLAN"
+      ],
+      "stage": "ASSESSMENT",
+      "workflow_id": "wf_002"
+    },
+    "latest_handoff_stage": null,
+    "latest_handoff_summary": null
+  },
+  "b_003": {
+    "agent_context_summary": "Borrower case for nira loan ****9007: identity is verified, amount due 22500, stage FINAL_NOTICE, status OPEN. Case type: FINAL_NOTICE. Next allowed actions: SEND_FINAL_NOTICE, FLAG_FOR_REVIEW.",
+    "attributes": {
+      "borrower_capacity": {
+        "available_now": 0,
+        "can_pay_later": false,
+        "can_pay_now": false,
+        "expected_date": null
+      },
+      "borrower_intent": {
+        "protect_cibil": false,
+        "wants_full_closure": false,
+        "wants_settlement": false
+      },
+      "dispute_flags": {
+        "claims_paid": false,
+        "claims_wrong_commitment": true
+      },
+      "dpd": 320,
+      "hardship_flags": {
+        "emotional_distress": false,
+        "job_loss": false,
+        "medical_issue": true,
+        "student": false
+      },
+      "last_contact_channel": "VOICE",
+      "offers_made": [],
+      "principal_outstanding": 18000,
+      "stop_contact_flag": false
+    },
+    "core": {
+      "amount_due": 22500,
+      "borrower_id": "b_003",
+      "case_status": "OPEN",
+      "case_type": [
+        "FINAL_NOTICE"
+      ],
+      "final_disposition": null,
+      "identity_verified": true,
+      "lender_id": "nira",
+      "loan_id_masked": "****9007",
+      "next_allowed_actions": [
+        "SEND_FINAL_NOTICE",
+        "FLAG_FOR_REVIEW"
+      ],
+      "stage": "FINAL_NOTICE",
+      "workflow_id": "wf_003"
+    },
+    "latest_handoff_stage": null,
+    "latest_handoff_summary": null
+  },
+  "b_006": {
+    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage FINAL_NOTICE, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: can pay now up to 2000, may pay later around 2026-05-10. Stop-contact flag is present. Borrower stated position: Borrower can make a small payment today but cannot agree to any arrangement that requires the remaining balance to be completed within 30 days. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
+    "attributes": {
+      "assessment_notes": null,
+      "borrower_capacity": {
+        "available_now": 2000,
+        "can_pay_later": true,
+        "can_pay_now": true,
+        "expected_date": "2026-05-10"
+      },
+      "borrower_intent": {
+        "protect_cibil": true,
+        "wants_full_closure": true,
+        "wants_settlement": false
+      },
+      "borrower_objections": [],
+      "borrower_requests": {
+        "payment_plan": true
+      },
+      "borrower_stated_position": "Borrower can make a small payment today but cannot agree to any arrangement that requires the remaining balance to be completed within 30 days.",
+      "dispute_flags": {
+        "claims_paid": false,
+        "claims_wrong_commitment": false
+      },
+      "dpd": 275,
+      "final_notice_notes": null,
+      "hardship_flags": {
+        "emotional_distress": false,
+        "job_loss": false,
+        "medical_issue": false,
+        "student": false
+      },
+      "last_contact_channel": "CHAT",
+      "last_deadline_offered": null,
+      "offers_made": [
+        {
+          "details": {
+            "max_window_days": 30
+          },
+          "status": "boundary_explained",
+          "type": "PAYMENT_PLAN"
+        },
+        {
+          "details": {},
+          "status": "terms_not_retrievable",
+          "type": "REDUCED_CLOSURE"
+        }
+      ],
+      "principal_outstanding": 10125,
+      "resolution_notes": "Hardship-linked reason remains family medical expense and delayed salary credit. Rechecked available lender policy and lender/loan data in this turn. Nira policy confirms no extensions beyond 30 days. No loan-level exact approvable payment-plan terms were retrievable, and exact approvable reduced-closure terms could not be confirmed from available data. Borrower declined the only policy-bounded structure discussed because they cannot complete within 30 days. Borrower remains cooperative and indicated small-payment capacity today.",
+      "stop_contact_flag": true
+    },
+    "core": {
+      "amount_due": 12921,
+      "borrower_id": "b_006",
+      "case_status": "CLOSED",
+      "case_type": [
+        "SETTLEMENT_CANDIDATE"
+      ],
+      "final_disposition": "FLAG_FOR_LEGAL_WRITE_OFF",
+      "identity_verified": true,
+      "lender_id": "nira",
+      "loan_id_masked": "****4831",
+      "next_allowed_actions": [
+        "OFFER_REDUCED_CLOSURE",
+        "OFFER_PAYMENT_PLAN"
+      ],
+      "stage": "FINAL_NOTICE",
+      "workflow_id": "wf_1776293504"
+    },
+    "latest_handoff_stage": "FINAL_NOTICE",
+    "latest_handoff_summary": "Borrower confirmed they can make only a small payment now and asked to wait for any approved option that fits their salary date. Re-checked available case, loan, and policy data; no exact approved option or documented final decision was available to communicate. Limited-contact preference is now recorded, and future contact in this stage should occur only if an approved option or concrete review outcome becomes available."
+  }
+}

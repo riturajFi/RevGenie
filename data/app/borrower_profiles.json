@@ -1,0 +1,27 @@
+{
+  "b_001": {
+    "borrower_id": "b_001",
+    "full_name": "Aarav Sharma",
+    "phone_number": "+919900000001"
+  },
+  "b_001_20260413133008185530_baseline": {
+    "borrower_id": "b_001_20260413133008185530_baseline",
+    "full_name": "Aarav Sharma",
+    "phone_number": "+010_baseline"
+  },
+  "b_001_20260413133030109393_candidate": {
+    "borrower_id": "b_001_20260413133030109393_candidate",
+    "full_name": "Aarav Sharma",
+    "phone_number": "+01_candidate"
+  },
+  "b_002": {
+    "borrower_id": "b_002",
+    "full_name": "Neha Verma",
+    "phone_number": "+919900000002"
+  },
+  "b_003": {
+    "borrower_id": "b_003",
+    "full_name": "Rohit Iyer",
+    "phone_number": "+919900000003"
+  }
+}

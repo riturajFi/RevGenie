@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import os
 
-from experiment_harness.prompt_management_service.prompt_storage import (
+from evals.prompt_management_service.prompt_storage import (
     json_prompt_storage_service,
 )
 from langchain.agents import AgentExecutor, create_tool_calling_agent

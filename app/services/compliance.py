@@ -6,9 +6,8 @@ from pathlib import Path
 
 DEFAULT_COMPLIANCE_PATH = (
     Path(__file__).resolve().parents[2]
-    / "experiment-harness"
-    / "llm_v0"
     / "data"
+    / "evals"
     / "compliance_rules.json"
 )
 

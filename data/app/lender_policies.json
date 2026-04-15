@@ -1,0 +1,10 @@
+{
+  "nira": {
+    "lender_id": "nira",
+    "policy": "We do not provide extensions beyond 30 days. Reduced closure and structured payment plans require policy-compliant approvals only."
+  },
+  "slice": {
+    "lender_id": "slice",
+    "policy": "We do not provide extensions beyond 21 days. Payment plans may be discussed only within approved policy bands."
+  }
+}

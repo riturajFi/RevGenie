@@ -30,7 +30,7 @@ class LoanService(ABC):
 
 
 class FileLoanService(LoanService):
-    def __init__(self, file_path: str = "data/loans.json") -> None:
+    def __init__(self, file_path: str = "data/app/loans.json") -> None:
         self.storage: LoanStorage = JsonFileLoanStorage(file_path)
 
     def create_loan(self, loan: Loan) -> Loan:

@@ -8,7 +8,7 @@ from app.storage.loan.base import LoanStorage
 
 
 class JsonFileLoanStorage(LoanStorage):
-    def __init__(self, file_path: str = "data/loans.json") -> None:
+    def __init__(self, file_path: str = "data/app/loans.json") -> None:
         self.path = Path(file_path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         if not self.path.exists():

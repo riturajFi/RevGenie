@@ -194,6 +194,10 @@ export function MetaEvalDashboard() {
                   <span>Validation Decision</span>
                   <strong>{selectedRun.validation_decision.decision}</strong>
                 </div>
+                <div className="meta-summary-card">
+                  <span>Held-out Validation Experiments</span>
+                  <strong>{selectedRun.validation_experiment_ids.length}</strong>
+                </div>
               </div>
 
               <div className="meta-section">
@@ -212,6 +216,22 @@ export function MetaEvalDashboard() {
               </div>
 
               <div className="meta-section">
+                <h3>Validation Summary</h3>
+                <p>{selectedRun.validation_decision.reason}</p>
+                {selectedRun.validation_experiment_ids.length > 0 ? (
+                  <div className="meta-pill-row">
+                    {selectedRun.validation_experiment_ids.map((experimentId) => (
+                      <span key={experimentId} className="meta-chip">
+                        {experimentId}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="meta-eval-empty">No held-out validation experiments were available.</p>
+                )}
+              </div>
+
+              <div className="meta-section">
                 <h3>Metric Actions</h3>
                 {selectedRun.metric_actions.length === 0 ? (
                   <p className="meta-eval-empty">No metric actions found.</p>
@@ -226,6 +246,30 @@ export function MetaEvalDashboard() {
                           {action.metric_id ? <small>{action.metric_id}</small> : null}
                         </header>
                         <p>{action.rationale}</p>
+                      </article>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="meta-section">
+                <h3>Validation Results</h3>
+                {selectedRun.validation_decision.experiment_results.length === 0 ? (
+                  <p className="meta-eval-empty">No held-out comparison results found.</p>
+                ) : (
+                  <div className="meta-list">
+                    {selectedRun.validation_decision.experiment_results.map((result) => (
+                      <article key={result.experiment_id} className="meta-list-item">
+                        <header>
+                          <strong>{result.experiment_id}</strong>
+                          <small>Winner: {result.winner}</small>
+                        </header>
+                        <p>{result.reason}</p>
+                        <p>
+                          Old: {result.old_judgment.verdict} ({result.old_judgment.overall_score.toFixed(2)}) {" | "}
+                          Candidate: {result.candidate_judgment.verdict} (
+                          {result.candidate_judgment.overall_score.toFixed(2)})
+                        </p>
                       </article>
                     ))}
                   </div>

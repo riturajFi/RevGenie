@@ -41,6 +41,7 @@ export type MetaEvalRunRecord = {
   created_at: string;
   before_experiment_id: string;
   after_experiment_id: string;
+  validation_experiment_ids: string[];
   metrics_key: string;
   lender_id: string | null;
   old_metrics_version: string;
@@ -54,6 +55,21 @@ export type MetaEvalRunRecord = {
   validation_decision: {
     decision: string;
     reason: string;
+    experiment_results: {
+      experiment_id: string;
+      winner: string;
+      reason: string;
+      old_judgment: {
+        experiment_id: string;
+        overall_score: number;
+        verdict: string;
+      };
+      candidate_judgment: {
+        experiment_id: string;
+        overall_score: number;
+        verdict: string;
+      };
+    }[];
   };
   activation_status: string;
 };

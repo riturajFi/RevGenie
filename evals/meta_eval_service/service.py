@@ -105,66 +105,63 @@ class MetaEvaluatorService:
             diff_summary=proposal.metrics_diff_summary,
         )
 
-        # Validation and activation are intentionally disabled for now.
-        # Keep this block commented so it can be re-enabled later.
-        #
-        # old_validation_judgments = self._rerun_validation_judgments(
-        #     experiment_ids=[before_experiment_id, after_experiment_id],
-        #     metrics_key=metrics_key,
-        #     metrics_version_id=active_metrics.version_id,
-        #     lender_id=lender_id,
-        # )
-        # candidate_validation_judgments = self._rerun_validation_judgments(
-        #     experiment_ids=[before_experiment_id, after_experiment_id],
-        #     metrics_key=metrics_key,
-        #     metrics_version_id=candidate_metrics_version.version_id,
-        #     lender_id=lender_id,
-        # )
-        #
-        # validation = self._validate_candidate_metrics(
-        #     before_transcript=before_transcript,
-        #     after_transcript=after_transcript,
-        #     old_metrics=active_metrics.model_dump(),
-        #     candidate_metrics=candidate_metrics_version.model_dump(),
-        #     old_validation_judgments=old_validation_judgments,
-        #     candidate_validation_judgments=candidate_validation_judgments,
-        #     correctness_analysis=proposal.correctness_analysis,
-        #     metric_actions=proposal.metric_actions,
-        #     company_policy=company_policy,
-        # )
-        #
-        # normalized_decision = self._normalize_decision(validation.decision)
-        # activation_status = "inactive"
-        # if normalized_decision == "ADOPT":
-        #     if force_activate:
-        #         self.metrics_registry.activate_version(metrics_key, candidate_metrics_version.version_id)
-        #         activation_status = "active"
-        # else:
-        #     activation_status = "rejected"
-        #
-        # validation_record = ValidationDecision(
-        #     decision=normalized_decision,
-        #     reason=validation.reason,
-        #     experiment_results=self._merge_validation_results(
-        #         validation.experiment_results,
-        #         old_validation_judgments,
-        #         candidate_validation_judgments,
-        #     ),
-        # )
-        old_validation_judgments: list[StoredJudgeResult] = []
-        candidate_validation_judgments: list[StoredJudgeResult] = []
-        if force_activate:
-            self.metrics_registry.activate_version(metrics_key, candidate_metrics_version.version_id)
-        validation_record = ValidationDecision(
-            decision="SKIPPED",
-            reason="Validation reruns are temporarily disabled. Returning proposed candidate metrics only.",
-            experiment_results=[],
+        validation_experiment_ids = self._select_validation_experiment_ids(
+            exclude_ids=[before_experiment_id, after_experiment_id],
         )
-        activation_status = "active" if force_activate else "inactive"
+        validation_contexts = self._build_validation_contexts(
+            experiment_ids=validation_experiment_ids,
+            metrics_key=metrics_key,
+            lender_id=lender_id,
+            old_metrics_version_id=active_metrics.version_id,
+            candidate_metrics_version_id=candidate_metrics_version.version_id,
+        )
+
+        old_validation_judgments = [item.old_judgment for item in validation_contexts]
+        candidate_validation_judgments = [item.candidate_judgment for item in validation_contexts]
+
+        validation = self._validate_candidate_metrics(
+            before_transcript=before_transcript,
+            after_transcript=after_transcript,
+            old_metrics=active_metrics.model_dump(),
+            candidate_metrics=candidate_metrics_version.model_dump(),
+            old_validation_judgments=old_validation_judgments,
+            candidate_validation_judgments=candidate_validation_judgments,
+            correctness_analysis=proposal.correctness_analysis,
+            metric_actions=proposal.metric_actions,
+            company_policy=company_policy,
+        )
+
+        normalized_decision = self._normalize_decision(validation.decision)
+        compliance_gate_reason = self._detect_compliance_regression(
+            old_validation_judgments=old_validation_judgments,
+            candidate_validation_judgments=candidate_validation_judgments,
+            old_metrics=active_metrics.metrics,
+            candidate_metrics=candidate_metrics_version.metrics,
+        )
+        if compliance_gate_reason is not None:
+            normalized_decision = "REJECT"
+
+        activation_status = "inactive"
+        if normalized_decision == "ADOPT" and force_activate:
+            self.metrics_registry.activate_version(metrics_key, candidate_metrics_version.version_id)
+            activation_status = "active"
+        elif normalized_decision == "REJECT":
+            activation_status = "rejected"
+
+        validation_record = ValidationDecision(
+            decision=normalized_decision,
+            reason=compliance_gate_reason or validation.reason,
+            experiment_results=self._merge_validation_results(
+                validation.experiment_results,
+                old_validation_judgments,
+                candidate_validation_judgments,
+            ),
+        )
 
         return self.meta_eval_run_service.create_run(
             before_experiment_id=before_experiment_id,
             after_experiment_id=after_experiment_id,
+            validation_experiment_ids=validation_experiment_ids,
             metrics_key=metrics_key,
             lender_id=lender_id,
             old_metrics_version=active_metrics.version_id,
@@ -341,6 +338,8 @@ class MetaEvaluatorService:
             f"After transcript:\n{after_transcript}\n\n"
             f"Old validation judgments:\n{json.dumps([item.model_dump() for item in old_validation_judgments], indent=2)}\n\n"
             f"Candidate validation judgments:\n{json.dumps([item.model_dump() for item in candidate_validation_judgments], indent=2)}\n\n"
+            "Use the validation judgments as held-out evidence. Prefer REJECT if the candidate is not clearly better.\n"
+            "If the candidate introduces any compliance regression or makes compliance enforcement weaker, reject it.\n"
             "Return JSON with:\n"
             '- decision: "ADOPT" or "REJECT"\n'
             "- reason\n"
@@ -456,6 +455,70 @@ class MetaEvaluatorService:
             )
 
         return contexts
+
+    def _detect_compliance_regression(
+        self,
+        old_validation_judgments: list[StoredJudgeResult],
+        candidate_validation_judgments: list[StoredJudgeResult],
+        old_metrics: list[MetricDefinition],
+        candidate_metrics: list[MetricDefinition],
+    ) -> str | None:
+        compliance_metric_ids = self._get_compliance_metric_ids(old_metrics) | self._get_compliance_metric_ids(
+            candidate_metrics
+        )
+        if not compliance_metric_ids:
+            return None
+
+        old_by_experiment = {item.experiment_id: item for item in old_validation_judgments}
+        candidate_by_experiment = {item.experiment_id: item for item in candidate_validation_judgments}
+
+        for experiment_id, old_judgment in old_by_experiment.items():
+            candidate_judgment = candidate_by_experiment.get(experiment_id)
+            if candidate_judgment is None:
+                continue
+
+            old_scores = {score.metric_id: score for score in old_judgment.scores}
+            candidate_scores = {score.metric_id: score for score in candidate_judgment.scores}
+
+            for metric_id in compliance_metric_ids:
+                old_score = old_scores.get(metric_id)
+                candidate_score = candidate_scores.get(metric_id)
+                if old_score is None or candidate_score is None:
+                    continue
+                if candidate_score.score < old_score.score:
+                    return (
+                        "Rejected due to compliance regression on "
+                        f"{experiment_id}: metric {metric_id} dropped from {old_score.score} to {candidate_score.score}."
+                    )
+
+        return None
+
+    def _get_compliance_metric_ids(self, metrics: list[MetricDefinition]) -> set[str]:
+        compliance_metric_ids: set[str] = set()
+        for metric in metrics:
+            search_blob = " ".join(
+                [
+                    metric.metric_id,
+                    metric.name,
+                    metric.description,
+                    " ".join(metric.policy_references),
+                ]
+            ).lower()
+            if any(
+                token in search_blob
+                for token in (
+                    "compliance",
+                    "policy",
+                    "disclosure",
+                    "identity",
+                    "stop_contact",
+                    "stop-contact",
+                    "harassment",
+                    "consent",
+                )
+            ):
+                compliance_metric_ids.add(metric.metric_id)
+        return compliance_metric_ids
 
     def _normalize_decision(self, decision: str) -> str:
         normalized = decision.strip().upper()

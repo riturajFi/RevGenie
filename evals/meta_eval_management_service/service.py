@@ -68,6 +68,7 @@ class MetaEvalRunRecord(BaseModel):
     created_at: str
     before_experiment_id: str
     after_experiment_id: str
+    validation_experiment_ids: list[str] = Field(default_factory=list)
     metrics_key: str
     lender_id: str | None = None
     old_metrics_version: str

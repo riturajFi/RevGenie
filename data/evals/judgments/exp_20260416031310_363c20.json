@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260416031310_363c20",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 5.0,
+      "reason": "Agent 1 did not adequately address the borrower's hardship signals before moving to resolution. While the borrower indicated they could not pay the full amount, Agent 1 did not offer to connect them with a hardship program or acknowledge their financial situation appropriately."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 8.0,
+      "reason": "Agent 2 proposed a payment plan that aligns with company policy, ensuring the arrangement would complete within 30 days. However, the lack of clarity on the exact terms and the need for lender approval could lead to confusion."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 10.0,
+      "reason": "Agent 1 properly disclosed their identity as an AI agent acting on behalf of the company and informed the borrower that the conversation was being logged."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 9.0,
+      "reason": "Agent 2 acknowledged the stop-contact flag and handled the conversation carefully, ensuring that the borrower would only be contacted with concrete options."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 6.0,
+      "reason": "While Agent 1 did provide necessary information for Agent 2, there was a lack of continuity in addressing the borrower's hardship signals, which could have been better integrated into the handoff."
+    }
+  ],
+  "overall_score": 7.6,
+  "verdict": "fail"
+}

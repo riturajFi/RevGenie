@@ -1,10 +1,10 @@
 {
   "b_001": {
-    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage FINAL_NOTICE, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: can pay now up to 0, has not indicated a later payment date. Hardship signals: job_loss, medical_issue, student, unemployment. Stop-contact flag is present. Borrower stated position: Borrower states they are unemployed, is not committing to any payment, and wants contact to stop. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
+    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage FINAL_NOTICE, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: can pay now up to 2000, may pay later around 2026-04-20. Hardship signals: job_loss, medical_issue, student. Stop-contact flag is present. Borrower stated position: Borrower confirmed they can make a small payment today and clear the remaining balance by 2026-04-20, and asked to record that hardship-based proposal for lender review. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
     "attributes": {
       "borrower_capacity": {
-        "available_now": 0,
-        "can_pay_later": false,
+        "available_now": 2000,
+        "can_pay_later": true,
         "can_pay_now": true,
         "expected_date": "2026-04-20"
       },
@@ -14,10 +14,10 @@
         "wants_settlement": true
       },
       "borrower_objections": [],
-      "borrower_stated_position": "Borrower states they are unemployed, is not committing to any payment, and wants contact to stop.",
-      "boundary_signal": "Repeated inability to pay now and refusal to confirm anything else in this channel.",
-      "channel_verification_refused": true,
-      "contact_channel_preference": "Not comfortable discussing account details in this channel right now.",
+      "borrower_stated_position": "Borrower confirmed they can make a small payment today and clear the remaining balance by 2026-04-20, and asked to record that hardship-based proposal for lender review.",
+      "contact_preferences": {
+        "channel_verification_discomfort": true
+      },
       "dispute_flags": {
         "claims_paid": false,
         "claims_wrong_commitment": false
@@ -27,16 +27,17 @@
         "emotional_distress": false,
         "job_loss": true,
         "medical_issue": true,
-        "student": true,
-        "unemployment": true
+        "student": true
       },
-      "hardship_status": "unemployment_confirmed",
       "last_contact_channel": "CHAT",
+      "last_deadline_offered": "2026-04-20",
       "offers_made": [],
       "principal_outstanding": 10125,
-      "resolution_notes": "Hardship signal confirmed: unemployment. Borrower explicitly refused any payment commitment and requested no further contact. Stop-contact request acknowledged; no further outreach should occur from this workflow.",
-      "standalone_payment_intent": "Borrower states they can make a small payment today.",
-      "stop_contact_flag": true
+      "resolution_notes": "Hardship-based proposal recorded for review: small payment today and remaining balance by 2026-04-20. Timing fits Nira's 30-day policy boundary. Exact approvable payment-plan and reduced-closure terms still not retrievable from available data in this turn. Borrower remains cooperative and has not refused payment; no approved arrangement finalized.",
+      "resolution_status": "no_deal_due_to_refusal_and_stop_contact",
+      "standalone_payment_intent": "Borrower stated they can make a small payment now.",
+      "stop_contact_flag": true,
+      "stop_contact_requested": true
     },
     "core": {
       "amount_due": 12921,
@@ -54,10 +55,10 @@
         "OFFER_PAYMENT_PLAN"
       ],
       "stage": "FINAL_NOTICE",
-      "workflow_id": "wf_20260416005055_7428ed"
+      "workflow_id": "wf_20260416031626_099ebe"
     },
     "latest_handoff_stage": "FINAL_NOTICE",
-    "latest_handoff_summary": "Borrower reiterated that they are not making any payment at this time and explicitly requested that contact stop. Stop-contact request remains in effect; no further outreach should occur from this workflow unless a policy-compliant action is required."
+    "latest_handoff_summary": "Borrower repeated the recorded cooperative position: willing to make a small payment today and clear the remaining balance by 2026-04-20 if review is approved. Stop-contact preference remains active. Re-checked case, loan, and lender policy; no exact approved payment-plan or reduced-closure terms and no documented final decision were available to communicate in this stage."
   },
   "b_001_20260413133008185530_baseline": {
     "amount_due": 12921,

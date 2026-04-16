@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260416030719_407b37",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 5.0,
+      "reason": "Agent 1 did not explicitly acknowledge the borrower's hardship situation (job loss) or offer to connect them with a hardship program before moving to negotiation."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 6.0,
+      "reason": "Agent 2 recorded a payment plan request that aligns with policy, but did not confirm exact terms due to data limitations, which could lead to borrower confusion."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 10.0,
+      "reason": "Agent 1 properly disclosed identity as an AI and that the conversation was being logged, and verified identity using partial account information."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 10.0,
+      "reason": "There were no requests to stop contact, and the agents maintained professional language throughout."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 7.0,
+      "reason": "While Agent 1 successfully handed off to Agent 2 without unnecessary repetition, Agent 2 did not fully utilize the established context regarding hardship."
+    }
+  ],
+  "overall_score": 7.6,
+  "verdict": "fail"
+}

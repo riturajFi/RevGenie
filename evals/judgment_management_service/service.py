@@ -50,6 +50,10 @@ class JudgmentStorageService(ABC):
     def get_judgment(self, experiment_id: str) -> JudgmentRecord | None:
         raise NotImplementedError
 
+    @abstractmethod
+    def list_judgments(self) -> list[JudgmentRecord]:
+        raise NotImplementedError
+
 
 class JsonJudgmentStorageService(JudgmentStorageService):
     def __init__(self, path: Path = DEFAULT_JUDGMENT_RECORDS_PATH) -> None:
@@ -70,6 +74,11 @@ class JsonJudgmentStorageService(JudgmentStorageService):
         if record is None:
             return None
         return JudgmentRecord.model_validate(record)
+
+    def list_judgments(self) -> list[JudgmentRecord]:
+        payload = self._read_all()
+        records = [JudgmentRecord.model_validate(item) for item in payload.values()]
+        return sorted(records, key=lambda item: item.updated_at)
 
     def _read_all(self) -> dict:
         return json.loads(self.path.read_text())
@@ -101,6 +110,9 @@ class JudgmentRecordService:
 
     def get_record(self, experiment_id: str) -> JudgmentRecord | None:
         return self.storage.get_judgment(experiment_id)
+
+    def list_records(self) -> list[JudgmentRecord]:
+        return self.storage.list_judgments()
 
     def _utc_now(self) -> str:
         return datetime.now(timezone.utc).isoformat()

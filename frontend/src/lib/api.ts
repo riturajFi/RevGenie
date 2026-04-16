@@ -12,6 +12,7 @@ import {
   SimulationStatusResponse,
   TranscriptEvent,
 } from "@/types/borrower";
+import { EvalPerformanceDataset } from "@/types/performance";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
 
@@ -197,6 +198,16 @@ export async function revertPromptVersion(
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(detail || "Failed to revert prompt version");
+  }
+  return response.json();
+}
+
+export async function getEvalPerformance(scenarioId?: string): Promise<EvalPerformanceDataset> {
+  const query = scenarioId ? `?scenario_id=${encodeURIComponent(scenarioId)}` : "";
+  const response = await fetch(`${API_BASE_URL}/evals/performance${query}`);
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to fetch evaluation performance data");
   }
   return response.json();
 }

@@ -419,6 +419,106 @@ textarea {
   color: var(--muted);
 }
 
+.performance-panel {
+  width: 100%;
+  padding: 28px;
+}
+
+.scenario-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.performance-layout {
+  display: grid;
+  gap: 14px;
+}
+
+.performance-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+
+.legend-item {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--muted);
+}
+
+.legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.performance-chart-wrap {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(69, 53, 40, 0.1);
+  background: rgba(255, 255, 255, 0.66);
+  padding: 10px;
+}
+
+.performance-chart {
+  display: block;
+}
+
+.chart-grid-line {
+  stroke: rgba(69, 53, 40, 0.12);
+  stroke-width: 1;
+}
+
+.chart-grid-label {
+  font-size: 10px;
+  fill: rgba(69, 53, 40, 0.7);
+}
+
+.chart-x-label {
+  font-size: 10px;
+  fill: rgba(69, 53, 40, 0.7);
+}
+
+.chart-bar {
+  cursor: pointer;
+  transition: opacity 120ms ease;
+}
+
+.performance-hover-card {
+  border-radius: 14px;
+  border: 1px solid rgba(69, 53, 40, 0.1);
+  background: rgba(255, 255, 255, 0.76);
+  padding: 14px;
+  display: grid;
+  gap: 6px;
+}
+
+.performance-hover-card header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.performance-hover-card h4,
+.hover-prompt-versions h5,
+.hover-prompt-change h5 {
+  margin: 0;
+}
+
+.performance-hover-card p {
+  margin: 0;
+}
+
+.performance-empty {
+  color: var(--muted);
+  margin: 0;
+}
+
 .metric-card {
   border-radius: 14px;
   border: 1px solid rgba(69, 53, 40, 0.1);
@@ -571,6 +671,11 @@ textarea {
   }
 
   .prompt-change-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .scenario-filter-row {
     flex-direction: column;
     align-items: flex-start;
   }

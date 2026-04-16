@@ -6,11 +6,13 @@ from pathlib import Path
 from threading import Lock
 from uuid import uuid4
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Query, status
 from pydantic import BaseModel, Field
 
 from app.domain.borrower_case import CaseStatus, ContactChannel, Stage
+from app.services.eval_performance import EvalPerformanceDataset, EvalPerformanceService
 from app.services.borrower_case import FileBorrowerCaseService
+from app.services.simulation_run_history import SimulationRunHistoryService
 from evals.judge_service.service import JudgeResult, JudgeService
 from evals.logging_service.logger import LogEvent, get_logs
 from evals.prompt_change_service.service import PromptChangeApplyResult, PromptChangeProposer
@@ -27,6 +29,10 @@ simulation_lock = Lock()
 simulation_runs: dict[str, dict] = {}
 judge_service = JudgeService()
 prompt_change_proposer = PromptChangeProposer()
+run_history_service = SimulationRunHistoryService()
+performance_service = EvalPerformanceService(
+    run_history_service=run_history_service,
+)
 
 
 class ScenarioCreateRequest(BaseModel):
@@ -173,6 +179,7 @@ def _run_simulation_job(
 ) -> None:
     with simulation_lock:
         simulation_runs[run_id]["status"] = "running"
+    run_history_service.update_status(run_id=run_id, status="running")
 
     try:
         tester = TesterAgent()
@@ -188,11 +195,23 @@ def _run_simulation_job(
             simulation_runs[run_id]["status"] = "completed"
             simulation_runs[run_id]["result"] = result
             simulation_runs[run_id]["finished_at"] = _utc_now()
+        run_history_service.update_status(
+            run_id=run_id,
+            status="completed",
+            finished_at=simulation_runs[run_id]["finished_at"],
+            error=None,
+        )
     except Exception as error:
         with simulation_lock:
             simulation_runs[run_id]["status"] = "failed"
             simulation_runs[run_id]["error"] = str(error)
             simulation_runs[run_id]["finished_at"] = _utc_now()
+        run_history_service.update_status(
+            run_id=run_id,
+            status="failed",
+            finished_at=simulation_runs[run_id]["finished_at"],
+            error=str(error),
+        )
 
 
 @router.get("/scenarios", response_model=list[Scenario])
@@ -240,6 +259,15 @@ def start_simulation(request: SimulationStartRequest) -> SimulationStartResponse
             "started_at": _utc_now(),
             "finished_at": None,
         }
+    run_history_service.create_run(
+        run_id=run_id,
+        workflow_id=workflow_id,
+        experiment_id=experiment_id,
+        borrower_id=request.borrower_id,
+        scenario_id=request.scenario_id,
+        status="queued",
+        started_at=simulation_runs[run_id]["started_at"],
+    )
 
     simulation_executor.submit(
         _run_simulation_job,
@@ -314,6 +342,15 @@ def evaluate_simulation(run_id: str, request: EvaluateSimulationRequest) -> Eval
             lender_id=request.lender_id,
             persist=request.persist,
         )
+        prompt_versions = _get_active_prompt_versions()
+        run_history_service.append_evaluation(
+            run_id=run_id,
+            metrics_key=request.metrics_key,
+            lender_id=request.lender_id,
+            overall_score=result.overall_score,
+            verdict=result.verdict,
+            prompt_versions=prompt_versions,
+        )
     except Exception as error:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error)) from error
 
@@ -323,6 +360,11 @@ def evaluate_simulation(run_id: str, request: EvaluateSimulationRequest) -> Eval
         experiment_id=record["experiment_id"],
         result=result,
     )
+
+
+@router.get("/performance", response_model=EvalPerformanceDataset)
+def get_eval_performance(scenario_id: str | None = Query(default=None)) -> EvalPerformanceDataset:
+    return performance_service.get_dataset(scenario_id=scenario_id)
 
 
 @router.post("/simulations/{run_id}/prompt-changes/apply", response_model=PromptChangeBatchResponse)
@@ -395,3 +437,13 @@ def revert_prompt_change(run_id: str, request: PromptVersionRevertRequest) -> Pr
         agent_id=request.agent_id,
         active_version_id=active_version_id,
     )
+
+
+def _get_active_prompt_versions() -> dict[str, str]:
+    versions: dict[str, str] = {}
+    for agent_id in ("agent_1", "agent_2", "agent_3"):
+        try:
+            versions[agent_id] = json_prompt_storage_service.get_active_prompt(agent_id).version_id
+        except KeyError:
+            continue
+    return versions

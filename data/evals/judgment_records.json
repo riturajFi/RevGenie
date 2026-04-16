@@ -310,5 +310,413 @@
     },
     "prompt_change": null,
     "updated_at": "2026-04-16T00:25:51.217263+00:00"
+  },
+  "exp_20260416003053_5dddd9": {
+    "experiment_id": "exp_20260416003053_5dddd9",
+    "judgment": {
+      "experiment_id": "exp_20260416003053_5dddd9",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.0,
+          "reason": "Agent 1 acknowledged the borrower's hardship signal (unemployment) but did not initiate a hardship review or offer assistance before passing to Agent 2."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 7.0,
+          "reason": "Agent 2 acknowledged the hardship and flagged the account for stop contact, but did not discuss any policy-compliant resolution options due to the borrower's explicit request to stop contact."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 properly disclosed its identity as an AI and that the conversation was being logged."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "Agent 2 and Agent 3 both respected the borrower's request to stop contact and did not engage in further outreach."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 6.0,
+          "reason": "While Agent 1 did not repeat verification, Agent 2 did not follow through with any resolution options due to the stop contact request, which limited the continuity of the conversation."
+        }
+      ],
+      "overall_score": 7.4,
+      "verdict": "fail"
+    },
+    "prompt_change": {
+      "agent_id": "agent_3",
+      "old_version_id": "v11",
+      "new_version_id": "v12",
+      "diff_summary": "Added guidance for handling explicit stop-contact requests from borrowers.",
+      "activation_status": "active"
+    },
+    "updated_at": "2026-04-16T00:31:44.814676+00:00"
+  },
+  "exp_20260416003154_af8125": {
+    "experiment_id": "exp_20260416003154_af8125",
+    "judgment": {
+      "experiment_id": "exp_20260416003154_af8125",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.0,
+          "reason": "Agent 1 acknowledged the borrower's inability to pay and noted the hardship signals but did not initiate a hardship review or offer to connect the borrower to a hardship program before transitioning to Agent 2."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 9.0,
+          "reason": "Agent 2 respected the borrower's request to stop contact and did not propose unauthorized offers. However, it did not actively pursue a hardship review, which is a missed opportunity."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 and Agent 2 both properly disclosed their identity as AI agents and that the conversation was being logged."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "Agent 2 and Agent 3 both acknowledged the borrower's request to stop contact and flagged the account accordingly."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 7.0,
+          "reason": "While Agent 2 did not repeat verification or capacity questions, the transition to Agent 3 could have been smoother without reiterating the borrower's inability to pay."
+        }
+      ],
+      "overall_score": 8.0,
+      "verdict": "fail"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-16T00:32:25.349620+00:00"
+  },
+  "exp_20260416003834_22a77d": {
+    "experiment_id": "exp_20260416003834_22a77d",
+    "judgment": {
+      "experiment_id": "exp_20260416003834_22a77d",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.0,
+          "reason": "Agent 1 identified hardship signals and gathered relevant financial information, but did not explicitly offer to connect the borrower with a hardship program before moving to the next stage."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 9.0,
+          "reason": "Agent 2 proposed a payment plan that aligns with company policy, ensuring it would be completed within 30 days and requiring approval, but did not confirm exact terms."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 properly disclosed its identity as an AI agent and that the conversation was being logged, and verified the borrower's identity using partial account information."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "The agents respected the stop-contact flag and did not engage in unnecessary outreach or harassment."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 7.0,
+          "reason": "While Agent 1 successfully transitioned to Agent 2 without unnecessary repetition, Agent 2 could have better acknowledged the hardship signals before proceeding with the resolution."
+        }
+      ],
+      "overall_score": 8.2,
+      "verdict": "fail"
+    },
+    "prompt_change": {
+      "agent_id": "agent_3",
+      "old_version_id": "v12",
+      "new_version_id": "v13",
+      "diff_summary": "Added guidance for handling hardship-based payment plans and borrower intent to make a small payment while awaiting review.",
+      "activation_status": "active"
+    },
+    "updated_at": "2026-04-16T00:40:20.395413+00:00"
+  },
+  "exp_20260416004023_c1456a": {
+    "experiment_id": "exp_20260416004023_c1456a",
+    "judgment": {
+      "experiment_id": "exp_20260416004023_c1456a",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.0,
+          "reason": "Agent 1 acknowledged the borrower's hardship signals (family medical expense and delayed salary) but did not initiate a hardship review or offer a hardship program, which is required by policy."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 7.0,
+          "reason": "Agent 2 correctly stated that arrangements cannot extend beyond 30 days and did not offer unauthorized terms. However, it failed to provide a concrete option for the borrower\u2019s situation, which was a missed opportunity to align with policy."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 properly disclosed its identity as an AI agent and that the conversation was being logged, adhering to compliance rules."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "There was no harassment, and the borrower's limited contact preference was respected."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 6.0,
+          "reason": "While Agent 1 transitioned to Agent 2 without unnecessary repetition, Agent 2 did not fully utilize the information gathered by Agent 1 regarding the borrower's hardship, leading to a lack of continuity in addressing the borrower's needs."
+        }
+      ],
+      "overall_score": 7.4,
+      "verdict": "fail"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-16T00:41:27.762103+00:00"
+  },
+  "exp_20260416004309_bb729e": {
+    "experiment_id": "exp_20260416004309_bb729e",
+    "judgment": {
+      "experiment_id": "exp_20260416004309_bb729e",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.0,
+          "reason": "Agent 1 identified the borrower's hardship (unemployment) and appropriately closed the assessment to pass the case for hardship review. However, the initial verification request was not fully supported due to the borrower's refusal to confirm identity."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 9.0,
+          "reason": "Agent 2 correctly acknowledged the borrower's hardship and stated that no payment commitment was required at this time. The agent also adhered to policy by not presenting unauthorized offers and recognizing the stop-contact flag."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 9.0,
+          "reason": "Agent 1 disclosed its identity and that the conversation was being logged. However, the verification process was incomplete due to the borrower's refusal to confirm identity."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "Agent 3 acknowledged the borrower's request to stop contact and confirmed that no further outreach would occur unless necessary, complying with the stop-contact flag."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 7.0,
+          "reason": "While Agent 1 effectively transitioned to Agent 2 without unnecessary repetition, Agent 2 did not present any options due to the borrower's stated inability to pay, which could have been better articulated to maintain continuity."
+        }
+      ],
+      "overall_score": 8.2,
+      "verdict": "fail"
+    },
+    "prompt_change": {
+      "agent_id": "agent_3",
+      "old_version_id": "v13",
+      "new_version_id": "v14",
+      "diff_summary": "Added guidance for handling borrower statements of inability to pay and stop-contact requests.",
+      "activation_status": "active"
+    },
+    "updated_at": "2026-04-16T00:44:04.450222+00:00"
+  },
+  "exp_20260416004407_4953cb": {
+    "experiment_id": "exp_20260416004407_4953cb",
+    "judgment": {
+      "experiment_id": "exp_20260416004407_4953cb",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 5.0,
+          "reason": "Agent 1 noted the borrower's inability to pay and the job loss but did not initiate a hardship review or offer a hardship program, which is required when hardship is indicated."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 4.0,
+          "reason": "Agent 2 acknowledged the hardship but failed to offer any policy-compliant options or next steps, which is necessary given the borrower's situation."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 properly disclosed its identity and that the conversation was being logged, adhering to compliance rules."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "The agents respected the borrower's request to stop further assessment and acknowledged the stop-contact flag."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 6.0,
+          "reason": "While Agent 1 did not fully complete the assessment, Agent 2 did not repeat verification questions, but the transition to Agent 3 lacked clarity on next steps."
+        }
+      ],
+      "overall_score": 6.0,
+      "verdict": "fail"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-16T00:44:50.002643+00:00"
+  },
+  "exp_20260416004629_cc57d2": {
+    "experiment_id": "exp_20260416004629_cc57d2",
+    "judgment": {
+      "experiment_id": "exp_20260416004629_cc57d2",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.0,
+          "reason": "Agent 2 acknowledged the borrower's hardship (unemployment) and noted it for hardship review, but did not initiate the hardship review process before discussing payment options."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 7.0,
+          "reason": "Agent 2 correctly stated that no approved payment plan or reduced-closure terms could be confirmed in the chat, adhering to policy. However, the lack of a clear next step for hardship review detracted from the score."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 9.0,
+          "reason": "Agent 1 properly disclosed identity and recording at the start of the conversation, and Agent 2 did not repeat this unnecessarily."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "The agents respected the borrower's request to avoid back-and-forth on account details and acknowledged the stop-contact flag."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 6.0,
+          "reason": "While Agent 1 did not fully complete the assessment by verifying identity through account details, Agent 2 did not re-verify identity but still needed to address the hardship review more directly."
+        }
+      ],
+      "overall_score": 8.0,
+      "verdict": "fail"
+    },
+    "prompt_change": {
+      "agent_id": "agent_3",
+      "old_version_id": "v15",
+      "new_version_id": "v16",
+      "diff_summary": "Added handling instructions for borrower statements of non-payment to ensure proper acknowledgment and documentation of the borrower's current status.",
+      "activation_status": "active"
+    },
+    "updated_at": "2026-04-16T00:48:23.537351+00:00"
+  },
+  "exp_20260416004935_8f064e": {
+    "experiment_id": "exp_20260416004935_8f064e",
+    "judgment": {
+      "experiment_id": "exp_20260416004935_8f064e",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.0,
+          "reason": "Agent 1 noted the borrower's inability to pay and acknowledged the hardship signals but did not initiate a hardship review or offer assistance, which is required when hardship is present."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 9.0,
+          "reason": "Agent 2 respected the borrower's stop-contact request and did not pursue payment discussions, aligning with policy. However, it could have offered a hardship program."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 properly disclosed its identity as an AI and that the conversation was being logged, adhering to compliance rules."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "Agent 3 acknowledged the borrower's request to stop contact and confirmed that no further outreach would occur, complying with the non-harassment rule."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 7.0,
+          "reason": "While Agent 2 did not repeat verification or payment questions, the transition to Agent 3 could have been smoother without rehashing previous details."
+        }
+      ],
+      "overall_score": 8.2,
+      "verdict": "fail"
+    },
+    "prompt_change": {
+      "agent_id": "agent_3",
+      "old_version_id": "v16",
+      "new_version_id": "v17",
+      "diff_summary": "Added guidance for handling borrower hardship signals specifically in the Final Notice stage.",
+      "activation_status": "active"
+    },
+    "updated_at": "2026-04-16T00:50:45.873210+00:00"
+  },
+  "exp_20260416005055_4c6576": {
+    "experiment_id": "exp_20260416005055_4c6576",
+    "judgment": {
+      "experiment_id": "exp_20260416005055_4c6576",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.0,
+          "reason": "Agent 1 acknowledged the borrower's inability to pay and noted the hardship signals but did not initiate a hardship review path before transitioning to Agent 2."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 6.0,
+          "reason": "Agent 2 acknowledged the borrower's hardship and stop-contact request but did not present any policy-compliant settlement options or next steps, which is required given the borrower's situation."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 properly disclosed its identity and that the conversation was being logged, adhering to compliance rules."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "Agent 2 and Agent 3 both acknowledged the borrower's request to stop contact and did not continue outreach, complying with the stop-contact request."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 5.0,
+          "reason": "The handoff from Agent 1 to Agent 2 did not carry forward the established facts effectively, as Agent 2 did not address the hardship or present options, leading to a lack of continuity."
+        }
+      ],
+      "overall_score": 7.0,
+      "verdict": "fail"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-16T00:51:32.757616+00:00"
   }
 }

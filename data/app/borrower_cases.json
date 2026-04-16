@@ -1,11 +1,11 @@
 {
   "b_001": {
-    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage FINAL_NOTICE, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: cannot pay now, may pay later around 2026-04-20. Hardship signals: job_loss, student. Stop-contact flag is present. Borrower stated position: Unemployed and not making any payment promises at this time. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
+    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage FINAL_NOTICE, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: can pay now up to 0, has not indicated a later payment date. Hardship signals: job_loss, medical_issue, student, unemployment. Stop-contact flag is present. Borrower stated position: Borrower states they are unemployed, is not committing to any payment, and wants contact to stop. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
     "attributes": {
       "borrower_capacity": {
         "available_now": 0,
-        "can_pay_later": true,
-        "can_pay_now": false,
+        "can_pay_later": false,
+        "can_pay_now": true,
         "expected_date": "2026-04-20"
       },
       "borrower_intent": {
@@ -14,8 +14,10 @@
         "wants_settlement": true
       },
       "borrower_objections": [],
-      "borrower_stated_position": "Unemployed and not making any payment promises at this time.",
+      "borrower_stated_position": "Borrower states they are unemployed, is not committing to any payment, and wants contact to stop.",
+      "boundary_signal": "Repeated inability to pay now and refusal to confirm anything else in this channel.",
       "channel_verification_refused": true,
+      "contact_channel_preference": "Not comfortable discussing account details in this channel right now.",
       "dispute_flags": {
         "claims_paid": false,
         "claims_wrong_commitment": false
@@ -24,13 +26,16 @@
       "hardship_flags": {
         "emotional_distress": false,
         "job_loss": true,
-        "medical_issue": false,
-        "student": true
+        "medical_issue": true,
+        "student": true,
+        "unemployment": true
       },
+      "hardship_status": "unemployment_confirmed",
       "last_contact_channel": "CHAT",
       "offers_made": [],
       "principal_outstanding": 10125,
-      "resolution_notes": "Hardship signal confirmed: unemployment/job loss. Checked lender policy and loan data: available paths are reduced-closure review or payment-plan review; payment arrangements cannot extend beyond 30 days. Borrower declined to make any payment commitment. Stop-contact restriction present; flag for no further outreach in this channel.",
+      "resolution_notes": "Hardship signal confirmed: unemployment. Borrower explicitly refused any payment commitment and requested no further contact. Stop-contact request acknowledged; no further outreach should occur from this workflow.",
+      "standalone_payment_intent": "Borrower states they can make a small payment today.",
       "stop_contact_flag": true
     },
     "core": {
@@ -49,10 +54,10 @@
         "OFFER_PAYMENT_PLAN"
       ],
       "stage": "FINAL_NOTICE",
-      "workflow_id": "wf_20260416002500_7100fb"
+      "workflow_id": "wf_20260416005055_7428ed"
     },
     "latest_handoff_stage": "FINAL_NOTICE",
-    "latest_handoff_summary": "Borrower reaffirmed hardship and stated they are not agreeing to any payment. Stop-contact restriction remains in effect. Re-checked case, loan, and lender policy: reduced-closure review and payment-plan review remain the only approved paths, payment plans cannot extend beyond 30 days, and no concrete approved terms or new documented next step were available to communicate. Final-stage notice given with no further outreach in this channel unless a permitted approved outcome or documented next step becomes available."
+    "latest_handoff_summary": "Borrower reiterated that they are not making any payment at this time and explicitly requested that contact stop. Stop-contact request remains in effect; no further outreach should occur from this workflow unless a policy-compliant action is required."
   },
   "b_001_20260413133008185530_baseline": {
     "amount_due": 12921,

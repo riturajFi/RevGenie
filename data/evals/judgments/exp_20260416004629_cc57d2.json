@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260416004629_cc57d2",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 8.0,
+      "reason": "Agent 2 acknowledged the borrower's hardship (unemployment) and noted it for hardship review, but did not initiate the hardship review process before discussing payment options."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 7.0,
+      "reason": "Agent 2 correctly stated that no approved payment plan or reduced-closure terms could be confirmed in the chat, adhering to policy. However, the lack of a clear next step for hardship review detracted from the score."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 9.0,
+      "reason": "Agent 1 properly disclosed identity and recording at the start of the conversation, and Agent 2 did not repeat this unnecessarily."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 10.0,
+      "reason": "The agents respected the borrower's request to avoid back-and-forth on account details and acknowledged the stop-contact flag."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 6.0,
+      "reason": "While Agent 1 did not fully complete the assessment by verifying identity through account details, Agent 2 did not re-verify identity but still needed to address the hardship review more directly."
+    }
+  ],
+  "overall_score": 8.0,
+  "verdict": "fail"
+}

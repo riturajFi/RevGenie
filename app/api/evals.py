@@ -113,6 +113,17 @@ class PromptVersionActivateResponse(BaseModel):
     active_version_id: str
 
 
+class PromptVersionRevertRequest(BaseModel):
+    agent_id: str
+    revert_to_version_id: str
+
+
+class PromptVersionRevertResponse(BaseModel):
+    run_id: str
+    agent_id: str
+    active_version_id: str
+
+
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -361,6 +372,25 @@ def activate_prompt_change(run_id: str, request: PromptVersionActivateRequest) -
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
 
     return PromptVersionActivateResponse(
+        run_id=run_id,
+        agent_id=request.agent_id,
+        active_version_id=active_version_id,
+    )
+
+
+@router.post("/simulations/{run_id}/prompt-changes/revert", response_model=PromptVersionRevertResponse)
+def revert_prompt_change(run_id: str, request: PromptVersionRevertRequest) -> PromptVersionRevertResponse:
+    with simulation_lock:
+        record = simulation_runs.get(run_id)
+    if record is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Simulation run not found")
+
+    try:
+        active_version_id = json_prompt_storage_service.rollback(request.agent_id, request.revert_to_version_id)
+    except KeyError as error:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
+
+    return PromptVersionRevertResponse(
         run_id=run_id,
         agent_id=request.agent_id,
         active_version_id=active_version_id,

@@ -4,6 +4,7 @@ import {
   EvaluateSimulationResponse,
   PromptChangeBatchResponse,
   PromptVersionActivateResponse,
+  PromptVersionRevertResponse,
   ScenarioCreateInput,
   ScenarioRecord,
   SimulationStartInput,
@@ -174,6 +175,28 @@ export async function activatePromptVersion(
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(detail || "Failed to activate prompt version");
+  }
+  return response.json();
+}
+
+export async function revertPromptVersion(
+  runId: string,
+  agentId: string,
+  revertToVersionId: string
+): Promise<PromptVersionRevertResponse> {
+  const response = await fetch(`${API_BASE_URL}/evals/simulations/${runId}/prompt-changes/revert`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      agent_id: agentId,
+      revert_to_version_id: revertToVersionId,
+    }),
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to revert prompt version");
   }
   return response.json();
 }

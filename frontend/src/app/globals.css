@@ -414,6 +414,11 @@ textarea {
   font-size: 1.1rem;
 }
 
+.prompt-change-note {
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
 .metric-card {
   border-radius: 14px;
   border: 1px solid rgba(69, 53, 40, 0.1);

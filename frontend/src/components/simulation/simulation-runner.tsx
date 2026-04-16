@@ -10,6 +10,7 @@ import {
   getSimulationEvents,
   getSimulationStatus,
   listScenarios,
+  revertPromptVersion,
   startSimulation,
 } from "@/lib/api";
 import {
@@ -147,6 +148,9 @@ export function SimulationRunner() {
   const [isApplyingPromptChanges, setIsApplyingPromptChanges] = useState(false);
   const [promptChanges, setPromptChanges] = useState<PromptChangeBatchResponse | null>(null);
   const [isActivatingByAgent, setIsActivatingByAgent] = useState<Record<string, boolean>>({});
+  const [isRevertingByAgent, setIsRevertingByAgent] = useState<Record<string, boolean>>({});
+  const [proposalSourceRunId, setProposalSourceRunId] = useState<string | null>(null);
+  const [postProposalEvaluationRunIds, setPostProposalEvaluationRunIds] = useState<string[]>([]);
 
   async function loadScenarios() {
     setIsLoadingScenarios(true);
@@ -225,8 +229,8 @@ export function SimulationRunner() {
     setEvents([]);
     setExpandedStateLogIds([]);
     setEvaluation(null);
-    setPromptChanges(null);
     setIsActivatingByAgent({});
+    setIsRevertingByAgent({});
     try {
       const normalizedMaxTurns = Number.isFinite(maxTurns) && maxTurns > 0 ? maxTurns : 50;
       const started = await startSimulation({
@@ -249,6 +253,9 @@ export function SimulationRunner() {
     try {
       const result = await evaluateSimulation(runId);
       setEvaluation(result);
+      if (promptChanges && proposalSourceRunId && runId !== proposalSourceRunId) {
+        setPostProposalEvaluationRunIds((current) => (current.includes(runId) ? current : [...current, runId]));
+      }
     } catch (evaluateError) {
       setError(evaluateError instanceof Error ? evaluateError.message : "Failed to evaluate simulation.");
     } finally {
@@ -263,6 +270,8 @@ export function SimulationRunner() {
     try {
       const result = await applyPromptChanges(runId, autoActivatePromptChanges);
       setPromptChanges(result);
+      setProposalSourceRunId(runId);
+      setPostProposalEvaluationRunIds([]);
     } catch (applyError) {
       setError(applyError instanceof Error ? applyError.message : "Failed to apply prompt changes.");
     } finally {
@@ -294,6 +303,33 @@ export function SimulationRunner() {
       setError(activationError instanceof Error ? activationError.message : "Failed to activate prompt change.");
     } finally {
       setIsActivatingByAgent((current) => ({ ...current, [item.agent_id]: false }));
+    }
+  }
+
+  async function handleRevertPromptChange(item: PromptChangeApplyResult) {
+    if (!runId) return;
+    setIsRevertingByAgent((current) => ({ ...current, [item.agent_id]: true }));
+    setError(null);
+    try {
+      await revertPromptVersion(runId, item.agent_id, item.old_version_id);
+      setPromptChanges((current) => {
+        if (!current) return current;
+        return {
+          ...current,
+          results: current.results.map((result) =>
+            result.agent_id === item.agent_id
+              ? {
+                  ...result,
+                  activation_status: "active",
+                }
+              : result
+          ),
+        };
+      });
+    } catch (revertError) {
+      setError(revertError instanceof Error ? revertError.message : "Failed to revert prompt change.");
+    } finally {
+      setIsRevertingByAgent((current) => ({ ...current, [item.agent_id]: false }));
     }
   }
 
@@ -416,6 +452,13 @@ export function SimulationRunner() {
               {isApplyingPromptChanges ? "Proposing..." : "Propose Prompt Changes (Agent 1, 2, 3)"}
             </button>
           </div>
+          {promptChanges ? (
+            <p className="prompt-change-note">
+              {postProposalEvaluationRunIds.length > 0
+                ? "Post-proposal simulation + judgement detected. Revert is now available per agent."
+                : "After proposing changes, run a new simulation and evaluate it to enable per-agent revert."}
+            </p>
+          ) : null}
           <div className="evaluation-metrics">
             {evaluation.result.scores.map((item) => (
               <article className="metric-card" key={item.metric_id}>
@@ -449,6 +492,16 @@ export function SimulationRunner() {
                         disabled={Boolean(isActivatingByAgent[result.agent_id])}
                       >
                         {isActivatingByAgent[result.agent_id] ? "Activating..." : "Activate"}
+                      </button>
+                    ) : null}
+                    {postProposalEvaluationRunIds.length > 0 ? (
+                      <button
+                        type="button"
+                        className="button button-secondary"
+                        onClick={() => void handleRevertPromptChange(result)}
+                        disabled={Boolean(isRevertingByAgent[result.agent_id])}
+                      >
+                        {isRevertingByAgent[result.agent_id] ? "Reverting..." : "Revert"}
                       </button>
                     ) : null}
                   </article>

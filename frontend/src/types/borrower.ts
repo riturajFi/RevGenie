@@ -126,3 +126,9 @@ export type PromptVersionActivateResponse = {
   agent_id: string;
   active_version_id: string;
 };
+
+export type PromptVersionRevertResponse = {
+  run_id: string;
+  agent_id: string;
+  active_version_id: string;
+};

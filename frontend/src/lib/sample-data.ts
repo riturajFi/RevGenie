@@ -35,6 +35,11 @@ export const sidebarItems = [
     description: "Review scoring output and saved reports later.",
   },
   {
+    id: "prompt-evolution",
+    label: "Prompt Evolution",
+    description: "Inspect prompt version history and diffs per agent.",
+  },
+  {
     id: "meta-eval",
     label: "Meta Eval",
     description: "Compare experiment runs and metrics changes later.",

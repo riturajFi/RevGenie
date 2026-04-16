@@ -13,6 +13,7 @@ import {
   TranscriptEvent,
 } from "@/types/borrower";
 import { EvalPerformanceDataset } from "@/types/performance";
+import { PromptEvolutionResponse } from "@/types/prompt-evolution";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
 
@@ -208,6 +209,15 @@ export async function getEvalPerformance(scenarioId?: string): Promise<EvalPerfo
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(detail || "Failed to fetch evaluation performance data");
+  }
+  return response.json();
+}
+
+export async function getPromptEvolution(agentId: string): Promise<PromptEvolutionResponse> {
+  const response = await fetch(`${API_BASE_URL}/evals/prompt-evolution/${encodeURIComponent(agentId)}`);
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to fetch prompt evolution data");
   }
   return response.json();
 }

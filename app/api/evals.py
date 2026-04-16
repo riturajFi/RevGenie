@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field
 
 from app.domain.borrower_case import CaseStatus, ContactChannel, Stage
 from app.services.eval_performance import EvalPerformanceDataset, EvalPerformanceService
+from app.services.prompt_evolution import PromptEvolutionResponse, PromptEvolutionService
 from app.services.borrower_case import FileBorrowerCaseService
 from app.services.simulation_run_history import SimulationRunHistoryService
 from evals.judge_service.service import JudgeResult, JudgeService
@@ -33,6 +34,7 @@ run_history_service = SimulationRunHistoryService()
 performance_service = EvalPerformanceService(
     run_history_service=run_history_service,
 )
+prompt_evolution_service = PromptEvolutionService()
 
 
 class ScenarioCreateRequest(BaseModel):
@@ -365,6 +367,14 @@ def evaluate_simulation(run_id: str, request: EvaluateSimulationRequest) -> Eval
 @router.get("/performance", response_model=EvalPerformanceDataset)
 def get_eval_performance(scenario_id: str | None = Query(default=None)) -> EvalPerformanceDataset:
     return performance_service.get_dataset(scenario_id=scenario_id)
+
+
+@router.get("/prompt-evolution/{agent_id}", response_model=PromptEvolutionResponse)
+def get_prompt_evolution(agent_id: str) -> PromptEvolutionResponse:
+    try:
+        return prompt_evolution_service.get_evolution(agent_id)
+    except KeyError as error:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
 
 
 @router.post("/simulations/{run_id}/prompt-changes/apply", response_model=PromptChangeBatchResponse)

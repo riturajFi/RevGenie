@@ -14,6 +14,7 @@ import {
 } from "@/types/borrower";
 import { EvalPerformanceDataset } from "@/types/performance";
 import { PromptEvolutionResponse } from "@/types/prompt-evolution";
+import { ComplianceConfig } from "@/types/compliance";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
 
@@ -218,6 +219,43 @@ export async function getPromptEvolution(agentId: string): Promise<PromptEvoluti
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(detail || "Failed to fetch prompt evolution data");
+  }
+  return response.json();
+}
+
+export async function getComplianceConfig(): Promise<ComplianceConfig> {
+  const response = await fetch(`${API_BASE_URL}/evals/compliance`);
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to fetch compliance rules");
+  }
+  return response.json();
+}
+
+export async function updateComplianceConfig(rulesText: string): Promise<ComplianceConfig> {
+  const response = await fetch(`${API_BASE_URL}/evals/compliance`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      rules_text: rulesText,
+    }),
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to update compliance rules");
+  }
+  return response.json();
+}
+
+export async function resetComplianceConfig(): Promise<ComplianceConfig> {
+  const response = await fetch(`${API_BASE_URL}/evals/compliance/reset`, {
+    method: "POST",
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to reset compliance rules");
   }
   return response.json();
 }

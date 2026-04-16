@@ -40,6 +40,11 @@ export const sidebarItems = [
     description: "Inspect prompt version history and diffs per agent.",
   },
   {
+    id: "global-compliance",
+    label: "Global Compliance",
+    description: "Set and reset global compliance rules shared by all agents.",
+  },
+  {
     id: "meta-eval",
     label: "Meta Eval",
     description: "Compare experiment runs and metrics changes later.",

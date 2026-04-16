@@ -14,6 +14,7 @@ from app.services.eval_performance import EvalPerformanceDataset, EvalPerformanc
 from app.services.prompt_evolution import PromptEvolutionResponse, PromptEvolutionService
 from app.services.borrower_case import FileBorrowerCaseService
 from app.services.simulation_run_history import SimulationRunHistoryService
+from evals.compliance_management_service.service import ComplianceConfig, compliance_config_service
 from evals.judge_service.service import JudgeResult, JudgeService
 from evals.logging_service.logger import LogEvent, get_logs
 from evals.prompt_change_service.service import PromptChangeApplyResult, PromptChangeProposer
@@ -130,6 +131,10 @@ class PromptVersionRevertResponse(BaseModel):
     run_id: str
     agent_id: str
     active_version_id: str
+
+
+class ComplianceUpdateRequest(BaseModel):
+    rules_text: str
 
 
 def _utc_now() -> str:
@@ -375,6 +380,21 @@ def get_prompt_evolution(agent_id: str) -> PromptEvolutionResponse:
         return prompt_evolution_service.get_evolution(agent_id)
     except KeyError as error:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
+
+
+@router.get("/compliance", response_model=ComplianceConfig)
+def get_compliance() -> ComplianceConfig:
+    return compliance_config_service.get()
+
+
+@router.put("/compliance", response_model=ComplianceConfig)
+def update_compliance(request: ComplianceUpdateRequest) -> ComplianceConfig:
+    return compliance_config_service.update(request.rules_text)
+
+
+@router.post("/compliance/reset", response_model=ComplianceConfig)
+def reset_compliance() -> ComplianceConfig:
+    return compliance_config_service.reset_to_default()
 
 
 @router.post("/simulations/{run_id}/prompt-changes/apply", response_model=PromptChangeBatchResponse)

@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { BorrowerProfileForm } from "@/components/forms/borrower-profile-form";
 import { AdminSidebar } from "@/components/navigation/admin-sidebar";
+import { ComplianceDashboard } from "@/components/compliance/compliance-dashboard";
 import { PerformanceDashboard } from "@/components/performance/performance-dashboard";
 import { PromptEvolutionDashboard } from "@/components/prompt-evolution/prompt-evolution-dashboard";
 import { SimulationRunner } from "@/components/simulation/simulation-runner";
@@ -19,6 +20,7 @@ export default function AdminDashboardPage() {
         {activeTab === "run-simulation" ? <SimulationRunner /> : null}
         {activeTab === "eval-reports" ? <PerformanceDashboard /> : null}
         {activeTab === "prompt-evolution" ? <PromptEvolutionDashboard /> : null}
+        {activeTab === "global-compliance" ? <ComplianceDashboard /> : null}
         {activeTab === "meta-eval" ? (
           <section className="panel placeholder-panel">
             <h2>Meta Eval</h2>

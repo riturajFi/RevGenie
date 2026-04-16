@@ -424,6 +424,17 @@ textarea {
   padding: 28px;
 }
 
+.compliance-panel {
+  width: 100%;
+  padding: 28px;
+}
+
+.compliance-textarea {
+  min-height: 360px;
+  font-family: "Courier New", Courier, monospace;
+  line-height: 1.45;
+}
+
 .scenario-filter-row {
   display: flex;
   flex-wrap: wrap;

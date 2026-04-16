@@ -132,3 +132,42 @@ export type PromptVersionRevertResponse = {
   agent_id: string;
   active_version_id: string;
 };
+
+export type BorrowerCaseSnapshot = {
+  core: {
+    borrower_id: string;
+    workflow_id: string;
+    loan_id_masked: string;
+    lender_id: string;
+    stage: string;
+    case_status: string;
+    case_type: string[];
+    amount_due: number;
+    identity_verified: boolean;
+    next_allowed_actions: string[];
+    final_disposition: string | null;
+  };
+  attributes: Record<string, unknown>;
+  agent_context_summary: string | null;
+  latest_handoff_summary: string | null;
+  latest_handoff_stage: string | null;
+};
+
+export type BorrowerPortalLoginResponse = {
+  borrower_profile: BorrowerProfileRecord;
+  borrower_case: BorrowerCaseSnapshot;
+};
+
+export type BorrowerChatMessage = {
+  id: string;
+  actor: "borrower" | "agent" | "system";
+  text: string;
+  created_at: string;
+};
+
+export type BorrowerWorkflowMessageResponse = {
+  workflow_id: string;
+  reply: string | null;
+  stage: string;
+  final_result: string | null;
+};

@@ -60,6 +60,11 @@ textarea {
   padding: 24px;
 }
 
+.borrower-chat-page {
+  min-height: 100vh;
+  padding: 24px;
+}
+
 .admin-content {
   display: flex;
   align-items: flex-start;
@@ -300,6 +305,58 @@ textarea {
 .placeholder-panel {
   width: 100%;
   padding: 32px;
+}
+
+.borrower-chat-panel {
+  width: min(1040px, 100%);
+  padding: 28px;
+  margin: 0 auto;
+  display: grid;
+  gap: 16px;
+}
+
+.borrower-chat-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.borrower-chat-header h1 {
+  margin: 0;
+}
+
+.borrower-chat-meta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.borrower-chat-meta div {
+  border-radius: 12px;
+  border: 1px solid rgba(69, 53, 40, 0.1);
+  background: rgba(255, 255, 255, 0.72);
+  padding: 10px 12px;
+  display: grid;
+  gap: 4px;
+}
+
+.borrower-chat-meta span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.borrower-chat-stream {
+  max-height: 460px;
+  overflow-y: auto;
+  display: grid;
+  gap: 12px;
+  padding-right: 4px;
+}
+
+.borrower-chat-input {
+  display: grid;
+  gap: 10px;
 }
 
 .simulation-layout {
@@ -966,6 +1023,14 @@ textarea {
 
   .simulation-controls-grid,
   .run-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .borrower-chat-header {
+    flex-direction: column;
+  }
+
+  .borrower-chat-meta {
     grid-template-columns: 1fr;
   }
 

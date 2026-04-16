@@ -1,4 +1,6 @@
 import {
+  BorrowerPortalLoginResponse,
+  BorrowerWorkflowMessageResponse,
   BorrowerProfileCreateInput,
   BorrowerProfileRecord,
   EvaluateSimulationResponse,
@@ -39,6 +41,50 @@ export async function createBorrowerProfile(
     throw new Error(detail || "Failed to create borrower profile");
   }
 
+  return response.json();
+}
+
+export async function borrowerPortalLogin(
+  phoneNumber: string,
+  password: string
+): Promise<BorrowerPortalLoginResponse> {
+  const response = await fetch(`${API_BASE_URL}/borrower-auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      phone_number: phoneNumber,
+      password,
+    }),
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed borrower login");
+  }
+  return response.json();
+}
+
+export async function sendBorrowerChatMessage(payload: {
+  borrowerId: string;
+  workflowId: string;
+  message: string;
+}): Promise<BorrowerWorkflowMessageResponse> {
+  const response = await fetch(`${API_BASE_URL}/workflows/messages`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      borrower_id: payload.borrowerId,
+      workflow_id: payload.workflowId,
+      message: payload.message,
+    }),
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to send borrower message");
+  }
   return response.json();
 }
 

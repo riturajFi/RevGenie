@@ -2,6 +2,8 @@ import {
   BorrowerProfileCreateInput,
   BorrowerProfileRecord,
   EvaluateSimulationResponse,
+  PromptChangeBatchResponse,
+  PromptVersionActivateResponse,
   ScenarioCreateInput,
   ScenarioRecord,
   SimulationStartInput,
@@ -129,6 +131,49 @@ export async function evaluateSimulation(runId: string): Promise<EvaluateSimulat
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(detail || "Failed to evaluate simulation");
+  }
+  return response.json();
+}
+
+export async function applyPromptChanges(
+  runId: string,
+  forceActivate: boolean
+): Promise<PromptChangeBatchResponse> {
+  const response = await fetch(`${API_BASE_URL}/evals/simulations/${runId}/prompt-changes/apply`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      target_agent_ids: ["agent_1", "agent_2", "agent_3"],
+      force_activate: forceActivate,
+    }),
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to apply prompt changes");
+  }
+  return response.json();
+}
+
+export async function activatePromptVersion(
+  runId: string,
+  agentId: string,
+  versionId: string
+): Promise<PromptVersionActivateResponse> {
+  const response = await fetch(`${API_BASE_URL}/evals/simulations/${runId}/prompt-changes/activate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      agent_id: agentId,
+      version_id: versionId,
+    }),
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to activate prompt version");
   }
   return response.json();
 }

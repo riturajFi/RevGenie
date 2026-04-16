@@ -390,6 +390,30 @@ textarea {
   gap: 12px;
 }
 
+.prompt-change-toolbar {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.checkbox-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+}
+
+.prompt-change-results {
+  margin-top: 18px;
+}
+
+.prompt-change-results h4 {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+}
+
 .metric-card {
   border-radius: 14px;
   border: 1px solid rgba(69, 53, 40, 0.1);
@@ -539,6 +563,11 @@ textarea {
 
   .evaluation-summary {
     justify-items: start;
+  }
+
+  .prompt-change-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .state-grid {

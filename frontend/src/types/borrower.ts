@@ -105,3 +105,24 @@ export type EvaluateSimulationResponse = {
   experiment_id: string;
   result: JudgeResult;
 };
+
+export type PromptChangeApplyResult = {
+  agent_id: string;
+  old_version_id: string;
+  new_version_id: string;
+  diff_summary: string;
+  activation_status: "active" | "inactive";
+};
+
+export type PromptChangeBatchResponse = {
+  run_id: string;
+  workflow_id: string;
+  experiment_id: string;
+  results: PromptChangeApplyResult[];
+};
+
+export type PromptVersionActivateResponse = {
+  run_id: string;
+  agent_id: string;
+  active_version_id: string;
+};

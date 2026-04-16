@@ -3,6 +3,8 @@
 import { FormEvent, useEffect, useState } from "react";
 
 import {
+  activatePromptVersion,
+  applyPromptChanges,
   createScenario,
   evaluateSimulation,
   getSimulationEvents,
@@ -12,6 +14,8 @@ import {
 } from "@/lib/api";
 import {
   EvaluateSimulationResponse,
+  PromptChangeApplyResult,
+  PromptChangeBatchResponse,
   ScenarioCreateInput,
   ScenarioRecord,
   SimulationStatusResponse,
@@ -139,6 +143,10 @@ export function SimulationRunner() {
   const [expandedStateLogIds, setExpandedStateLogIds] = useState<number[]>([]);
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [evaluation, setEvaluation] = useState<EvaluateSimulationResponse | null>(null);
+  const [autoActivatePromptChanges, setAutoActivatePromptChanges] = useState(true);
+  const [isApplyingPromptChanges, setIsApplyingPromptChanges] = useState(false);
+  const [promptChanges, setPromptChanges] = useState<PromptChangeBatchResponse | null>(null);
+  const [isActivatingByAgent, setIsActivatingByAgent] = useState<Record<string, boolean>>({});
 
   async function loadScenarios() {
     setIsLoadingScenarios(true);
@@ -217,6 +225,8 @@ export function SimulationRunner() {
     setEvents([]);
     setExpandedStateLogIds([]);
     setEvaluation(null);
+    setPromptChanges(null);
+    setIsActivatingByAgent({});
     try {
       const normalizedMaxTurns = Number.isFinite(maxTurns) && maxTurns > 0 ? maxTurns : 50;
       const started = await startSimulation({
@@ -243,6 +253,47 @@ export function SimulationRunner() {
       setError(evaluateError instanceof Error ? evaluateError.message : "Failed to evaluate simulation.");
     } finally {
       setIsEvaluating(false);
+    }
+  }
+
+  async function handleApplyPromptChanges() {
+    if (!runId || !evaluation) return;
+    setIsApplyingPromptChanges(true);
+    setError(null);
+    try {
+      const result = await applyPromptChanges(runId, autoActivatePromptChanges);
+      setPromptChanges(result);
+    } catch (applyError) {
+      setError(applyError instanceof Error ? applyError.message : "Failed to apply prompt changes.");
+    } finally {
+      setIsApplyingPromptChanges(false);
+    }
+  }
+
+  async function handleActivatePromptChange(item: PromptChangeApplyResult) {
+    if (!runId) return;
+    setIsActivatingByAgent((current) => ({ ...current, [item.agent_id]: true }));
+    setError(null);
+    try {
+      await activatePromptVersion(runId, item.agent_id, item.new_version_id);
+      setPromptChanges((current) => {
+        if (!current) return current;
+        return {
+          ...current,
+          results: current.results.map((result) =>
+            result.agent_id === item.agent_id
+              ? {
+                  ...result,
+                  activation_status: "active",
+                }
+              : result
+          ),
+        };
+      });
+    } catch (activationError) {
+      setError(activationError instanceof Error ? activationError.message : "Failed to activate prompt change.");
+    } finally {
+      setIsActivatingByAgent((current) => ({ ...current, [item.agent_id]: false }));
     }
   }
 
@@ -347,6 +398,24 @@ export function SimulationRunner() {
               <strong>Overall Score: {evaluation.result.overall_score.toFixed(2)} / 10</strong>
             </div>
           </div>
+          <div className="prompt-change-toolbar">
+            <label className="checkbox-inline">
+              <input
+                type="checkbox"
+                checked={autoActivatePromptChanges}
+                onChange={(event) => setAutoActivatePromptChanges(event.target.checked)}
+              />
+              <span>Auto-activate prompt changes</span>
+            </label>
+            <button
+              type="button"
+              className="button button-primary"
+              onClick={handleApplyPromptChanges}
+              disabled={isApplyingPromptChanges}
+            >
+              {isApplyingPromptChanges ? "Proposing..." : "Propose Prompt Changes (Agent 1, 2, 3)"}
+            </button>
+          </div>
           <div className="evaluation-metrics">
             {evaluation.result.scores.map((item) => (
               <article className="metric-card" key={item.metric_id}>
@@ -358,6 +427,35 @@ export function SimulationRunner() {
               </article>
             ))}
           </div>
+          {promptChanges ? (
+            <div className="prompt-change-results">
+              <h4>Prompt Change Results</h4>
+              <div className="evaluation-metrics">
+                {promptChanges.results.map((result) => (
+                  <article className="metric-card" key={result.agent_id}>
+                    <header>
+                      <strong>{result.agent_id}</strong>
+                      <span>{result.activation_status.toUpperCase()}</span>
+                    </header>
+                    <p>{result.diff_summary}</p>
+                    <p>
+                      Version: {result.old_version_id} -> {result.new_version_id}
+                    </p>
+                    {result.activation_status === "inactive" ? (
+                      <button
+                        type="button"
+                        className="button button-secondary"
+                        onClick={() => void handleActivatePromptChange(result)}
+                        disabled={Boolean(isActivatingByAgent[result.agent_id])}
+                      >
+                        {isActivatingByAgent[result.agent_id] ? "Activating..." : "Activate"}
+                      </button>
+                    ) : null}
+                  </article>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
       ) : null}
 

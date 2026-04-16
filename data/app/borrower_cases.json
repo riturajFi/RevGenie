@@ -1,6 +1,6 @@
 {
   "b_001": {
-    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage FINAL_NOTICE, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: cannot pay now, may pay later around 2026-04-20. Hardship signals: job_loss, student. Borrower stated position: Borrower states they are unemployed and are not agreeing to any payment at this time. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
+    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage FINAL_NOTICE, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: cannot pay now, may pay later around 2026-04-20. Hardship signals: job_loss, student. Stop-contact flag is present. Borrower stated position: Unemployed and not making any payment promises at this time. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
     "attributes": {
       "borrower_capacity": {
         "available_now": 0,
@@ -14,7 +14,7 @@
         "wants_settlement": true
       },
       "borrower_objections": [],
-      "borrower_stated_position": "Borrower states they are unemployed and are not agreeing to any payment at this time.",
+      "borrower_stated_position": "Unemployed and not making any payment promises at this time.",
       "channel_verification_refused": true,
       "dispute_flags": {
         "claims_paid": false,
@@ -28,11 +28,10 @@
         "student": true
       },
       "last_contact_channel": "CHAT",
-      "last_deadline_offered": "2026-05-16",
       "offers_made": [],
       "principal_outstanding": 10125,
-      "resolution_notes": "Hardship signal confirmed: unemployment/job loss. Borrower declined payment discussion and did not agree to any payment option. Policy checked: no extensions beyond 30 days; reduced closure and payment plans require policy-compliant approval only.",
-      "stop_contact_flag": false
+      "resolution_notes": "Hardship signal confirmed: unemployment/job loss. Checked lender policy and loan data: available paths are reduced-closure review or payment-plan review; payment arrangements cannot extend beyond 30 days. Borrower declined to make any payment commitment. Stop-contact restriction present; flag for no further outreach in this channel.",
+      "stop_contact_flag": true
     },
     "core": {
       "amount_due": 12921,
@@ -50,10 +49,10 @@
         "OFFER_PAYMENT_PLAN"
       ],
       "stage": "FINAL_NOTICE",
-      "workflow_id": "wf_20260416001725_e8e87e"
+      "workflow_id": "wf_20260416002500_7100fb"
     },
     "latest_handoff_stage": "FINAL_NOTICE",
-    "latest_handoff_summary": "Borrower reaffirmed they are not paying anything at this time. No concrete approved reduced-closure or payment-plan terms were available after re-checking case, loan, and lender policy. Hardship status remains recorded. Borrower was given a final-stage notice that no approved option is currently available and the account will proceed only according to the next documented step available under lender policy."
+    "latest_handoff_summary": "Borrower reaffirmed hardship and stated they are not agreeing to any payment. Stop-contact restriction remains in effect. Re-checked case, loan, and lender policy: reduced-closure review and payment-plan review remain the only approved paths, payment plans cannot extend beyond 30 days, and no concrete approved terms or new documented next step were available to communicate. Final-stage notice given with no further outreach in this channel unless a permitted approved outcome or documented next step becomes available."
   },
   "b_001_20260413133008185530_baseline": {
     "amount_due": 12921,

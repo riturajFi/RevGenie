@@ -13,6 +13,8 @@ from app.domain.borrower_case import CaseStatus, ContactChannel, Stage
 from app.services.borrower_case import FileBorrowerCaseService
 from evals.judge_service.service import JudgeResult, JudgeService
 from evals.logging_service.logger import LogEvent, get_logs
+from evals.prompt_change_service.service import PromptChangeApplyResult, PromptChangeProposer
+from evals.prompt_management_service.prompt_storage import json_prompt_storage_service
 from evals.tester_service import DEFAULT_SCENARIOS_PATH, Scenario, ScenarioRepository, TesterAgent, TesterRunResult
 
 
@@ -24,6 +26,7 @@ simulation_executor = ThreadPoolExecutor(max_workers=2)
 simulation_lock = Lock()
 simulation_runs: dict[str, dict] = {}
 judge_service = JudgeService()
+prompt_change_proposer = PromptChangeProposer()
 
 
 class ScenarioCreateRequest(BaseModel):
@@ -85,6 +88,29 @@ class EvaluateSimulationResponse(BaseModel):
     workflow_id: str
     experiment_id: str
     result: JudgeResult
+
+
+class PromptChangeBatchRequest(BaseModel):
+    target_agent_ids: list[str] = Field(default_factory=lambda: ["agent_1", "agent_2", "agent_3"])
+    force_activate: bool = True
+
+
+class PromptChangeBatchResponse(BaseModel):
+    run_id: str
+    workflow_id: str
+    experiment_id: str
+    results: list[PromptChangeApplyResult]
+
+
+class PromptVersionActivateRequest(BaseModel):
+    agent_id: str
+    version_id: str
+
+
+class PromptVersionActivateResponse(BaseModel):
+    run_id: str
+    agent_id: str
+    active_version_id: str
 
 
 def _utc_now() -> str:
@@ -285,4 +311,57 @@ def evaluate_simulation(run_id: str, request: EvaluateSimulationRequest) -> Eval
         workflow_id=record["workflow_id"],
         experiment_id=record["experiment_id"],
         result=result,
+    )
+
+
+@router.post("/simulations/{run_id}/prompt-changes/apply", response_model=PromptChangeBatchResponse)
+def apply_prompt_changes(run_id: str, request: PromptChangeBatchRequest) -> PromptChangeBatchResponse:
+    with simulation_lock:
+        record = simulation_runs.get(run_id)
+    if record is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Simulation run not found")
+    if record["status"] != "completed":
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Simulation must be completed before proposing prompt changes",
+        )
+
+    results: list[PromptChangeApplyResult] = []
+    for target_agent_id in request.target_agent_ids:
+        try:
+            result = prompt_change_proposer.apply_change(
+                experiment_id=record["experiment_id"],
+                target_agent_id=target_agent_id,
+                force_activate=request.force_activate,
+            )
+        except KeyError as error:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
+        except Exception as error:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error)) from error
+        results.append(result)
+
+    return PromptChangeBatchResponse(
+        run_id=run_id,
+        workflow_id=record["workflow_id"],
+        experiment_id=record["experiment_id"],
+        results=results,
+    )
+
+
+@router.post("/simulations/{run_id}/prompt-changes/activate", response_model=PromptVersionActivateResponse)
+def activate_prompt_change(run_id: str, request: PromptVersionActivateRequest) -> PromptVersionActivateResponse:
+    with simulation_lock:
+        record = simulation_runs.get(run_id)
+    if record is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Simulation run not found")
+
+    try:
+        active_version_id = json_prompt_storage_service.activate_version(request.agent_id, request.version_id)
+    except KeyError as error:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
+
+    return PromptVersionActivateResponse(
+        run_id=run_id,
+        agent_id=request.agent_id,
+        active_version_id=active_version_id,
     )

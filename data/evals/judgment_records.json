@@ -220,5 +220,95 @@
     },
     "prompt_change": null,
     "updated_at": "2026-04-16T00:18:07.042540+00:00"
+  },
+  "exp_20260416002340_545cd3": {
+    "experiment_id": "exp_20260416002340_545cd3",
+    "judgment": {
+      "experiment_id": "exp_20260416002340_545cd3",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.0,
+          "reason": "Agent 1 identified the borrower's hardship and marked it for review, but did not initiate a hardship program or offer a clear next step for assistance."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 7.0,
+          "reason": "Agent 2 correctly stated that no extensions beyond 30 days are allowed and did not propose unauthorized offers. However, it failed to provide any concrete options or next steps for the borrower."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 properly disclosed its identity and that the conversation was being logged, adhering to compliance rules."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "There was no request from the borrower to stop contact, and the agents maintained a professional demeanor throughout the interaction."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 6.0,
+          "reason": "While Agent 1 transitioned to Agent 2 without unnecessary repetition, Agent 2 did not effectively carry forward the established hardship context into actionable next steps, leading to a lack of continuity."
+        }
+      ],
+      "overall_score": 7.0,
+      "verdict": "fail"
+    },
+    "prompt_change": {
+      "agent_id": "agent_3",
+      "old_version_id": "v10",
+      "new_version_id": "v11",
+      "diff_summary": "Added guidance on handling borrower hardship signals to ensure appropriate acknowledgment and communication of next steps.",
+      "activation_status": "active"
+    },
+    "updated_at": "2026-04-16T00:24:52.491047+00:00"
+  },
+  "exp_20260416002500_35b3be": {
+    "experiment_id": "exp_20260416002500_35b3be",
+    "judgment": {
+      "experiment_id": "exp_20260416002500_35b3be",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.0,
+          "reason": "Agent 2 acknowledged the borrower's hardship due to unemployment and recorded it appropriately. However, Agent 1 did not fully assess the situation before passing it to Agent 2, which slightly impacts the score."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 9.0,
+          "reason": "Agent 2 communicated the available options within policy limits and acknowledged the stop-contact restriction. No unauthorized offers were made."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 properly disclosed its identity as an AI and that the conversation was being logged, adhering to compliance rules."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "Agent 2 honored the stop-contact restriction and did not pressure the borrower for commitments."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 6.0,
+          "reason": "Agent 1 did not complete the assessment phase properly by failing to verify the borrower's identity and financial situation before passing to Agent 2, which led to some redundancy in Agent 2's handling."
+        }
+      ],
+      "overall_score": 8.0,
+      "verdict": "fail"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-16T00:25:51.217263+00:00"
   }
 }

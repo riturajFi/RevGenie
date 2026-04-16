@@ -17,6 +17,8 @@ from app.services.simulation_run_history import SimulationRunHistoryService
 from evals.compliance_management_service.service import ComplianceConfig, compliance_config_service
 from evals.judge_service.service import JudgeResult, JudgeService
 from evals.logging_service.logger import LogEvent, get_logs
+from evals.meta_eval_management_service.service import MetaEvalRunRecord
+from evals.meta_eval_service.service import MetaEvaluatorService
 from evals.prompt_change_service.service import PromptChangeApplyResult, PromptChangeProposer
 from evals.prompt_management_service.prompt_storage import json_prompt_storage_service
 from evals.tester_service import DEFAULT_SCENARIOS_PATH, Scenario, ScenarioRepository, TesterAgent, TesterRunResult
@@ -31,6 +33,7 @@ simulation_lock = Lock()
 simulation_runs: dict[str, dict] = {}
 judge_service = JudgeService()
 prompt_change_proposer = PromptChangeProposer()
+meta_evaluator_service = MetaEvaluatorService()
 run_history_service = SimulationRunHistoryService()
 performance_service = EvalPerformanceService(
     run_history_service=run_history_service,
@@ -135,6 +138,18 @@ class PromptVersionRevertResponse(BaseModel):
 
 class ComplianceUpdateRequest(BaseModel):
     rules_text: str
+
+
+class MetaEvalRunRequest(BaseModel):
+    metrics_key: str = "collections_agent_eval"
+    lender_id: str | None = "nira"
+    force_activate: bool = True
+
+
+class MetaEvalLatestPairResponse(BaseModel):
+    before_experiment_id: str | None = None
+    after_experiment_id: str | None = None
+    total_evaluated_experiments: int
 
 
 def _utc_now() -> str:
@@ -477,3 +492,66 @@ def _get_active_prompt_versions() -> dict[str, str]:
         except KeyError:
             continue
     return versions
+
+
+def _get_latest_evaluated_experiment_ids(limit: int = 2) -> list[str]:
+    evaluations: list[tuple[str, str]] = []
+    for run in run_history_service.list_runs():
+        if not run.evaluations:
+            continue
+        latest_evaluation = run.evaluations[-1]
+        evaluations.append((latest_evaluation.created_at, run.experiment_id))
+
+    evaluations.sort(key=lambda item: item[0], reverse=True)
+    deduped_ids: list[str] = []
+    seen: set[str] = set()
+    for _, experiment_id in evaluations:
+        if experiment_id in seen:
+            continue
+        seen.add(experiment_id)
+        deduped_ids.append(experiment_id)
+        if len(deduped_ids) >= limit:
+            break
+    return deduped_ids
+
+
+@router.get("/meta-eval/latest-pair", response_model=MetaEvalLatestPairResponse)
+def get_latest_meta_eval_pair() -> MetaEvalLatestPairResponse:
+    latest_ids = _get_latest_evaluated_experiment_ids(limit=2)
+    if len(latest_ids) < 2:
+        return MetaEvalLatestPairResponse(
+            before_experiment_id=None,
+            after_experiment_id=None,
+            total_evaluated_experiments=len(latest_ids),
+        )
+    return MetaEvalLatestPairResponse(
+        before_experiment_id=latest_ids[1],
+        after_experiment_id=latest_ids[0],
+        total_evaluated_experiments=len(latest_ids),
+    )
+
+
+@router.post("/meta-eval/run", response_model=MetaEvalRunRecord)
+def run_meta_eval(request: MetaEvalRunRequest) -> MetaEvalRunRecord:
+    latest_ids = _get_latest_evaluated_experiment_ids(limit=2)
+    if len(latest_ids) < 2:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="At least two evaluated experiments are required for meta evaluation.",
+        )
+
+    try:
+        return meta_evaluator_service.judge(
+            before_experiment_id=latest_ids[1],
+            after_experiment_id=latest_ids[0],
+            metrics_key=request.metrics_key,
+            lender_id=request.lender_id,
+            force_activate=request.force_activate,
+        )
+    except Exception as error:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error)) from error
+
+
+@router.get("/meta-eval/runs", response_model=list[MetaEvalRunRecord])
+def list_meta_eval_runs() -> list[MetaEvalRunRecord]:
+    return meta_evaluator_service.list_runs()

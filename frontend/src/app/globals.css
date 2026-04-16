@@ -435,6 +435,23 @@ textarea {
   line-height: 1.45;
 }
 
+.lender-policy-panel {
+  width: 100%;
+  padding: 28px;
+}
+
+.lender-policy-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.lender-policy-textarea {
+  min-height: 360px;
+  font-family: "Courier New", Courier, monospace;
+  line-height: 1.45;
+}
+
 .scenario-filter-row {
   display: flex;
   flex-wrap: wrap;
@@ -517,7 +534,8 @@ textarea {
 
 .performance-hover-card h4,
 .hover-prompt-versions h5,
-.hover-prompt-change h5 {
+.hover-prompt-change h5,
+.hover-metrics-used h5 {
   margin: 0;
 }
 
@@ -667,6 +685,147 @@ textarea {
   color: var(--muted);
 }
 
+.meta-eval-panel {
+  width: 100%;
+  padding: 28px;
+}
+
+.meta-eval-experiment-pair {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.meta-eval-pill {
+  border-radius: 14px;
+  border: 1px solid rgba(69, 53, 40, 0.1);
+  background: rgba(255, 255, 255, 0.66);
+  padding: 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.meta-eval-pill span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.meta-eval-controls {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.meta-eval-layout {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 14px;
+}
+
+.meta-eval-run-list {
+  border-radius: 14px;
+  border: 1px solid rgba(69, 53, 40, 0.1);
+  background: rgba(255, 255, 255, 0.66);
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.meta-eval-run-list h3 {
+  margin: 0;
+}
+
+.meta-run-button {
+  border: 1px solid rgba(69, 53, 40, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.84);
+  color: var(--text);
+  text-align: left;
+  padding: 10px 12px;
+  display: grid;
+  gap: 4px;
+}
+
+.meta-run-button small {
+  color: var(--muted);
+}
+
+.meta-run-button-active {
+  border-color: rgba(198, 98, 42, 0.38);
+  background: #fff7ed;
+}
+
+.meta-eval-run-detail {
+  border-radius: 14px;
+  border: 1px solid rgba(69, 53, 40, 0.1);
+  background: rgba(255, 255, 255, 0.72);
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.meta-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.meta-summary-card {
+  border-radius: 12px;
+  border: 1px solid rgba(69, 53, 40, 0.1);
+  background: rgba(255, 255, 255, 0.84);
+  padding: 10px;
+  display: grid;
+  gap: 4px;
+}
+
+.meta-summary-card span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.meta-section {
+  display: grid;
+  gap: 6px;
+}
+
+.meta-section h3,
+.meta-section p {
+  margin: 0;
+}
+
+.meta-list {
+  display: grid;
+  gap: 10px;
+}
+
+.meta-list-item {
+  border-radius: 12px;
+  border: 1px solid rgba(69, 53, 40, 0.1);
+  background: rgba(255, 255, 255, 0.82);
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.meta-list-item header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.meta-list-item p {
+  margin: 0;
+}
+
+.meta-eval-empty {
+  margin: 0;
+  color: var(--muted);
+}
+
 .metric-card {
   border-radius: 14px;
   border: 1px solid rgba(69, 53, 40, 0.1);
@@ -810,6 +969,10 @@ textarea {
     grid-template-columns: 1fr;
   }
 
+  .lender-policy-controls {
+    grid-template-columns: 1fr;
+  }
+
   .evaluation-header {
     flex-direction: column;
   }
@@ -833,6 +996,15 @@ textarea {
   }
 
   .state-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .meta-eval-experiment-pair,
+  .meta-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .meta-eval-layout {
     grid-template-columns: 1fr;
   }
 }

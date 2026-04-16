@@ -174,13 +174,14 @@ export function SimulationRunner() {
 
   useEffect(() => {
     if (!runId) return;
+    const activeRunId = runId;
     let cancelled = false;
 
     async function poll() {
       try {
         const [nextStatus, nextEvents] = await Promise.all([
-          getSimulationStatus(runId),
-          getSimulationEvents(runId),
+          getSimulationStatus(activeRunId),
+          getSimulationEvents(activeRunId),
         ]);
         if (cancelled) return;
         setStatus(nextStatus);
@@ -482,7 +483,7 @@ export function SimulationRunner() {
                     </header>
                     <p>{result.diff_summary}</p>
                     <p>
-                      Version: {result.old_version_id} -> {result.new_version_id}
+                      Version: {result.old_version_id} {"->"} {result.new_version_id}
                     </p>
                     {result.activation_status === "inactive" ? (
                       <button
@@ -646,7 +647,7 @@ export function SimulationRunner() {
                   {parsed.kind === "handoff" ? (
                     <div className="structured-block">
                       <p className="structured-title">
-                        Handoff {parsed.fromStage} -> {parsed.toStage}
+                        Handoff {parsed.fromStage} {"->"} {parsed.toStage}
                       </p>
                       <p>{parsed.summary}</p>
                     </div>
@@ -656,7 +657,7 @@ export function SimulationRunner() {
                     <div className="structured-block">
                       <div className="state-summary-row">
                         <p className="structured-title">
-                          State Update {parsed.fromStage} -> {parsed.toStage}
+                          State Update {parsed.fromStage} {"->"} {parsed.toStage}
                         </p>
                         <button
                           type="button"

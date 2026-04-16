@@ -6,6 +6,12 @@ export type PerformancePromptChange = {
   diff_summary: string;
 };
 
+export type PerformanceMetricUsed = {
+  metric_id: string;
+  metric_name: string;
+  score: number;
+};
+
 export type EvalPerformancePoint = {
   iteration: number;
   experiment_id: string;
@@ -15,6 +21,7 @@ export type EvalPerformancePoint = {
   verdict: string;
   evaluated_at: string;
   prompt_versions: Record<string, string>;
+  metrics_used: PerformanceMetricUsed[];
   prompt_change: PerformancePromptChange | null;
 };
 

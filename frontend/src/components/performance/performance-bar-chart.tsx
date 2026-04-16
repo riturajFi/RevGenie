@@ -128,11 +128,23 @@ export function PerformanceBarChart({ points }: PerformanceBarChartProps) {
               ))
             )}
           </div>
+          <div className="hover-metrics-used">
+            <h5>Metrics Used</h5>
+            {hoveredPoint.metrics_used.length === 0 ? (
+              <p>No metric snapshot available.</p>
+            ) : (
+              hoveredPoint.metrics_used.map((metric) => (
+                <p key={metric.metric_id}>
+                  {metric.metric_name} ({metric.metric_id}): {metric.score.toFixed(2)}
+                </p>
+              ))
+            )}
+          </div>
           {hoveredPoint.prompt_change ? (
             <div className="hover-prompt-change">
               <h5>Prompt Change</h5>
               <p>
-                {hoveredPoint.prompt_change.agent_id}: {hoveredPoint.prompt_change.old_version_id} ->{" "}
+                {hoveredPoint.prompt_change.agent_id}: {hoveredPoint.prompt_change.old_version_id} {"->"}{" "}
                 {hoveredPoint.prompt_change.new_version_id} ({hoveredPoint.prompt_change.activation_status})
               </p>
             </div>

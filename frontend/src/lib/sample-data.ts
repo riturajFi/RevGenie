@@ -45,6 +45,11 @@ export const sidebarItems = [
     description: "Set and reset global compliance rules shared by all agents.",
   },
   {
+    id: "lender-policy",
+    label: "Lender Policy",
+    description: "Set and update policy text for each lender.",
+  },
+  {
     id: "meta-eval",
     label: "Meta Eval",
     description: "Compare experiment runs and metrics changes later.",

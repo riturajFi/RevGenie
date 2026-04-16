@@ -18,6 +18,12 @@ class PerformancePromptChange(BaseModel):
     diff_summary: str
 
 
+class PerformanceMetricUsed(BaseModel):
+    metric_id: str
+    metric_name: str
+    score: float
+
+
 class EvalPerformancePoint(BaseModel):
     iteration: int
     experiment_id: str
@@ -27,6 +33,7 @@ class EvalPerformancePoint(BaseModel):
     verdict: str
     evaluated_at: str
     prompt_versions: dict[str, str] = Field(default_factory=dict)
+    metrics_used: list[PerformanceMetricUsed] = Field(default_factory=list)
     prompt_change: PerformancePromptChange | None = None
 
 
@@ -69,6 +76,14 @@ class EvalPerformanceService:
             workflow_id = run.workflow_id if run else self._infer_workflow_id(record.experiment_id)
             latest_evaluation = run.evaluations[-1] if run and run.evaluations else None
             prompt_versions = latest_evaluation.prompt_versions if latest_evaluation else {}
+            metrics_used = [
+                PerformanceMetricUsed(
+                    metric_id=score.metric_id,
+                    metric_name=score.name,
+                    score=score.score,
+                )
+                for score in record.judgment.scores
+            ]
 
             prompt_change = None
             if record.prompt_change is not None:
@@ -90,6 +105,7 @@ class EvalPerformanceService:
                     verdict=record.judgment.verdict,
                     evaluated_at=record.updated_at,
                     prompt_versions=prompt_versions,
+                    metrics_used=metrics_used,
                     prompt_change=prompt_change,
                 )
             )

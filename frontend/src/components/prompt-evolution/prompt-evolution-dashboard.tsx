@@ -99,7 +99,7 @@ export function PromptEvolutionDashboard() {
             >
               {version.version_id}
             </button>
-            {index < versions.length - 1 ? <span className="version-arrow">-></span> : null}
+            {index < versions.length - 1 ? <span className="version-arrow">{"->"}</span> : null}
           </div>
         ))}
       </div>

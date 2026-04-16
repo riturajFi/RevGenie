@@ -15,6 +15,8 @@ import {
 import { EvalPerformanceDataset } from "@/types/performance";
 import { PromptEvolutionResponse } from "@/types/prompt-evolution";
 import { ComplianceConfig } from "@/types/compliance";
+import { LenderPolicyRecord, UpsertLenderPolicyResult } from "@/types/lender-policy";
+import { MetaEvalLatestPair, MetaEvalRunRecord, MetaEvalRunRequest } from "@/types/meta-eval";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
 
@@ -256,6 +258,96 @@ export async function resetComplianceConfig(): Promise<ComplianceConfig> {
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(detail || "Failed to reset compliance rules");
+  }
+  return response.json();
+}
+
+export async function listLenderPolicies(): Promise<LenderPolicyRecord[]> {
+  const response = await fetch(`${API_BASE_URL}/lender-policies`);
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to fetch lender policies");
+  }
+  return response.json();
+}
+
+export async function getLenderPolicy(lenderId: string): Promise<LenderPolicyRecord | null> {
+  const response = await fetch(`${API_BASE_URL}/lender-policies/${encodeURIComponent(lenderId)}`);
+  if (response.status === 404) {
+    return null;
+  }
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to fetch lender policy");
+  }
+  return response.json();
+}
+
+export async function upsertLenderPolicy(
+  lenderId: string,
+  policyText: string
+): Promise<UpsertLenderPolicyResult> {
+  const existing = await getLenderPolicy(lenderId);
+  const method = existing ? "PUT" : "POST";
+  const endpoint = existing
+    ? `${API_BASE_URL}/lender-policies/${encodeURIComponent(lenderId)}`
+    : `${API_BASE_URL}/lender-policies`;
+
+  const response = await fetch(endpoint, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      lender_id: lenderId,
+      policy: policyText,
+    }),
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to save lender policy");
+  }
+
+  const record = (await response.json()) as LenderPolicyRecord;
+  return {
+    record,
+    mode: existing ? "updated" : "created",
+  };
+}
+
+export async function getMetaEvalLatestPair(): Promise<MetaEvalLatestPair> {
+  const response = await fetch(`${API_BASE_URL}/evals/meta-eval/latest-pair`);
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to fetch latest meta eval experiment pair");
+  }
+  return response.json();
+}
+
+export async function runMetaEval(payload: MetaEvalRunRequest): Promise<MetaEvalRunRecord> {
+  const response = await fetch(`${API_BASE_URL}/evals/meta-eval/run`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      metrics_key: payload.metrics_key,
+      lender_id: payload.lender_id,
+      force_activate: payload.force_activate,
+    }),
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to run meta evaluation");
+  }
+  return response.json();
+}
+
+export async function listMetaEvalRuns(): Promise<MetaEvalRunRecord[]> {
+  const response = await fetch(`${API_BASE_URL}/evals/meta-eval/runs`);
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to fetch meta eval runs");
   }
   return response.json();
 }

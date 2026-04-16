@@ -86,7 +86,7 @@ export function PerformanceDashboard() {
         </div>
         <p className="panel-copy">
           Bar chart of evaluation score across prompt iterations. Colors represent scenario. Hover dots for prompt
-          version and run metadata.
+          versions, metrics used, and run metadata.
         </p>
       </div>
 

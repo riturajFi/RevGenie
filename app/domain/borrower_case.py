@@ -411,6 +411,7 @@ class BorrowerCase(BaseModel):
             "offers_made",
             "borrower_objections",
             "last_deadline_offered",
+            "resolution_mode",
             "assessment_notes",
             "resolution_notes",
             "final_notice_notes",

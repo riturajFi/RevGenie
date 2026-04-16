@@ -26,14 +26,5 @@ class WorkflowChannelService:
         borrower_case.resolution_mode = resolution_mode
         return True
 
-    def build_voice_transition_reply(self, base_reply: str | None = None) -> str:
-        notice = "The next step will continue by phone on your registered number. Chat is paused while that call is attempted."
-        if not base_reply:
-            return notice
-        return f"{base_reply}\n\n{notice}"
-
-    def build_voice_pending_reply(self) -> str:
-        return "Resolution is configured for voice mode. The next step is being handled by phone, so chat is paused for this stage."
-
 
 workflow_channel_service = WorkflowChannelService()

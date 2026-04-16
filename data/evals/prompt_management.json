@@ -6394,6 +6394,8 @@
           "9. Include what Agent 2 should not repeat.",
           "10. Include the next priority for Agent 2.",
           "11. Write the handoff so Agent 2 can continue naturally without restarting the conversation.",
+          "12. If the borrower case context shows resolution_mode=VOICE and you return stage_outcome=ASSESSMENT_COMPLETE, reply must briefly tell the borrower they will receive a phone call on their registered number soon for the resolution step.",
+          "13. If the borrower case context shows resolution_mode=CHAT, do not mention a phone call.",
           "",
           "[7] Output",
           "1. Return valid JSON only.",

@@ -1,16 +1,13 @@
 {
   "b_001": {
-    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage FINAL_NOTICE, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: cannot pay now, may pay later. Hardship signals: job_loss, medical_issue, student. Stop-contact flag is present. Borrower stated position: Borrower requested concrete approved settlement terms and deadline; if unavailable, asked to close the matter and not be contacted again. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
+    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage ASSESSMENT, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: cannot pay now, may pay later around 2026-04-20. Hardship signals: job_loss, medical_issue, student. Borrower stated position: Borrower confirmed they still cannot pay this month, hardship remains present, and options can be reviewed around 2026-04-20. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
     "attributes": {
-      "assessment": {
-        "borrower_reconfirmed_interest_in_resolution": true
-      },
-      "assessment_update": "Borrower says they cannot pay this month.",
+      "assessment_notes": null,
       "borrower_capacity": {
         "available_now": 2000,
         "can_pay_later": true,
         "can_pay_now": false,
-        "expected_date": null
+        "expected_date": "2026-04-20"
       },
       "borrower_intent": {
         "protect_cibil": true,
@@ -18,54 +15,44 @@
         "wants_settlement": true
       },
       "borrower_objections": [],
-      "borrower_position": "Open to quick closure if terms are reasonable.",
-      "borrower_position_update": "Borrower said they cannot pay this month.",
-      "borrower_stated_position": "Borrower requested concrete approved settlement terms and deadline; if unavailable, asked to close the matter and not be contacted again.",
-      "boundary_acknowledged": true,
-      "channel_verification_preference": "Borrower requested another way to confirm identity and does not want to share verification details in this channel.",
-      "channel_verification_refused": true,
-      "contact_channel_verification_refused": true,
+      "borrower_stated_position": "Borrower confirmed they still cannot pay this month, hardship remains present, and options can be reviewed around 2026-04-20.",
       "contact_preferences": {
-        "channel_verification_discomfort": true,
-        "only_if_concrete_approved_option": true
+        "channel_verification_discomfort": true
+      },
+      "disclosures": {
+        "identity_disclosed": true,
+        "recording_disclosed": true
       },
       "dispute_flags": {
         "claims_paid": false,
         "claims_wrong_commitment": false
       },
       "dpd": 275,
+      "final_notice_notes": null,
+      "hardship_acknowledged": true,
       "hardship_flags": {
         "emotional_distress": false,
         "job_loss": true,
         "medical_issue": true,
         "student": true
       },
-      "hardship_review_needed": true,
-      "hardship_review_requested": true,
       "last_contact_channel": "CHAT",
       "offers_made": [],
       "principal_outstanding": 10125,
-      "resolution_mode": "CHAT",
-      "resolution_notes": "Stop-contact request acknowledged. Checked available Nira data: amount due 12921 confirmed; policy confirms no extensions beyond 30 days and that reduced closure/payment plans require policy-compliant approval, but no concrete approved settlement terms or deadline were retrievable in this turn. Hardship signals remain job loss and medical issue. No further outreach should be initiated.",
-      "resolution_status": "no_deal_due_to_refusal_and_stop_contact",
-      "routing_note": "Borrower may engage if concrete reasonable closure terms are provided; prior stop-contact flag remains in effect.",
-      "routing_reason": "Requested review of reasonable terms; assessment complete for handoff.",
-      "standalone_payment_intent": "Borrower indicated willingness to consider payment after salary credit, but no specific approved arrangement accepted.",
-      "stop_contact_acknowledged": true,
-      "stop_contact_flag": true,
-      "stop_contact_flag_acknowledged": true,
-      "stop_contact_preference_confirmed": true,
-      "stop_contact_requested": true,
-      "stop_contact_respected": true
+      "resolution_call_id": "call_fe86adf1d8c39eb2ecf2701161e",
+      "resolution_call_status": "registered",
+      "resolution_mode": "VOICE",
+      "resolution_notes": null,
+      "stop_contact_flag": false
     },
     "core": {
       "amount_due": 12921,
       "borrower_id": "b_001",
-      "case_status": "CLOSED",
+      "case_status": "OPEN",
       "case_type": [
         "SETTLEMENT_CANDIDATE"
       ],
-      "final_disposition": "FLAG_FOR_LEGAL_WRITE_OFF",
+      "final_disposition": null,
       "identity_verified": true,
       "lender_id": "nira",
       "loan_id_masked": "****4831",
@@ -73,11 +60,11 @@
         "OFFER_REDUCED_CLOSURE",
         "OFFER_PAYMENT_PLAN"
       ],
-      "stage": "FINAL_NOTICE",
-      "workflow_id": "wf_20260416143412_a059e8"
+      "stage": "RESOLUTION",
+      "workflow_id": "wf_20260417005800_b001voice"
     },
-    "latest_handoff_stage": "FINAL_NOTICE",
-    "latest_handoff_summary": "Borrower repeated the previously recorded stop-contact position: no deal without concrete approved terms and requested no further contact. Stop-contact preference was already acknowledged and remains in effect. No approved option or documented final decision is available to communicate, and no further borrower outreach was sent in this stage."
+    "latest_handoff_stage": "ASSESSMENT",
+    "latest_handoff_summary": "Disclosures already given: AI identity and logging disclosed. Verification status: already verified before this turn. Debt context established with borrower: Nira loan ending ****4831, amount due 12921. Borrower confirmed prior position remains unchanged: cannot pay this month; hardship present with job loss and medical difficulty; open to reviewing available approved options around 2026-04-20. Routing facts learned/confirmed: can_pay_now=false, expected_date=2026-04-20, hardship signals remain active. No stop-contact or refusal signal in this turn. Already asked/covered: confirmation of whether situation still prevents payment this month and whether review timing around 2026-04-20 still applies. Agent 2 should not repeat disclosures, debt establishment, identity verification, or re-ask the same hardship/timing confirmation. Next priority for Agent 2: continue with hardship-aware resolution review and present only approved options if available."
   },
   "b_001_20260413133008185530_baseline": {
     "amount_due": 12921,

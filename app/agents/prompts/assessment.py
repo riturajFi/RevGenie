@@ -48,6 +48,8 @@ ASSESSMENT_SYSTEM_PROMPT = "\n".join(
         "- what was already asked",
         "- what Agent 2 should continue with or avoid repeating",
         "3. Write the handoff so Agent 2 can continue naturally without restarting the conversation.",
+        "4. If the borrower case context shows resolution_mode=VOICE and you return stage_outcome=ASSESSMENT_COMPLETE, reply must briefly tell the borrower they will receive a phone call on their registered number soon for the resolution step.",
+        "5. If the borrower case context shows resolution_mode=CHAT, do not mention a phone call.",
         "",
         "[7] Output Format",
         "1. Keep responses concise, factual, and direct.",

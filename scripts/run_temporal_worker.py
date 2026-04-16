@@ -14,6 +14,9 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from env_loader import load_env_file
+
+load_env_file()
+
 from app.orchestrator.activities import (
     finalize_resolution_call,
     load_borrower_case,
@@ -24,8 +27,6 @@ from app.orchestrator.activities import (
     start_resolution_call,
 )
 from app.orchestrator.workflows import BorrowerCollectionsWorkflow
-
-load_env_file()
 
 
 async def main() -> None:

@@ -69,15 +69,12 @@ class BorrowerCollectionsWorkflow:
                 self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
                 if self.state.borrower_case.resolution_mode == ResolutionMode.VOICE:
                     await self._ensure_resolution_voice_call_started()
-                    self.state.last_agent_reply = workflow_channel_service.build_voice_transition_reply(
-                        self.state.last_agent_reply
-                    )
             return self.state
 
         if self.state.borrower_case.stage == Stage.RESOLUTION:
             if self.state.borrower_case.resolution_mode == ResolutionMode.VOICE:
                 await self._ensure_resolution_voice_call_started()
-                self.state.last_agent_reply = workflow_channel_service.build_voice_pending_reply()
+                self.state.last_agent_reply = None
                 return self.state
             turn_result = await self._activity(
                 run_resolution_turn,

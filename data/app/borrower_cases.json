@@ -1,9 +1,9 @@
 {
   "b_001": {
-    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage ASSESSMENT, status OPEN. Case type: SETTLEMENT_CANDIDATE. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
+    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage FINAL_NOTICE, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: cannot pay now, may pay later around 2026-04-20. Hardship signals: job_loss, student. Borrower stated position: Borrower states they are unemployed and are not agreeing to any payment at this time. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
     "attributes": {
       "borrower_capacity": {
-        "available_now": 6000,
+        "available_now": 0,
         "can_pay_later": true,
         "can_pay_now": false,
         "expected_date": "2026-04-20"
@@ -13,6 +13,9 @@
         "wants_full_closure": true,
         "wants_settlement": true
       },
+      "borrower_objections": [],
+      "borrower_stated_position": "Borrower states they are unemployed and are not agreeing to any payment at this time.",
+      "channel_verification_refused": true,
       "dispute_flags": {
         "claims_paid": false,
         "claims_wrong_commitment": false
@@ -25,18 +28,20 @@
         "student": true
       },
       "last_contact_channel": "CHAT",
+      "last_deadline_offered": "2026-05-16",
       "offers_made": [],
       "principal_outstanding": 10125,
+      "resolution_notes": "Hardship signal confirmed: unemployment/job loss. Borrower declined payment discussion and did not agree to any payment option. Policy checked: no extensions beyond 30 days; reduced closure and payment plans require policy-compliant approval only.",
       "stop_contact_flag": false
     },
     "core": {
       "amount_due": 12921,
       "borrower_id": "b_001",
-      "case_status": "OPEN",
+      "case_status": "CLOSED",
       "case_type": [
         "SETTLEMENT_CANDIDATE"
       ],
-      "final_disposition": null,
+      "final_disposition": "FLAG_FOR_LEGAL_WRITE_OFF",
       "identity_verified": true,
       "lender_id": "nira",
       "loan_id_masked": "****4831",
@@ -44,11 +49,11 @@
         "OFFER_REDUCED_CLOSURE",
         "OFFER_PAYMENT_PLAN"
       ],
-      "stage": "ASSESSMENT",
-      "workflow_id": "wf_001"
+      "stage": "FINAL_NOTICE",
+      "workflow_id": "wf_20260416001725_e8e87e"
     },
-    "latest_handoff_stage": null,
-    "latest_handoff_summary": null
+    "latest_handoff_stage": "FINAL_NOTICE",
+    "latest_handoff_summary": "Borrower reaffirmed they are not paying anything at this time. No concrete approved reduced-closure or payment-plan terms were available after re-checking case, loan, and lender policy. Hardship status remains recorded. Borrower was given a final-stage notice that no approved option is currently available and the account will proceed only according to the next documented step available under lender policy."
   },
   "b_001_20260413133008185530_baseline": {
     "amount_due": 12921,

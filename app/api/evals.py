@@ -1,0 +1,288 @@
+from __future__ import annotations
+
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
+from pathlib import Path
+from threading import Lock
+from uuid import uuid4
+
+from fastapi import APIRouter, HTTPException, status
+from pydantic import BaseModel, Field
+
+from app.domain.borrower_case import CaseStatus, ContactChannel, Stage
+from app.services.borrower_case import FileBorrowerCaseService
+from evals.judge_service.service import JudgeResult, JudgeService
+from evals.logging_service.logger import LogEvent, get_logs
+from evals.tester_service import DEFAULT_SCENARIOS_PATH, Scenario, ScenarioRepository, TesterAgent, TesterRunResult
+
+
+router = APIRouter(prefix="/evals", tags=["evals"])
+
+scenario_repository = ScenarioRepository(DEFAULT_SCENARIOS_PATH)
+borrower_case_service = FileBorrowerCaseService()
+simulation_executor = ThreadPoolExecutor(max_workers=2)
+simulation_lock = Lock()
+simulation_runs: dict[str, dict] = {}
+judge_service = JudgeService()
+
+
+class ScenarioCreateRequest(BaseModel):
+    scenario_id: str
+    opening_message: str
+    scenario_description: str | None = None
+    borrower_profile: str
+    borrower_intent: str
+    reply_style_rules: list[str] = Field(default_factory=list)
+    stop_condition: str
+    expected_path_notes: str | None = None
+    follow_up_messages: list[str] = Field(default_factory=list)
+
+
+class SimulationStartRequest(BaseModel):
+    borrower_id: str
+    scenario_id: str
+    project_context_id: str = "collections_v1"
+    max_turns: int = Field(default=50, ge=1, le=200)
+    workflow_id: str | None = None
+    experiment_id: str | None = None
+    reset_case: bool = True
+    clear_experiment_log: bool = True
+
+
+class SimulationStartResponse(BaseModel):
+    run_id: str
+    workflow_id: str
+    experiment_id: str
+    status: str
+
+
+class SimulationStatusResponse(BaseModel):
+    run_id: str
+    workflow_id: str
+    experiment_id: str
+    status: str
+    result: TesterRunResult | None = None
+    error: str | None = None
+    started_at: str
+    finished_at: str | None = None
+
+
+class TranscriptEventResponse(BaseModel):
+    id: int
+    actor: str | None
+    message_text: str
+    created_at: str
+
+
+class EvaluateSimulationRequest(BaseModel):
+    metrics_key: str = "collections_agent_eval"
+    lender_id: str = "nira"
+    persist: bool = True
+
+
+class EvaluateSimulationResponse(BaseModel):
+    run_id: str
+    workflow_id: str
+    experiment_id: str
+    result: JudgeResult
+
+
+def _utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _generate_id(prefix: str) -> str:
+    now = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
+    return f"{prefix}_{now}_{uuid4().hex[:6]}"
+
+
+def _clear_experiment_log(experiment_id: str) -> None:
+    path = Path("data/chats/experiments") / f"{experiment_id}.jsonl"
+    if path.exists():
+        path.unlink()
+
+
+def _reset_case_for_simulation(borrower_id: str, workflow_id: str) -> None:
+    borrower_case = borrower_case_service.get_borrower_case(borrower_id)
+    if borrower_case is None:
+        raise KeyError(f"Borrower case not found for {borrower_id}")
+
+    borrower_case.workflow_id = workflow_id
+    borrower_case.stage = Stage.ASSESSMENT
+    borrower_case.case_status = CaseStatus.OPEN
+    borrower_case.final_disposition = None
+    borrower_case.borrower_stated_position = None
+    borrower_case.assessment_notes = None
+    borrower_case.resolution_notes = None
+    borrower_case.final_notice_notes = None
+    borrower_case.latest_handoff_summary = None
+    borrower_case.latest_handoff_stage = None
+    borrower_case.offers_made = []
+    borrower_case.borrower_objections = []
+    borrower_case.last_deadline_offered = None
+    borrower_case.last_contact_channel = ContactChannel.CHAT
+
+    borrower_case_service.update_borrower_case(borrower_id, borrower_case)
+
+
+def _run_simulation_job(
+    run_id: str,
+    borrower_id: str,
+    workflow_id: str,
+    experiment_id: str,
+    project_context_id: str,
+    scenario_id: str,
+    max_turns: int,
+) -> None:
+    with simulation_lock:
+        simulation_runs[run_id]["status"] = "running"
+
+    try:
+        tester = TesterAgent()
+        result = tester.run(
+            borrower_id=borrower_id,
+            workflow_id=workflow_id,
+            experiment_id=experiment_id,
+            project_context_id=project_context_id,
+            scenario_id=scenario_id,
+            max_turns=max_turns,
+        )
+        with simulation_lock:
+            simulation_runs[run_id]["status"] = "completed"
+            simulation_runs[run_id]["result"] = result
+            simulation_runs[run_id]["finished_at"] = _utc_now()
+    except Exception as error:
+        with simulation_lock:
+            simulation_runs[run_id]["status"] = "failed"
+            simulation_runs[run_id]["error"] = str(error)
+            simulation_runs[run_id]["finished_at"] = _utc_now()
+
+
+@router.get("/scenarios", response_model=list[Scenario])
+def list_scenarios() -> list[Scenario]:
+    return scenario_repository.list()
+
+
+@router.post("/scenarios", response_model=Scenario, status_code=status.HTTP_201_CREATED)
+def create_scenario(request: ScenarioCreateRequest) -> Scenario:
+    scenario = Scenario.model_validate(request.model_dump(mode="python"))
+    try:
+        return scenario_repository.create(scenario)
+    except ValueError as error:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error
+
+
+@router.post("/simulations/start", response_model=SimulationStartResponse)
+def start_simulation(request: SimulationStartRequest) -> SimulationStartResponse:
+    try:
+        scenario_repository.get(request.scenario_id)
+    except KeyError as error:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
+
+    run_id = _generate_id("sim")
+    workflow_id = request.workflow_id or _generate_id("wf")
+    experiment_id = request.experiment_id or _generate_id("exp")
+
+    if request.reset_case:
+        try:
+            _reset_case_for_simulation(request.borrower_id, workflow_id)
+        except KeyError as error:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
+
+    if request.clear_experiment_log:
+        _clear_experiment_log(experiment_id)
+
+    with simulation_lock:
+        simulation_runs[run_id] = {
+            "run_id": run_id,
+            "workflow_id": workflow_id,
+            "experiment_id": experiment_id,
+            "status": "queued",
+            "result": None,
+            "error": None,
+            "started_at": _utc_now(),
+            "finished_at": None,
+        }
+
+    simulation_executor.submit(
+        _run_simulation_job,
+        run_id,
+        request.borrower_id,
+        workflow_id,
+        experiment_id,
+        request.project_context_id,
+        request.scenario_id,
+        request.max_turns,
+    )
+
+    return SimulationStartResponse(
+        run_id=run_id,
+        workflow_id=workflow_id,
+        experiment_id=experiment_id,
+        status="queued",
+    )
+
+
+@router.get("/simulations/{run_id}", response_model=SimulationStatusResponse)
+def get_simulation_status(run_id: str) -> SimulationStatusResponse:
+    with simulation_lock:
+        record = simulation_runs.get(run_id)
+    if record is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Simulation run not found")
+
+    return SimulationStatusResponse(
+        run_id=record["run_id"],
+        workflow_id=record["workflow_id"],
+        experiment_id=record["experiment_id"],
+        status=record["status"],
+        result=record["result"],
+        error=record["error"],
+        started_at=record["started_at"],
+        finished_at=record["finished_at"],
+    )
+
+
+@router.get("/simulations/{run_id}/events", response_model=list[TranscriptEventResponse])
+def get_simulation_events(run_id: str) -> list[TranscriptEventResponse]:
+    with simulation_lock:
+        record = simulation_runs.get(run_id)
+    if record is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Simulation run not found")
+
+    events: list[LogEvent] = get_logs(record["experiment_id"])
+    return [
+        TranscriptEventResponse(
+            id=event.id,
+            actor=event.actor,
+            message_text=event.message_text,
+            created_at=event.created_at,
+        )
+        for event in events
+    ]
+
+
+@router.post("/simulations/{run_id}/evaluate", response_model=EvaluateSimulationResponse)
+def evaluate_simulation(run_id: str, request: EvaluateSimulationRequest) -> EvaluateSimulationResponse:
+    with simulation_lock:
+        record = simulation_runs.get(run_id)
+    if record is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Simulation run not found")
+    if record["status"] != "completed":
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Simulation must be completed before evaluation")
+
+    try:
+        result = judge_service.judge_experiment(
+            workflow_id=record["workflow_id"],
+            metrics_key=request.metrics_key,
+            lender_id=request.lender_id,
+            persist=request.persist,
+        )
+    except Exception as error:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error)) from error
+
+    return EvaluateSimulationResponse(
+        run_id=run_id,
+        workflow_id=record["workflow_id"],
+        experiment_id=record["experiment_id"],
+        result=result,
+    )

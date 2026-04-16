@@ -23,5 +23,10 @@
     "borrower_id": "b_003",
     "full_name": "Rohit Iyer",
     "phone_number": "+919900000003"
+  },
+  "b_eacd8635": {
+    "borrower_id": "b_eacd8635",
+    "full_name": "Aarav Sharma",
+    "phone_number": "+917357708525"
   }
 }

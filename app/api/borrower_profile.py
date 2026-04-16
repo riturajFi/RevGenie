@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from uuid import uuid4
+
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel
 
@@ -14,9 +16,26 @@ class DeleteResponse(BaseModel):
     deleted: bool
 
 
+class CreateBorrowerProfileRequest(BaseModel):
+    full_name: str
+    phone_number: str
+
+
+def _generate_borrower_id() -> str:
+    while True:
+        candidate = f"b_{uuid4().hex[:8]}"
+        if service.get_borrower_profile(candidate) is None:
+            return candidate
+
+
 @router.post("", response_model=BorrowerProfile, status_code=status.HTTP_201_CREATED)
-def create_borrower_profile(borrower_profile: BorrowerProfile) -> BorrowerProfile:
+def create_borrower_profile(request: CreateBorrowerProfileRequest) -> BorrowerProfile:
     try:
+        borrower_profile = BorrowerProfile(
+            borrower_id=_generate_borrower_id(),
+            full_name=request.full_name,
+            phone_number=request.phone_number,
+        )
         return service.create_borrower_profile(borrower_profile)
     except ValueError as error:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error

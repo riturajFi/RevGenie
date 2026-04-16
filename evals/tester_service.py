@@ -78,12 +78,24 @@ class ScenarioRepository:
     def __init__(self, path: Path) -> None:
         self.path = path
 
+    def list(self) -> list[Scenario]:
+        payload = json.loads(self.path.read_text())
+        return [Scenario.model_validate(item) for item in payload]
+
     def get(self, scenario_id: str) -> Scenario:
         payload = json.loads(self.path.read_text())
         for item in payload:
             if item["scenario_id"] == scenario_id:
                 return Scenario.model_validate(item)
         raise KeyError(f"Unknown scenario: {scenario_id}")
+
+    def create(self, scenario: Scenario) -> Scenario:
+        payload = json.loads(self.path.read_text())
+        if any(item.get("scenario_id") == scenario.scenario_id for item in payload):
+            raise ValueError(f"Scenario already exists: {scenario.scenario_id}")
+        payload.append(scenario.model_dump(mode="json"))
+        self.path.write_text(json.dumps(payload, indent=2))
+        return scenario
 
 
 @dataclass

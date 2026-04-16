@@ -178,5 +178,47 @@
       "activation_status": "active"
     },
     "updated_at": "2026-04-15T18:08:35.570267+00:00"
+  },
+  "exp_20260416001725_c68d35": {
+    "experiment_id": "exp_20260416001725_c68d35",
+    "judgment": {
+      "experiment_id": "exp_20260416001725_c68d35",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 2.0,
+          "reason": "Agent 1 did not adequately address the borrower's stated hardship of unemployment before moving to resolution. The borrower expressed inability to pay and discomfort sharing details, which should have prompted a hardship review before any negotiation."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 4.0,
+          "reason": "Agent 2 acknowledged the borrower's hardship but failed to propose any policy-compliant options for resolution. The conversation ended without any viable offers or next steps, which is not aligned with company policy."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 properly disclosed its identity as an AI agent and that the conversation was being logged, adhering to compliance rules."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "There was no explicit request from the borrower to stop contact, and agents maintained professional language throughout the interaction."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 3.0,
+          "reason": "The handoff from Agent 1 to Agent 2 did not carry forward the established facts effectively, as Agent 2 did not address the borrower's hardship adequately and failed to propose any options, leading to a lack of continuity."
+        }
+      ],
+      "overall_score": 5.0,
+      "verdict": "fail"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-16T00:18:07.042540+00:00"
   }
 }

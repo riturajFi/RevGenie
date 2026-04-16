@@ -198,6 +198,17 @@ export function MetaEvalDashboard() {
                   <span>Held-out Validation Experiments</span>
                   <strong>{selectedRun.validation_experiment_ids.length}</strong>
                 </div>
+                <div className="meta-summary-card">
+                  <span>Expectation Match</span>
+                  <strong>
+                    {selectedRun.validation_decision.old_expectation_matches} {"->"}{" "}
+                    {selectedRun.validation_decision.candidate_expectation_matches}
+                  </strong>
+                </div>
+                <div className="meta-summary-card">
+                  <span>Total Expectation Checks</span>
+                  <strong>{selectedRun.validation_decision.total_expectation_checks}</strong>
+                </div>
               </div>
 
               <div className="meta-section">
@@ -264,7 +275,24 @@ export function MetaEvalDashboard() {
                           <strong>{result.experiment_id}</strong>
                           <small>Winner: {result.winner}</small>
                         </header>
+                        {result.scenario_id ? <p>Scenario: {result.scenario_id}</p> : null}
+                        {result.purpose ? <p>Purpose: {result.purpose}</p> : null}
+                        {(result.expected_verdict || result.expected_fail_metrics.length > 0 || result.expected_pass_metrics.length > 0) ? (
+                          <p>
+                            Expected: {result.expected_verdict ? `verdict ${result.expected_verdict}` : "no verdict label"}
+                            {result.expected_fail_metrics.length > 0
+                              ? ` | fail metrics ${result.expected_fail_metrics.join(", ")}`
+                              : ""}
+                            {result.expected_pass_metrics.length > 0
+                              ? ` | pass metrics ${result.expected_pass_metrics.join(", ")}`
+                              : ""}
+                          </p>
+                        ) : null}
                         <p>{result.reason}</p>
+                        <p>
+                          Expectation match: {result.old_matched_checks}/{result.total_checks} {"->"}{" "}
+                          {result.candidate_matched_checks}/{result.total_checks}
+                        </p>
                         <p>
                           Old: {result.old_judgment.verdict} ({result.old_judgment.overall_score.toFixed(2)}) {" | "}
                           Candidate: {result.candidate_judgment.verdict} (

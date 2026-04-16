@@ -55,8 +55,19 @@ export type MetaEvalRunRecord = {
   validation_decision: {
     decision: string;
     reason: string;
+    old_expectation_matches: number;
+    candidate_expectation_matches: number;
+    total_expectation_checks: number;
     experiment_results: {
       experiment_id: string;
+      scenario_id: string | null;
+      purpose: string | null;
+      expected_verdict: string | null;
+      expected_fail_metrics: string[];
+      expected_pass_metrics: string[];
+      old_matched_checks: number;
+      candidate_matched_checks: number;
+      total_checks: number;
       winner: string;
       reason: string;
       old_judgment: {

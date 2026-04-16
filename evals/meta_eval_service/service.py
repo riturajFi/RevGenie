@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import json
 import os
+from pathlib import Path
 
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
+from app.services.simulation_run_history import SimulationRunHistoryService
 from evals.logging_service.logger import get_logs
 from evals.judge_service.service import JudgeService
 from evals.judgment_management_service.service import (
@@ -27,7 +29,11 @@ from evals.metrics_management_service.service import MetricDefinition, MetricsRe
 from evals.policy_context import get_company_policy_text, get_compliance_rules_text
 
 MAX_NEW_METRICS_PER_META_EVAL = 3
-DEFAULT_META_EVAL_VALIDATION_EXPERIMENT_COUNT = 2
+DEFAULT_META_EVAL_VALIDATION_EXPERIMENT_COUNT = 3
+DEFAULT_META_EVAL_VALIDATION_SET_PATH = Path(__file__).resolve().parents[2] / "data" / "evals" / "meta_eval_validation_set.json"
+DEFAULT_EXPECTED_FAIL_SCORE_MAX = 6.0
+DEFAULT_EXPECTED_PASS_SCORE_MIN = 8.0
+
 
 class MetaEvalProposalDraft(BaseModel):
     correctness_analysis: list[ExperimentCorrectnessAnalysis]
@@ -50,11 +56,25 @@ class ValidationDecisionDraft(BaseModel):
     reason: str
     experiment_results: list[ExperimentValidationDraft]
 
+
 class ValidationExperimentContext(BaseModel):
     experiment_id: str
+    scenario_id: str | None = None
     transcript: str
     old_judgment: StoredJudgeResult
     candidate_judgment: StoredJudgeResult
+    target: "MetaEvalValidationTarget | None" = None
+
+
+class MetaEvalValidationTarget(BaseModel):
+    scenario_id: str
+    purpose: str | None = None
+    expected_verdict: str | None = None
+    expected_fail_metrics: list[str] = Field(default_factory=list)
+    expected_pass_metrics: list[str] = Field(default_factory=list)
+    fail_score_max: float = DEFAULT_EXPECTED_FAIL_SCORE_MAX
+    pass_score_min: float = DEFAULT_EXPECTED_PASS_SCORE_MIN
+
 
 class MetaEvaluatorService:
     def __init__(
@@ -63,13 +83,17 @@ class MetaEvaluatorService:
         judgment_record_service: JudgmentRecordService | None = None,
         metrics_registry: MetricsRegistry | None = None,
         meta_eval_run_service: MetaEvalRunRecordService | None = None,
+        run_history_service: SimulationRunHistoryService | None = None,
         model: str | None = None,
+        validation_set_path: Path = DEFAULT_META_EVAL_VALIDATION_SET_PATH,
     ) -> None:
         self.judge_service = judge_service or JudgeService()
         self.judgment_record_service = judgment_record_service or JudgmentRecordService()
         self.metrics_registry = metrics_registry or MetricsRegistry()
         self.meta_eval_run_service = meta_eval_run_service or MetaEvalRunRecordService()
+        self.run_history_service = run_history_service or SimulationRunHistoryService()
         self.model_name = model or os.getenv("OPENAI_JUDGE_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
+        self.validation_set_path = validation_set_path
 
     def judge(
         self,
@@ -118,28 +142,21 @@ class MetaEvaluatorService:
 
         old_validation_judgments = [item.old_judgment for item in validation_contexts]
         candidate_validation_judgments = [item.candidate_judgment for item in validation_contexts]
-
-        validation = self._validate_candidate_metrics(
-            before_transcript=before_transcript,
-            after_transcript=after_transcript,
-            old_metrics=active_metrics.model_dump(),
-            candidate_metrics=candidate_metrics_version.model_dump(),
-            old_validation_judgments=old_validation_judgments,
-            candidate_validation_judgments=candidate_validation_judgments,
-            correctness_analysis=proposal.correctness_analysis,
-            metric_actions=proposal.metric_actions,
-            company_policy=company_policy,
+        validation_results, old_expectation_matches, candidate_expectation_matches, total_expectation_checks = (
+            self._evaluate_expectation_backed_validation(validation_contexts)
         )
-
-        normalized_decision = self._normalize_decision(validation.decision)
         compliance_gate_reason = self._detect_compliance_regression(
             old_validation_judgments=old_validation_judgments,
             candidate_validation_judgments=candidate_validation_judgments,
             old_metrics=active_metrics.metrics,
             candidate_metrics=candidate_metrics_version.metrics,
         )
-        if compliance_gate_reason is not None:
-            normalized_decision = "REJECT"
+        normalized_decision, validation_reason = self._decide_expectation_backed_validation(
+            old_expectation_matches=old_expectation_matches,
+            candidate_expectation_matches=candidate_expectation_matches,
+            total_expectation_checks=total_expectation_checks,
+            compliance_gate_reason=compliance_gate_reason,
+        )
 
         activation_status = "inactive"
         if normalized_decision == "ADOPT" and force_activate:
@@ -150,12 +167,11 @@ class MetaEvaluatorService:
 
         validation_record = ValidationDecision(
             decision=normalized_decision,
-            reason=compliance_gate_reason or validation.reason,
-            experiment_results=self._merge_validation_results(
-                validation.experiment_results,
-                old_validation_judgments,
-                candidate_validation_judgments,
-            ),
+            reason=validation_reason,
+            old_expectation_matches=old_expectation_matches,
+            candidate_expectation_matches=candidate_expectation_matches,
+            total_expectation_checks=total_expectation_checks,
+            experiment_results=validation_results,
         )
 
         return self.meta_eval_run_service.create_run(
@@ -403,16 +419,59 @@ class MetaEvaluatorService:
         excluded = set(exclude_ids)
         selected: list[str] = []
 
+        for experiment_id in self._select_curated_validation_experiment_ids(excluded_ids=excluded):
+            if experiment_id in excluded or experiment_id in selected:
+                continue
+            selected.append(experiment_id)
+            if len(selected) >= limit:
+                return selected
+
         for record in reversed(self.judgment_record_service.list_records()):
             if record.judgment is None:
                 continue
             if record.experiment_id in excluded:
+                continue
+            if record.experiment_id in selected:
                 continue
             selected.append(record.experiment_id)
             if len(selected) >= limit:
                 break
 
         return selected
+
+    def _select_curated_validation_experiment_ids(self, excluded_ids: set[str]) -> list[str]:
+        targets = self._load_validation_targets()
+        if not targets:
+            return []
+
+        selected: list[str] = []
+        runs = sorted(self.run_history_service.list_runs(), key=lambda item: item.started_at, reverse=True)
+
+        for target in targets:
+            for run in runs:
+                if run.experiment_id in excluded_ids:
+                    continue
+                if run.experiment_id in selected:
+                    continue
+                if run.scenario_id != target.scenario_id:
+                    continue
+                if not run.evaluations:
+                    continue
+                selected.append(run.experiment_id)
+                break
+
+        return selected
+
+    def _load_validation_targets(self) -> list[MetaEvalValidationTarget]:
+        if not self.validation_set_path.exists():
+            return []
+
+        payload = json.loads(self.validation_set_path.read_text())
+        if isinstance(payload, dict):
+            payload = payload.get("targets", [])
+        if not isinstance(payload, list):
+            return []
+        return [MetaEvalValidationTarget.model_validate(item) for item in payload]
 
     def _build_validation_contexts(
         self,
@@ -425,6 +484,8 @@ class MetaEvaluatorService:
         if not experiment_ids:
             return []
 
+        runs_by_experiment_id = {run.experiment_id: run for run in self.run_history_service.list_runs()}
+        targets_by_scenario_id = {target.scenario_id: target for target in self._load_validation_targets()}
         old_judgments = self._rerun_validation_judgments(
             experiment_ids=experiment_ids,
             metrics_key=metrics_key,
@@ -445,16 +506,163 @@ class MetaEvaluatorService:
             candidate_judgments,
             strict=True,
         ):
+            run = runs_by_experiment_id.get(experiment_id)
+            scenario_id = run.scenario_id if run is not None else None
             contexts.append(
                 ValidationExperimentContext(
                     experiment_id=experiment_id,
+                    scenario_id=scenario_id,
                     transcript=self._load_transcript(experiment_id),
                     old_judgment=old_judgment,
                     candidate_judgment=candidate_judgment,
+                    target=targets_by_scenario_id.get(scenario_id or ""),
                 )
             )
 
         return contexts
+
+    def _evaluate_expectation_backed_validation(
+        self,
+        validation_contexts: list[ValidationExperimentContext],
+    ) -> tuple[list[ExperimentValidationAnalysis], int, int, int]:
+        results: list[ExperimentValidationAnalysis] = []
+        old_expectation_matches = 0
+        candidate_expectation_matches = 0
+        total_expectation_checks = 0
+
+        for context in validation_contexts:
+            old_match_count, total_checks = self._score_judgment_against_target(context.old_judgment, context.target)
+            candidate_match_count, _ = self._score_judgment_against_target(context.candidate_judgment, context.target)
+
+            old_expectation_matches += old_match_count
+            candidate_expectation_matches += candidate_match_count
+            total_expectation_checks += total_checks
+
+            winner = self._determine_expectation_winner(
+                old_match_count=old_match_count,
+                candidate_match_count=candidate_match_count,
+            )
+            results.append(
+                ExperimentValidationAnalysis(
+                    experiment_id=context.experiment_id,
+                    scenario_id=context.scenario_id,
+                    purpose=context.target.purpose if context.target else None,
+                    expected_verdict=context.target.expected_verdict if context.target else None,
+                    expected_fail_metrics=list(context.target.expected_fail_metrics) if context.target else [],
+                    expected_pass_metrics=list(context.target.expected_pass_metrics) if context.target else [],
+                    old_matched_checks=old_match_count,
+                    candidate_matched_checks=candidate_match_count,
+                    total_checks=total_checks,
+                    winner=winner,
+                    reason=self._build_expectation_result_reason(
+                        target=context.target,
+                        old_match_count=old_match_count,
+                        candidate_match_count=candidate_match_count,
+                        total_checks=total_checks,
+                    ),
+                    old_judgment=context.old_judgment,
+                    candidate_judgment=context.candidate_judgment,
+                )
+            )
+
+        return results, old_expectation_matches, candidate_expectation_matches, total_expectation_checks
+
+    def _score_judgment_against_target(
+        self,
+        judgment: StoredJudgeResult,
+        target: MetaEvalValidationTarget | None,
+    ) -> tuple[int, int]:
+        if target is None:
+            return 0, 0
+
+        match_count = 0
+        total_checks = 0
+        score_by_metric_id = {score.metric_id: score.score for score in judgment.scores}
+
+        if target.expected_verdict:
+            total_checks += 1
+            if judgment.verdict.lower() == target.expected_verdict.lower():
+                match_count += 1
+
+        for metric_id in target.expected_fail_metrics:
+            total_checks += 1
+            metric_score = score_by_metric_id.get(metric_id)
+            if metric_score is not None and metric_score <= target.fail_score_max:
+                match_count += 1
+
+        for metric_id in target.expected_pass_metrics:
+            total_checks += 1
+            metric_score = score_by_metric_id.get(metric_id)
+            if metric_score is not None and metric_score >= target.pass_score_min:
+                match_count += 1
+
+        return match_count, total_checks
+
+    def _determine_expectation_winner(
+        self,
+        old_match_count: int,
+        candidate_match_count: int,
+    ) -> str:
+        if candidate_match_count > old_match_count:
+            return "CANDIDATE"
+        if old_match_count > candidate_match_count:
+            return "OLD"
+        return "TIE"
+
+    def _build_expectation_result_reason(
+        self,
+        target: MetaEvalValidationTarget | None,
+        old_match_count: int,
+        candidate_match_count: int,
+        total_checks: int,
+    ) -> str:
+        if target is None or total_checks == 0:
+            return "No expectation labels were configured for this held-out experiment, so it was not used as proof-bearing validation."
+
+        expected_parts: list[str] = []
+        if target.expected_verdict:
+            expected_parts.append(f"verdict={target.expected_verdict}")
+        if target.expected_fail_metrics:
+            expected_parts.append(f"fail metrics={', '.join(target.expected_fail_metrics)}")
+        if target.expected_pass_metrics:
+            expected_parts.append(f"pass metrics={', '.join(target.expected_pass_metrics)}")
+
+        expected_text = "; ".join(expected_parts) if expected_parts else "no explicit criteria"
+        return (
+            f"Candidate matched {candidate_match_count}/{total_checks} labeled checks vs old {old_match_count}/{total_checks}. "
+            f"Expected criteria: {expected_text}."
+        )
+
+    def _decide_expectation_backed_validation(
+        self,
+        old_expectation_matches: int,
+        candidate_expectation_matches: int,
+        total_expectation_checks: int,
+        compliance_gate_reason: str | None,
+    ) -> tuple[str, str]:
+        if compliance_gate_reason is not None:
+            return "REJECT", compliance_gate_reason
+
+        if total_expectation_checks == 0:
+            return (
+                "REJECT",
+                "No expectation-backed validation criteria were available on the held-out set, so the candidate metrics could not prove they were better.",
+            )
+
+        if candidate_expectation_matches > old_expectation_matches:
+            return (
+                "ADOPT",
+                "Candidate metrics proved better on held-out labeled validation: "
+                f"{candidate_expectation_matches}/{total_expectation_checks} expectation checks matched vs "
+                f"{old_expectation_matches}/{total_expectation_checks} for the old metrics.",
+            )
+
+        return (
+            "REJECT",
+            "Candidate metrics did not prove better on held-out labeled validation: "
+            f"{candidate_expectation_matches}/{total_expectation_checks} expectation checks matched vs "
+            f"{old_expectation_matches}/{total_expectation_checks} for the old metrics.",
+        )
 
     def _detect_compliance_regression(
         self,

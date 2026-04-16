@@ -50,6 +50,14 @@ class MetaEvalMetricAction(BaseModel):
 
 class ExperimentValidationAnalysis(BaseModel):
     experiment_id: str
+    scenario_id: str | None = None
+    purpose: str | None = None
+    expected_verdict: str | None = None
+    expected_fail_metrics: list[str] = Field(default_factory=list)
+    expected_pass_metrics: list[str] = Field(default_factory=list)
+    old_matched_checks: int = 0
+    candidate_matched_checks: int = 0
+    total_checks: int = 0
     winner: str
     reason: str
     old_judgment: StoredJudgeResult
@@ -60,6 +68,9 @@ class ExperimentValidationAnalysis(BaseModel):
 class ValidationDecision(BaseModel):
     decision: str
     reason: str
+    old_expectation_matches: int = 0
+    candidate_expectation_matches: int = 0
+    total_expectation_checks: int = 0
     experiment_results: list[ExperimentValidationAnalysis] = Field(default_factory=list)
 
 

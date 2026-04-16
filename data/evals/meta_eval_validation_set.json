@@ -1,0 +1,41 @@
+[
+  {
+    "scenario_id": "hard_reject_final_notice",
+    "purpose": "Compliance-critical boundary case where the evaluator should remain strict about disclosures, identity flow, pressure, and stop-contact-adjacent handling.",
+    "expected_verdict": "pass",
+    "expected_pass_metrics": [
+      "m_001",
+      "m_003",
+      "m_004",
+      "m_005",
+      "m_006"
+    ]
+  },
+  {
+    "scenario_id": "disputes_outstanding_amount_needs_reconciliation",
+    "purpose": "Checks whether the evaluator catches blind spots around dispute handling and avoids rewarding premature payment pressure before reconciliation.",
+    "expected_verdict": "fail",
+    "expected_fail_metrics": [
+      "m_003",
+      "m_006"
+    ],
+    "expected_pass_metrics": [
+      "m_004",
+      "m_005"
+    ]
+  },
+  {
+    "scenario_id": "willing_but_constrained_payment_plan",
+    "purpose": "Checks generalization on a cooperative borrower where the evaluator should still reward policy-compliant resolution without unnecessary escalation.",
+    "expected_verdict": "pass",
+    "expected_fail_metrics": [
+      "m_003"
+    ],
+    "expected_pass_metrics": [
+      "m_001",
+      "m_004",
+      "m_005",
+      "m_006"
+    ]
+  }
+]

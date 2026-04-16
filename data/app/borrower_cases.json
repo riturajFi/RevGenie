@@ -337,5 +337,124 @@
     },
     "latest_handoff_stage": "FINAL_NOTICE",
     "latest_handoff_summary": "Borrower confirmed they can make only a small payment now and asked to wait for any approved option that fits their salary date. Re-checked available case, loan, and policy data; no exact approved option or documented final decision was available to communicate. Limited-contact preference is now recorded, and future contact in this stage should occur only if an approved option or concrete review outcome becomes available."
+  },
+  "b_284fa42e": {
+    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage RESOLUTION, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: can pay now up to 500, may pay later around 2026-04-20. Hardship signals: job_loss, medical_issue, student. Borrower stated position: Borrower wants to proceed with a standalone \u20b9500 payment and cannot complete the remaining balance within the 30-day policy window; exact approvable arrangement terms are not retrievable from available data. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
+    "attributes": {
+      "borrower_capacity": {
+        "available_now": 500,
+        "can_pay_later": true,
+        "can_pay_now": true,
+        "expected_date": "2026-04-20",
+        "monthly_income": 2000
+      },
+      "borrower_intent": {
+        "protect_cibil": true,
+        "wants_full_closure": true,
+        "wants_settlement": true
+      },
+      "borrower_objections": [],
+      "borrower_stated_position": "Borrower wants to proceed with a standalone \u20b9500 payment and cannot complete the remaining balance within the 30-day policy window; exact approvable arrangement terms are not retrievable from available data.",
+      "contact_preferences": {
+        "channel_verification_discomfort": true
+      },
+      "dispute_flags": {
+        "claims_paid": false,
+        "claims_wrong_commitment": false
+      },
+      "dpd": 275,
+      "hardship_flags": {
+        "emotional_distress": false,
+        "job_loss": true,
+        "medical_issue": true,
+        "student": true
+      },
+      "last_contact_channel": "CHAT",
+      "offers_made": [],
+      "principal_outstanding": 10125,
+      "resolution_notes": "Rechecked lender policy and lender-scoped loan data. Policy confirms no extensions beyond 30 days. Lender-scoped loan data did not return retrievable exact approvable payment-plan or reduced-closure terms. Borrower remains cooperative, wants to proceed with standalone \u20b9500 payment intent, and no arrangement is finalized.",
+      "resolution_status": "no_deal_due_to_refusal_and_stop_contact",
+      "standalone_payment_intent": "Borrower stated they can make a small payment now.",
+      "stop_contact_flag": false,
+      "stop_contact_requested": false
+    },
+    "core": {
+      "amount_due": 12921,
+      "borrower_id": "b_284fa42e",
+      "case_status": "OPEN",
+      "case_type": [
+        "SETTLEMENT_CANDIDATE"
+      ],
+      "final_disposition": null,
+      "identity_verified": true,
+      "lender_id": "nira",
+      "loan_id_masked": "****4831",
+      "next_allowed_actions": [
+        "OFFER_REDUCED_CLOSURE",
+        "OFFER_PAYMENT_PLAN"
+      ],
+      "stage": "RESOLUTION",
+      "workflow_id": "wf_20260416095109_5f377c"
+    },
+    "latest_handoff_stage": "ASSESSMENT",
+    "latest_handoff_summary": "Disclosures completed in this conversation. Identity is verified in visible transcript by borrower confirmation of the account reference digits. Debt context established with the borrower: Nira loan ending ****4831, amount due 12,921. Borrower stated they have income of 2,000 per month, cannot pay the full 2,000 toward the account, and 500 is the maximum they can pay right now. Case state shows hardship signals job_loss, medical_issue, and student status, though the borrower did not newly state hardship in this visible turn. No stop-contact request or objection beyond limited capacity. Already asked: verification, whether they have income, whether 2,000 is the maximum they could pay, and what amount they can pay now. Capacity fit: partial-now / more-later not established in this turn. Priority for Agent 2: review policy-allowed options in next_allowed_actions and present the appropriate one(s) based on borrower capacity and policy constraints; do not continue assessment or re-ask already known capacity facts unless required for a specific offer."
+  },
+  "b_5c8fd9f1": {
+    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage ASSESSMENT, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: can pay now up to 2000, may pay later around 2026-04-20. Hardship signals: job_loss, medical_issue, student. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
+    "attributes": {
+      "borrower_capacity": {
+        "available_now": 2000,
+        "can_pay_later": true,
+        "can_pay_now": true,
+        "expected_date": "2026-04-20"
+      },
+      "borrower_intent": {
+        "protect_cibil": true,
+        "wants_full_closure": true,
+        "wants_settlement": true
+      },
+      "borrower_objections": [],
+      "contact_preferences": {
+        "channel_verification_discomfort": true
+      },
+      "dispute_flags": {
+        "claims_paid": false,
+        "claims_wrong_commitment": false
+      },
+      "dpd": 275,
+      "hardship_flags": {
+        "emotional_distress": false,
+        "job_loss": true,
+        "medical_issue": true,
+        "student": true
+      },
+      "last_contact_channel": "CHAT",
+      "offers_made": [],
+      "principal_outstanding": 10125,
+      "resolution_status": "no_deal_due_to_refusal_and_stop_contact",
+      "standalone_payment_intent": "Borrower stated they can make a small payment now.",
+      "stop_contact_flag": false,
+      "stop_contact_requested": false
+    },
+    "core": {
+      "amount_due": 12921,
+      "borrower_id": "b_5c8fd9f1",
+      "case_status": "OPEN",
+      "case_type": [
+        "SETTLEMENT_CANDIDATE"
+      ],
+      "final_disposition": null,
+      "identity_verified": true,
+      "lender_id": "nira",
+      "loan_id_masked": "****4831",
+      "next_allowed_actions": [
+        "OFFER_REDUCED_CLOSURE",
+        "OFFER_PAYMENT_PLAN"
+      ],
+      "stage": "ASSESSMENT",
+      "workflow_id": "wf_20260416095020_5edac4"
+    },
+    "latest_handoff_stage": null,
+    "latest_handoff_summary": null
   }
 }

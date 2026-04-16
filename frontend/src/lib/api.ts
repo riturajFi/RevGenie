@@ -25,6 +25,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8
 export async function createBorrowerProfile(
   payload: BorrowerProfileCreateInput
 ): Promise<BorrowerProfileRecord> {
+  const caseOverrides = payload.caseOverrides ?? {};
   const response = await fetch(`${API_BASE_URL}/borrower-profiles`, {
     method: "POST",
     headers: {
@@ -33,6 +34,20 @@ export async function createBorrowerProfile(
     body: JSON.stringify({
       full_name: payload.fullName,
       phone_number: payload.phoneNumber,
+      create_case: true,
+      case_overrides: {
+        workflow_id: caseOverrides.workflowId,
+        lender_id: caseOverrides.lenderId,
+        loan_id_masked: caseOverrides.loanIdMasked,
+        amount_due: caseOverrides.amountDue,
+        principal_outstanding: caseOverrides.principalOutstanding,
+        dpd: caseOverrides.dpd,
+        case_type: caseOverrides.caseType,
+        stage: caseOverrides.stage,
+        case_status: caseOverrides.caseStatus,
+        next_allowed_actions: caseOverrides.nextAllowedActions,
+        identity_verified: caseOverrides.identityVerified,
+      },
     }),
   });
 

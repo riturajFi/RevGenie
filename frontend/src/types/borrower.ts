@@ -1,6 +1,19 @@
 export type BorrowerProfileCreateInput = {
   fullName: string;
   phoneNumber: string;
+  caseOverrides?: {
+    workflowId?: string;
+    lenderId?: string;
+    loanIdMasked?: string;
+    amountDue?: number;
+    principalOutstanding?: number;
+    dpd?: number;
+    caseType?: string[];
+    stage?: "ASSESSMENT" | "RESOLUTION" | "FINAL_NOTICE";
+    caseStatus?: "OPEN" | "RESOLVED" | "CLOSED" | "STOP_CONTACT";
+    nextAllowedActions?: string[];
+    identityVerified?: boolean;
+  };
 };
 
 export type BorrowerProfileRecord = {

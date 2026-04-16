@@ -1,5 +1,6 @@
 import {
   BorrowerPortalLoginResponse,
+  ResolutionMode,
   BorrowerWorkflowMessageResponse,
   BorrowerProfileCreateInput,
   BorrowerProfileRecord,
@@ -15,7 +16,7 @@ import {
   TranscriptEvent,
 } from "@/types/borrower";
 import { EvalPerformanceDataset } from "@/types/performance";
-import { PromptEvolutionResponse } from "@/types/prompt-evolution";
+import { PromptEvolutionActivateResponse, PromptEvolutionResponse } from "@/types/prompt-evolution";
 import { ComplianceConfig } from "@/types/compliance";
 import { LenderPolicyRecord, UpsertLenderPolicyResult } from "@/types/lender-policy";
 import { MetaEvalLatestPair, MetaEvalRunRecord, MetaEvalRunRequest } from "@/types/meta-eval";
@@ -84,6 +85,7 @@ export async function sendBorrowerChatMessage(payload: {
   borrowerId: string;
   workflowId: string;
   message: string;
+  resolutionMode?: ResolutionMode;
 }): Promise<BorrowerWorkflowMessageResponse> {
   const response = await fetch(`${API_BASE_URL}/workflows/messages`, {
     method: "POST",
@@ -94,6 +96,7 @@ export async function sendBorrowerChatMessage(payload: {
       borrower_id: payload.borrowerId,
       workflow_id: payload.workflowId,
       message: payload.message,
+      resolution_mode: payload.resolutionMode,
     }),
   });
   if (!response.ok) {
@@ -282,6 +285,27 @@ export async function getPromptEvolution(agentId: string): Promise<PromptEvoluti
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(detail || "Failed to fetch prompt evolution data");
+  }
+  return response.json();
+}
+
+export async function activatePromptEvolutionVersion(
+  agentId: string,
+  versionId: string
+): Promise<PromptEvolutionActivateResponse> {
+  const response = await fetch(`${API_BASE_URL}/evals/prompt-evolution/activate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      agent_id: agentId,
+      version_id: versionId,
+    }),
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to activate prompt version");
   }
   return response.json();
 }

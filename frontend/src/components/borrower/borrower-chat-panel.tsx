@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { sendBorrowerChatMessage } from "@/lib/api";
-import { BorrowerChatMessage, BorrowerPortalLoginResponse } from "@/types/borrower";
+import { BorrowerChatMessage, BorrowerPortalLoginResponse, ResolutionMode } from "@/types/borrower";
 
 const BORROWER_SESSION_STORAGE_KEY = "revgenie.borrower.session";
 
@@ -25,11 +25,17 @@ function makeMessage(
   };
 }
 
+function getInitialResolutionMode(session: BorrowerPortalLoginResponse): ResolutionMode {
+  const raw = session.borrower_case.attributes["resolution_mode"];
+  return raw === "CHAT" ? "CHAT" : "VOICE";
+}
+
 export function BorrowerChatPanel() {
   const router = useRouter();
   const [session, setSession] = useState<BorrowerPortalLoginResponse | null>(null);
   const [workflowId, setWorkflowId] = useState<string>("");
   const [stage, setStage] = useState<string>("");
+  const [resolutionMode, setResolutionMode] = useState<ResolutionMode>("VOICE");
   const [finalResult, setFinalResult] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<BorrowerChatMessage[]>([]);
@@ -48,6 +54,7 @@ export function BorrowerChatPanel() {
       setSession(parsed);
       setWorkflowId(parsed.borrower_case.core.workflow_id);
       setStage(parsed.borrower_case.core.stage);
+      setResolutionMode(getInitialResolutionMode(parsed));
       setMessages([
         makeMessage(
           "system",
@@ -62,6 +69,10 @@ export function BorrowerChatPanel() {
   }, [router]);
 
   const isConversationClosed = useMemo(() => Boolean(finalResult), [finalResult]);
+  const isResolutionVoiceMode = useMemo(
+    () => stage === "RESOLUTION" && resolutionMode === "VOICE" && !finalResult,
+    [finalResult, resolutionMode, stage]
+  );
 
   async function handleSend(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -80,9 +91,11 @@ export function BorrowerChatPanel() {
         borrowerId: session.borrower_profile.borrower_id,
         workflowId,
         message,
+        resolutionMode,
       });
       setWorkflowId(response.workflow_id);
       setStage(response.stage);
+      setResolutionMode(response.resolution_mode);
       setFinalResult(response.final_result);
 
       if (response.reply) {
@@ -91,6 +104,20 @@ export function BorrowerChatPanel() {
         setMessages((current) => [
           ...current,
           makeMessage("system", "Agent did not return a reply for this turn.", "system"),
+        ]);
+      }
+      if (
+        response.stage === "RESOLUTION" &&
+        response.resolution_mode === "VOICE" &&
+        ["registered", "ongoing"].includes(response.voice_call_status ?? "")
+      ) {
+        setMessages((current) => [
+          ...current,
+          makeMessage(
+            "system",
+            "Resolution has switched to voice mode. Expect a phone call on your registered number. Chat is paused until voice mode is turned off or the call flow completes.",
+            "system"
+          ),
         ]);
       }
     } catch (sendError) {
@@ -152,6 +179,38 @@ export function BorrowerChatPanel() {
           </div>
         </div>
 
+        <div className="borrower-chat-meta">
+          <div>
+            <span>Voice Mode</span>
+            <strong>{resolutionMode === "VOICE" ? "On" : "Off"}</strong>
+          </div>
+          <div className="form-actions">
+            <button
+              type="button"
+              className={resolutionMode === "VOICE" ? "button button-primary" : "button button-secondary"}
+              onClick={() => setResolutionMode("VOICE")}
+              disabled={isSending || Boolean(finalResult)}
+            >
+              Voice On
+            </button>
+            <button
+              type="button"
+              className={resolutionMode === "CHAT" ? "button button-primary" : "button button-secondary"}
+              onClick={() => setResolutionMode("CHAT")}
+              disabled={isSending || Boolean(finalResult)}
+            >
+              Voice Off
+            </button>
+          </div>
+        </div>
+
+        {isResolutionVoiceMode ? (
+          <p className="form-success">
+            Resolution is in voice mode. Chat stays paused while the phone-call flow is active. Turn voice mode off to resume
+            chat-based resolution.
+          </p>
+        ) : null}
+
         <div className="borrower-chat-stream">
           {messages.map((message) => (
             <article
@@ -176,12 +235,22 @@ export function BorrowerChatPanel() {
               rows={3}
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
-              placeholder={isConversationClosed ? "Conversation is closed." : "Type your message"}
-              disabled={isSending || isConversationClosed}
+              placeholder={
+                isConversationClosed
+                  ? "Conversation is closed."
+                  : isResolutionVoiceMode
+                    ? "Resolution is currently paused for voice mode."
+                    : "Type your message"
+              }
+              disabled={isSending || isConversationClosed || isResolutionVoiceMode}
             />
           </label>
           <div className="form-actions">
-            <button type="submit" className="button button-primary" disabled={isSending || isConversationClosed}>
+            <button
+              type="submit"
+              className="button button-primary"
+              disabled={isSending || isConversationClosed || isResolutionVoiceMode}
+            >
               {isSending ? "Sending..." : "Send"}
             </button>
           </div>

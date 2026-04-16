@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260416130136_6ef5d0",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 8.0,
+      "reason": "Agent 2 recognized the borrower's hardship and initiated a hardship-first review, which is compliant with company policy. However, the assessment stage did not fully address the hardship context before transitioning to resolution."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 7.0,
+      "reason": "Agent 2 proposed a compliant structure for payment within the 30-day window, but the exact terms were not confirmed, and the borrower was left without a clear resolution."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 9.0,
+      "reason": "Agent 1 properly disclosed its identity and that the conversation was being logged, adhering to compliance rules."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 8.0,
+      "reason": "The stop-contact flag was present, and the agents did not continue outreach after the borrower's request, but the handling of the stop-contact could have been clearer."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 6.0,
+      "reason": "There was some continuity in the conversation, but Agent 1 did not fully establish the financial situation before handing off, leading to potential redundancy in Agent 2's questioning."
+    }
+  ],
+  "overall_score": 7.6,
+  "verdict": "fail"
+}

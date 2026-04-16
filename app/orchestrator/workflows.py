@@ -6,19 +6,25 @@ from temporalio import workflow
 from temporalio.common import RetryPolicy
 
 with workflow.unsafe.imports_passed_through():
-    from app.domain.borrower_case import AgentStageOutcome, CaseStatus, Stage
+    from app.domain.borrower_case import AgentStageOutcome, CaseStatus, ResolutionMode, Stage
     from app.orchestrator.activities import (
+        finalize_resolution_call,
         load_borrower_case,
         run_assessment_turn,
         run_final_notice_turn,
         run_resolution_turn,
         save_borrower_case,
+        start_resolution_call,
     )
     from app.orchestrator.models import (
         AgentTurnActivityInput,
+        BorrowerMessageWorkflowInput,
         CollectionsWorkflowInput,
         CollectionsWorkflowState,
+        ResolutionCallActivityInput,
+        ResolutionVoiceCallCompletedInput,
     )
+    from app.services.workflow_channel import workflow_channel_service
 
 
 @workflow.defn
@@ -40,18 +46,19 @@ class BorrowerCollectionsWorkflow:
         return self.state
 
     @workflow.update
-    async def handle_borrower_message(self, message: str) -> CollectionsWorkflowState:
+    async def handle_borrower_message(self, input: BorrowerMessageWorkflowInput) -> CollectionsWorkflowState:
         if self.state is None:
             await self._ensure_state(self.input)
 
         assert self.state is not None
+        await self._apply_resolution_mode(input.resolution_mode)
 
         if self.state.borrower_case.stage == Stage.ASSESSMENT:
             turn_result = await self._activity(
                 run_assessment_turn,
                 AgentTurnActivityInput(
                     borrower_case=self.state.borrower_case,
-                    message=message,
+                    message=input.message,
                 ),
             )
             self.state.borrower_case = turn_result.borrower_case
@@ -60,14 +67,23 @@ class BorrowerCollectionsWorkflow:
             if turn_result.stage_result.stage_outcome == AgentStageOutcome.ASSESSMENT_COMPLETE:
                 self.state.borrower_case.stage = Stage.RESOLUTION
                 self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
+                if self.state.borrower_case.resolution_mode == ResolutionMode.VOICE:
+                    await self._ensure_resolution_voice_call_started()
+                    self.state.last_agent_reply = workflow_channel_service.build_voice_transition_reply(
+                        self.state.last_agent_reply
+                    )
             return self.state
 
         if self.state.borrower_case.stage == Stage.RESOLUTION:
+            if self.state.borrower_case.resolution_mode == ResolutionMode.VOICE:
+                await self._ensure_resolution_voice_call_started()
+                self.state.last_agent_reply = workflow_channel_service.build_voice_pending_reply()
+                return self.state
             turn_result = await self._activity(
                 run_resolution_turn,
                 AgentTurnActivityInput(
                     borrower_case=self.state.borrower_case,
-                    message=message,
+                    message=input.message,
                 ),
             )
             self.state.borrower_case = turn_result.borrower_case
@@ -84,7 +100,7 @@ class BorrowerCollectionsWorkflow:
             run_final_notice_turn,
             AgentTurnActivityInput(
                 borrower_case=self.state.borrower_case,
-                message=message,
+                message=input.message,
             ),
         )
         self.state.borrower_case = turn_result.borrower_case
@@ -100,6 +116,42 @@ class BorrowerCollectionsWorkflow:
     def get_state(self) -> CollectionsWorkflowState | None:
         return self.state
 
+    @workflow.update
+    async def handle_resolution_call_completed(
+        self,
+        input: ResolutionVoiceCallCompletedInput,
+    ) -> CollectionsWorkflowState:
+        if self.state is None:
+            await self._ensure_state(self.input)
+
+        assert self.state is not None
+        if self.state.borrower_case.stage != Stage.RESOLUTION:
+            return self.state
+        if self.state.borrower_case.resolution_mode != ResolutionMode.VOICE:
+            return self.state
+
+        incoming_call_id = str(input.call.get("call_id") or "")
+        existing_call_id = self.state.borrower_case.resolution_call_id or ""
+        if incoming_call_id and existing_call_id and incoming_call_id != existing_call_id:
+            return self.state
+
+        turn_result = await self._activity(
+            finalize_resolution_call,
+            ResolutionCallActivityInput(
+                borrower_case=self.state.borrower_case,
+                call=input.call,
+            ),
+        )
+        self.state.borrower_case = turn_result.borrower_case
+        self.state.last_agent_reply = turn_result.stage_result.reply
+        self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
+        if turn_result.stage_result.stage_outcome == AgentStageOutcome.DEAL_AGREED:
+            await self._complete_workflow("AGREEMENT_LOGGED", CaseStatus.RESOLVED)
+        elif turn_result.stage_result.stage_outcome == AgentStageOutcome.NO_DEAL:
+            self.state.borrower_case.stage = Stage.FINAL_NOTICE
+            self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
+        return self.state
+
     async def _ensure_state(self, input: CollectionsWorkflowInput) -> None:
         if self.state is not None:
             return
@@ -107,12 +159,39 @@ class BorrowerCollectionsWorkflow:
         borrower_case.workflow_id = input.workflow_id
         borrower_case.case_status = CaseStatus.OPEN
         borrower_case.final_disposition = None
+        borrower_case.resolution_mode = input.resolution_mode
         borrower_case = await self._activity(save_borrower_case, borrower_case)
         self.state = CollectionsWorkflowState(
             borrower_case=borrower_case,
             last_agent_reply=None,
             final_result=None,
         )
+
+    async def _apply_resolution_mode(self, requested_mode: ResolutionMode | None) -> None:
+        assert self.state is not None
+        resolved_mode = workflow_channel_service.resolve_resolution_mode(
+            requested_mode,
+            borrower_case=self.state.borrower_case,
+            default_mode=self.input.resolution_mode,
+        )
+        if not workflow_channel_service.update_resolution_mode(self.state.borrower_case, resolved_mode):
+            return
+        self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
+
+    async def _ensure_resolution_voice_call_started(self) -> None:
+        assert self.state is not None
+        if self.state.borrower_case.resolution_mode != ResolutionMode.VOICE:
+            return
+        if self.state.borrower_case.resolution_call_id and self.state.borrower_case.resolution_call_status in {
+            "registered",
+            "ongoing",
+            "ended",
+        }:
+            return
+        call_result = await self._activity(start_resolution_call, self.state.borrower_case)
+        self.state.borrower_case.resolution_call_id = call_result.call_id
+        self.state.borrower_case.resolution_call_status = call_result.call_status or "registered"
+        self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
 
     async def _complete_workflow(self, result: str, case_status: CaseStatus) -> None:
         assert self.state is not None

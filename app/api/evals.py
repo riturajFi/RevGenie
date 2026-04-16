@@ -9,7 +9,7 @@ from uuid import uuid4
 from fastapi import APIRouter, HTTPException, Query, status
 from pydantic import BaseModel, Field
 
-from app.domain.borrower_case import CaseStatus, ContactChannel, Stage
+from app.domain.borrower_case import CaseStatus, ContactChannel, ResolutionMode, Stage
 from app.services.eval_performance import EvalPerformanceDataset, EvalPerformanceService
 from app.services.prompt_evolution import PromptEvolutionResponse, PromptEvolutionService
 from app.services.borrower_case import FileBorrowerCaseService
@@ -125,6 +125,11 @@ class PromptVersionActivateResponse(BaseModel):
     active_version_id: str
 
 
+class PromptVersionActivateDirectResponse(BaseModel):
+    agent_id: str
+    active_version_id: str
+
+
 class PromptVersionRevertRequest(BaseModel):
     agent_id: str
     revert_to_version_id: str
@@ -186,6 +191,9 @@ def _reset_case_for_simulation(borrower_id: str, workflow_id: str) -> None:
     borrower_case.borrower_objections = []
     borrower_case.last_deadline_offered = None
     borrower_case.last_contact_channel = ContactChannel.CHAT
+    borrower_case.resolution_mode = ResolutionMode.CHAT
+    borrower_case.resolution_call_id = None
+    borrower_case.resolution_call_status = None
 
     borrower_case_service.update_borrower_case(borrower_id, borrower_case)
 
@@ -395,6 +403,19 @@ def get_prompt_evolution(agent_id: str) -> PromptEvolutionResponse:
         return prompt_evolution_service.get_evolution(agent_id)
     except KeyError as error:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
+
+
+@router.post("/prompt-evolution/activate", response_model=PromptVersionActivateDirectResponse)
+def activate_prompt_version_direct(request: PromptVersionActivateRequest) -> PromptVersionActivateDirectResponse:
+    try:
+        active_version_id = json_prompt_storage_service.activate_version(request.agent_id, request.version_id)
+    except KeyError as error:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
+
+    return PromptVersionActivateDirectResponse(
+        agent_id=request.agent_id,
+        active_version_id=active_version_id,
+    )
 
 
 @router.get("/compliance", response_model=ComplianceConfig)

@@ -1,3 +1,5 @@
+export type ResolutionMode = "CHAT" | "VOICE";
+
 export type BorrowerProfileCreateInput = {
   fullName: string;
   phoneNumber: string;
@@ -183,4 +185,7 @@ export type BorrowerWorkflowMessageResponse = {
   reply: string | null;
   stage: string;
   final_result: string | null;
+  resolution_mode: ResolutionMode;
+  voice_call_id: string | null;
+  voice_call_status: string | null;
 };

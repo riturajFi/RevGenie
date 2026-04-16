@@ -1,0 +1,388 @@
+diff --git a/app/agents/resolution/agent.py b/app/agents/resolution/agent.py
+index b225ac9..a445ed5 100644
+--- a/app/agents/resolution/agent.py
++++ b/app/agents/resolution/agent.py
+@@ -59,6 +59,22 @@ class ResolutionAgent:
+     ) -> AgentTurnResult:
+         return self._invoke(borrower_id, message or "", borrower_case, chat_history or [], instruction)
+ 
++    def analyze_completed_voice_call(
++        self,
++        borrower_id: str,
++        borrower_case: BorrowerCase,
++        transcript: str,
++        chat_history: list[ChatMessage] | None = None,
++    ) -> AgentTurnResult:
++        instruction = (
++            "Analyze this completed Retell voice call transcript for the resolution stage. "
++            "The live call is over, so do not continue the conversation. "
++            "Return DEAL_AGREED only if the borrower clearly accepted a specific payment or settlement commitment. "
++            "Otherwise return NO_DEAL. Do not return CONTINUE. "
++            "If you return NO_DEAL, latest_handoff_summary must let Agent 3 continue naturally without restarting."
++        )
++        return self._invoke(borrower_id, transcript, borrower_case, chat_history or [], instruction)
++
+     def _invoke(
+         self,
+         borrower_id: str,
+diff --git a/app/domain/borrower_case.py b/app/domain/borrower_case.py
+index 2d86935..fbd8f83 100644
+--- a/app/domain/borrower_case.py
++++ b/app/domain/borrower_case.py
+@@ -84,6 +84,8 @@ class BorrowerCase(BaseModel):
+     assessment_notes: Optional[str] = None
+     resolution_notes: Optional[str] = None
+     final_notice_notes: Optional[str] = None
++    resolution_call_id: Optional[str] = None
++    resolution_call_status: Optional[str] = None
+     latest_handoff_summary: Optional[str] = None
+     latest_handoff_stage: Optional[Stage] = None
+     final_disposition: Optional[str] = None
+diff --git a/app/main.py b/app/main.py
+index c227b0e..f8db9ac 100644
+--- a/app/main.py
++++ b/app/main.py
+@@ -6,6 +6,8 @@ from app.api.borrower_profile import router as borrower_profile_router
+ from app.api.lender_policy import router as lender_policy_router
+ from app.api.lender_profile import router as lender_profile_router
+ from app.api.loan import router as loan_router
++from app.api.retell_functions import router as retell_functions_router
++from app.api.retell_webhooks import router as retell_webhooks_router
+ from app.api.workflows import router as workflows_router
+ 
+ load_env_file()
+@@ -16,4 +18,6 @@ app.include_router(borrower_profile_router)
+ app.include_router(lender_policy_router)
+ app.include_router(lender_profile_router)
+ app.include_router(loan_router)
++app.include_router(retell_functions_router)
++app.include_router(retell_webhooks_router)
+ app.include_router(workflows_router)
+diff --git a/app/orchestrator/activities.py b/app/orchestrator/activities.py
+index ccd6d83..6a5ea94 100644
+--- a/app/orchestrator/activities.py
++++ b/app/orchestrator/activities.py
+@@ -1,23 +1,31 @@
+ from __future__ import annotations
+ 
++from typing import Any
++
+ from temporalio import activity
+ 
+ from app.agents.assessment.agent import AssessmentAgent
+ from app.agents.final_notice.agent import FinalNoticeAgent
+ from app.agents.resolution.agent import ResolutionAgent
+-from app.domain.borrower_case import BorrowerCase, ContactChannel, Stage
++from app.domain.borrower_case import AgentStageOutcome, AgentTurnResult, BorrowerCase, ContactChannel, Stage
+ from app.services.borrower_case import FileBorrowerCaseService
+ from app.services.borrower_case_state import BorrowerCaseStateService
++from app.services.borrower_profile import FileBorrowerProfileService
+ from app.services.chat_message import get_chat_message_service
++from app.services.retell import RetellService
+ from app.orchestrator.models import (
+     AgentTurnActivityInput,
+     AgentTurnActivityResult,
++    ResolutionCallActivityInput,
++    StartResolutionCallResult,
+ )
+ 
+ 
+ borrower_case_service = FileBorrowerCaseService()
+ borrower_case_state_service = BorrowerCaseStateService()
++borrower_profile_service = FileBorrowerProfileService()
+ chat_message_service = get_chat_message_service()
++retell_service = RetellService()
+ 
+ 
+ def _load_case(borrower_id: str) -> BorrowerCase:
+@@ -52,6 +60,62 @@ def _ensure_handoff_message(borrower_case: BorrowerCase, stage: Stage) -> None:
+     )
+ 
+ 
++def _normalize_turn_text(turn: dict[str, Any]) -> str:
++    return str(
++        turn.get("content")
++        or turn.get("message")
++        or turn.get("transcript")
++        or turn.get("utterance")
++        or ""
++    ).strip()
++
++
++def _normalize_turn_role(turn: dict[str, Any]) -> str:
++    return str(
++        turn.get("role")
++        or turn.get("speaker")
++        or turn.get("name")
++        or turn.get("participant")
++        or ""
++    ).strip().lower()
++
++
++def _extract_transcript_turns(call: dict[str, Any]) -> list[tuple[str, str]]:
++    raw_turns = call.get("transcript_object")
++    if not isinstance(raw_turns, list) or not raw_turns:
++        raw_turns = call.get("transcript_with_tool_calls")
++    if not isinstance(raw_turns, list):
++        raw_turns = []
++
++    turns: list[tuple[str, str]] = []
++    for item in raw_turns:
++        if not isinstance(item, dict):
++            continue
++        text = _normalize_turn_text(item)
++        if not text:
++            continue
++        role = _normalize_turn_role(item)
++        if role in {"agent", "assistant", "ai"}:
++            sender_type = "agent"
++        elif role in {"user", "caller", "borrower", "customer"}:
++            sender_type = "borrower"
++        else:
++            sender_type = "agent" if len(turns) % 2 else "borrower"
++        turns.append((sender_type, text))
++
++    if turns:
++        return turns
++
++    transcript = str(call.get("transcript") or "").strip()
++    if transcript:
++        return [("borrower", transcript)]
++    return []
++
++
++def _transcript_as_text(turns: list[tuple[str, str]]) -> str:
++    return "\n".join(f"{sender_type.upper()}: {text}" for sender_type, text in turns)
++
++
+ @activity.defn
+ def load_borrower_case(borrower_id: str) -> BorrowerCase:
+     return _load_case(borrower_id)
+@@ -143,3 +207,69 @@ def run_final_notice_turn(input: AgentTurnActivityInput) -> AgentTurnActivityRes
+         borrower_case=updated_case,
+         stage_result=result,
+     )
++
++
++@activity.defn
++def start_resolution_call(borrower_case: BorrowerCase) -> StartResolutionCallResult:
++    _ensure_handoff_message(borrower_case, Stage.RESOLUTION)
++    borrower_profile = borrower_profile_service.get_borrower_profile(borrower_case.borrower_id)
++    if borrower_profile is None:
++        raise ValueError(f"Borrower profile not found for {borrower_case.borrower_id}")
++
++    call = retell_service.place_phone_call(
++        borrower_case=borrower_case,
++        borrower_profile=borrower_profile,
++        handoff_summary=borrower_case.latest_handoff_summary,
++    )
++    call_id = str(call.get("call_id") or "")
++    if not call_id:
++        raise ValueError("Retell did not return call_id")
++
++    return StartResolutionCallResult(
++        call_id=call_id,
++        call_status=str(call.get("call_status") or ""),
++    )
++
++
++@activity.defn
++def finalize_resolution_call(input: ResolutionCallActivityInput) -> AgentTurnActivityResult:
++    borrower_case = input.borrower_case
++    call = input.call
++    chat_history = _list_stage_messages(borrower_case.borrower_id, Stage.RESOLUTION)
++    transcript_turns = _extract_transcript_turns(call)
++    transcript_text = _transcript_as_text(transcript_turns)
++
++    if transcript_text:
++        agent = ResolutionAgent(lender_id=borrower_case.lender_id)
++        result = agent.analyze_completed_voice_call(
++            borrower_id=borrower_case.borrower_id,
++            borrower_case=borrower_case,
++            transcript=transcript_text,
++            chat_history=chat_history,
++        )
++    else:
++        result = AgentTurnResult(
++            reply="",
++            stage_outcome=AgentStageOutcome.NO_DEAL,
++            case_delta={},
++            latest_handoff_summary="Agent 2 attempted a voice call but no usable conversation transcript was captured. Continue by chat without restarting known account context.",
++        )
++
++    updated_case = borrower_case_state_service.apply_delta(
++        borrower_case=borrower_case,
++        case_delta=result.case_delta,
++        stage=Stage.RESOLUTION,
++        latest_handoff_summary=result.latest_handoff_summary,
++    )
++    updated_case.stage = Stage.RESOLUTION
++    updated_case.last_contact_channel = ContactChannel.VOICE
++    updated_case.resolution_call_id = str(call.get("call_id") or borrower_case.resolution_call_id or "")
++    updated_case.resolution_call_status = str(call.get("call_status") or "ended")
++
++    for sender_type, message in transcript_turns:
++        _append_message(borrower_case.borrower_id, Stage.RESOLUTION, sender_type, message)
++
++    return AgentTurnActivityResult(
++        borrower_case=updated_case,
++        stage_result=result,
++    )
+diff --git a/app/orchestrator/models.py b/app/orchestrator/models.py
+index b9fa25e..a9a45c1 100644
+--- a/app/orchestrator/models.py
++++ b/app/orchestrator/models.py
+@@ -1,5 +1,7 @@
+ from __future__ import annotations
+ 
++from typing import Any
++
+ from pydantic import BaseModel
+ 
+ from app.domain.borrower_case import AgentTurnResult, BorrowerCase, Stage
+@@ -29,3 +31,17 @@ class AgentTurnActivityInput(BaseModel):
+ class AgentTurnActivityResult(BaseModel):
+     borrower_case: BorrowerCase
+     stage_result: AgentTurnResult
++
++
++class StartResolutionCallResult(BaseModel):
++    call_id: str
++    call_status: str | None = None
++
++
++class ResolutionCallActivityInput(BaseModel):
++    borrower_case: BorrowerCase
++    call: dict[str, Any]
++
++
++class ResolutionVoiceCallCompletedInput(BaseModel):
++    call: dict[str, Any]
+diff --git a/app/orchestrator/workflows.py b/app/orchestrator/workflows.py
+index 759c990..452a79e 100644
+--- a/app/orchestrator/workflows.py
++++ b/app/orchestrator/workflows.py
+@@ -8,16 +8,19 @@ from temporalio.common import RetryPolicy
+ with workflow.unsafe.imports_passed_through():
+     from app.domain.borrower_case import AgentStageOutcome, CaseStatus, Stage
+     from app.orchestrator.activities import (
++        finalize_resolution_call,
+         load_borrower_case,
+         run_assessment_turn,
+         run_final_notice_turn,
+-        run_resolution_turn,
+         save_borrower_case,
++        start_resolution_call,
+     )
+     from app.orchestrator.models import (
+         AgentTurnActivityInput,
+         CollectionsWorkflowInput,
+         CollectionsWorkflowState,
++        ResolutionCallActivityInput,
++        ResolutionVoiceCallCompletedInput,
+     )
+ 
+ 
+@@ -60,24 +63,13 @@ class BorrowerCollectionsWorkflow:
+             if turn_result.stage_result.stage_outcome == AgentStageOutcome.ASSESSMENT_COMPLETE:
+                 self.state.borrower_case.stage = Stage.RESOLUTION
+                 self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
++                call_result = await self._activity(start_resolution_call, self.state.borrower_case)
++                self.state.borrower_case.resolution_call_id = call_result.call_id
++                self.state.borrower_case.resolution_call_status = call_result.call_status or "registered"
++                self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
+             return self.state
+ 
+         if self.state.borrower_case.stage == Stage.RESOLUTION:
+-            turn_result = await self._activity(
+-                run_resolution_turn,
+-                AgentTurnActivityInput(
+-                    borrower_case=self.state.borrower_case,
+-                    message=message,
+-                ),
+-            )
+-            self.state.borrower_case = turn_result.borrower_case
+-            self.state.last_agent_reply = turn_result.stage_result.reply
+-            self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
+-            if turn_result.stage_result.stage_outcome == AgentStageOutcome.DEAL_AGREED:
+-                await self._complete_workflow("AGREEMENT_LOGGED", CaseStatus.RESOLVED)
+-            elif turn_result.stage_result.stage_outcome == AgentStageOutcome.NO_DEAL:
+-                self.state.borrower_case.stage = Stage.FINAL_NOTICE
+-                self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
+             return self.state
+ 
+         turn_result = await self._activity(
+@@ -100,6 +92,35 @@ class BorrowerCollectionsWorkflow:
+     def get_state(self) -> CollectionsWorkflowState | None:
+         return self.state
+ 
++    @workflow.update
++    async def handle_resolution_call_completed(
++        self,
++        input: ResolutionVoiceCallCompletedInput,
++    ) -> CollectionsWorkflowState:
++        if self.state is None:
++            await self._ensure_state(self.input)
++
++        assert self.state is not None
++        if self.state.borrower_case.stage != Stage.RESOLUTION:
++            return self.state
++
++        turn_result = await self._activity(
++            finalize_resolution_call,
++            ResolutionCallActivityInput(
++                borrower_case=self.state.borrower_case,
++                call=input.call,
++            ),
++        )
++        self.state.borrower_case = turn_result.borrower_case
++        self.state.last_agent_reply = turn_result.stage_result.reply
++        self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
++        if turn_result.stage_result.stage_outcome == AgentStageOutcome.DEAL_AGREED:
++            await self._complete_workflow("AGREEMENT_LOGGED", CaseStatus.RESOLVED)
++        elif turn_result.stage_result.stage_outcome == AgentStageOutcome.NO_DEAL:
++            self.state.borrower_case.stage = Stage.FINAL_NOTICE
++            self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
++        return self.state
++
+     async def _ensure_state(self, input: CollectionsWorkflowInput) -> None:
+         if self.state is not None:
+             return
+diff --git a/requirements.txt b/requirements.txt
+index 8b29e48..7e0c210 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -2,5 +2,6 @@ fastapi==0.115.12
+ langchain==0.2.17
+ langchain-openai==0.1.25
+ pydantic==2.11.3
++retell-sdk==4.55.0
+ temporalio==1.9.0
+ uvicorn==0.34.1
+diff --git a/scripts/run_temporal_worker.py b/scripts/run_temporal_worker.py
+index 33a256b..a9aa17f 100644
+--- a/scripts/run_temporal_worker.py
++++ b/scripts/run_temporal_worker.py
+@@ -15,11 +15,13 @@ if str(ROOT_DIR) not in sys.path:
+ 
+ from env_loader import load_env_file
+ from app.orchestrator.activities import (
++    finalize_resolution_call,
+     load_borrower_case,
+     run_assessment_turn,
+     run_final_notice_turn,
+     run_resolution_turn,
+     save_borrower_case,
++    start_resolution_call,
+ )
+ from app.orchestrator.workflows import BorrowerCollectionsWorkflow
+ 
+@@ -43,6 +45,8 @@ async def main() -> None:
+                 run_assessment_turn,
+                 run_resolution_turn,
+                 run_final_notice_turn,
++                start_resolution_call,
++                finalize_resolution_call,
+             ],
+             activity_executor=activity_executor,
+         )

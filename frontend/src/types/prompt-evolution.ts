@@ -18,3 +18,8 @@ export type PromptEvolutionResponse = {
   active_version_id: string;
   versions: PromptVersionEvolution[];
 };
+
+export type PromptEvolutionActivateResponse = {
+  agent_id: string;
+  active_version_id: string;
+};

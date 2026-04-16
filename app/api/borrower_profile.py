@@ -6,7 +6,7 @@ from uuid import uuid4
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 
-from app.domain.borrower_case import BorrowerCase, CaseStatus, ContactChannel, Stage
+from app.domain.borrower_case import BorrowerCase, CaseStatus, ContactChannel, ResolutionMode, Stage
 from app.domain.borrower_profile import BorrowerProfile
 from app.services.borrower_case import FileBorrowerCaseService
 from app.services.borrower_profile import FileBorrowerProfileService
@@ -33,6 +33,7 @@ class BorrowerCaseOverrides(BaseModel):
     case_status: CaseStatus | None = None
     next_allowed_actions: list[str] | None = None
     identity_verified: bool | None = None
+    resolution_mode: ResolutionMode | None = None
 
 
 class CreateBorrowerProfileRequest(BaseModel):
@@ -77,6 +78,9 @@ def _build_case_from_defaults(
     case.resolution_notes = None
     case.final_notice_notes = None
     case.last_contact_channel = ContactChannel.CHAT
+    case.resolution_mode = ResolutionMode.VOICE
+    case.resolution_call_id = None
+    case.resolution_call_status = None
     case.stop_contact_flag = False
     if "stop_contact_requested" in case.attributes:
         case.attributes["stop_contact_requested"] = False
@@ -104,6 +108,8 @@ def _build_case_from_defaults(
             case.next_allowed_actions = overrides.next_allowed_actions
         if overrides.identity_verified is not None:
             case.identity_verified = overrides.identity_verified
+        if overrides.resolution_mode is not None:
+            case.resolution_mode = overrides.resolution_mode
 
     case.agent_context_summary = case.build_agent_context_summary()
     return case

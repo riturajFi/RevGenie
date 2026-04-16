@@ -26,6 +26,11 @@ class ContactChannel(str, Enum):
     EMAIL = "EMAIL"
 
 
+class ResolutionMode(str, Enum):
+    CHAT = "CHAT"
+    VOICE = "VOICE"
+
+
 class BorrowerCapacity(BaseModel):
     can_pay_now: bool
     available_now: int = Field(ge=0)
@@ -360,6 +365,37 @@ class BorrowerCase(BaseModel):
     @final_notice_notes.setter
     def final_notice_notes(self, value: Optional[str]) -> None:
         self._set_attribute("final_notice_notes", value)
+
+    @property
+    def resolution_mode(self) -> ResolutionMode:
+        value = self._get_attribute("resolution_mode")
+        if value is None:
+            return ResolutionMode.CHAT
+        return value if isinstance(value, ResolutionMode) else ResolutionMode(value)
+
+    @resolution_mode.setter
+    def resolution_mode(self, value: ResolutionMode | str | None) -> None:
+        if value is None:
+            self._set_attribute("resolution_mode", None)
+            return
+        normalized = value if isinstance(value, ResolutionMode) else ResolutionMode(value)
+        self._set_attribute("resolution_mode", normalized.value)
+
+    @property
+    def resolution_call_id(self) -> Optional[str]:
+        return self._get_attribute("resolution_call_id")
+
+    @resolution_call_id.setter
+    def resolution_call_id(self, value: Optional[str]) -> None:
+        self._set_attribute("resolution_call_id", value)
+
+    @property
+    def resolution_call_status(self) -> Optional[str]:
+        return self._get_attribute("resolution_call_status")
+
+    @resolution_call_status.setter
+    def resolution_call_status(self, value: Optional[str]) -> None:
+        self._set_attribute("resolution_call_status", value)
 
     def to_agent_context(self) -> dict[str, Any]:
         salient_attributes = {}

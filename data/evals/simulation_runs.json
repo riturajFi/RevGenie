@@ -1,1 +1,106 @@
-{}
+{
+  "sim_20260416125615_454c76": {
+    "run_id": "sim_20260416125615_454c76",
+    "workflow_id": "wf_20260416125615_2e8005",
+    "experiment_id": "exp_20260416125615_81284b",
+    "borrower_id": "b_001",
+    "scenario_id": "willing_but_constrained_payment_plan",
+    "status": "completed",
+    "started_at": "2026-04-16T12:56:15.516821+00:00",
+    "finished_at": "2026-04-16T12:57:12.695772+00:00",
+    "error": null,
+    "evaluations": [
+      {
+        "evaluation_id": "eval_f5a5ae5721",
+        "created_at": "2026-04-16T12:58:44.743303+00:00",
+        "metrics_key": "collections_agent_eval",
+        "lender_id": "nira",
+        "overall_score": 8.0,
+        "verdict": "fail",
+        "prompt_versions": {
+          "agent_1": "v26",
+          "agent_2": "v24",
+          "agent_3": "v22"
+        }
+      }
+    ]
+  },
+  "sim_20260416130136_5890c9": {
+    "run_id": "sim_20260416130136_5890c9",
+    "workflow_id": "wf_20260416130136_cb3618",
+    "experiment_id": "exp_20260416130136_6ef5d0",
+    "borrower_id": "b_001",
+    "scenario_id": "willing_but_constrained_payment_plan",
+    "status": "completed",
+    "started_at": "2026-04-16T13:01:36.026358+00:00",
+    "finished_at": "2026-04-16T13:02:24.110232+00:00",
+    "error": null,
+    "evaluations": [
+      {
+        "evaluation_id": "eval_7e53f7ef3a",
+        "created_at": "2026-04-16T13:02:40.990391+00:00",
+        "metrics_key": "collections_agent_eval",
+        "lender_id": "nira",
+        "overall_score": 7.6,
+        "verdict": "fail",
+        "prompt_versions": {
+          "agent_1": "v28",
+          "agent_2": "v25",
+          "agent_3": "v23"
+        }
+      }
+    ]
+  },
+  "sim_20260416130616_9b341f": {
+    "run_id": "sim_20260416130616_9b341f",
+    "workflow_id": "wf_20260416130616_5ce02d",
+    "experiment_id": "exp_20260416130616_4c744d",
+    "borrower_id": "b_001",
+    "scenario_id": "willing_but_constrained_payment_plan",
+    "status": "completed",
+    "started_at": "2026-04-16T13:06:16.819396+00:00",
+    "finished_at": "2026-04-16T13:06:47.795845+00:00",
+    "error": null,
+    "evaluations": [
+      {
+        "evaluation_id": "eval_4841c9e51e",
+        "created_at": "2026-04-16T13:07:17.690555+00:00",
+        "metrics_key": "collections_agent_eval",
+        "lender_id": "nira",
+        "overall_score": 5.2,
+        "verdict": "fail",
+        "prompt_versions": {
+          "agent_1": "v29",
+          "agent_2": "v26",
+          "agent_3": "v24"
+        }
+      }
+    ]
+  },
+  "sim_20260416131105_174c5a": {
+    "run_id": "sim_20260416131105_174c5a",
+    "workflow_id": "wf_20260416131105_2fd57e",
+    "experiment_id": "exp_20260416131105_27c7f3",
+    "borrower_id": "b_001",
+    "scenario_id": "willing_but_constrained_payment_plan",
+    "status": "completed",
+    "started_at": "2026-04-16T13:11:05.790215+00:00",
+    "finished_at": "2026-04-16T13:11:53.990261+00:00",
+    "error": null,
+    "evaluations": [
+      {
+        "evaluation_id": "eval_60235d7bf5",
+        "created_at": "2026-04-16T13:13:09.339138+00:00",
+        "metrics_key": "collections_agent_eval",
+        "lender_id": "nira",
+        "overall_score": 9.0,
+        "verdict": "fail",
+        "prompt_versions": {
+          "agent_1": "v27",
+          "agent_2": "v26",
+          "agent_3": "v24"
+        }
+      }
+    ]
+  }
+}

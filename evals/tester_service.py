@@ -19,7 +19,7 @@ from app.services.borrower_case import FileBorrowerCaseService
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PROJECT_CONTEXTS_PATH = REPO_ROOT / "data" / "evals" / "tester_project_contexts.json"
 DEFAULT_SCENARIOS_PATH = REPO_ROOT / "data" / "evals" / "tester_scenarios.json"
-DEFAULT_API_URL = "http://127.0.0.1:8000/workflows/messages"
+DEFAULT_API_URL = "http://127.0.0.1:8000/workflows/test/messages"
 
 
 class ProjectContext(BaseModel):
@@ -311,6 +311,7 @@ class TesterAgent:
                 "borrower_id": borrower_id,
                 "workflow_id": workflow_id,
                 "message": message,
+                "resolution_mode": "CHAT",
             }
         ).encode("utf-8")
         http_request = request.Request(

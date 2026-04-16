@@ -2,7 +2,7 @@
   {
     "project_context_id": "collections_v1",
     "project_name": "RevGenie Collections Workflow",
-    "system_under_test": "Collections workflow API at /workflows/messages",
+    "system_under_test": "Collections workflow API at /workflows/test/messages with resolution mode pinned to chat for simulation runs",
     "testing_instructions": [
       "Act like a borrower in a realistic collections conversation.",
       "Send one borrower message at a time.",

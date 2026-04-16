@@ -17,6 +17,9 @@ class BorrowerCaseStateService:
         "core.amount_due",
         "core.final_disposition",
         "attributes.last_contact_channel",
+        "attributes.resolution_mode",
+        "attributes.resolution_call_id",
+        "attributes.resolution_call_status",
     }
     LEGACY_CORE_FIELDS = {
         "borrower_id",

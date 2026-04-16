@@ -68,6 +68,22 @@ class ResolutionAgent:
     ) -> AgentTurnResult:
         return self._invoke(borrower_id, message or "", borrower_case, chat_history or [], instruction)
 
+    def analyze_completed_voice_call(
+        self,
+        borrower_id: str,
+        borrower_case: BorrowerCase,
+        transcript: str,
+        chat_history: list[ChatMessage] | None = None,
+    ) -> AgentTurnResult:
+        instruction = (
+            "Analyze this completed Retell voice call transcript for the resolution stage. "
+            "The live call is over, so do not continue the conversation. "
+            "Return DEAL_AGREED only if the borrower clearly accepted a specific payment or settlement commitment. "
+            "Otherwise return NO_DEAL. Do not return CONTINUE. "
+            "If you return NO_DEAL, latest_handoff_summary must let Agent 3 continue naturally without restarting."
+        )
+        return self._invoke(borrower_id, transcript, borrower_case, chat_history or [], instruction)
+
     def _invoke(
         self,
         borrower_id: str,

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { getPromptEvolution } from "@/lib/api";
+import { activatePromptEvolutionVersion, getPromptEvolution } from "@/lib/api";
 import { PromptDiffLine, PromptEvolutionResponse, PromptVersionEvolution } from "@/types/prompt-evolution";
 
 type AgentOption = {
@@ -41,6 +41,8 @@ export function PromptEvolutionDashboard() {
   const [dataByAgent, setDataByAgent] = useState<Record<string, PromptEvolutionResponse>>({});
   const [selectedVersionByAgent, setSelectedVersionByAgent] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isActivating, setIsActivating] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -81,6 +83,28 @@ export function PromptEvolutionDashboard() {
     if (!selectedData || !selectedVersionId) return null;
     return selectedData.versions.find((version) => version.version_id === selectedVersionId) ?? null;
   }, [selectedData, selectedVersionId]);
+  const isSelectedVersionActive =
+    Boolean(selectedData && selectedVersion) && selectedData?.active_version_id === selectedVersion?.version_id;
+
+  async function handleActivateSelectedVersion() {
+    if (!selectedVersionId) {
+      return;
+    }
+
+    setIsActivating(true);
+    setError(null);
+    setStatus(null);
+    try {
+      const activated = await activatePromptEvolutionVersion(selectedAgentId, selectedVersionId);
+      const refreshed = await getPromptEvolution(selectedAgentId);
+      setDataByAgent((current) => ({ ...current, [selectedAgentId]: refreshed }));
+      setStatus(`Activated ${activated.active_version_id} for ${activated.agent_id}.`);
+    } catch (activationError) {
+      setError(activationError instanceof Error ? activationError.message : "Failed to activate prompt version");
+    } finally {
+      setIsActivating(false);
+    }
+  }
 
   function renderVersionChain(versions: PromptVersionEvolution[]) {
     return (
@@ -135,6 +159,7 @@ export function PromptEvolutionDashboard() {
 
         <div className="prompt-evolution-content">
           {isLoading && !selectedData ? <p>Loading prompt evolution...</p> : null}
+          {status ? <p className="form-success">{status}</p> : null}
           {error ? <p className="form-error">{error}</p> : null}
 
           {selectedData ? (
@@ -159,6 +184,20 @@ export function PromptEvolutionDashboard() {
                     Diff summary:{" "}
                     <strong>{selectedVersion.diff_summary ?? "No diff summary recorded for this version."}</strong>
                   </p>
+                  {!isSelectedVersionActive ? (
+                    <div className="form-actions">
+                      <button
+                        type="button"
+                        className="button button-primary"
+                        onClick={() => void handleActivateSelectedVersion()}
+                        disabled={isActivating}
+                      >
+                        {isActivating ? "Activating..." : "Activate This Version"}
+                      </button>
+                    </div>
+                  ) : (
+                    <p className="form-success">This is currently the active version.</p>
+                  )}
                   <DiffView lines={selectedVersion.diff_lines} />
                 </article>
               ) : null}

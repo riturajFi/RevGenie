@@ -15,11 +15,13 @@ if str(ROOT_DIR) not in sys.path:
 
 from env_loader import load_env_file
 from app.orchestrator.activities import (
+    finalize_resolution_call,
     load_borrower_case,
     run_assessment_turn,
     run_final_notice_turn,
     run_resolution_turn,
     save_borrower_case,
+    start_resolution_call,
 )
 from app.orchestrator.workflows import BorrowerCollectionsWorkflow
 
@@ -43,6 +45,8 @@ async def main() -> None:
                 run_assessment_turn,
                 run_resolution_turn,
                 run_final_notice_turn,
+                start_resolution_call,
+                finalize_resolution_call,
             ],
             activity_executor=activity_executor,
         )

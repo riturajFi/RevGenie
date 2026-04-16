@@ -12,6 +12,7 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from env_loader import load_env_file
+from app.orchestrator.models import BorrowerMessageWorkflowInput
 from app.orchestrator.workflows import BorrowerCollectionsWorkflow
 
 load_env_file()
@@ -28,7 +29,10 @@ async def main() -> None:
         namespace=os.getenv("TEMPORAL_NAMESPACE", "default"),
     )
     handle = client.get_workflow_handle(workflow_id)
-    await handle.execute_update(BorrowerCollectionsWorkflow.handle_borrower_message, message)
+    await handle.execute_update(
+        BorrowerCollectionsWorkflow.handle_borrower_message,
+        BorrowerMessageWorkflowInput(message=message),
+    )
     print("update_sent")
 
 

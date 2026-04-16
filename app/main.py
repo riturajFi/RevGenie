@@ -11,6 +11,7 @@ from app.api.evals import router as evals_router
 from app.api.lender_policy import router as lender_policy_router
 from app.api.lender_profile import router as lender_profile_router
 from app.api.loan import router as loan_router
+from app.api.retell_webhooks import router as retell_webhooks_router
 from app.api.workflows import router as workflows_router
 
 load_env_file()
@@ -34,5 +35,6 @@ app.include_router(borrower_profile_router)
 app.include_router(lender_policy_router)
 app.include_router(lender_profile_router)
 app.include_router(loan_router)
+app.include_router(retell_webhooks_router)
 app.include_router(workflows_router)
 app.include_router(evals_router)

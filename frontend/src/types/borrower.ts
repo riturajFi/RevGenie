@@ -126,6 +126,7 @@ export type PromptChangeApplyResult = {
   old_version_id: string;
   new_version_id: string;
   diff_summary: string;
+  why_this_change: string;
   activation_status: "active" | "inactive";
 };
 

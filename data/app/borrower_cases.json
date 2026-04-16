@@ -1,12 +1,13 @@
 {
   "b_001": {
-    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage FINAL_NOTICE, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: can pay now up to 2000, may pay later around 2026-04-20. Hardship signals: job_loss, medical_issue, student. Stop-contact flag is present. Borrower stated position: Borrower confirmed a request for approval based on 2000 now and the remaining balance by 2026-04-20 after salary credit; wants contact only if a concrete approved option is available. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
+    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage FINAL_NOTICE, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: cannot pay now, may pay later. Hardship signals: job_loss, medical_issue, student. Stop-contact flag is present. Borrower stated position: Borrower states job loss hardship, cannot pay now, and will not commit to any payment date at this time. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
     "attributes": {
+      "assessment_update": "Borrower says they cannot pay this month.",
       "borrower_capacity": {
         "available_now": 2000,
         "can_pay_later": true,
-        "can_pay_now": true,
-        "expected_date": "2026-04-20"
+        "can_pay_now": false,
+        "expected_date": null
       },
       "borrower_intent": {
         "protect_cibil": true,
@@ -18,12 +19,13 @@
         "cannot_pay_full_today": true,
         "wants_to_clear_loan": true
       },
-      "borrower_stated_position": "Borrower confirmed a request for approval based on 2000 now and the remaining balance by 2026-04-20 after salary credit; wants contact only if a concrete approved option is available.",
+      "borrower_stated_position": "Borrower states job loss hardship, cannot pay now, and will not commit to any payment date at this time.",
       "channel_verification_preference": "Borrower requested another way to confirm identity and does not want to share verification details in this channel.",
       "channel_verification_refused": true,
       "contact_channel_verification_refused": true,
       "contact_preferences": {
-        "channel_verification_discomfort": true
+        "channel_verification_discomfort": true,
+        "only_if_concrete_approved_option": true
       },
       "dispute_flags": {
         "claims_paid": false,
@@ -37,18 +39,11 @@
         "student": true
       },
       "last_contact_channel": "CHAT",
-      "offers_made": [
-        {
-          "initial_payment": 2000,
-          "remaining_balance": 10921,
-          "status": "pending_review",
-          "target_completion_date": "2026-04-20",
-          "type": "payment_plan_request_for_approval"
-        }
-      ],
+      "last_deadline_offered": null,
+      "offers_made": [],
       "principal_outstanding": 10125,
       "resolution_mode": "CHAT",
-      "resolution_notes": "Borrower has hardship signals in case state and confirmed a boundary-compliant payment-plan request: 2000 now and remaining balance by 2026-04-20. Checked available loan and lender policy data; Nira policy confirms no extensions beyond 30 days, so proposed timing fits the known boundary. Exact approved arrangement terms remain unconfirmed from available data. Borrower asked for realistic approved options only and prefers contact only if a concrete approved option becomes available.",
+      "resolution_notes": "Hardship signal confirmed: job loss. Checked available Nira policy and loan data during RESOLUTION. Policy states no extensions beyond 30 days; exact approvable hardship, payment-plan, or reduced-closure terms could not be confirmed from available data for no-payment-now/no-date posture. Borrower has limited contact preference/stop-contact context; contact only if a concrete approved option becomes available.",
       "resolution_status": "no_deal_due_to_refusal_and_stop_contact",
       "standalone_payment_intent": "Borrower states they can make a small payment now while awaiting review.",
       "stop_contact_flag": true,
@@ -70,10 +65,10 @@
         "OFFER_PAYMENT_PLAN"
       ],
       "stage": "FINAL_NOTICE",
-      "workflow_id": "wf_20260416131105_2fd57e"
+      "workflow_id": "wf_20260416135058_a73342"
     },
     "latest_handoff_stage": "FINAL_NOTICE",
-    "latest_handoff_summary": "Borrower repeated the recorded cooperative position: requested contact only if the proposed plan is approved and stated they will make the previously discussed 2,000 payment once confirmed. Re-checked case, loan, and lender policy; no exact approved terms or documented final decision were available to communicate, and the limited-contact preference remains in effect."
+    "latest_handoff_summary": "Borrower repeated the already-recorded hardship position: unemployed, cannot pay now, and will not agree to any payment date. Prior limited-contact preference remains in effect, and no concrete approved option or documented final decision is available to communicate in this stage."
   },
   "b_001_20260413133008185530_baseline": {
     "amount_due": 12921,

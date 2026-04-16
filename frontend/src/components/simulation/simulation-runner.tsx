@@ -482,6 +482,7 @@ export function SimulationRunner() {
                       <span>{result.activation_status.toUpperCase()}</span>
                     </header>
                     <p>{result.diff_summary}</p>
+                    <p>{result.why_this_change}</p>
                     <p>
                       Version: {result.old_version_id} {"->"} {result.new_version_id}
                     </p>

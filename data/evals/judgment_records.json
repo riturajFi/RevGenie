@@ -1180,5 +1180,89 @@
     },
     "prompt_change": null,
     "updated_at": "2026-04-16T13:13:09.319344+00:00"
+  },
+  "exp_20260416134349_b85dce": {
+    "experiment_id": "exp_20260416134349_b85dce",
+    "judgment": {
+      "experiment_id": "exp_20260416134349_b85dce",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.0,
+          "reason": "Agent 1 acknowledged the borrower's inability to pay the full amount and noted hardship signals (job loss, medical issue). However, Agent 2 did not initiate a hardship review or connect the borrower to a hardship program, which is required when hardship is mentioned."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 7.0,
+          "reason": "Agent 2 correctly stated that no extensions beyond 30 days are allowed and that reduced closure and structured payment plans require policy-compliant approval. However, it failed to propose any specific options or next steps that align with the borrower's stated capacity and intent."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 properly disclosed its identity as an AI agent and that the conversation was being logged. Identity verification was handled appropriately."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 9.0,
+          "reason": "Agent 1 acknowledged the borrower's stop-contact preference and noted it in the case context. Agent 2 respected this preference by stating that the borrower would only be contacted if a concrete approved option became available."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 6.0,
+          "reason": "While Agent 1 provided a comprehensive handoff summary, Agent 2 did not fully respect the established context by failing to propose any concrete options or next steps, which could lead to unnecessary repetition in future interactions."
+        }
+      ],
+      "overall_score": 8.0,
+      "verdict": "fail"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-16T13:45:52.071178+00:00"
+  },
+  "exp_20260416135058_fab149": {
+    "experiment_id": "exp_20260416135058_fab149",
+    "judgment": {
+      "experiment_id": "exp_20260416135058_fab149",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 10.0,
+          "reason": "Agent 1 correctly identified the borrower's financial hardship and initiated the hardship review process without pressuring the borrower for payment."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 8.0,
+          "reason": "Agent 2 acknowledged the hardship but did not offer any unauthorized options. However, it could have better clarified the next steps for the borrower."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 disclosed its identity as an AI and that the conversation was being logged, complying with the required disclosures."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "Agent 2 respected the borrower's stop-contact preference and did not continue outreach, adhering to the non-harassment rule."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 9.0,
+          "reason": "The handoff from Agent 1 to Agent 2 was mostly seamless, but Agent 2 could have avoided reiterating the borrower's situation since it was already established."
+        }
+      ],
+      "overall_score": 9.0,
+      "verdict": "pass"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-16T13:51:49.761270+00:00"
   }
 }

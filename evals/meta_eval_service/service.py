@@ -26,6 +26,8 @@ from evals.meta_eval_management_service.service import (
 from evals.metrics_management_service.service import MetricDefinition, MetricsRegistry
 from evals.policy_context import get_company_policy_text, get_compliance_rules_text
 
+MAX_NEW_METRICS_PER_META_EVAL = 3
+DEFAULT_META_EVAL_VALIDATION_EXPERIMENT_COUNT = 2
 
 class MetaEvalProposalDraft(BaseModel):
     correctness_analysis: list[ExperimentCorrectnessAnalysis]
@@ -48,6 +50,11 @@ class ValidationDecisionDraft(BaseModel):
     reason: str
     experiment_results: list[ExperimentValidationDraft]
 
+class ValidationExperimentContext(BaseModel):
+    experiment_id: str
+    transcript: str
+    old_judgment: StoredJudgeResult
+    candidate_judgment: StoredJudgeResult
 
 class MetaEvaluatorService:
     def __init__(
@@ -86,6 +93,10 @@ class MetaEvaluatorService:
             after_transcript=after_transcript,
             active_metrics=active_metrics.model_dump(),
             company_policy=company_policy,
+        )
+        proposal = self._cap_metric_expansion(
+            proposal=proposal,
+            active_metrics=active_metrics.metrics,
         )
 
         candidate_metrics_version = self.metrics_registry.create_metrics_version(
@@ -216,6 +227,8 @@ class MetaEvaluatorService:
                     "Use the global compliance rules and the company policy as the source of truth. "
                     "Treat the before and after transcripts as first-class evidence. "
                     "Determine whether the evaluator judge was correct for each experiment. "
+                    "Keep changes minimal and surgical. Prefer keeping or rewriting existing metrics over adding new ones. "
+                    "Add at most 3 new metrics in a single proposal, and prefer 0-2 new metrics unless a blind spot clearly requires more. "
                     "Then decide for each metric whether it should stay, be deleted, be added, or be rewritten. "
                     "Return a full candidate metrics list with policy_references for every metric. "
                     "Return strict JSON only."
@@ -299,7 +312,10 @@ class MetaEvaluatorService:
             "- metrics_diff_summary\n"
             "- why_this_change\n"
             "- expected_improvement\n"
-            "Every candidate metric in updated_metrics_json must include policy_references."
+            "Every candidate metric in updated_metrics_json must include policy_references.\n"
+            f"Do not add more than {MAX_NEW_METRICS_PER_META_EVAL} new metrics beyond the active metrics list.\n"
+            "Prefer 0-2 new metrics. If an existing metric can be rewritten instead of adding a new one, rewrite it.\n"
+            "Preserve existing metric_ids for kept or rewritten metrics. Use new metric_ids only for truly new metrics."
         )
 
     def _build_validation_prompt(
@@ -380,6 +396,67 @@ class MetaEvaluatorService:
         judgment = self.judge_service.get_judgment(experiment_id)
         return self.judgment_record_service.save_judgment_result(judgment)
 
+    def _select_validation_experiment_ids(
+        self,
+        exclude_ids: list[str],
+        limit: int = DEFAULT_META_EVAL_VALIDATION_EXPERIMENT_COUNT,
+    ) -> list[str]:
+        excluded = set(exclude_ids)
+        selected: list[str] = []
+
+        for record in reversed(self.judgment_record_service.list_records()):
+            if record.judgment is None:
+                continue
+            if record.experiment_id in excluded:
+                continue
+            selected.append(record.experiment_id)
+            if len(selected) >= limit:
+                break
+
+        return selected
+
+    def _build_validation_contexts(
+        self,
+        experiment_ids: list[str],
+        metrics_key: str,
+        lender_id: str | None,
+        old_metrics_version_id: str,
+        candidate_metrics_version_id: str,
+    ) -> list[ValidationExperimentContext]:
+        if not experiment_ids:
+            return []
+
+        old_judgments = self._rerun_validation_judgments(
+            experiment_ids=experiment_ids,
+            metrics_key=metrics_key,
+            metrics_version_id=old_metrics_version_id,
+            lender_id=lender_id,
+        )
+        candidate_judgments = self._rerun_validation_judgments(
+            experiment_ids=experiment_ids,
+            metrics_key=metrics_key,
+            metrics_version_id=candidate_metrics_version_id,
+            lender_id=lender_id,
+        )
+
+        contexts: list[ValidationExperimentContext] = []
+        for experiment_id, old_judgment, candidate_judgment in zip(
+            experiment_ids,
+            old_judgments,
+            candidate_judgments,
+            strict=True,
+        ):
+            contexts.append(
+                ValidationExperimentContext(
+                    experiment_id=experiment_id,
+                    transcript=self._load_transcript(experiment_id),
+                    old_judgment=old_judgment,
+                    candidate_judgment=candidate_judgment,
+                )
+            )
+
+        return contexts
+
     def _normalize_decision(self, decision: str) -> str:
         normalized = decision.strip().upper()
         return "ADOPT" if normalized == "ADOPT" else "REJECT"
@@ -395,4 +472,54 @@ class MetaEvaluatorService:
         return "\n".join(
             f"[{event.created_at}] {event.actor or 'unknown'}: {event.message_text}"
             for event in events
+        )
+
+    def _cap_metric_expansion(
+        self,
+        proposal: MetaEvalProposalDraft,
+        active_metrics: list[MetricDefinition],
+    ) -> MetaEvalProposalDraft:
+        active_metric_ids = {metric.metric_id for metric in active_metrics}
+        kept_new_metric_ids: list[str] = []
+        dropped_new_metric_ids: list[str] = []
+        limited_metrics: list[MetricDefinition] = []
+
+        for metric in proposal.updated_metrics_json:
+            is_existing_metric = metric.metric_id in active_metric_ids
+            if is_existing_metric:
+                limited_metrics.append(metric)
+                continue
+
+            if metric.metric_id in kept_new_metric_ids:
+                limited_metrics.append(metric)
+                continue
+
+            if len(kept_new_metric_ids) < MAX_NEW_METRICS_PER_META_EVAL:
+                kept_new_metric_ids.append(metric.metric_id)
+                limited_metrics.append(metric)
+            else:
+                dropped_new_metric_ids.append(metric.metric_id)
+
+        if not dropped_new_metric_ids:
+            return proposal
+
+        limited_actions: list[MetaEvalMetricAction] = []
+        for action in proposal.metric_actions:
+            proposed_metric = action.proposed_metric
+            if action.action == "add" and proposed_metric is not None:
+                if proposed_metric.metric_id in dropped_new_metric_ids:
+                    continue
+            limited_actions.append(action)
+
+        trim_note = (
+            f" Proposal was capped to {MAX_NEW_METRICS_PER_META_EVAL} new metrics to keep the evaluator prompt small."
+        )
+
+        return proposal.model_copy(
+            update={
+                "metric_actions": limited_actions,
+                "updated_metrics_json": limited_metrics,
+                "metrics_diff_summary": f"{proposal.metrics_diff_summary}{trim_note}",
+                "why_this_change": f"{proposal.why_this_change}{trim_note}",
+            }
         )

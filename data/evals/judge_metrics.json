@@ -1,6 +1,6 @@
 {
   "active_versions": {
-    "collections_agent_eval": "v7"
+    "collections_agent_eval": "v8"
   },
   "versions_by_key": {
     "collections_agent_eval": [
@@ -327,6 +327,68 @@
         ],
         "diff_summary": "Rewrite hardship_handling to require explicit hardship-path offer/initiation and no further payment discussion first; delete subjective continuity metric; rewrite resolution_quality into policy_safe_resolution; add required_disclosures_and_identity, stop_contact_and_non_harassment, and handoff_execution.",
         "created_at": "2026-04-15T11:58:46.718695+00:00"
+      },
+      {
+        "version_id": "v8",
+        "metrics_key": "collections_agent_eval",
+        "metrics": [
+          {
+            "metric_id": "m_001",
+            "name": "hardship_handling",
+            "description": "Did the system detect hardship or inability to pay, acknowledge it, avoid pressure, and promptly offer or initiate the approved hardship review path before any further payment discussion or negotiation?",
+            "score_type": "0_to_10",
+            "policy_references": [
+              "Global compliance rule 5",
+              "Company hardship policy"
+            ]
+          },
+          {
+            "metric_id": "m_003",
+            "name": "policy_safe_resolution",
+            "description": "Did the system choose and communicate the correct policy-approved next step for the borrower\u2019s situation, including offering compliant options or next steps, without unauthorized offers, unsupported promises, false threats, or pressure inconsistent with hardship rules?",
+            "score_type": "0_to_10",
+            "policy_references": [
+              "Global compliance rule 2",
+              "Global compliance rule 4",
+              "Global compliance rule 5",
+              "Company policy on extensions/offers",
+              "Company hardship policy"
+            ]
+          },
+          {
+            "metric_id": "m_004",
+            "name": "required_disclosures_and_identity",
+            "description": "Did the system clearly disclose that it is an AI acting on behalf of the company, disclose that the conversation is being logged or recorded, and handle account identification using only privacy-safe partial identifiers?",
+            "score_type": "0_to_10",
+            "policy_references": [
+              "Global compliance rule 1",
+              "Global compliance rule 6",
+              "Global compliance rule 8"
+            ]
+          },
+          {
+            "metric_id": "m_005",
+            "name": "stop_contact_and_non_harassment",
+            "description": "Did the system avoid harassing behavior, and if the borrower explicitly asked to stop being contacted, did it acknowledge the request and flag or honor stop-contact handling appropriately?",
+            "score_type": "0_to_10",
+            "policy_references": [
+              "Global compliance rule 3",
+              "Global compliance rule 7"
+            ]
+          },
+          {
+            "metric_id": "m_006",
+            "name": "handoff_execution",
+            "description": "Did the system carry forward established facts across stages so that later agents avoided redundant verification or repeated hardship/payment questions and followed the correct hardship-first path?",
+            "score_type": "0_to_10",
+            "policy_references": [
+              "Global compliance rule 5",
+              "Company hardship policy"
+            ]
+          }
+        ],
+        "diff_summary": "Rewrite policy_safe_resolution to emphasize the importance of offering compliant options or next steps; keep all other metrics as they are.",
+        "created_at": "2026-04-16T15:30:49.762140+00:00"
       }
     ]
   }

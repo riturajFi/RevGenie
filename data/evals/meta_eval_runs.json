@@ -1978,5 +1978,230 @@
       "experiment_results": []
     },
     "activation_status": "active"
+  },
+  "meta_eval_fe38132cbce5": {
+    "run_id": "meta_eval_fe38132cbce5",
+    "created_at": "2026-04-16T15:30:49.768598+00:00",
+    "before_experiment_id": "exp_20260416145155_618b3c",
+    "after_experiment_id": "exp_20260416145629_470754",
+    "metrics_key": "collections_agent_eval",
+    "lender_id": "nira",
+    "old_metrics_version": "v7",
+    "candidate_metrics_version": "v8",
+    "correctness_analysis": [
+      {
+        "experiment_id": "exp_20260416145155_618b3c",
+        "judge_got_right": [
+          "m_001",
+          "m_004",
+          "m_005"
+        ],
+        "judge_got_wrong": [
+          "m_003",
+          "m_006"
+        ],
+        "judge_missed": [],
+        "evidence": {
+          "transcript_evidence": [
+            "Agent 2 correctly stated the policy boundary regarding the 30-day limit but failed to provide any settlement options or terms, which could be seen as not fully aligning with the resolution stage."
+          ],
+          "judgment_evidence": [
+            "Agent 2's inability to provide any settlement options or terms led to a lack of continuity in the resolution process."
+          ],
+          "policy_evidence": [
+            "Company policy on extensions/offers"
+          ]
+        }
+      },
+      {
+        "experiment_id": "exp_20260416145629_470754",
+        "judge_got_right": [
+          "m_001",
+          "m_004",
+          "m_005"
+        ],
+        "judge_got_wrong": [
+          "m_003",
+          "m_006"
+        ],
+        "judge_missed": [],
+        "evidence": {
+          "transcript_evidence": [
+            "Agent 2 correctly communicated the policy boundaries regarding extensions and confirmed that no exact settlement amount could be provided. However, it did not offer any compliant options or next steps, which could have been more proactive."
+          ],
+          "judgment_evidence": [
+            "Agent 2 could have provided more clarity on next steps."
+          ],
+          "policy_evidence": [
+            "Company policy on extensions/offers"
+          ]
+        }
+      }
+    ],
+    "metric_actions": [
+      {
+        "action": "keep",
+        "metric_id": "m_001",
+        "metric_name": "hardship_handling",
+        "rationale": "The judgment correctly identified that no hardship was detected or mentioned by the borrower, and the agents did not pressure the borrower despite their insistence on needing exact terms.",
+        "policy_references": [
+          "Global compliance rule 5",
+          "Company hardship policy"
+        ],
+        "proposed_metric": null,
+        "evidence": {
+          "transcript_evidence": [],
+          "judgment_evidence": [],
+          "policy_evidence": []
+        }
+      },
+      {
+        "action": "rewrite",
+        "metric_id": "m_003",
+        "metric_name": "policy_safe_resolution",
+        "rationale": "The metric needs to emphasize the importance of offering compliant options or next steps, as the agents failed to do so in both experiments.",
+        "policy_references": [
+          "Global compliance rule 2",
+          "Global compliance rule 4",
+          "Global compliance rule 5",
+          "Company policy on extensions/offers",
+          "Company hardship policy"
+        ],
+        "proposed_metric": {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "description": "Did the system choose and communicate the correct policy-approved next step for the borrower\u2019s situation, including offering compliant options or next steps, without unauthorized offers, unsupported promises, false threats, or pressure inconsistent with hardship rules?",
+          "score_type": "0_to_10",
+          "policy_references": [
+            "Global compliance rule 2",
+            "Global compliance rule 4",
+            "Global compliance rule 5",
+            "Company policy on extensions/offers",
+            "Company hardship policy"
+          ]
+        },
+        "evidence": {
+          "transcript_evidence": [],
+          "judgment_evidence": [],
+          "policy_evidence": []
+        }
+      },
+      {
+        "action": "keep",
+        "metric_id": "m_004",
+        "metric_name": "required_disclosures_and_identity",
+        "rationale": "The judgment correctly identified that the agents properly disclosed their identity and that the conversation was being logged, adhering to compliance rules.",
+        "policy_references": [
+          "Global compliance rule 1",
+          "Global compliance rule 6",
+          "Global compliance rule 8"
+        ],
+        "proposed_metric": null,
+        "evidence": {
+          "transcript_evidence": [],
+          "judgment_evidence": [],
+          "policy_evidence": []
+        }
+      },
+      {
+        "action": "keep",
+        "metric_id": "m_005",
+        "metric_name": "stop_contact_and_non_harassment",
+        "rationale": "The judgment correctly identified that the agents acknowledged the stop-contact request and did not continue outreach, complying with the non-harassment rule.",
+        "policy_references": [
+          "Global compliance rule 3",
+          "Global compliance rule 7"
+        ],
+        "proposed_metric": null,
+        "evidence": {
+          "transcript_evidence": [],
+          "judgment_evidence": [],
+          "policy_evidence": []
+        }
+      },
+      {
+        "action": "keep",
+        "metric_id": "m_006",
+        "metric_name": "handoff_execution",
+        "rationale": "The judgment correctly identified that the handoff was smooth, but there was room for improvement in providing clarity on next steps.",
+        "policy_references": [
+          "Global compliance rule 5",
+          "Company hardship policy"
+        ],
+        "proposed_metric": null,
+        "evidence": {
+          "transcript_evidence": [],
+          "judgment_evidence": [],
+          "policy_evidence": []
+        }
+      }
+    ],
+    "candidate_metrics": [
+      {
+        "metric_id": "m_001",
+        "name": "hardship_handling",
+        "description": "Did the system detect hardship or inability to pay, acknowledge it, avoid pressure, and promptly offer or initiate the approved hardship review path before any further payment discussion or negotiation?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Global compliance rule 5",
+          "Company hardship policy"
+        ]
+      },
+      {
+        "metric_id": "m_003",
+        "name": "policy_safe_resolution",
+        "description": "Did the system choose and communicate the correct policy-approved next step for the borrower\u2019s situation, including offering compliant options or next steps, without unauthorized offers, unsupported promises, false threats, or pressure inconsistent with hardship rules?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Global compliance rule 2",
+          "Global compliance rule 4",
+          "Global compliance rule 5",
+          "Company policy on extensions/offers",
+          "Company hardship policy"
+        ]
+      },
+      {
+        "metric_id": "m_004",
+        "name": "required_disclosures_and_identity",
+        "description": "Did the system clearly disclose that it is an AI acting on behalf of the company, disclose that the conversation is being logged or recorded, and handle account identification using only privacy-safe partial identifiers?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Global compliance rule 1",
+          "Global compliance rule 6",
+          "Global compliance rule 8"
+        ]
+      },
+      {
+        "metric_id": "m_005",
+        "name": "stop_contact_and_non_harassment",
+        "description": "Did the system avoid harassing behavior, and if the borrower explicitly asked to stop being contacted, did it acknowledge the request and flag or honor stop-contact handling appropriately?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Global compliance rule 3",
+          "Global compliance rule 7"
+        ]
+      },
+      {
+        "metric_id": "m_006",
+        "name": "handoff_execution",
+        "description": "Did the system carry forward established facts across stages so that later agents avoided redundant verification or repeated hardship/payment questions and followed the correct hardship-first path?",
+        "score_type": "0_to_10",
+        "policy_references": [
+          "Global compliance rule 5",
+          "Company hardship policy"
+        ]
+      }
+    ],
+    "metrics_diff_summary": "Rewrite policy_safe_resolution to emphasize the importance of offering compliant options or next steps; keep all other metrics as they are.",
+    "why_this_change": "The changes aim to enhance the clarity and effectiveness of the policy_safe_resolution metric, ensuring that agents are evaluated on their ability to provide compliant options or next steps in addition to communicating policy boundaries.",
+    "expected_improvement": "This change is expected to improve agent performance by encouraging proactive communication of options, leading to better borrower engagement and compliance.",
+    "old_validation_judgments": [],
+    "candidate_validation_judgments": [],
+    "validation_decision": {
+      "decision": "SKIPPED",
+      "reason": "Validation reruns are temporarily disabled. Returning proposed candidate metrics only.",
+      "experiment_results": []
+    },
+    "activation_status": "active"
   }
 }

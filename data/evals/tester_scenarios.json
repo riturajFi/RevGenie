@@ -1,6 +1,7 @@
 [
   {
     "scenario_id": "hard_reject_final_notice",
+    "borrower_id": "b_002",
     "opening_message": "I want to give an update about my remaining loan payment. I will not be able to pay this month.",
     "scenario_description": "Borrower starts by giving a realistic payment update, then reveals unemployment, refuses to commit to payment, and resists pressure as the conversation continues.",
     "borrower_profile": "Borrower is financially stressed, frustrated, and increasingly resistant.",
@@ -20,6 +21,7 @@
   },
   {
     "scenario_id": "willing_but_constrained_payment_plan",
+    "borrower_id": "b_5c8fd9f1",
     "opening_message": "I do want to clear this loan, but I cannot pay the full amount today.",
     "scenario_description": "Borrower is cooperative and wants to repay, but is dealing with a short-term cash flow constraint after an unexpected family medical expense and delayed salary credit. They can make a small payment now and a larger payment after their next salary date, but they need the agent to work within those limits.",
     "borrower_profile": "Borrower is polite, practical, and trying to find a realistic way to pay without overcommitting.",
@@ -36,6 +38,48 @@
       "I had a family medical expense this week and my salary is delayed, so I can only pay a small amount right now.",
       "I can pay 2000 now and the rest after my salary comes in on the 10th, but I cannot commit to the full amount before that.",
       "If there is a structured plan that fits that timing, I am willing to discuss it."
+    ]
+  },
+  {
+    "scenario_id": "disputes_outstanding_amount_needs_reconciliation",
+    "borrower_id": "b_007",
+    "opening_message": "I need to discuss this because your outstanding amount looks incorrect to me.",
+    "scenario_description": "Borrower is calm and engaged but insists there is a mismatch between prior payments and the current balance shown. They seek reconciliation first before committing to payment.",
+    "borrower_profile": "Borrower is detail-oriented, keeps payment references ready, and expects factual clarification before agreeing to any plan.",
+    "borrower_intent": "Request ledger reconciliation, avoid committing to payment until discrepancy is explained, and stay open to next steps once clarity is provided.",
+    "reply_style_rules": [
+      "Keep replies clear and factual.",
+      "Do not become hostile.",
+      "Repeat that reconciliation is required before commitment.",
+      "If discrepancy is clarified convincingly, become cooperative."
+    ],
+    "stop_condition": "Stop after either a clear reconciliation path is offered or after repeated pressure to pay without addressing the dispute.",
+    "expected_path_notes": "Tests whether the flow can handle non-hardship disagreement, capture dispute context properly, and avoid premature negotiation pressure.",
+    "follow_up_messages": [
+      "I made a payment last month and I do not see it reflected, so I cannot accept this total yet.",
+      "Please first confirm the ledger entries and the latest posted payment before asking for commitment.",
+      "If the records are corrected or clearly explained, I can discuss a payment timeline."
+    ]
+  },
+  {
+    "scenario_id": "wants_fast_closure_but_negotiates_terms",
+    "borrower_id": "b_008",
+    "opening_message": "I can close this quickly, but only if the terms are reasonable.",
+    "scenario_description": "Borrower is not in hardship and has capacity to pay, but negotiates assertively for favorable closure terms and a concrete deadline before committing.",
+    "borrower_profile": "Borrower is pragmatic, time-conscious, and compares options before deciding.",
+    "borrower_intent": "Push for a better closure offer or clear plan terms, avoid immediate acceptance, and commit once a policy-aligned option is clearly defined.",
+    "reply_style_rules": [
+      "Stay concise and business-like.",
+      "Ask for concrete numbers and deadlines.",
+      "Do not accept vague terms.",
+      "If a clear policy-compliant option is presented, move toward commitment."
+    ],
+    "stop_condition": "Stop after explicit commitment is made on clear terms, or if no concrete terms are provided after repeated attempts.",
+    "expected_path_notes": "Tests deal-structure clarity, policy-bounded negotiation, and whether the agent can convert a willing borrower without unnecessary escalation.",
+    "follow_up_messages": [
+      "I can arrange funds this week, but I need exact closure terms before I commit.",
+      "If you can state the approved amount and deadline clearly, I can decide now.",
+      "Give me one concrete option I can execute today, otherwise I will revisit later."
     ]
   }
 ]

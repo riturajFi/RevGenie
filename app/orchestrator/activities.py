@@ -200,6 +200,16 @@ def run_final_notice_turn(input: AgentTurnActivityInput) -> AgentTurnActivityRes
         borrower_case=borrower_case,
         chat_history=chat_history,
     )
+    if not result.reply.strip():
+        if result.stage_outcome == AgentStageOutcome.NO_RESOLUTION:
+            result.reply = (
+                "I have recorded your request to close this out and stop contact. "
+                "This case will be closed with no further outreach."
+            )
+        elif result.stage_outcome == AgentStageOutcome.RESOLVED:
+            result.reply = "I have recorded the resolution and this case is now closed."
+        else:
+            result.reply = "I have recorded your message for final processing."
     updated_case = borrower_case_state_service.apply_delta(
         borrower_case=borrower_case,
         case_delta=result.case_delta,

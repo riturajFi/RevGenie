@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260416144225_4e029e",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 10.0,
+      "reason": "No hardship was detected or mentioned by the borrower, and the agents appropriately focused on the balance dispute without pressure."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 10.0,
+      "reason": "Agent 2 correctly communicated that no payment arrangements were discussed and that the account would be routed for reconciliation review, adhering to company policy."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 10.0,
+      "reason": "Agent 1 disclosed its identity as an AI and that the conversation was being logged, fulfilling the required disclosures."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 10.0,
+      "reason": "There were no requests from the borrower to stop contact, and the agents maintained a professional demeanor throughout."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 8.0,
+      "reason": "While the handoff was mostly smooth, Agent 2 did not fully address the balance dispute before moving to Agent 3, which could have been better aligned with the established context."
+    }
+  ],
+  "overall_score": 9.6,
+  "verdict": "fail"
+}

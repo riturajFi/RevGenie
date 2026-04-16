@@ -43,6 +43,7 @@ prompt_evolution_service = PromptEvolutionService()
 
 class ScenarioCreateRequest(BaseModel):
     scenario_id: str
+    borrower_id: str | None = None
     opening_message: str
     scenario_description: str | None = None
     borrower_profile: str

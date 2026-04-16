@@ -31,7 +31,7 @@ class PromptChangeProposal(BaseModel):
     old_version_id: str
     new_version_id: str
     diff_summary: str
-    why_this_change: str
+    why_this_change: str | None = None
     activation_status: str
 
 

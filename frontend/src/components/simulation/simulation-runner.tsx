@@ -25,6 +25,7 @@ import {
 
 const emptyScenarioForm: ScenarioCreateInput = {
   scenarioId: "",
+  borrowerId: "",
   openingMessage: "",
   scenarioDescription: "",
   borrowerProfile: "",
@@ -159,7 +160,11 @@ export function SimulationRunner() {
       const loaded = await listScenarios();
       setScenarios(loaded);
       if (!selectedScenarioId && loaded.length > 0) {
-        setSelectedScenarioId(loaded[0].scenario_id);
+        const firstScenario = loaded[0];
+        setSelectedScenarioId(firstScenario.scenario_id);
+        if (firstScenario.borrower_id) {
+          setBorrowerId(firstScenario.borrower_id);
+        }
       }
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : "Failed to load scenarios.");
@@ -210,6 +215,9 @@ export function SimulationRunner() {
       const created = await createScenario(scenarioForm);
       setScenarios((current) => [...current, created]);
       setSelectedScenarioId(created.scenario_id);
+      if (created.borrower_id) {
+        setBorrowerId(created.borrower_id);
+      }
       setScenarioForm(emptyScenarioForm);
       setCreateMode(false);
     } catch (createError) {
@@ -244,6 +252,14 @@ export function SimulationRunner() {
       setError(startError instanceof Error ? startError.message : "Failed to start simulation.");
     } finally {
       setIsStartingSimulation(false);
+    }
+  }
+
+  function handleSelectScenario(nextScenarioId: string) {
+    setSelectedScenarioId(nextScenarioId);
+    const selected = scenarios.find((scenario) => scenario.scenario_id === nextScenarioId);
+    if (selected?.borrower_id) {
+      setBorrowerId(selected.borrower_id);
     }
   }
 
@@ -363,14 +379,14 @@ export function SimulationRunner() {
               onChange={(event) => setMaxTurns(Number(event.target.value))}
             />
           </label>
-          <label className="field">
-            <span>Scenario</span>
-            <select
-              className="select-input"
-              value={selectedScenarioId}
-              onChange={(event) => setSelectedScenarioId(event.target.value)}
-              disabled={isLoadingScenarios}
-            >
+            <label className="field">
+              <span>Scenario</span>
+              <select
+                className="select-input"
+                value={selectedScenarioId}
+                onChange={(event) => handleSelectScenario(event.target.value)}
+                disabled={isLoadingScenarios}
+              >
               {scenarios.map((scenario) => (
                 <option value={scenario.scenario_id} key={scenario.scenario_id}>
                   {scenario.scenario_id}
@@ -524,6 +540,14 @@ export function SimulationRunner() {
                 required
                 value={scenarioForm.scenarioId}
                 onChange={(event) => setScenarioForm((current) => ({ ...current, scenarioId: event.target.value }))}
+              />
+            </label>
+            <label className="field">
+              <span>Borrower ID</span>
+              <input
+                required
+                value={scenarioForm.borrowerId}
+                onChange={(event) => setScenarioForm((current) => ({ ...current, borrowerId: event.target.value }))}
               />
             </label>
             <label className="field">

@@ -39,6 +39,7 @@ export type BorrowerTestDefaults = {
 
 export type ScenarioRecord = {
   scenario_id: string;
+  borrower_id: string | null;
   opening_message: string;
   scenario_description: string | null;
   borrower_profile: string;
@@ -51,6 +52,7 @@ export type ScenarioRecord = {
 
 export type ScenarioCreateInput = {
   scenarioId: string;
+  borrowerId: string;
   openingMessage: string;
   scenarioDescription: string;
   borrowerProfile: string;

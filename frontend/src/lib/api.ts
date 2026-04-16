@@ -123,6 +123,7 @@ export async function createScenario(payload: ScenarioCreateInput): Promise<Scen
     },
     body: JSON.stringify({
       scenario_id: payload.scenarioId,
+      borrower_id: payload.borrowerId || null,
       opening_message: payload.openingMessage,
       scenario_description: payload.scenarioDescription || null,
       borrower_profile: payload.borrowerProfile,

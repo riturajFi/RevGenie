@@ -11,13 +11,8 @@ type BorrowerCaseOverrideForm = {
   lenderId: string;
   loanIdMasked: string;
   amountDue: string;
-  principalOutstanding: string;
-  dpd: string;
-  caseType: string;
   stage: "" | "ASSESSMENT" | "RESOLUTION" | "FINAL_NOTICE";
   caseStatus: "" | "OPEN" | "RESOLVED" | "CLOSED" | "STOP_CONTACT";
-  nextAllowedActions: string;
-  identityVerified: "" | "true" | "false";
 };
 
 const emptyCaseOverrideForm: BorrowerCaseOverrideForm = {
@@ -25,13 +20,8 @@ const emptyCaseOverrideForm: BorrowerCaseOverrideForm = {
   lenderId: "",
   loanIdMasked: "",
   amountDue: "",
-  principalOutstanding: "",
-  dpd: "",
-  caseType: "",
   stage: "",
   caseStatus: "",
-  nextAllowedActions: "",
-  identityVerified: "",
 };
 
 export function BorrowerProfileForm() {
@@ -66,14 +56,6 @@ export function BorrowerProfileForm() {
     return Number.isFinite(parsed) ? parsed : undefined;
   }
 
-  function parseCsv(value: string): string[] | undefined {
-    const items = value
-      .split(",")
-      .map((item) => item.trim())
-      .filter(Boolean);
-    return items.length > 0 ? items : undefined;
-  }
-
   function buildPayload(): BorrowerProfileCreateInput {
     return {
       fullName: form.fullName,
@@ -83,18 +65,8 @@ export function BorrowerProfileForm() {
         lenderId: caseOverrides.lenderId.trim() || undefined,
         loanIdMasked: caseOverrides.loanIdMasked.trim() || undefined,
         amountDue: toOptionalNumber(caseOverrides.amountDue),
-        principalOutstanding: toOptionalNumber(caseOverrides.principalOutstanding),
-        dpd: toOptionalNumber(caseOverrides.dpd),
-        caseType: parseCsv(caseOverrides.caseType),
         stage: caseOverrides.stage || undefined,
         caseStatus: caseOverrides.caseStatus || undefined,
-        nextAllowedActions: parseCsv(caseOverrides.nextAllowedActions),
-        identityVerified:
-          caseOverrides.identityVerified === "true"
-            ? true
-            : caseOverrides.identityVerified === "false"
-              ? false
-              : undefined,
       },
     };
   }
@@ -204,35 +176,6 @@ export function BorrowerProfileForm() {
               />
             </label>
             <label className="field">
-              <span>Principal Outstanding</span>
-              <input
-                type="number"
-                min={0}
-                placeholder={String(borrowerTestDefaults.principalOutstanding)}
-                value={caseOverrides.principalOutstanding}
-                onChange={(event) => updateCaseOverrideField("principalOutstanding", event.target.value)}
-              />
-            </label>
-            <label className="field">
-              <span>DPD</span>
-              <input
-                type="number"
-                min={0}
-                placeholder={String(borrowerTestDefaults.dpd)}
-                value={caseOverrides.dpd}
-                onChange={(event) => updateCaseOverrideField("dpd", event.target.value)}
-              />
-            </label>
-            <label className="field">
-              <span>Case Type (comma separated)</span>
-              <input
-                type="text"
-                placeholder={borrowerTestDefaults.caseType}
-                value={caseOverrides.caseType}
-                onChange={(event) => updateCaseOverrideField("caseType", event.target.value)}
-              />
-            </label>
-            <label className="field">
               <span>Stage</span>
               <select
                 className="select-input"
@@ -267,32 +210,6 @@ export function BorrowerProfileForm() {
                 <option value="RESOLVED">RESOLVED</option>
                 <option value="CLOSED">CLOSED</option>
                 <option value="STOP_CONTACT">STOP_CONTACT</option>
-              </select>
-            </label>
-            <label className="field">
-              <span>Next Allowed Actions (comma separated)</span>
-              <input
-                type="text"
-                placeholder={borrowerTestDefaults.nextAllowedActions}
-                value={caseOverrides.nextAllowedActions}
-                onChange={(event) => updateCaseOverrideField("nextAllowedActions", event.target.value)}
-              />
-            </label>
-            <label className="field">
-              <span>Identity Verified</span>
-              <select
-                className="select-input"
-                value={caseOverrides.identityVerified}
-                onChange={(event) =>
-                  updateCaseOverrideField(
-                    "identityVerified",
-                    event.target.value as BorrowerCaseOverrideForm["identityVerified"]
-                  )
-                }
-              >
-                <option value="">Use default</option>
-                <option value="true">true</option>
-                <option value="false">false</option>
               </select>
             </label>
           </div>

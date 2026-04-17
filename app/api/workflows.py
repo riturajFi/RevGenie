@@ -1,18 +1,11 @@
 from __future__ import annotations
 
-import os
-
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from temporalio.client import WithStartWorkflowOperation
-from temporalio.common import WorkflowIDConflictPolicy
 
 from app.domain.borrower_case import ResolutionMode
-from app.services.borrower_case import FileBorrowerCaseService
+from app.services.borrower_conversation import borrower_conversation_service
 from app.services.workflow_channel import DEFAULT_BORROWER_RESOLUTION_MODE, DEFAULT_TESTER_RESOLUTION_MODE
-from app.orchestrator.client import get_temporal_client
-from app.orchestrator.models import BorrowerMessageWorkflowInput, CollectionsWorkflowInput
-from app.orchestrator.workflows import BorrowerCollectionsWorkflow
 
 
 class WorkflowMessageRequest(BaseModel):
@@ -33,82 +26,27 @@ class WorkflowMessageResponse(BaseModel):
 
 
 router = APIRouter(prefix="/workflows", tags=["workflows"])
-borrower_case_service = FileBorrowerCaseService()
 
 
 async def _submit_borrower_message(
     payload: WorkflowMessageRequest,
     default_resolution_mode: ResolutionMode,
 ) -> WorkflowMessageResponse:
-    borrower_case = borrower_case_service.get_borrower_case(payload.borrower_id)
-    if borrower_case is None:
-        raise HTTPException(status_code=404, detail="Borrower case not found")
-
-    workflow_id = payload.workflow_id or borrower_case.workflow_id
-    resolved_mode = payload.resolution_mode or default_resolution_mode
-    print(
-        "[workflow_message_request]",
-        {
-            "borrower_id": payload.borrower_id,
-            "workflow_id": workflow_id,
-            "persisted_workflow_id": borrower_case.workflow_id,
-            "stage": borrower_case.stage.value,
-            "mode": resolved_mode.value,
-            "message": payload.message,
-        },
-        flush=True,
-    )
-    client = await get_temporal_client()
-
     try:
-        state = await client.execute_update_with_start_workflow(
-            BorrowerCollectionsWorkflow.handle_borrower_message,
-            BorrowerMessageWorkflowInput(
-                message=payload.message,
-                resolution_mode=resolved_mode,
-            ),
-            start_workflow_operation=WithStartWorkflowOperation(
-                BorrowerCollectionsWorkflow.run,
-                CollectionsWorkflowInput(
-                    borrower_id=payload.borrower_id,
-                    workflow_id=workflow_id,
-                    resolution_mode=resolved_mode,
-                ),
-                id=workflow_id,
-                task_queue=os.getenv("TEMPORAL_TASK_QUEUE", "collections-task-queue"),
-                id_conflict_policy=WorkflowIDConflictPolicy.USE_EXISTING,
-            ),
+        state = await borrower_conversation_service.submit_borrower_message(
+            borrower_id=payload.borrower_id,
+            workflow_id=payload.workflow_id,
+            message=payload.message,
+            resolution_mode=payload.resolution_mode,
+            default_resolution_mode=default_resolution_mode,
         )
     except Exception as error:
-        print(
-            "[workflow_message_failed]",
-            {
-                "borrower_id": payload.borrower_id,
-                "workflow_id": workflow_id,
-                "mode": resolved_mode.value,
-                "error": str(error),
-            },
-            flush=True,
-        )
+        if "not found" in str(error).lower():
+            raise HTTPException(status_code=404, detail=str(error)) from error
         raise HTTPException(status_code=500, detail=str(error)) from error
 
-    print(
-        "[workflow_message_response]",
-        {
-            "borrower_id": payload.borrower_id,
-            "workflow_id": workflow_id,
-            "stage": state.borrower_case.stage.value,
-            "mode": state.borrower_case.resolution_mode.value,
-            "reply_present": bool(state.last_agent_reply),
-            "final_result": state.final_result,
-            "call_id": state.borrower_case.resolution_call_id,
-            "call_status": state.borrower_case.resolution_call_status,
-        },
-        flush=True,
-    )
-
     return WorkflowMessageResponse(
-        workflow_id=workflow_id,
+        workflow_id=state.borrower_case.workflow_id,
         reply=state.last_agent_reply,
         stage=state.borrower_case.stage.value,
         final_result=state.final_result,

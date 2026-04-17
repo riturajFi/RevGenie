@@ -13,3 +13,7 @@ class ChatMessageStorage(ABC):
     @abstractmethod
     def list_messages(self, user_id: str, workflow_id: str, agent_id: str) -> list[ChatMessage]:
         raise NotImplementedError
+
+    @abstractmethod
+    def list_workflow_messages(self, user_id: str, workflow_id: str) -> list[ChatMessage]:
+        raise NotImplementedError

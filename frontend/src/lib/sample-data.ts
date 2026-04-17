@@ -10,12 +10,8 @@ export const borrowerTestDefaults: BorrowerTestDefaults = {
   workflowId: "wf_demo",
   loanIdMasked: "****4831",
   amountDue: 12921,
-  principalOutstanding: 10125,
-  dpd: 275,
-  caseType: "SETTLEMENT_CANDIDATE",
   stage: "ASSESSMENT",
   caseStatus: "OPEN",
-  nextAllowedActions: "OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN",
 };
 
 export const sidebarItems = [

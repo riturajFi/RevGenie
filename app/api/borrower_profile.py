@@ -6,7 +6,7 @@ from uuid import uuid4
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 
-from app.domain.borrower_case import BorrowerCase, CaseStatus, ContactChannel, ResolutionMode, Stage
+from app.domain.borrower_case import BorrowerCase, CaseStatus, ResolutionMode, Stage
 from app.domain.borrower_profile import BorrowerProfile
 from app.services.borrower_case import FileBorrowerCaseService
 from app.services.borrower_profile import FileBorrowerProfileService
@@ -26,13 +26,8 @@ class BorrowerCaseOverrides(BaseModel):
     lender_id: str | None = None
     loan_id_masked: str | None = None
     amount_due: int | None = Field(default=None, ge=0)
-    principal_outstanding: int | None = Field(default=None, ge=0)
-    dpd: int | None = Field(default=None, ge=0)
-    case_type: list[str] | None = None
     stage: Stage | None = None
     case_status: CaseStatus | None = None
-    next_allowed_actions: list[str] | None = None
-    identity_verified: bool | None = None
     resolution_mode: ResolutionMode | None = None
 
 
@@ -62,28 +57,24 @@ def _build_case_from_defaults(
     if template is None:
         raise KeyError(f"Default borrower case template not found: {DEFAULT_CASE_TEMPLATE_ID}")
 
-    case = BorrowerCase.model_validate(template.model_dump(mode="python"))
-    case.borrower_id = borrower_id
-    case.workflow_id = _generate_workflow_id()
-    case.stage = Stage.ASSESSMENT
-    case.case_status = CaseStatus.OPEN
-    case.final_disposition = None
-    case.latest_handoff_summary = None
-    case.latest_handoff_stage = None
-    case.offers_made = []
-    case.borrower_objections = []
-    case.borrower_stated_position = None
-    case.last_deadline_offered = None
-    case.assessment_notes = None
-    case.resolution_notes = None
-    case.final_notice_notes = None
-    case.last_contact_channel = ContactChannel.CHAT
-    case.resolution_mode = ResolutionMode.VOICE
-    case.resolution_call_id = None
-    case.resolution_call_status = None
-    case.stop_contact_flag = False
-    if "stop_contact_requested" in case.attributes:
-        case.attributes["stop_contact_requested"] = False
+    case = BorrowerCase.model_validate(
+        {
+            "core": {
+                "borrower_id": borrower_id,
+                "workflow_id": _generate_workflow_id(),
+                "loan_id_masked": template.loan_id_masked,
+                "lender_id": template.lender_id,
+                "stage": Stage.ASSESSMENT,
+                "case_status": CaseStatus.OPEN,
+                "amount_due": template.amount_due,
+                "final_disposition": None,
+            },
+            "attributes": {
+                "resolution_mode": ResolutionMode.VOICE.value,
+            },
+            "latest_handoff_summary": None,
+        }
+    )
 
     if overrides is not None:
         if overrides.workflow_id:
@@ -94,24 +85,13 @@ def _build_case_from_defaults(
             case.loan_id_masked = overrides.loan_id_masked
         if overrides.amount_due is not None:
             case.amount_due = overrides.amount_due
-        if overrides.principal_outstanding is not None:
-            case.principal_outstanding = overrides.principal_outstanding
-        if overrides.dpd is not None:
-            case.dpd = overrides.dpd
-        if overrides.case_type is not None:
-            case.case_type = overrides.case_type
         if overrides.stage is not None:
             case.stage = overrides.stage
         if overrides.case_status is not None:
             case.case_status = overrides.case_status
-        if overrides.next_allowed_actions is not None:
-            case.next_allowed_actions = overrides.next_allowed_actions
-        if overrides.identity_verified is not None:
-            case.identity_verified = overrides.identity_verified
         if overrides.resolution_mode is not None:
             case.resolution_mode = overrides.resolution_mode
 
-    case.agent_context_summary = case.build_agent_context_summary()
     return case
 
 

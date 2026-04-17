@@ -99,13 +99,9 @@ function parseEventPayload(event: TranscriptEvent): ParsedEventPayload {
       const core = (state.core as Record<string, unknown>) ?? state;
       const attributes = (state.attributes as Record<string, unknown>) ?? state;
       const salientKeys = [
-        "principal_outstanding",
-        "dpd",
-        "borrower_stated_position",
-        "assessment_notes",
-        "resolution_notes",
-        "final_notice_notes",
-        "stop_contact_flag",
+        "resolution_mode",
+        "resolution_call_id",
+        "resolution_call_status",
       ];
       const salient = salientKeys.reduce<Record<string, unknown>>((acc, key) => {
         const value = attributes[key];

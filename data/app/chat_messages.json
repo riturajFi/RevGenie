@@ -1,0 +1,605 @@
+[
+  {
+    "message": "hi",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074157_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:42:17.912819Z"
+  },
+  {
+    "message": "Hello, I\u2019m an AI agent acting on behalf of Nira, and this conversation is being logged. We\u2019re discussing your Nira loan ending in ****4831, with an amount due of 12,921. I understand you previously mentioned hardship and that reviewing options around 2026-04-20 may be better. I\u2019ve completed the assessment and will connect you to the next agent so they do not repeat questions.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074157_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:42:24.016026Z"
+  },
+  {
+    "message": "Disclosures now provided: AI identity disclosed and logging disclosed. Identity already verified in case context. Debt context established with borrower: Nira loan ****4831, amount due 12,921. Borrower position already known from case context: cannot pay this month; hardship remains present with job loss and medical issue; may review options around 2026-04-20; interested in closure/settlement and protecting CIBIL. Stop-contact/refusal: none indicated. Key routing facts already available: available now 2000, cannot pay now, can pay later, expected date 2026-04-20. What was already asked: prior assessment captured hardship and timing; do not re-verify identity or restate debt repeatedly. Next priority for Agent 2: acknowledge hardship briefly and discuss available hardship-compatible resolution options without restarting the conversation.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074157_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "system",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:42:24.054161Z"
+  },
+  {
+    "message": "Hi \u2014 this is Alex from RevGenie continuing your conversation about the past-due loan with LenderCo. I\u2019m following up from the last chat to finalize a resolution. Are you still able to make a payment today toward the $1,250 balance, or do you need to discuss a hardship plan instead?",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074157_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:43:08.293899Z"
+  },
+  {
+    "message": "Conversation is already in progress; AI identity disclosure and logging disclosure were already completed, and identity was already verified earlier. Current account context remains Nira loan ****4831 with amount due 12,921. In this resolution-stage transcript, only an agent prompt was captured and it misstated the context as LenderCo/$1,250; no borrower response followed. Borrower\u2019s latest known position from prior stage remains that they cannot pay this month, hardship is present due to job loss and medical issue, they may review options around 2026-04-20, they have indicated about 2,000 available around then, and they are interested in settlement/closure while protecting CIBIL. No stop-contact request was made. Agent 2 did not obtain any new commitment and did not present a confirmed hardship-compatible approved option. Agent 3 should continue naturally from the existing hardship/settlement discussion using the correct Nira/12,921 context, avoid repeating disclosures or verification, avoid repeating the incorrect $1,250/LenderCo framing, and proceed only with lender-approved hardship-compatible options or the next compliant review step.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074157_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "system",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:43:08.328555Z"
+  },
+  {
+    "message": "Hi \u2014 this is Alex from RevGenie continuing your conversation about the past-due loan with LenderCo. I\u2019m following up from the last chat to finalize a resolution. Are you still able to make a payment today toward the $1,250 balance, or do you need to discuss a hardship plan instead?",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074157_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:43:09.683308Z"
+  },
+  {
+    "message": "The current Nira loan balance on ****4831 is 12,921. Based on the account review, reduced closure or a payment plan can be discussed only if approved under policy, and no extension beyond 30 days is allowed. Your earlier hardship position is noted. If you want to proceed, confirm whether you are ready to review an approved reduced-closure or short-term plan within those limits.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074157_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:43:15.018570Z"
+  },
+  {
+    "message": "Noted. For Nira loan ****4831, the current amount due is 12,921. Based on the account review, reduced closure or a payment plan can be considered only if approved under policy, and no extension beyond 30 days is allowed. Your hardship situation is already noted. If you are ready, confirm whether you want to be reviewed for a policy-compliant reduced closure or a policy-compliant payment plan based on your stated timing around 2026-04-20.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074157_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:43:16.632835Z"
+  },
+  {
+    "message": "hi",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074157_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:44:14.919552Z"
+  },
+  {
+    "message": "Please confirm whether you want review for a policy-compliant reduced closure or a policy-compliant payment plan for Nira loan ****4831. No extension beyond 30 days is available.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074157_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:44:19.890666Z"
+  },
+  {
+    "message": "yes",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074157_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:44:32.255818Z"
+  },
+  {
+    "message": "Confirmed. For Nira loan ****4831, review can proceed for a policy-compliant reduced closure or a policy-compliant payment plan. No extension beyond 30 days is available. Reply with either \"reduced closure\" or \"payment plan\".",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074157_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:44:37.319954Z"
+  },
+  {
+    "message": "hi",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074537_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:46:43.275068Z"
+  },
+  {
+    "message": "Hello, I\u2019m an AI agent calling on behalf of Nira. This conversation is being logged. We\u2019re discussing your loan ending in ****4831. I have your identity already verified. I understand you previously indicated hardship and that you may be able to review options around 2026-04-20. Is that still correct?",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074537_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:46:46.531793Z"
+  },
+  {
+    "message": "yes",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074537_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:46:54.911497Z"
+  },
+  {
+    "message": "Thank you for confirming. I understand you\u2019re facing hardship, and I\u2019ve noted that options can be reviewed around 2026-04-20 for loan ****4831. I\u2019ve completed the assessment and will hand this to the next specialist so they do not repeat questions.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074537_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:47:01.396355Z"
+  },
+  {
+    "message": "Assessment complete for Nira loan ****4831. Required disclosures already given earlier in conversation; conversation is logged. Identity verification already established before this turn. Debt context established with borrower: Nira loan ending ****4831, amount due from case state is 12921. Borrower confirmed prior position remains accurate: cannot pay this month, hardship remains present, and options can be reviewed around 2026-04-20. Hardship signals present: job loss, medical issue, student; no stop-contact or refusal signal in this turn. Routing facts already known: can_pay_now=false, available_now=2000 from case state, can_pay_later=true, expected_date=2026-04-20, borrower wants closure/settlement and wants to protect credit per case state. Already asked/confirmed: whether review around 2026-04-20 is still correct; borrower said yes. Agent 2 should not repeat disclosures, debt establishment, identity verification, or re-ask the review-date confirmation. Next priority for Agent 2: acknowledge hardship and discuss available hardship-compatible resolution options for review around 2026-04-20 within policy.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074537_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "system",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:47:01.428587Z"
+  },
+  {
+    "message": "(inaudible speech)",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074537_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "borrower",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:47:42.146815Z"
+  },
+  {
+    "message": "Hi \u2014 this is Alex with RevGenie following up on your account transfer from Agent 1. I see you discussed options earlier. Do you want to proceed with the single payment of $1,250 today or set up a short-term payment plan? If you\u2019d like the plan, I can walk through the available schedule now.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074537_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:47:42.147533Z"
+  },
+  {
+    "message": "Conversation is already in progress; identity disclosure and recording disclosure were already completed earlier, and identity verification was already established. Current account context is Nira loan ending ****4831 with amount due 12921. Borrower\u2019s latest confirmed position before call end was that they cannot pay this month, hardship remains present, and options can be reviewed around 2026-04-20; hardship signals include job loss, medical issue, and student status. Agent 2 checked policy and had available paths of reduced closure and payment plan, with Nira policy allowing no extensions beyond 30 days and requiring policy-compliant approval for reduced closure or structured plans. In the final exchange, Agent 2 offered either a single payment of 1250 today or a short-term payment plan, but the borrower response was inaudible and no acceptance was captured. No stop-contact request was made, and no explicit refusal of all options was captured. Agent 3 should continue naturally from this in-progress case without restarting, avoid repeating disclosures, verification, debt establishment, or the already confirmed hardship/review-date points, and should clarify the borrower\u2019s preferred hardship-compatible option or next review step rather than repeating the same offer verbatim unless reconfirmation is needed.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074537_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "system",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:47:42.181271Z"
+  },
+  {
+    "message": "(inaudible speech)",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074537_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "borrower",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:47:43.315010Z"
+  },
+  {
+    "message": "Hi \u2014 this is Alex with RevGenie following up on your account transfer from Agent 1. I see you discussed options earlier. Do you want to proceed with the single payment of $1,250 today or set up a short-term payment plan? If you\u2019d like the plan, I can walk through the available schedule now.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074537_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:47:43.315626Z"
+  },
+  {
+    "message": "Following the call, the account remains unresolved. The available paths on this account are a reduced-closure review or a short-term payment plan, both subject to Nira policy and any approved structure must stay within 30 days. Please confirm which option you want reviewed so the next step can be aligned without delay.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074537_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:47:48.515613Z"
+  },
+  {
+    "message": "Following the call, the available paths remain a reduced-closure review or a short-term payment plan review, both subject to Nira policy and completion within 30 days. Please confirm which option you want to proceed with so the account can move on the correct final step.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417074537_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:47:49.252781Z"
+  },
+  {
+    "message": "hi",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:55:05.233933Z"
+  },
+  {
+    "message": "Hello, I\u2019m an AI agent acting on behalf of Nira, and this conversation is being logged. We\u2019re discussing your loan ending in ****4831. I understand you\u2019ve indicated hardship and may be able to review options around 2026-04-20. I\u2019ve completed the assessment and will connect you to the next agent so they can discuss available options without repeating what you\u2019ve already shared.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:55:12.132673Z"
+  },
+  {
+    "message": "Assessment complete for Nira loan ****4831. Disclosures now provided: AI identity disclosed and logging disclosed. Identity verification already established in case context. Debt context established with borrower: Nira loan ****4831, amount due 12921 from case/tool context. Borrower position already known: cannot pay this month, hardship remains present, may review options around 2026-04-20; hardship flags in case context include job loss and medical issue; borrower wants closure/settlement and to protect CIBIL. No stop-contact or refusal signal in this turn. Already asked/reviewed in prior context: capacity/timing and hardship. Agent 2 should not repeat identity verification, disclosures, or re-ask basic hardship/capacity facts. Next priority for Agent 2: acknowledge hardship and discuss available hardship-compatible resolution options within policy, focusing on timing around 2026-04-20.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "system",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:55:12.165987Z"
+  },
+  {
+    "message": "Hi\u2014this is the Resolution agent continuing your earlier conversation about the outstanding balance with your lender. I\u2019m going to review the options we discussed and confirm a next step so we can resolve the account today.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:56:04.419157Z"
+  },
+  {
+    "message": "The transfer",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:56:04.420066Z"
+  },
+  {
+    "message": "Yes.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "borrower",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:56:04.421487Z"
+  },
+  {
+    "message": "didn't go through. I can continue helping you now or try transferring again\u2014what would you prefer?",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:56:04.422001Z"
+  },
+  {
+    "message": "Conversation is already in progress; AI identity disclosure and logging disclosure were already completed earlier, and identity verification is already established. Current account context is Nira loan ****4831 with amount due 12921; policy retrieved shows no extensions beyond 30 days, and reduced closure or structured payment plans require policy-compliant approval. Borrower\u2019s latest known position remains hardship-based inability to pay this month, with prior stated capacity of 2000 and possible review/payment timing around 2026-04-20, with hardship signals including job loss and medical issue and interest in closure/settlement to protect CIBIL. In the reviewed resolution-stage transcript segment, the agent referenced a failed transfer and asked whether to continue helping or try transferring again; the borrower only said 'Yes,' so no option was actually discussed to completion, no objection was newly raised, and there was no stop-contact request. Agent 2 already had not re-verified identity and did not complete a concrete resolution in this segment. Agent 3 should continue naturally from the interrupted transfer/resolution attempt, avoid repeating disclosures, verification, and already-known hardship/capacity facts, and move directly to any concrete lender-approved hardship-compatible option or next operational step without treating this segment as a refusal or accepted deal.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "system",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:56:04.460505Z"
+  },
+  {
+    "message": "Following the interrupted call, the account remains open with 12921 due on loan ****4831. The only available paths are a lender-approved reduced closure or a lender-approved payment plan, and any approved structure must remain within 30 days under policy. If you want to proceed, confirm whether you want review for reduced closure or for a 30-day payment structure.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:56:11.583852Z"
+  },
+  {
+    "message": "Hi\u2014this is the Resolution agent continuing your earlier conversation about the outstanding balance with your lender. I\u2019m going to review the options we discussed and confirm a next step so we can resolve the account today.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:56:14.451462Z"
+  },
+  {
+    "message": "The transfer",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:56:14.452155Z"
+  },
+  {
+    "message": "Yes.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "borrower",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:56:14.453549Z"
+  },
+  {
+    "message": "didn't go through. I can continue helping you now or try transferring again\u2014what would you prefer?",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:56:14.454082Z"
+  },
+  {
+    "message": "Following the call, the account for loan ****4831 remains open with 12921 due. Under current lender policy, any available path must be policy-compliant and within 30 days. The only paths in review scope are a reduced closure or a structured payment plan, both subject to approval. Reply with either \"reduced closure\" or \"payment plan\" if you want us to proceed with that review path now.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075449_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:56:20.594604Z"
+  },
+  {
+    "message": "hi",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075806_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:58:27.496753Z"
+  },
+  {
+    "message": "Hello, I\u2019m an AI agent acting on behalf of Nira. This conversation is being logged. We\u2019re discussing your Nira loan ending in ****4831 with an amount due of 12,921. I can see your identity is already verified. I also note you previously mentioned hardship and that reviewing options around 2026-04-20 may be better. Is that still correct?",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075806_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:58:31.154779Z"
+  },
+  {
+    "message": "yes",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075806_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:58:36.550346Z"
+  },
+  {
+    "message": "Thank you for confirming. I understand you\u2019re facing hardship, and I\u2019ve noted that reviewing options around 2026-04-20 is better for you. I\u2019ve completed the assessment and will route this so the next agent can discuss available options without repeating verification.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075806_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T07:58:41.804543Z"
+  },
+  {
+    "message": "Disclosures already given: AI identity and logging disclosed. Identity already verified before this turn. Debt context established with borrower: Nira loan ending ****4831, amount due 12,921. Borrower confirmed prior hardship context remains accurate and that reviewing options around 2026-04-20 is still correct. Hardship signals present: job loss, medical issue, student; no stop-contact or refusal. Assessment already covered debt context and timing preference; do not repeat disclosures, verification, or re-ask whether hardship is present. Next priority for Agent 2: acknowledge hardship and discuss available options appropriate for review around 2026-04-20.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417075806_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "system",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T07:58:41.924747Z"
+  },
+  {
+    "message": "hi",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080018_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:02:10.046079Z"
+  },
+  {
+    "message": "Hello, I\u2019m an AI agent acting on behalf of Nira, and this conversation is being logged. We\u2019re discussing your Nira loan ending in ****4831. I can see your identity is already verified. I understand hardship is present and options may be reviewed around 2026-04-20. Is that timing still correct?",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080018_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:02:12.343768Z"
+  },
+  {
+    "message": "yes",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080018_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:02:17.921914Z"
+  },
+  {
+    "message": "Thank you. I understand hardship is still present, and I\u2019ve noted that reviewing options around 2026-04-20 still works for you. I\u2019m completing the assessment and handing this to the next team member to discuss available options. I will not repeat verification.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080018_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:02:23.854898Z"
+  },
+  {
+    "message": "Disclosures given: AI identity and logging disclosed earlier in conversation. Verification status: already verified before this turn; do not re-verify. Debt context established with borrower: Nira loan ending ****4831, amount due 12921 from case state. Borrower stated position: hardship remains present; cannot pay this month; confirmed options can be reviewed around 2026-04-20 and answered 'yes' to timing confirmation. Hardship/boundary signals: job loss, medical issue, student; no stop-contact or refusal. Key routing facts learned: expected review/payment timing remains 2026-04-20; borrower cannot pay now. What was already asked: timing confirmation only. What Agent 2 should not repeat: disclosures, identity verification, debt re-establishment, or asking again whether 2026-04-20 works. Next priority for Agent 2: acknowledge hardship and discuss available hardship-compatible options for closure or plan without restarting the conversation.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080018_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "system",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T08:02:23.886577Z"
+  },
+  {
+    "message": "hi",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080252_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:03:08.795039Z"
+  },
+  {
+    "message": "Hello, I\u2019m an AI agent acting on behalf of Nira, and this conversation is being logged. We\u2019re discussing your loan ending in ****4831. I understand you\u2019re facing hardship, including job loss and medical issues, and options can be reviewed around 2026-04-20. I have enough information for assessment, so I\u2019ll hand this to the next specialist so they do not repeat questions.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080252_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:03:14.403879Z"
+  },
+  {
+    "message": "Disclosures given in this turn: AI identity disclosed and logging disclosed. Identity already verified from case state; do not re-verify. Debt context established with borrower: Nira loan ending ****4831, amount due 12921 from case state. Borrower stated position already known: cannot pay this month; hardship remains present; may review options around 2026-04-20; available now 2000 from case state; wants settlement/full closure and wants to protect CIBIL. Hardship signals present: job loss, medical issue, student. No stop-contact signal. Assessment is complete; Agent 2 should not repeat disclosures, identity verification, or re-ask basic hardship/capacity questions already captured. Next priority for Agent 2: acknowledge hardship and discuss available hardship-compatible resolution options for around 2026-04-20 within policy.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080252_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "system",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T08:03:14.438091Z"
+  },
+  {
+    "message": "Hello, this is RevGenie, an AI voice agent calling on behalf of your lender about your account. This call may be recorded or monitored. I\u2019m calling to discuss possible next steps on your account. If you do not want to continue this call, please let me know and I will end it.\n\nLet\u2019s continue from where we left off. How would you like to proceed regarding your account today?",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080252_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T08:45:55.834657Z"
+  },
+  {
+    "message": "What are the options?",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080252_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "borrower",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T08:45:55.835651Z"
+  },
+  {
+    "message": "Thank you for your question. To provide you with the most accurate information about your available options, I'll connect you with a human agent who can assist you further.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080252_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T08:45:55.837077Z"
+  },
+  {
+    "message": "It looks like I\u2019m unable to transfer you to a human agent at the moment. If you\u2019d like, I can assist you directly with your account options, or you can call back later for further assistance. Thank you for your time.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080252_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T08:45:55.837736Z"
+  },
+  {
+    "message": "Conversation already in progress; AI identity disclosure and recording disclosure were completed. Identity was already verified and should not be repeated. Account context remains Nira loan ending ****4831 with amount due 12921; hardship signals remain present from prior stage (job loss, medical issue, student), with prior stated capacity of 2000 available and possible review around 2026-04-20, and borrower wants settlement/full closure while protecting CIBIL. On this completed call, the borrower only asked, 'What are the options?' The agent attempted a human transfer, then said transfer was unavailable, and the call ended without presenting any lender-approved hardship path, payment plan, or reduced-closure option. Objections were not developed; no stop-contact request was made; no option was accepted or rejected because none was actually offered. Agent 2 already checked policy showing no extensions beyond 30 days and that reduced closure and structured payment plans require policy-compliant approval. Agent 3 should continue naturally from the borrower\u2019s request for options, avoid restarting, avoid repeating disclosures or verification, and present any available hardship-compatible, policy-compliant options or the single next review step without repeating the failed transfer discussion.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080252_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "system",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T08:45:55.869525Z"
+  },
+  {
+    "message": "At this time, no exact lender-approved reduced-closure or payment-plan terms are available to quote. The account remains due at 12921 on loan ****4831, and any reduced closure or structured plan must be approved within policy, with no extension beyond 30 days. Based on the hardship information already noted, the next step is review for any concrete approved option. If an approved option becomes available, it will be shared with exact terms.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417080252_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:46:03.309136Z"
+  },
+  {
+    "message": "hi",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417084735_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:50:14.023514Z"
+  },
+  {
+    "message": "Hello, I\u2019m an AI agent acting on behalf of Nira, and this conversation is being logged. We\u2019re discussing your Nira loan ending in ****4831 with an amount due of 12,921. I understand you\u2019ve indicated hardship and may be able to review options around 2026-04-20. I\u2019ve completed the assessment and will hand this to the next specialist so they do not repeat questions.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417084735_nira_hardship_settlement",
+    "agent_id": "ASSESSMENT",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:50:19.418348Z"
+  },
+  {
+    "message": "Assessment complete for Nira loan ****4831. Required disclosures now given: AI identity disclosed and logging disclosed. Identity verification already established in case context before this turn. Debt context established with borrower: Nira loan ****4831, amount due 12,921. Borrower stated position already on record: cannot pay this month; hardship remains present; job loss and medical issue flagged; may review options around 2026-04-20; available now previously noted as 2,000; wants full closure/settlement and wants to protect CIBIL. No stop-contact request. Already asked/known enough for routing; Agent 2 should not repeat disclosures unnecessarily, identity verification, debt establishment, or reassess basic hardship facts. Next priority for Agent 2: acknowledge hardship and discuss available hardship-compatible resolution options for review around 2026-04-20.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417084735_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "system",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T08:50:19.448942Z"
+  },
+  {
+    "message": "Hello, this is RevGenie, an AI voice agent calling on behalf of your lender about your account. This call may be recorded or monitored. I\u2019m calling to discuss possible next steps on your account. If you do not want to continue this call, please let me know and I will end it.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417084735_nira_hardship_settlement",
+    "agent_id": "RESOLUTION",
+    "sender_type": "agent",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T08:50:55.975952Z"
+  },
+  {
+    "message": "Conversation is already in progress; AI identity disclosure and recording/logging disclosure were already completed, and identity verification was already established earlier. Current account context is Nira loan ****4831 with amount due 12,921. Prior borrower position on file remains that they cannot pay this month, hardship is present due to job loss and medical issue, available now was previously noted as 2,000, they may review options around 2026-04-20, and they want full closure/settlement while protecting CIBIL. In the resolution-stage transcript segment reviewed here, only the agent opening/disclosures were captured and no borrower response was captured, so no hardship-compatible option, payment plan, or reduced-closure terms were actually discussed in this segment and no objections or stop-contact request were made. Agent 2 confirmed from available data that policy allows only policy-compliant approvals and no extensions beyond 30 days. Agent 3 should continue naturally from the existing hardship context without restarting, without repeating disclosures or verification, and should proceed with concrete hardship-compatible resolution discussion or approved-option review based on the borrower\u2019s previously stated timing and capacity; avoid saying any arrangement was agreed or repeating status-only outreach without a new concrete option.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417084735_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "system",
+    "visible_to_borrower": false,
+    "created_at": "2026-04-17T08:50:56.009983Z"
+  },
+  {
+    "message": "Based on the account review, policy-compliant options may be considered only within a 30-day structure. Your earlier position on file was 2,000 available and a review around 2026-04-20. If you want this reviewed for a reduced closure or a payment plan, confirm which one you want considered on that basis. No arrangement is active unless approved.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417084735_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:51:02.017190Z"
+  },
+  {
+    "message": "reduced closure",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417084735_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:51:37.151853Z"
+  },
+  {
+    "message": "Reduced closure has been noted. Based on the current policy, it can only proceed if approved within a 30-day structure. Your earlier capacity on file is 2,000 now with possible review around 2026-04-20. Confirm whether you want reduced closure reviewed on that basis. No reduced-closure arrangement is active unless approved.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417084735_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:51:42.772864Z"
+  },
+  {
+    "message": "confirmed",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417084735_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "borrower",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:51:56.572230Z"
+  },
+  {
+    "message": "Confirmed. Reduced closure will be reviewed on the basis previously stated: 2,000 available and possible follow-up around 2026-04-20, subject to policy-compliant approval within a 30-day structure. No reduced-closure arrangement is active unless approved.",
+    "user_id": "b_001",
+    "workflow_id": "wf_20260417084735_nira_hardship_settlement",
+    "agent_id": "FINAL_NOTICE",
+    "sender_type": "agent",
+    "visible_to_borrower": true,
+    "created_at": "2026-04-17T08:52:01.306335Z"
+  }
+]

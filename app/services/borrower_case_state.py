@@ -16,7 +16,6 @@ class BorrowerCaseStateService:
         "core.case_status",
         "core.amount_due",
         "core.final_disposition",
-        "attributes.last_contact_channel",
         "attributes.resolution_mode",
         "attributes.resolution_call_id",
         "attributes.resolution_call_status",
@@ -28,13 +27,11 @@ class BorrowerCaseStateService:
         "lender_id",
         "stage",
         "case_status",
-        "case_type",
         "amount_due",
-        "identity_verified",
-        "next_allowed_actions",
         "final_disposition",
     }
-    META_FIELDS = {"agent_context_summary", "latest_handoff_summary", "latest_handoff_stage"}
+    META_FIELDS = {"latest_handoff_summary"}
+    IGNORED_FIELDS = {"agent_context_summary", "latest_handoff_stage"}
 
     def apply_delta(
         self,
@@ -48,21 +45,19 @@ class BorrowerCaseStateService:
         for field_path, value in case_delta.items():
             normalized_field_path = self._normalize_field_path(field_path)
             root_field = normalized_field_path.split(".")[0]
+            if normalized_field_path in self.IGNORED_FIELDS or root_field in self.IGNORED_FIELDS:
+                continue
             if normalized_field_path in self.BLOCKED_FIELDS or root_field in self.BLOCKED_FIELDS:
                 continue
             self._set_path(case_data, normalized_field_path, value)
 
         if latest_handoff_summary:
             case_data["latest_handoff_summary"] = latest_handoff_summary
-            case_data["latest_handoff_stage"] = stage.value
-
-        if "agent_context_summary" not in case_delta:
-            case_data["agent_context_summary"] = None
 
         return BorrowerCase.model_validate(case_data)
 
     def _normalize_field_path(self, field_path: str) -> str:
-        if field_path in self.META_FIELDS:
+        if field_path in self.META_FIELDS or field_path in self.IGNORED_FIELDS:
             return field_path
         if field_path.startswith("core.") or field_path.startswith("attributes."):
             return field_path

@@ -353,8 +353,6 @@ class TesterAgent:
             return
         if pre_turn_case.stage == post_turn_case.stage:
             return
-        if post_turn_case.latest_handoff_stage != pre_turn_case.stage:
-            return
         if not post_turn_case.latest_handoff_summary:
             return
 

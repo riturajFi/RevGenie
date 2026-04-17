@@ -14,6 +14,7 @@ with workflow.unsafe.imports_passed_through():
         run_final_notice_turn,
         run_resolution_turn,
         save_borrower_case,
+        start_final_notice_stage,
         start_resolution_call,
     )
     from app.orchestrator.models import (
@@ -51,18 +52,9 @@ class BorrowerCollectionsWorkflow:
             await self._ensure_state(self.input)
 
         assert self.state is not None
+
+        # VOICE for interactive and chat for training
         await self._apply_resolution_mode(input.resolution_mode)
-        print(
-            "[handle_borrower_message]",
-            {
-                "borrower_id": self.state.borrower_case.borrower_id,
-                "workflow_id": self.state.borrower_case.workflow_id,
-                "stage": self.state.borrower_case.stage.value,
-                "mode": self.state.borrower_case.resolution_mode.value,
-                "message": input.message,
-            },
-            flush=True,
-        )
 
         if self.state.borrower_case.stage == Stage.ASSESSMENT:
             turn_result = await self._activity(
@@ -74,43 +66,16 @@ class BorrowerCollectionsWorkflow:
             )
             self.state.borrower_case = turn_result.borrower_case
             self.state.last_agent_reply = turn_result.stage_result.reply
-            print(
-                "[assessment_result]",
-                {
-                    "borrower_id": self.state.borrower_case.borrower_id,
-                    "outcome": turn_result.stage_result.stage_outcome.value,
-                    "reply_present": bool(turn_result.stage_result.reply),
-                },
-                flush=True,
-            )
             self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
             if turn_result.stage_result.stage_outcome == AgentStageOutcome.ASSESSMENT_COMPLETE:
                 self.state.borrower_case.stage = Stage.RESOLUTION
                 self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
                 if self.state.borrower_case.resolution_mode == ResolutionMode.VOICE:
-                    print(
-                        "[assessment_handoff_to_voice]",
-                        {
-                            "borrower_id": self.state.borrower_case.borrower_id,
-                            "workflow_id": self.state.borrower_case.workflow_id,
-                        },
-                        flush=True,
-                    )
                     await self._ensure_resolution_voice_call_started()
             return self.state
 
         if self.state.borrower_case.stage == Stage.RESOLUTION:
             if self.state.borrower_case.resolution_mode == ResolutionMode.VOICE:
-                print(
-                    "[resolution_voice_branch]",
-                    {
-                        "borrower_id": self.state.borrower_case.borrower_id,
-                        "workflow_id": self.state.borrower_case.workflow_id,
-                        "call_id": self.state.borrower_case.resolution_call_id,
-                        "call_status": self.state.borrower_case.resolution_call_status,
-                    },
-                    flush=True,
-                )
                 await self._ensure_resolution_voice_call_started()
                 self.state.last_agent_reply = None
                 return self.state
@@ -123,15 +88,6 @@ class BorrowerCollectionsWorkflow:
             )
             self.state.borrower_case = turn_result.borrower_case
             self.state.last_agent_reply = turn_result.stage_result.reply
-            print(
-                "[resolution_chat_result]",
-                {
-                    "borrower_id": self.state.borrower_case.borrower_id,
-                    "outcome": turn_result.stage_result.stage_outcome.value,
-                    "reply_present": bool(turn_result.stage_result.reply),
-                },
-                flush=True,
-            )
             self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
             if turn_result.stage_result.stage_outcome == AgentStageOutcome.DEAL_AGREED:
                 await self._complete_workflow("AGREEMENT_LOGGED", CaseStatus.RESOLVED)
@@ -149,15 +105,6 @@ class BorrowerCollectionsWorkflow:
         )
         self.state.borrower_case = turn_result.borrower_case
         self.state.last_agent_reply = turn_result.stage_result.reply
-        print(
-            "[final_notice_result]",
-            {
-                "borrower_id": self.state.borrower_case.borrower_id,
-                "outcome": turn_result.stage_result.stage_outcome.value,
-                "reply_present": bool(turn_result.stage_result.reply),
-            },
-            flush=True,
-        )
         self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
         if turn_result.stage_result.stage_outcome == AgentStageOutcome.RESOLVED:
             await self._complete_workflow("RESOLUTION_LOGGED", CaseStatus.RESOLVED)
@@ -202,6 +149,10 @@ class BorrowerCollectionsWorkflow:
             await self._complete_workflow("AGREEMENT_LOGGED", CaseStatus.RESOLVED)
         elif turn_result.stage_result.stage_outcome == AgentStageOutcome.NO_DEAL:
             self.state.borrower_case.stage = Stage.FINAL_NOTICE
+            self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
+            final_notice_result = await self._activity(start_final_notice_stage, self.state.borrower_case)
+            self.state.borrower_case = final_notice_result.borrower_case
+            self.state.last_agent_reply = final_notice_result.stage_result.reply
             self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
         return self.state
 

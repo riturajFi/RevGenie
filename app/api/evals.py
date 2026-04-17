@@ -9,7 +9,7 @@ from uuid import uuid4
 from fastapi import APIRouter, HTTPException, Query, status
 from pydantic import BaseModel, Field
 
-from app.domain.borrower_case import CaseStatus, ContactChannel, ResolutionMode, Stage
+from app.domain.borrower_case import CaseStatus, ResolutionMode, Stage
 from app.services.eval_performance import EvalPerformanceDataset, EvalPerformanceService
 from app.services.prompt_evolution import PromptEvolutionResponse, PromptEvolutionService
 from app.services.borrower_case import FileBorrowerCaseService
@@ -182,16 +182,8 @@ def _reset_case_for_simulation(borrower_id: str, workflow_id: str) -> None:
     borrower_case.stage = Stage.ASSESSMENT
     borrower_case.case_status = CaseStatus.OPEN
     borrower_case.final_disposition = None
-    borrower_case.borrower_stated_position = None
-    borrower_case.assessment_notes = None
-    borrower_case.resolution_notes = None
-    borrower_case.final_notice_notes = None
     borrower_case.latest_handoff_summary = None
-    borrower_case.latest_handoff_stage = None
-    borrower_case.offers_made = []
-    borrower_case.borrower_objections = []
-    borrower_case.last_deadline_offered = None
-    borrower_case.last_contact_channel = ContactChannel.CHAT
+    borrower_case.attributes = {}
     borrower_case.resolution_mode = ResolutionMode.CHAT
     borrower_case.resolution_call_id = None
     borrower_case.resolution_call_status = None

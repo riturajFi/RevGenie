@@ -1,10 +1,14 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { sendBorrowerChatMessage } from "@/lib/api";
-import { BorrowerChatMessage, BorrowerPortalLoginResponse } from "@/types/borrower";
+import { getBorrowerRealtimeWebSocketUrl } from "@/lib/api";
+import {
+  BorrowerChatMessage,
+  BorrowerPortalLoginResponse,
+  BorrowerSocketServerEvent,
+} from "@/types/borrower";
 
 const BORROWER_SESSION_STORAGE_KEY = "revgenie.borrower.session";
 
@@ -12,14 +16,10 @@ function nowIso() {
   return new Date().toISOString();
 }
 
-function makeMessage(
-  actor: BorrowerChatMessage["actor"],
-  text: string,
-  idPrefix: string
-): BorrowerChatMessage {
+function makeSystemMessage(text: string): BorrowerChatMessage {
   return {
-    id: `${idPrefix}_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`,
-    actor,
+    id: `system_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`,
+    actor: "system",
     text,
     created_at: nowIso(),
   };
@@ -27,11 +27,13 @@ function makeMessage(
 
 export function BorrowerChatPanel() {
   const router = useRouter();
+  const socketRef = useRef<WebSocket | null>(null);
   const [session, setSession] = useState<BorrowerPortalLoginResponse | null>(null);
-  const [workflowId, setWorkflowId] = useState<string>("");
   const [finalResult, setFinalResult] = useState<string | null>(null);
+  const [inputEnabled, setInputEnabled] = useState(false);
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<BorrowerChatMessage[]>([]);
+  const [isConnected, setIsConnected] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -45,55 +47,98 @@ export function BorrowerChatPanel() {
     try {
       const parsed = JSON.parse(raw) as BorrowerPortalLoginResponse;
       setSession(parsed);
-      setWorkflowId(parsed.borrower_case.core.workflow_id);
-      setMessages([
-        makeMessage(
-          "system",
-          `Connected as ${parsed.borrower_profile.full_name}. You can now chat with the collections agent.`,
-          "system"
-        ),
-      ]);
     } catch {
       sessionStorage.removeItem(BORROWER_SESSION_STORAGE_KEY);
       router.replace("/borrower/login");
     }
   }, [router]);
 
+  useEffect(() => {
+    if (!session) {
+      return;
+    }
+
+    const socket = new WebSocket(getBorrowerRealtimeWebSocketUrl(session.borrower_profile.borrower_id));
+    socketRef.current = socket;
+
+    socket.addEventListener("open", () => {
+      setIsConnected(true);
+      setError(null);
+    });
+
+    socket.addEventListener("message", (event) => {
+      const payload = JSON.parse(event.data) as BorrowerSocketServerEvent;
+      if (payload.type === "error") {
+        setError(payload.message);
+        setIsSending(false);
+        return;
+      }
+
+      const nextSession: BorrowerPortalLoginResponse = {
+        borrower_profile: session.borrower_profile,
+        borrower_case: payload.state.borrower_case,
+      };
+      sessionStorage.setItem(BORROWER_SESSION_STORAGE_KEY, JSON.stringify(nextSession));
+      setSession(nextSession);
+      setFinalResult(payload.state.final_result);
+      setInputEnabled(payload.state.input_enabled);
+      setMessages(payload.state.messages);
+      setIsSending(false);
+      setError(null);
+    });
+
+    socket.addEventListener("close", () => {
+      setIsConnected(false);
+      setIsSending(false);
+    });
+
+    socket.addEventListener("error", () => {
+      setError("Realtime chat connection failed.");
+    });
+
+    return () => {
+      socket.close();
+      socketRef.current = null;
+      setIsConnected(false);
+    };
+  }, [session?.borrower_profile.borrower_id]);
+
+  const connectionMessage = useMemo(() => {
+    if (!session) {
+      return null;
+    }
+    return makeSystemMessage(`Connected as ${session.borrower_profile.full_name}. You can now chat with the collections agent.`);
+  }, [session]);
+
+  const displayMessages = useMemo(
+    () => (connectionMessage ? [connectionMessage, ...messages] : messages),
+    [connectionMessage, messages]
+  );
+
   const isConversationClosed = useMemo(() => Boolean(finalResult), [finalResult]);
+  const isInputDisabled = !isConnected || !inputEnabled || isSending || isConversationClosed;
 
   async function handleSend(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!session) return;
-
     const message = draft.trim();
-    if (!message) return;
+    if (!message || !socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) {
+      return;
+    }
 
     setIsSending(true);
     setError(null);
     setDraft("");
-    setMessages((current) => [...current, makeMessage("borrower", message, "borrower")]);
-
-    try {
-      const response = await sendBorrowerChatMessage({
-        borrowerId: session.borrower_profile.borrower_id,
-        workflowId,
+    socketRef.current.send(
+      JSON.stringify({
+        type: "borrower_message",
         message,
-      });
-      setWorkflowId(response.workflow_id);
-      setFinalResult(response.final_result);
-
-      if (response.reply) {
-        setMessages((current) => [...current, makeMessage("agent", response.reply ?? "", "agent")]);
-      }
-    } catch (sendError) {
-      setError(sendError instanceof Error ? sendError.message : "Failed to send message");
-    } finally {
-      setIsSending(false);
-    }
+      })
+    );
   }
 
   function handleLogout() {
     sessionStorage.removeItem(BORROWER_SESSION_STORAGE_KEY);
+    socketRef.current?.close();
     router.push("/borrower/login");
   }
 
@@ -119,7 +164,7 @@ export function BorrowerChatPanel() {
         </div>
 
         <div className="borrower-chat-stream">
-          {messages.map((message) => (
+          {displayMessages.map((message) => (
             <article
               key={message.id}
               className={`message-row ${
@@ -142,12 +187,18 @@ export function BorrowerChatPanel() {
               rows={3}
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
-              placeholder={isConversationClosed ? "Conversation is closed." : "Type your message"}
-              disabled={isSending || isConversationClosed}
+              placeholder={
+                isConversationClosed
+                  ? "Conversation is closed."
+                  : inputEnabled
+                    ? "Type your message"
+                    : "Waiting for the next agent update."
+              }
+              disabled={isInputDisabled}
             />
           </label>
           <div className="form-actions">
-            <button type="submit" className="button button-primary" disabled={isSending || isConversationClosed}>
+            <button type="submit" className="button button-primary" disabled={isInputDisabled}>
               {isSending ? "Sending..." : "Send"}
             </button>
           </div>

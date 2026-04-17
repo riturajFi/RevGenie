@@ -8,13 +8,9 @@ export type BorrowerProfileCreateInput = {
     lenderId?: string;
     loanIdMasked?: string;
     amountDue?: number;
-    principalOutstanding?: number;
-    dpd?: number;
-    caseType?: string[];
     stage?: "ASSESSMENT" | "RESOLUTION" | "FINAL_NOTICE";
     caseStatus?: "OPEN" | "RESOLVED" | "CLOSED" | "STOP_CONTACT";
-    nextAllowedActions?: string[];
-    identityVerified?: boolean;
+    resolutionMode?: ResolutionMode;
   };
 };
 
@@ -29,12 +25,8 @@ export type BorrowerTestDefaults = {
   workflowId: string;
   loanIdMasked: string;
   amountDue: number;
-  principalOutstanding: number;
-  dpd: number;
-  caseType: string;
   stage: string;
   caseStatus: string;
-  nextAllowedActions: string;
 };
 
 export type ScenarioRecord = {
@@ -159,16 +151,11 @@ export type BorrowerCaseSnapshot = {
     lender_id: string;
     stage: string;
     case_status: string;
-    case_type: string[];
     amount_due: number;
-    identity_verified: boolean;
-    next_allowed_actions: string[];
     final_disposition: string | null;
   };
   attributes: Record<string, unknown>;
-  agent_context_summary: string | null;
   latest_handoff_summary: string | null;
-  latest_handoff_stage: string | null;
 };
 
 export type BorrowerPortalLoginResponse = {
@@ -192,3 +179,28 @@ export type BorrowerWorkflowMessageResponse = {
   voice_call_id: string | null;
   voice_call_status: string | null;
 };
+
+export type BorrowerConversationState = {
+  borrower_case: BorrowerCaseSnapshot;
+  workflow_id: string;
+  final_result: string | null;
+  input_enabled: boolean;
+  messages: BorrowerChatMessage[];
+};
+
+export type BorrowerSocketClientMessage = {
+  type: "borrower_message";
+  message: string;
+};
+
+export type BorrowerSocketServerEvent =
+  | {
+      type: "conversation_state";
+      state: BorrowerConversationState;
+      message?: null;
+    }
+  | {
+      type: "error";
+      state?: null;
+      message: string;
+    };

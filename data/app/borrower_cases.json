@@ -1,8 +1,7 @@
 {
   "b_001": {
-    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage RESOLUTION, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: cannot pay now, may pay later around 2026-04-20. Hardship signals: job_loss, medical_issue, student. Borrower stated position: No new borrower statement captured in the provided resolution-stage transcript segment after the agent's question. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
+    "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage FINAL_NOTICE, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: cannot pay now, may pay later around 2026-04-20. Hardship signals: job_loss, medical_issue, student. Borrower stated position: No new borrower statement captured in the reviewed resolution-stage transcript segment; prior hardship position remains on file. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
     "attributes": {
-      "assessment_completed": true,
       "assessment_notes": null,
       "borrower_capacity": {
         "available_now": 2000,
@@ -16,13 +15,9 @@
         "wants_settlement": true
       },
       "borrower_objections": [],
-      "borrower_stated_position": "No new borrower statement captured in the provided resolution-stage transcript segment after the agent's question.",
+      "borrower_stated_position": "No new borrower statement captured in the reviewed resolution-stage transcript segment; prior hardship position remains on file.",
       "contact_preferences": {
         "channel_verification_discomfort": true
-      },
-      "disclosure_status": {
-        "identity_disclosed": true,
-        "logging_disclosed": true
       },
       "disclosures": {
         "identity_disclosed": true,
@@ -33,7 +28,7 @@
         "claims_wrong_commitment": false
       },
       "dpd": 275,
-      "final_notice_notes": null,
+      "final_notice_notes": "Final notice stage opened after resolution call. Borrower-facing message sent referencing prior stated capacity of 2,000 and possible review around 2026-04-20. Advised that only policy-compliant options within 30 days may be considered and no arrangement is active unless approved.",
       "hardship_acknowledged": true,
       "hardship_flags": {
         "emotional_distress": false,
@@ -41,13 +36,13 @@
         "medical_issue": true,
         "student": true
       },
-      "last_contact_channel": "VOICE",
+      "last_contact_channel": "CHAT",
       "offers_made": [],
       "principal_outstanding": 10125,
-      "resolution_call_id": "call_a908cd31ac0b86472d46a714ecc",
+      "resolution_call_id": "call_4982580601129f7a3cf5e636f3a",
       "resolution_call_status": "ended",
       "resolution_mode": "VOICE",
-      "resolution_notes": "Resolution-stage call transcript reviewed. Agent asked about payment today toward '$1,250 balance discussed,' which conflicts with current case amount due 12,921 on loan ****4831. No borrower response captured in the provided transcript segment. Hardship context remains on file: job loss, medical issue, student; borrower previously indicated available now 2,000 and possible review/payment around 2026-04-20. Nira policy retrieved: no extensions beyond 30 days; reduced closure and structured payment plans require policy-compliant approval.",
+      "resolution_notes": "Resolution-stage transcript segment reviewed. Only agent opening/disclosures are present in the latest message; no borrower response captured, no hardship-option discussion completed in this segment, and no specific payment-plan or reduced-closure commitment was accepted. Policy checked: no extensions beyond 30 days; reduced closure and structured payment plans require policy-compliant approval.",
       "stop_contact_flag": false
     },
     "core": {
@@ -66,10 +61,10 @@
         "OFFER_PAYMENT_PLAN"
       ],
       "stage": "FINAL_NOTICE",
-      "workflow_id": "wf_20260417071207_nira_hardship_settlement"
+      "workflow_id": "wf_20260417084735_nira_hardship_settlement"
     },
-    "latest_handoff_stage": "RESOLUTION",
-    "latest_handoff_summary": "Conversation is already in progress; AI identity disclosure and recording/logging disclosure were already completed, and identity verification was already established before this stage. Current account context remains Nira loan ****4831 with case amount due 12,921; hardship signals on file are job loss, medical issue, and student status, with prior stated capacity of 2,000 available and possible further payment/review around 2026-04-20, and borrower wants settlement/closure while protecting CIBIL. In this resolution-stage transcript segment, Agent 2 only asked whether the borrower could make a payment today toward a '$1,250 balance discussed'; no borrower reply was captured, no stop-contact request was made, and no option was accepted. Agent 2 also checked policy/data showing Nira does not allow extensions beyond 30 days and that reduced closure and payment plans require compliant approval; note the quoted 1,250 figure conflicts with the current case amount due and should not be repeated without validation. Agent 3 should continue naturally from the existing hardship-aware resolution context, avoid repeating disclosures, verification, debt establishment, or already known hardship/timing facts, avoid relying on the unvalidated 1,250 figure, and proceed only with validated lender-approved hardship, payment-plan, or reduced-closure discussion."
+    "latest_handoff_stage": "FINAL_NOTICE",
+    "latest_handoff_summary": "Borrower confirmed reduced closure should be reviewed. Borrower was reminded that any reduced-closure option is subject to policy-compliant approval within a 30-day structure and that no arrangement is active unless approved."
   },
   "b_001_20260413133008185530_baseline": {
     "amount_due": 12921,

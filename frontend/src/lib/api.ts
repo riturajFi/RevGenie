@@ -23,6 +23,11 @@ import { MetaEvalLatestPair, MetaEvalRunRecord, MetaEvalRunRequest } from "@/typ
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
 
+export function getBorrowerRealtimeWebSocketUrl(borrowerId: string): string {
+  const base = API_BASE_URL.replace(/^http/, "ws");
+  return `${base}/borrower-realtime/ws/${borrowerId}`;
+}
+
 export async function createBorrowerProfile(
   payload: BorrowerProfileCreateInput
 ): Promise<BorrowerProfileRecord> {
@@ -41,13 +46,9 @@ export async function createBorrowerProfile(
         lender_id: caseOverrides.lenderId,
         loan_id_masked: caseOverrides.loanIdMasked,
         amount_due: caseOverrides.amountDue,
-        principal_outstanding: caseOverrides.principalOutstanding,
-        dpd: caseOverrides.dpd,
-        case_type: caseOverrides.caseType,
         stage: caseOverrides.stage,
         case_status: caseOverrides.caseStatus,
-        next_allowed_actions: caseOverrides.nextAllowedActions,
-        identity_verified: caseOverrides.identityVerified,
+        resolution_mode: caseOverrides.resolutionMode,
       },
     }),
   });

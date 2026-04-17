@@ -24,6 +24,7 @@ from app.orchestrator.activities import (
     run_final_notice_turn,
     run_resolution_turn,
     save_borrower_case,
+    start_final_notice_stage,
     start_resolution_call,
 )
 from app.orchestrator.workflows import BorrowerCollectionsWorkflow
@@ -48,6 +49,7 @@ async def main() -> None:
                 run_final_notice_turn,
                 start_resolution_call,
                 finalize_resolution_call,
+                start_final_notice_stage,
             ],
             activity_executor=activity_executor,
         )

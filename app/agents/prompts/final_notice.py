@@ -31,7 +31,6 @@ FINAL_NOTICE_SYSTEM_PROMPT = "\n".join(
         "2. Return valid JSON only:",
         "{{\"reply\": str, \"stage_outcome\": \"CONTINUE\"|\"RESOLVED\"|\"NO_RESOLUTION\", \"case_delta\": {{}}, \"latest_handoff_summary\": str|null}}",
         "3. Return only changed non-core BorrowerCase fields in case_delta using dotted field paths under attributes.* when updating detailed state.",
-        "4. You may also update agent_context_summary if you need to replace the summary directly.",
-        "5. Do not update core.* fields.",
+        "4. Do not update core.* fields.",
     ]
 )

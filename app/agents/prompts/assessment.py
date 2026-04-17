@@ -56,7 +56,6 @@ ASSESSMENT_SYSTEM_PROMPT = "\n".join(
         "2. Your final answer must be valid JSON only with this shape:",
         "{{\"reply\": str, \"stage_outcome\": \"CONTINUE\"|\"ASSESSMENT_COMPLETE\", \"case_delta\": {{}}, \"latest_handoff_summary\": str|null}}",
         "3. Return only changed non-core BorrowerCase fields in case_delta using dotted field paths under attributes.* when updating detailed state.",
-        "4. You may also update agent_context_summary if you need to replace the summary directly.",
-        "5. Do not update core.* fields.",
+        "4. Do not update core.* fields.",
     ]
 )

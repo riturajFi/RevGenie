@@ -8,6 +8,7 @@ from env_loader import load_env_file
 load_env_file()
 
 from app.api.borrower_auth import router as borrower_auth_router
+from app.api.borrower_realtime import router as borrower_realtime_router
 from app.api.borrower_case import router as borrower_case_router
 from app.api.borrower_profile import router as borrower_profile_router
 from app.api.evals import router as evals_router
@@ -31,6 +32,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(borrower_auth_router)
+app.include_router(borrower_realtime_router)
 app.include_router(borrower_case_router)
 app.include_router(borrower_profile_router)
 app.include_router(lender_policy_router)

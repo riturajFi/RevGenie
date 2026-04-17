@@ -58,5 +58,7 @@ class JsonFileBorrowerCaseStorage(BorrowerCaseStorage):
             return json.load(file)
 
     def _write(self, records: dict[str, dict]) -> None:
-        with self.path.open("w", encoding="utf-8") as file:
+        temp_path = self.path.with_suffix(f"{self.path.suffix}.tmp")
+        with temp_path.open("w", encoding="utf-8") as file:
             json.dump(records, file, indent=2, sort_keys=True)
+        temp_path.replace(self.path)

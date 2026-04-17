@@ -7,7 +7,7 @@ from temporalio import activity
 from app.agents.assessment.agent import AssessmentAgent
 from app.agents.final_notice.agent import FinalNoticeAgent
 from app.agents.resolution.agent import ResolutionAgent
-from app.domain.borrower_case import AgentStageOutcome, AgentTurnResult, BorrowerCase, ContactChannel, Stage
+from app.domain.borrower_case import AgentStageOutcome, AgentTurnResult, BorrowerCase, Stage
 from app.services.borrower_case import FileBorrowerCaseService
 from app.services.borrower_case_state import BorrowerCaseStateService
 from app.services.borrower_profile import FileBorrowerProfileService
@@ -39,13 +39,21 @@ def _save_case(borrower_case: BorrowerCase) -> BorrowerCase:
     return borrower_case_service.update_borrower_case(borrower_case.borrower_id, borrower_case)
 
 
-def _append_message(borrower_case: BorrowerCase, stage: Stage, sender_type: str, message: str) -> None:
+def _append_message(
+    borrower_case: BorrowerCase,
+    stage: Stage,
+    sender_type: str,
+    message: str,
+    *,
+    visible_to_borrower: bool = True,
+) -> None:
     chat_message_service.append_message(
         user_id=borrower_case.borrower_id,
         workflow_id=borrower_case.workflow_id,
         agent_id=stage.value,
         sender_type=sender_type,
         message=message,
+        visible_to_borrower=visible_to_borrower,
     )
 
 
@@ -122,6 +130,21 @@ def _transcript_as_text(turns: list[tuple[str, str]]) -> str:
     return "\n".join(f"{sender_type.upper()}: {text}" for sender_type, text in turns)
 
 
+def _default_voice_resolution_handoff(call: dict[str, Any]) -> str:
+    call_id = str(call.get("call_id") or "").strip()
+    call_status = str(call.get("call_status") or "").strip() or "ended"
+    if call_id:
+        return (
+            f"Agent 2 completed the resolution phone call ({call_id}) with status {call_status}. "
+            "No agreement was captured that can be treated as a confirmed deal. "
+            "Agent 3 should continue in chat from the existing account context without asking the borrower to repeat the call discussion."
+        )
+    return (
+        "Agent 2 completed the resolution phone call. No agreement was captured that can be treated as a confirmed deal. "
+        "Agent 3 should continue in chat from the existing account context without asking the borrower to repeat the call discussion."
+    )
+
+
 @activity.defn
 def load_borrower_case(borrower_id: str) -> BorrowerCase:
     return _load_case(borrower_id)
@@ -151,7 +174,6 @@ def run_assessment_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
         latest_handoff_summary=result.latest_handoff_summary,
     )
     updated_case.stage = Stage.ASSESSMENT
-    updated_case.last_contact_channel = ContactChannel.CHAT
     _append_message(borrower_case, Stage.ASSESSMENT, "agent", result.reply)
     return AgentTurnActivityResult(
         borrower_case=updated_case,
@@ -179,7 +201,6 @@ def run_resolution_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
         latest_handoff_summary=result.latest_handoff_summary,
     )
     updated_case.stage = Stage.RESOLUTION
-    updated_case.last_contact_channel = ContactChannel.CHAT
     _append_message(borrower_case, Stage.RESOLUTION, "agent", result.reply)
     return AgentTurnActivityResult(
         borrower_case=updated_case,
@@ -217,8 +238,45 @@ def run_final_notice_turn(input: AgentTurnActivityInput) -> AgentTurnActivityRes
         latest_handoff_summary=result.latest_handoff_summary,
     )
     updated_case.stage = Stage.FINAL_NOTICE
-    updated_case.last_contact_channel = ContactChannel.CHAT
     _append_message(borrower_case, Stage.FINAL_NOTICE, "agent", result.reply)
+    return AgentTurnActivityResult(
+        borrower_case=updated_case,
+        stage_result=result,
+    )
+
+
+@activity.defn
+def start_final_notice_stage(borrower_case: BorrowerCase) -> AgentTurnActivityResult:
+    _ensure_handoff_message(borrower_case, Stage.FINAL_NOTICE)
+    chat_history = _list_stage_messages(borrower_case, Stage.FINAL_NOTICE)
+    agent = FinalNoticeAgent(lender_id=borrower_case.lender_id)
+    result = agent.invoke_with_instruction(
+        borrower_id=borrower_case.borrower_id,
+        borrower_case=borrower_case,
+        chat_history=chat_history,
+        instruction=(
+            "Agent 2 has completed a resolution phone call and no deal was reached. "
+            "You are now taking over in FINAL_NOTICE. Send the first message to the borrower now. "
+            "Continue from the call context and latest handoff without asking the borrower to repeat details. "
+            "This is a stage-opening message after the voice call, so do not wait for a new borrower message before replying. "
+            "Keep stage_outcome=CONTINUE for this opening message unless the provided context already requires immediate closure."
+        ),
+        message="Open the final notice chat after the completed resolution phone call.",
+    )
+    if not result.reply.strip():
+        result.reply = (
+            "I have reviewed the recent call and I will continue with the final notice stage here in chat. "
+            "You do not need to repeat what was already discussed."
+        )
+    result.stage_outcome = AgentStageOutcome.CONTINUE
+    updated_case = borrower_case_state_service.apply_delta(
+        borrower_case=borrower_case,
+        case_delta=result.case_delta,
+        stage=Stage.FINAL_NOTICE,
+        latest_handoff_summary=result.latest_handoff_summary,
+    )
+    updated_case.stage = Stage.FINAL_NOTICE
+    _append_message(updated_case, Stage.FINAL_NOTICE, "agent", result.reply)
     return AgentTurnActivityResult(
         borrower_case=updated_case,
         stage_result=result,
@@ -275,6 +333,16 @@ def finalize_resolution_call(input: ResolutionCallActivityInput) -> AgentTurnAct
             ),
         )
 
+    if result.stage_outcome == AgentStageOutcome.CONTINUE:
+        result = AgentTurnResult(
+            reply=result.reply,
+            stage_outcome=AgentStageOutcome.NO_DEAL,
+            case_delta=result.case_delta,
+            latest_handoff_summary=result.latest_handoff_summary or _default_voice_resolution_handoff(call),
+        )
+    elif result.stage_outcome != AgentStageOutcome.DEAL_AGREED and not result.latest_handoff_summary:
+        result.latest_handoff_summary = _default_voice_resolution_handoff(call)
+
     updated_case = borrower_case_state_service.apply_delta(
         borrower_case=borrower_case,
         case_delta=result.case_delta,
@@ -282,12 +350,17 @@ def finalize_resolution_call(input: ResolutionCallActivityInput) -> AgentTurnAct
         latest_handoff_summary=result.latest_handoff_summary,
     )
     updated_case.stage = Stage.RESOLUTION
-    updated_case.last_contact_channel = ContactChannel.VOICE
     updated_case.resolution_call_id = str(call.get("call_id") or borrower_case.resolution_call_id or "")
     updated_case.resolution_call_status = str(call.get("call_status") or "ended")
 
     for sender_type, message in transcript_turns:
-        _append_message(borrower_case, Stage.RESOLUTION, sender_type, message)
+        _append_message(
+            borrower_case,
+            Stage.RESOLUTION,
+            sender_type,
+            message,
+            visible_to_borrower=False,
+        )
 
     return AgentTurnActivityResult(
         borrower_case=updated_case,

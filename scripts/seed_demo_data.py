@@ -7,16 +7,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from app.domain.borrower_case import (
-    BorrowerCapacity,
-    BorrowerCase,
-    BorrowerIntent,
-    CaseStatus,
-    ContactChannel,
-    DisputeFlags,
-    HardshipFlags,
-    Stage,
-)
+from app.domain.borrower_case import BorrowerCase, CaseStatus, ResolutionMode, Stage
 from app.domain.borrower_profile import BorrowerProfile
 from app.domain.lender_profile import LenderProfile
 from app.domain.lender_policy import LenderPolicy
@@ -69,119 +60,56 @@ loans = [
 ]
 
 borrower_cases = [
-    BorrowerCase(
-        borrower_id="b_001",
-        workflow_id="wf_001",
-        loan_id_masked="****4831",
-        lender_id="nira",
-        stage=Stage.ASSESSMENT,
-        case_status=CaseStatus.OPEN,
-        case_type=["SETTLEMENT_CANDIDATE"],
-        amount_due=12921,
-        principal_outstanding=10125,
-        dpd=275,
-        borrower_capacity=BorrowerCapacity(
-            can_pay_now=False,
-            available_now=6000,
-            can_pay_later=True,
-            expected_date="2026-04-20",
-        ),
-        borrower_intent=BorrowerIntent(
-            wants_settlement=True,
-            wants_full_closure=True,
-            protect_cibil=True,
-        ),
-        hardship_flags=HardshipFlags(
-            job_loss=True,
-            medical_issue=False,
-            student=True,
-            emotional_distress=False,
-        ),
-        dispute_flags=DisputeFlags(
-            claims_paid=False,
-            claims_wrong_commitment=False,
-        ),
-        offers_made=[],
-        next_allowed_actions=["OFFER_REDUCED_CLOSURE", "OFFER_PAYMENT_PLAN"],
-        stop_contact_flag=False,
-        identity_verified=True,
-        last_contact_channel=ContactChannel.CHAT,
+    BorrowerCase.model_validate(
+        {
+            "core": {
+                "borrower_id": "b_001",
+                "workflow_id": "wf_001",
+                "loan_id_masked": "****4831",
+                "lender_id": "nira",
+                "stage": Stage.ASSESSMENT,
+                "case_status": CaseStatus.OPEN,
+                "amount_due": 12921,
+                "final_disposition": None,
+            },
+            "attributes": {
+                "resolution_mode": ResolutionMode.VOICE.value,
+            },
+        }
     ),
-    BorrowerCase(
-        borrower_id="b_002",
-        workflow_id="wf_002",
-        loan_id_masked="****1184",
-        lender_id="slice",
-        stage=Stage.ASSESSMENT,
-        case_status=CaseStatus.OPEN,
-        case_type=["PAYMENT_PLAN_CANDIDATE"],
-        amount_due=8400,
-        principal_outstanding=7000,
-        dpd=94,
-        borrower_capacity=BorrowerCapacity(
-            can_pay_now=True,
-            available_now=2000,
-            can_pay_later=True,
-            expected_date="2026-04-25",
-        ),
-        borrower_intent=BorrowerIntent(
-            wants_settlement=False,
-            wants_full_closure=False,
-            protect_cibil=True,
-        ),
-        hardship_flags=HardshipFlags(
-            job_loss=False,
-            medical_issue=False,
-            student=False,
-            emotional_distress=False,
-        ),
-        dispute_flags=DisputeFlags(
-            claims_paid=False,
-            claims_wrong_commitment=False,
-        ),
-        offers_made=[],
-        next_allowed_actions=["OFFER_PAYMENT_PLAN"],
-        stop_contact_flag=False,
-        identity_verified=False,
-        last_contact_channel=ContactChannel.CHAT,
+    BorrowerCase.model_validate(
+        {
+            "core": {
+                "borrower_id": "b_002",
+                "workflow_id": "wf_002",
+                "loan_id_masked": "****1184",
+                "lender_id": "slice",
+                "stage": Stage.ASSESSMENT,
+                "case_status": CaseStatus.OPEN,
+                "amount_due": 8400,
+                "final_disposition": None,
+            },
+            "attributes": {
+                "resolution_mode": ResolutionMode.VOICE.value,
+            },
+        }
     ),
-    BorrowerCase(
-        borrower_id="b_003",
-        workflow_id="wf_003",
-        loan_id_masked="****9007",
-        lender_id="nira",
-        stage=Stage.FINAL_NOTICE,
-        case_status=CaseStatus.OPEN,
-        case_type=["FINAL_NOTICE"],
-        amount_due=22500,
-        principal_outstanding=18000,
-        dpd=320,
-        borrower_capacity=BorrowerCapacity(
-            can_pay_now=False,
-            available_now=0,
-            can_pay_later=False,
-            expected_date=None,
-        ),
-        borrower_intent=BorrowerIntent(
-            wants_settlement=False,
-            wants_full_closure=False,
-            protect_cibil=False,
-        ),
-        hardship_flags=HardshipFlags(
-            job_loss=False,
-            medical_issue=True,
-            student=False,
-            emotional_distress=False,
-        ),
-        dispute_flags=DisputeFlags(
-            claims_paid=False,
-            claims_wrong_commitment=True,
-        ),
-        offers_made=[],
-        next_allowed_actions=["SEND_FINAL_NOTICE", "FLAG_FOR_REVIEW"],
-        stop_contact_flag=False,
-        identity_verified=True,
-        last_contact_channel=ContactChannel.VOICE,
+    BorrowerCase.model_validate(
+        {
+            "core": {
+                "borrower_id": "b_003",
+                "workflow_id": "wf_003",
+                "loan_id_masked": "****9007",
+                "lender_id": "nira",
+                "stage": Stage.FINAL_NOTICE,
+                "case_status": CaseStatus.OPEN,
+                "amount_due": 22500,
+                "final_disposition": None,
+            },
+            "attributes": {
+                "resolution_mode": ResolutionMode.VOICE.value,
+            },
+        }
     ),
 ]
 

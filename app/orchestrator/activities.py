@@ -7,6 +7,7 @@ from temporalio import activity
 from app.agents.assessment.agent import AssessmentAgent
 from app.agents.final_notice.agent import FinalNoticeAgent
 from app.agents.resolution.agent import ResolutionAgent
+from app.agents.resolution.call_analyzer import ResolutionCallAnalyzer
 from app.domain.borrower_case import AgentStageOutcome, AgentTurnResult, BorrowerCase, Stage
 from app.services.borrower_case import FileBorrowerCaseService
 from app.services.borrower_case_state import BorrowerCaseStateService
@@ -310,17 +311,17 @@ def finalize_resolution_call(input: ResolutionCallActivityInput) -> AgentTurnAct
     borrower_case = input.borrower_case
     call = input.call
     _ensure_handoff_message(borrower_case, Stage.RESOLUTION)
-    chat_history = _list_stage_messages(borrower_case, Stage.RESOLUTION)
     transcript_turns = _extract_transcript_turns(call)
     transcript_text = _transcript_as_text(transcript_turns)
 
     if transcript_text:
-        agent = ResolutionAgent(lender_id=borrower_case.lender_id)
-        result = agent.analyze_completed_voice_call(
+        analyzer = ResolutionCallAnalyzer(lender_id=borrower_case.lender_id)
+        # In voice mode, there is no meaningful pre-call RESOLUTION chat thread.
+        # The agent already receives latest_handoff_summary through borrower_case context.
+        result = analyzer.analyze_completed_call(
             borrower_id=borrower_case.borrower_id,
             borrower_case=borrower_case,
             transcript=transcript_text,
-            chat_history=chat_history,
         )
     else:
         result = AgentTurnResult(

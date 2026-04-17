@@ -426,5 +426,65 @@
         }
       }
     ]
+  },
+  "sim_20260417203108_9a005e": {
+    "run_id": "sim_20260417203108_9a005e",
+    "workflow_id": "wf_20260417203108_105e7d",
+    "experiment_id": "exp_20260417203108_a66e8e",
+    "borrower_id": "b_002",
+    "scenario_id": "hard_reject_final_notice",
+    "status": "completed",
+    "started_at": "2026-04-17T20:31:08.595363+00:00",
+    "finished_at": "2026-04-17T20:31:42.395924+00:00",
+    "error": null,
+    "evaluations": []
+  },
+  "sim_20260417203223_1fea9c": {
+    "run_id": "sim_20260417203223_1fea9c",
+    "workflow_id": "wf_20260417203223_923cc8",
+    "experiment_id": "exp_20260417203223_42a010",
+    "borrower_id": "b_008",
+    "scenario_id": "wants_fast_closure_but_negotiates_terms",
+    "status": "completed",
+    "started_at": "2026-04-17T20:32:23.604832+00:00",
+    "finished_at": "2026-04-17T20:33:05.246810+00:00",
+    "error": null,
+    "evaluations": []
+  },
+  "sim_20260417203536_16a734": {
+    "run_id": "sim_20260417203536_16a734",
+    "workflow_id": "wf_20260417203536_16ad66",
+    "experiment_id": "exp_20260417203536_270a2c",
+    "borrower_id": "b_008",
+    "scenario_id": "wants_fast_closure_but_negotiates_terms",
+    "status": "completed",
+    "started_at": "2026-04-17T20:35:36.420619+00:00",
+    "finished_at": "2026-04-17T20:36:16.946097+00:00",
+    "error": null,
+    "evaluations": []
+  },
+  "sim_20260417230724_5af5f7": {
+    "run_id": "sim_20260417230724_5af5f7",
+    "workflow_id": "wf_20260417230724_5a9775",
+    "experiment_id": "exp_20260417230724_3a400d",
+    "borrower_id": "b_002",
+    "scenario_id": "hard_reject_final_notice",
+    "status": "completed",
+    "started_at": "2026-04-17T23:07:24.005888+00:00",
+    "finished_at": "2026-04-17T23:08:13.434358+00:00",
+    "error": null,
+    "evaluations": []
+  },
+  "sim_20260417231446_c92bdf": {
+    "run_id": "sim_20260417231446_c92bdf",
+    "workflow_id": "wf_20260417231446_fa7974",
+    "experiment_id": "exp_20260417231446_6e62e7",
+    "borrower_id": "b_008",
+    "scenario_id": "wants_fast_closure_but_negotiates_terms",
+    "status": "completed",
+    "started_at": "2026-04-17T23:14:46.328941+00:00",
+    "finished_at": "2026-04-17T23:15:39.082494+00:00",
+    "error": null,
+    "evaluations": []
   }
 }

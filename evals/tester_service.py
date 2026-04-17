@@ -13,6 +13,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 from app.domain.borrower_case import BorrowerCase, Stage
+from app.services.borrower_profile import FileBorrowerProfileService
 from app.services.borrower_case import FileBorrowerCaseService
 
 
@@ -105,6 +106,7 @@ class TesterAgent:
     project_context_repository: ProjectContextRepository = ProjectContextRepository(DEFAULT_PROJECT_CONTEXTS_PATH)
     scenario_repository: ScenarioRepository = ScenarioRepository(DEFAULT_SCENARIOS_PATH)
     borrower_case_service: FileBorrowerCaseService = FileBorrowerCaseService()
+    borrower_profile_service: FileBorrowerProfileService = FileBorrowerProfileService()
 
     def __post_init__(self) -> None:
         model_name = os.getenv("OPENAI_TESTER_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
@@ -188,6 +190,7 @@ class TesterAgent:
                 break
 
             decision = self._build_next_message(
+                borrower_id=borrower_id,
                 project_context=project_context,
                 scenario=scenario,
                 conversation_history=conversation_history,
@@ -215,12 +218,16 @@ class TesterAgent:
 
     def _build_next_message(
         self,
+        borrower_id: str,
         project_context: ProjectContext,
         scenario: Scenario,
         conversation_history: list[tuple[str, str]],
         system_reply: str | None,
         follow_up_index: int,
     ) -> BorrowerTurnDecision:
+        actual_borrower_profile = self.borrower_profile_service.get_borrower_profile(
+            scenario.borrower_id or borrower_id
+        )
         prompt = ChatPromptTemplate.from_messages(
             [
                 (
@@ -229,7 +236,10 @@ class TesterAgent:
                         "You are the borrower simulator for a debt-collections test harness. "
                         "Generate only the next borrower turn from the scenario persona and intent. "
                         "Do not roleplay as the lender. "
-                        "If the scenario objective is achieved or the stop condition is met, set continue_conversation to false."
+                        "If the scenario objective is achieved or the stop condition is met, set continue_conversation to false. "
+                        "Keep borrower behavior realistic and proportional. Do not jump immediately to the strongest refusal, "
+                        "verification refusal, or stop-contact style language unless the scenario explicitly supports that behavior. "
+                        "Escalate naturally: ask for clarification first, then show skepticism or reluctance, and only then refuse or set contact limits if the conversation justifies it."
                     ),
                 ),
                 ("human", "{input_prompt}"),
@@ -251,14 +261,19 @@ class TesterAgent:
                         f"Scenario id: {scenario.scenario_id}\n"
                         f"Scenario description:\n{scenario_description}\n\n"
                         f"Borrower profile:\n{scenario.borrower_profile}\n\n"
+                        f"Attached actual borrower profile for the borrower you are simulating:\n"
+                        f"{json.dumps(actual_borrower_profile.model_dump(mode='json') if actual_borrower_profile else {'found': False, 'borrower_id': scenario.borrower_id or borrower_id}, indent=2)}\n\n"
                         f"Borrower intent:\n{scenario.borrower_intent}\n\n"
                         f"Reply style rules:\n{json.dumps(scenario.reply_style_rules, indent=2)}\n\n"
                         f"Stop condition:\n{scenario.stop_condition}\n\n"
                         f"Conversation so far:\n{history_text}\n\n"
                         f"Latest system reply:\n{system_reply or ''}\n\n"
                         f"Turn nonce: {follow_up_index}-{time_ns()}\n\n"
+                        "If the system asks the borrower to identify themselves, you may use the attached actual borrower profile consistently. "
+                        "Do not claim facts that are not present in the attached borrower profile.\n\n"
                         "Do not repeat the exact same borrower line as the previous borrower turn. "
-                        "If the system keeps repeating itself, escalate the borrower's refusal naturally in one concise sentence.\n\n"
+                        "If the system keeps repeating itself, escalate the borrower's refusal naturally in one concise sentence. "
+                        "Do not use phrases like 'I won't verify', 'don't contact me again', or equivalent hard-boundary language unless the scenario explicitly calls for that behavior or the conversation has already justified that escalation.\n\n"
                         "Return JSON with field:\n"
                         "- message: string\n"
                         "Keep the borrower message concise and consistent with persona."

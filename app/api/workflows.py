@@ -46,6 +46,18 @@ async def _submit_borrower_message(
 
     workflow_id = payload.workflow_id or borrower_case.workflow_id
     resolved_mode = payload.resolution_mode or default_resolution_mode
+    print(
+        "[workflow_message_request]",
+        {
+            "borrower_id": payload.borrower_id,
+            "workflow_id": workflow_id,
+            "persisted_workflow_id": borrower_case.workflow_id,
+            "stage": borrower_case.stage.value,
+            "mode": resolved_mode.value,
+            "message": payload.message,
+        },
+        flush=True,
+    )
     client = await get_temporal_client()
 
     try:
@@ -68,7 +80,32 @@ async def _submit_borrower_message(
             ),
         )
     except Exception as error:
+        print(
+            "[workflow_message_failed]",
+            {
+                "borrower_id": payload.borrower_id,
+                "workflow_id": workflow_id,
+                "mode": resolved_mode.value,
+                "error": str(error),
+            },
+            flush=True,
+        )
         raise HTTPException(status_code=500, detail=str(error)) from error
+
+    print(
+        "[workflow_message_response]",
+        {
+            "borrower_id": payload.borrower_id,
+            "workflow_id": workflow_id,
+            "stage": state.borrower_case.stage.value,
+            "mode": state.borrower_case.resolution_mode.value,
+            "reply_present": bool(state.last_agent_reply),
+            "final_result": state.final_result,
+            "call_id": state.borrower_case.resolution_call_id,
+            "call_status": state.borrower_case.resolution_call_status,
+        },
+        flush=True,
+    )
 
     return WorkflowMessageResponse(
         workflow_id=workflow_id,

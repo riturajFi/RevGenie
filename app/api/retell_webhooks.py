@@ -59,7 +59,7 @@ async def handle_retell_event(request: Request) -> Response:
 
     workflow_id = _resolve_workflow_id(payload.call)
     if not workflow_id:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Workflow not found for Retell call event")
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
 
     client = await get_temporal_client()
     handle = client.get_workflow_handle(workflow_id)

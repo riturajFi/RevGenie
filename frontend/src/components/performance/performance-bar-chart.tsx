@@ -14,6 +14,18 @@ function buildScenarioColors(scenarios: string[]): Record<string, string> {
   }, {});
 }
 
+function getMedianScore(scores: number[]): number {
+  if (scores.length === 0) {
+    return 0;
+  }
+  const sorted = [...scores].sort((a, b) => a - b);
+  const midpoint = Math.floor(sorted.length / 2);
+  if (sorted.length % 2 === 0) {
+    return (sorted[midpoint - 1] + sorted[midpoint]) / 2;
+  }
+  return sorted[midpoint];
+}
+
 type PerformanceBarChartProps = {
   points: EvalPerformancePoint[];
 };
@@ -39,6 +51,11 @@ export function PerformanceBarChart({ points }: PerformanceBarChartProps) {
   const maxScore = 10;
   const svgWidth = points.length * (barWidth + gap) + gap;
   const svgHeight = chartHeight + bottomPadding;
+  const scores = points.map((point) => point.overall_score);
+  const meanScore = scores.reduce((sum, score) => sum + score, 0) / scores.length;
+  const medianScore = getMedianScore(scores);
+  const meanY = topPadding + chartHeight - (Math.max(0, Math.min(meanScore, maxScore)) / maxScore) * chartHeight;
+  const medianY = topPadding + chartHeight - (Math.max(0, Math.min(medianScore, maxScore)) / maxScore) * chartHeight;
 
   return (
     <div className="performance-layout">
@@ -49,6 +66,14 @@ export function PerformanceBarChart({ points }: PerformanceBarChartProps) {
             <span>{scenario}</span>
           </div>
         ))}
+        <div className="legend-item">
+          <span className="legend-line-swatch mean-line" />
+          <span>Mean</span>
+        </div>
+        <div className="legend-item">
+          <span className="legend-line-swatch median-line" />
+          <span>Median</span>
+        </div>
       </div>
 
       <div className="performance-chart-wrap">
@@ -64,6 +89,19 @@ export function PerformanceBarChart({ points }: PerformanceBarChartProps) {
               </g>
             );
           })}
+
+          <g>
+            <line x1={0} x2={svgWidth} y1={meanY} y2={meanY} className="chart-reference-line mean-line" />
+            <text x={svgWidth - 8} y={meanY - 6} textAnchor="end" className="chart-reference-label mean-line-label">
+              Mean {meanScore.toFixed(2)}
+            </text>
+          </g>
+          <g>
+            <line x1={0} x2={svgWidth} y1={medianY} y2={medianY} className="chart-reference-line median-line" />
+            <text x={svgWidth - 8} y={medianY - 6} textAnchor="end" className="chart-reference-label median-line-label">
+              Median {medianScore.toFixed(2)}
+            </text>
+          </g>
 
           {points.map((point, index) => {
             const x = gap + index * (barWidth + gap);

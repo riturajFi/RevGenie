@@ -9,6 +9,7 @@ from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 
 from app.services.simulation_run_history import SimulationRunHistoryService
+from evals.evaluation_config_service.service import EvaluationConfig, EvaluationConfigService, evaluation_config_service
 from evals.logging_service.logger import get_logs
 from evals.judge_service.service import JudgeService
 from evals.judgment_management_service.service import (
@@ -35,11 +36,21 @@ DEFAULT_EXPECTED_FAIL_SCORE_MAX = 6.0
 DEFAULT_EXPECTED_PASS_SCORE_MIN = 8.0
 
 
+class EvaluationConfigDraft(BaseModel):
+    benchmark_scenario_ids: list[str] = Field(default_factory=list)
+    benchmark_max_turns: int
+    required_mean_score_delta: float
+    required_win_rate: float
+    require_compliance_non_regression: bool
+
+
 class MetaEvalProposalDraft(BaseModel):
     correctness_analysis: list[ExperimentCorrectnessAnalysis]
     metric_actions: list[MetaEvalMetricAction]
     updated_metrics_json: list[MetricDefinition]
     metrics_diff_summary: str
+    updated_evaluation_config_json: EvaluationConfigDraft
+    evaluation_config_diff_summary: str
     why_this_change: str
     expected_improvement: str
 
@@ -82,6 +93,7 @@ class MetaEvaluatorService:
         judge_service: JudgeService | None = None,
         judgment_record_service: JudgmentRecordService | None = None,
         metrics_registry: MetricsRegistry | None = None,
+        evaluation_config_service_: EvaluationConfigService | None = None,
         meta_eval_run_service: MetaEvalRunRecordService | None = None,
         run_history_service: SimulationRunHistoryService | None = None,
         model: str | None = None,
@@ -90,6 +102,7 @@ class MetaEvaluatorService:
         self.judge_service = judge_service or JudgeService()
         self.judgment_record_service = judgment_record_service or JudgmentRecordService()
         self.metrics_registry = metrics_registry or MetricsRegistry()
+        self.evaluation_config_service = evaluation_config_service_ or evaluation_config_service
         self.meta_eval_run_service = meta_eval_run_service or MetaEvalRunRecordService()
         self.run_history_service = run_history_service or SimulationRunHistoryService()
         self.model_name = model or os.getenv("OPENAI_JUDGE_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
@@ -108,6 +121,7 @@ class MetaEvaluatorService:
         before_transcript = self._load_transcript(before_experiment_id)
         after_transcript = self._load_transcript(after_experiment_id)
         active_metrics = self.metrics_registry.get_active_metrics(metrics_key)
+        active_evaluation_config = self.evaluation_config_service.get_active()
         company_policy = get_company_policy_text(lender_id)
 
         proposal = self._propose_candidate_metrics(
@@ -116,11 +130,16 @@ class MetaEvaluatorService:
             before_transcript=before_transcript,
             after_transcript=after_transcript,
             active_metrics=active_metrics.model_dump(),
+            active_evaluation_config=active_evaluation_config.model_dump(),
             company_policy=company_policy,
         )
         proposal = self._cap_metric_expansion(
             proposal=proposal,
             active_metrics=active_metrics.metrics,
+        )
+        candidate_evaluation_config = self._sanitize_evaluation_config_proposal(
+            proposal.updated_evaluation_config_json,
+            active_config=active_evaluation_config,
         )
 
         candidate_metrics_version = self.metrics_registry.create_metrics_version(
@@ -128,6 +147,17 @@ class MetaEvaluatorService:
             metrics=proposal.updated_metrics_json,
             diff_summary=proposal.metrics_diff_summary,
         )
+        if self._same_evaluation_config(active_evaluation_config, candidate_evaluation_config):
+            candidate_evaluation_config_version = active_evaluation_config
+        else:
+            candidate_evaluation_config_version = self.evaluation_config_service.create_version(
+                benchmark_scenario_ids=candidate_evaluation_config.benchmark_scenario_ids,
+                benchmark_max_turns=candidate_evaluation_config.benchmark_max_turns,
+                required_mean_score_delta=candidate_evaluation_config.required_mean_score_delta,
+                required_win_rate=candidate_evaluation_config.required_win_rate,
+                require_compliance_non_regression=candidate_evaluation_config.require_compliance_non_regression,
+                diff_summary=proposal.evaluation_config_diff_summary,
+            )
 
         validation_experiment_ids = self._select_validation_experiment_ids(
             exclude_ids=[before_experiment_id, after_experiment_id],
@@ -161,6 +191,8 @@ class MetaEvaluatorService:
         activation_status = "inactive"
         if normalized_decision == "ADOPT" and force_activate:
             self.metrics_registry.activate_version(metrics_key, candidate_metrics_version.version_id)
+            if candidate_evaluation_config_version.version_id != active_evaluation_config.version_id:
+                self.evaluation_config_service.activate_version(candidate_evaluation_config_version.version_id)
             activation_status = "active"
         elif normalized_decision == "REJECT":
             activation_status = "rejected"
@@ -182,10 +214,14 @@ class MetaEvaluatorService:
             lender_id=lender_id,
             old_metrics_version=active_metrics.version_id,
             candidate_metrics_version=candidate_metrics_version.version_id,
+            old_evaluation_config_version=active_evaluation_config.version_id,
+            candidate_evaluation_config_version=candidate_evaluation_config_version.version_id,
             correctness_analysis=proposal.correctness_analysis,
             metric_actions=proposal.metric_actions,
             candidate_metrics=proposal.updated_metrics_json,
             metrics_diff_summary=proposal.metrics_diff_summary,
+            candidate_evaluation_config=candidate_evaluation_config,
+            evaluation_config_diff_summary=proposal.evaluation_config_diff_summary,
             why_this_change=proposal.why_this_change,
             expected_improvement=proposal.expected_improvement,
             old_validation_judgments=old_validation_judgments,
@@ -223,6 +259,7 @@ class MetaEvaluatorService:
         before_transcript: str,
         after_transcript: str,
         active_metrics: dict,
+        active_evaluation_config: dict,
         company_policy: str,
     ) -> MetaEvalProposalDraft:
         prompt = ChatPromptTemplate.from_messages(
@@ -241,9 +278,12 @@ class MetaEvaluatorService:
                     "Treat the before and after transcripts as first-class evidence. "
                     "Determine whether the evaluator judge was correct for each experiment. "
                     "Keep changes minimal and surgical. Prefer keeping or rewriting existing metrics over adding new ones. "
+                    "You may also propose a minimal update to the evaluation control config, but only within these fields: "
+                    "benchmark_scenario_ids, benchmark_max_turns, required_mean_score_delta, required_win_rate, "
+                    "and require_compliance_non_regression. "
                     "Add at most 3 new metrics in a single proposal, and prefer 0-2 new metrics unless a blind spot clearly requires more. "
                     "Then decide for each metric whether it should stay, be deleted, be added, or be rewritten. "
-                    "Return a full candidate metrics list with policy_references for every metric. "
+                    "Return a full candidate metrics list with policy_references for every metric, and return the full candidate evaluation config. "
                     "Return strict JSON only."
                 ),
                 "human_prompt": self._build_proposal_prompt(
@@ -252,6 +292,7 @@ class MetaEvaluatorService:
                     before_transcript=before_transcript,
                     after_transcript=after_transcript,
                     active_metrics=active_metrics,
+                    active_evaluation_config=active_evaluation_config,
                     company_policy=company_policy,
                 ),
             }
@@ -308,12 +349,14 @@ class MetaEvaluatorService:
         before_transcript: str,
         after_transcript: str,
         active_metrics: dict,
+        active_evaluation_config: dict,
         company_policy: str,
     ) -> str:
         return (
             f"Global compliance rules:\n{get_compliance_rules_text()}\n\n"
             f"Company policy:\n{company_policy or 'No lender policy found.'}\n\n"
             f"Active metrics version JSON:\n{json.dumps(active_metrics, indent=2)}\n\n"
+            f"Active evaluation config JSON:\n{json.dumps(active_evaluation_config, indent=2)}\n\n"
             f"Before experiment record:\n{json.dumps(before_record.model_dump(), indent=2)}\n\n"
             f"Before transcript:\n{before_transcript}\n\n"
             f"After experiment record:\n{json.dumps(after_record.model_dump(), indent=2)}\n\n"
@@ -323,12 +366,15 @@ class MetaEvaluatorService:
             "- metric_actions: one item per metric decision with action keep|delete|add|rewrite, rationale, policy_references, proposed_metric when relevant, and evidence\n"
             "- updated_metrics_json: the full candidate metrics list\n"
             "- metrics_diff_summary\n"
+            "- updated_evaluation_config_json: the full candidate evaluation config\n"
+            "- evaluation_config_diff_summary\n"
             "- why_this_change\n"
             "- expected_improvement\n"
             "Every candidate metric in updated_metrics_json must include policy_references.\n"
             f"Do not add more than {MAX_NEW_METRICS_PER_META_EVAL} new metrics beyond the active metrics list.\n"
             "Prefer 0-2 new metrics. If an existing metric can be rewritten instead of adding a new one, rewrite it.\n"
-            "Preserve existing metric_ids for kept or rewritten metrics. Use new metric_ids only for truly new metrics."
+            "Preserve existing metric_ids for kept or rewritten metrics. Use new metric_ids only for truly new metrics.\n"
+            "Keep evaluation config changes minimal. If no config change is needed, return the active evaluation config unchanged."
         )
 
     def _build_validation_prompt(
@@ -793,4 +839,47 @@ class MetaEvaluatorService:
                 "metrics_diff_summary": f"{proposal.metrics_diff_summary}{trim_note}",
                 "why_this_change": f"{proposal.why_this_change}{trim_note}",
             }
+        )
+
+    def _sanitize_evaluation_config_proposal(
+        self,
+        proposed: EvaluationConfigDraft,
+        *,
+        active_config: EvaluationConfig,
+    ) -> EvaluationConfig:
+        available_scenarios = {
+            item.scenario_id
+            for item in self.run_history_service.list_runs()
+            if item.scenario_id
+        }
+        scenario_ids = [
+            scenario_id
+            for scenario_id in proposed.benchmark_scenario_ids
+            if scenario_id in available_scenarios
+        ]
+        if not scenario_ids:
+            scenario_ids = list(active_config.benchmark_scenario_ids)
+
+        return EvaluationConfig(
+            version_id=active_config.version_id,
+            benchmark_scenario_ids=scenario_ids,
+            benchmark_max_turns=max(8, min(int(proposed.benchmark_max_turns), 60)),
+            required_mean_score_delta=max(0.0, min(float(proposed.required_mean_score_delta), 2.0)),
+            required_win_rate=max(0.5, min(float(proposed.required_win_rate), 1.0)),
+            require_compliance_non_regression=bool(proposed.require_compliance_non_regression),
+            diff_summary=active_config.diff_summary,
+            created_at=active_config.created_at,
+        )
+
+    def _same_evaluation_config(
+        self,
+        left: EvaluationConfig,
+        right: EvaluationConfig,
+    ) -> bool:
+        return (
+            left.benchmark_scenario_ids == right.benchmark_scenario_ids
+            and left.benchmark_max_turns == right.benchmark_max_turns
+            and left.required_mean_score_delta == right.required_mean_score_delta
+            and left.required_win_rate == right.required_win_rate
+            and left.require_compliance_non_regression == right.require_compliance_non_regression
         )

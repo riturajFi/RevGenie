@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime, timezone
 from pathlib import Path
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 THIS_DIR = Path(__file__).resolve().parent
@@ -26,6 +26,45 @@ class StoredJudgeResult(BaseModel):
     verdict: str
 
 
+class PromptBenchmarkThresholds(BaseModel):
+    required_mean_score_delta: float
+    required_win_rate: float
+    require_compliance_non_regression: bool
+
+
+class PromptBenchmarkScenarioResult(BaseModel):
+    scenario_id: str
+    borrower_id: str
+    lender_id: str
+    baseline_experiment_id: str
+    candidate_experiment_id: str
+    baseline_score: float
+    candidate_score: float
+    baseline_verdict: str
+    candidate_verdict: str
+    baseline_compliance_score: float
+    candidate_compliance_score: float
+    compliance_delta: float
+    winner: str
+
+
+class PromptBenchmarkSummary(BaseModel):
+    decision: str
+    reason: str
+    scenario_ids: list[str]
+    thresholds: PromptBenchmarkThresholds
+    baseline_mean_score: float
+    candidate_mean_score: float
+    mean_score_delta: float
+    baseline_pass_rate: float
+    candidate_pass_rate: float
+    candidate_win_rate: float
+    baseline_mean_compliance_score: float
+    candidate_mean_compliance_score: float
+    compliance_non_regression: bool
+    scenario_results: list[PromptBenchmarkScenarioResult] = Field(default_factory=list)
+
+
 class PromptChangeProposal(BaseModel):
     agent_id: str
     old_version_id: str
@@ -33,6 +72,7 @@ class PromptChangeProposal(BaseModel):
     diff_summary: str
     why_this_change: str | None = None
     activation_status: str
+    benchmark_result: PromptBenchmarkSummary | None = None
 
 
 class JudgmentRecord(BaseModel):

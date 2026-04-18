@@ -161,7 +161,10 @@ def run_assessment_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
     borrower_case = input.borrower_case
     chat_history = _list_stage_messages(borrower_case, Stage.ASSESSMENT)
     _append_message(borrower_case, Stage.ASSESSMENT, "borrower", input.message)
-    agent = AssessmentAgent(lender_id=borrower_case.lender_id)
+    agent = AssessmentAgent(
+        lender_id=borrower_case.lender_id,
+        prompt_version_id=borrower_case.prompt_version_for("agent_1"),
+    )
     result = agent.invoke(
         borrower_id=borrower_case.borrower_id,
         message=input.message,
@@ -188,7 +191,10 @@ def run_resolution_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
     _ensure_handoff_message(borrower_case, Stage.RESOLUTION)
     chat_history = _list_stage_messages(borrower_case, Stage.RESOLUTION)
     _append_message(borrower_case, Stage.RESOLUTION, "borrower", input.message)
-    agent = ResolutionAgent(lender_id=borrower_case.lender_id)
+    agent = ResolutionAgent(
+        lender_id=borrower_case.lender_id,
+        prompt_version_id=borrower_case.prompt_version_for("agent_2"),
+    )
     result = agent.invoke(
         borrower_id=borrower_case.borrower_id,
         message=input.message,
@@ -215,7 +221,10 @@ def run_final_notice_turn(input: AgentTurnActivityInput) -> AgentTurnActivityRes
     _ensure_handoff_message(borrower_case, Stage.FINAL_NOTICE)
     chat_history = _list_stage_messages(borrower_case, Stage.FINAL_NOTICE)
     _append_message(borrower_case, Stage.FINAL_NOTICE, "borrower", input.message)
-    agent = FinalNoticeAgent(lender_id=borrower_case.lender_id)
+    agent = FinalNoticeAgent(
+        lender_id=borrower_case.lender_id,
+        prompt_version_id=borrower_case.prompt_version_for("agent_3"),
+    )
     result = agent.invoke(
         borrower_id=borrower_case.borrower_id,
         message=input.message,
@@ -241,7 +250,10 @@ def run_final_notice_turn(input: AgentTurnActivityInput) -> AgentTurnActivityRes
 def start_final_notice_stage(borrower_case: BorrowerCase) -> AgentTurnActivityResult:
     _ensure_handoff_message(borrower_case, Stage.FINAL_NOTICE)
     chat_history = _list_stage_messages(borrower_case, Stage.FINAL_NOTICE)
-    agent = FinalNoticeAgent(lender_id=borrower_case.lender_id)
+    agent = FinalNoticeAgent(
+        lender_id=borrower_case.lender_id,
+        prompt_version_id=borrower_case.prompt_version_for("agent_3"),
+    )
     result = agent.invoke_with_instruction(
         borrower_id=borrower_case.borrower_id,
         borrower_case=borrower_case,
@@ -302,7 +314,10 @@ def finalize_resolution_call(input: ResolutionCallActivityInput) -> AgentTurnAct
     transcript_text = _transcript_as_text(transcript_turns)
 
     if transcript_text:
-        analyzer = ResolutionCallAnalyzer(lender_id=borrower_case.lender_id)
+        analyzer = ResolutionCallAnalyzer(
+            lender_id=borrower_case.lender_id,
+            prompt_version_id=borrower_case.prompt_version_for("agent_2"),
+        )
         # In voice mode, there is no meaningful pre-call RESOLUTION chat thread.
         # The agent already receives latest_handoff_summary through borrower_case context.
         result = analyzer.analyze_completed_call(

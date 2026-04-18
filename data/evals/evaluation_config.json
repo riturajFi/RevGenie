@@ -1,0 +1,20 @@
+{
+  "active_version_id": "v1",
+  "versions": [
+    {
+      "version_id": "v1",
+      "benchmark_scenario_ids": [
+        "hard_reject_final_notice",
+        "willing_but_constrained_payment_plan",
+        "disputes_outstanding_amount_needs_reconciliation",
+        "wants_fast_closure_but_negotiates_terms"
+      ],
+      "benchmark_max_turns": 24,
+      "required_mean_score_delta": 0.25,
+      "required_win_rate": 0.5,
+      "require_compliance_non_regression": true,
+      "diff_summary": null,
+      "created_at": "2026-04-18T01:34:00.763073+00:00"
+    }
+  ]
+}

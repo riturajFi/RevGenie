@@ -28,5 +28,23 @@
     "amount_due": 22500,
     "borrower_id": "b_003",
     "lender_id": "nira"
+  },
+  "acc_005": {
+    "account_id": "acc_005",
+    "amount_due": 12921,
+    "borrower_id": "b_5c8fd9f1",
+    "lender_id": "nira"
+  },
+  "acc_007": {
+    "account_id": "acc_007",
+    "amount_due": 16480,
+    "borrower_id": "b_007",
+    "lender_id": "nira"
+  },
+  "acc_008": {
+    "account_id": "acc_008",
+    "amount_due": 12921,
+    "borrower_id": "b_008",
+    "lender_id": "nira"
   }
 }

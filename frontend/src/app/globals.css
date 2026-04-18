@@ -178,6 +178,31 @@ textarea {
   color: var(--text);
 }
 
+.live-transcript {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.live-transcript-row {
+  display: grid;
+  gap: 4px;
+}
+
+.live-transcript-row strong {
+  font-size: 0.85rem;
+  color: var(--accent-deep);
+}
+
+.live-transcript-row span {
+  color: var(--text);
+  line-height: 1.5;
+}
+
 .sidebar-nav {
   display: grid;
   gap: 10px;
@@ -541,6 +566,14 @@ textarea {
   display: inline-block;
 }
 
+.legend-line-swatch {
+  width: 18px;
+  height: 0;
+  border-top-width: 2px;
+  border-top-style: dashed;
+  display: inline-block;
+}
+
 .performance-chart-wrap {
   overflow-x: auto;
   border-radius: 14px;
@@ -561,6 +594,34 @@ textarea {
 .chart-grid-label {
   font-size: 10px;
   fill: rgba(69, 53, 40, 0.7);
+}
+
+.chart-reference-line {
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+}
+
+.chart-reference-label {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.mean-line {
+  stroke: #1f4f99;
+  border-top-color: #1f4f99;
+}
+
+.median-line {
+  stroke: #9a3412;
+  border-top-color: #9a3412;
+}
+
+.mean-line-label {
+  fill: #1f4f99;
+}
+
+.median-line-label {
+  fill: #9a3412;
 }
 
 .chart-x-label {

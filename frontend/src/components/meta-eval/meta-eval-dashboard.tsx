@@ -187,6 +187,13 @@ export function MetaEvalDashboard() {
                   </strong>
                 </div>
                 <div className="meta-summary-card">
+                  <span>Eval Config Version</span>
+                  <strong>
+                    {selectedRun.old_evaluation_config_version ?? "-"} {"->"}{" "}
+                    {selectedRun.candidate_evaluation_config_version ?? "-"}
+                  </strong>
+                </div>
+                <div className="meta-summary-card">
                   <span>Activation Status</span>
                   <strong>{selectedRun.activation_status}</strong>
                 </div>
@@ -225,6 +232,36 @@ export function MetaEvalDashboard() {
                 <h3>Metrics Diff Summary</h3>
                 <p>{selectedRun.metrics_diff_summary}</p>
               </div>
+
+              {selectedRun.evaluation_config_diff_summary ? (
+                <div className="meta-section">
+                  <h3>Evaluation Config Diff</h3>
+                  <p>{selectedRun.evaluation_config_diff_summary}</p>
+                  {selectedRun.candidate_evaluation_config ? (
+                    <div className="meta-list">
+                      <article className="meta-list-item">
+                        <header>
+                          <strong>{selectedRun.candidate_evaluation_config.version_id}</strong>
+                        </header>
+                        <p>
+                          Benchmark scenarios: {selectedRun.candidate_evaluation_config.benchmark_scenario_ids.join(", ")}
+                        </p>
+                        <p>Benchmark max turns: {selectedRun.candidate_evaluation_config.benchmark_max_turns}</p>
+                        <p>
+                          Required mean score delta: {selectedRun.candidate_evaluation_config.required_mean_score_delta}
+                        </p>
+                        <p>
+                          Required win rate: {selectedRun.candidate_evaluation_config.required_win_rate}
+                        </p>
+                        <p>
+                          Compliance non-regression:{" "}
+                          {selectedRun.candidate_evaluation_config.require_compliance_non_regression ? "yes" : "no"}
+                        </p>
+                      </article>
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
 
               <div className="meta-section">
                 <h3>Validation Summary</h3>

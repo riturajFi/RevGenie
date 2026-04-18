@@ -39,6 +39,7 @@ class BorrowerConversationService:
         default_resolution_mode: ResolutionMode,
         workflow_id: str | None = None,
         resolution_mode: ResolutionMode | None = None,
+        prompt_version_overrides: dict[str, str] | None = None,
     ) -> CollectionsWorkflowState:
         borrower_case = self.get_borrower_case(borrower_id)
         if not self._input_enabled(borrower_case):
@@ -59,6 +60,7 @@ class BorrowerConversationService:
                     borrower_id=borrower_id,
                     workflow_id=target_workflow_id,
                     resolution_mode=resolved_mode,
+                    prompt_version_overrides=prompt_version_overrides or {},
                 ),
                 id=target_workflow_id,
                 task_queue=os.getenv("TEMPORAL_TASK_QUEUE", "collections-task-queue"),

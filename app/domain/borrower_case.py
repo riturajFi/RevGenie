@@ -59,6 +59,7 @@ class BorrowerCase(BaseModel):
         "resolution_mode",
         "resolution_call_id",
         "resolution_call_status",
+        "prompt_version_overrides",
     }
 
     @model_validator(mode="before")
@@ -208,11 +209,40 @@ class BorrowerCase(BaseModel):
     def resolution_call_status(self, value: Optional[str]) -> None:
         self._set_attribute("resolution_call_status", value)
 
+    @property
+    def prompt_version_overrides(self) -> dict[str, str]:
+        value = self._get_attribute("prompt_version_overrides")
+        if not isinstance(value, dict):
+            return {}
+        return {
+            str(agent_id): str(version_id)
+            for agent_id, version_id in value.items()
+            if str(agent_id).strip() and str(version_id).strip()
+        }
+
+    @prompt_version_overrides.setter
+    def prompt_version_overrides(self, value: dict[str, str] | None) -> None:
+        if not value:
+            self._set_attribute("prompt_version_overrides", None)
+            return
+        normalized = {
+            str(agent_id): str(version_id)
+            for agent_id, version_id in value.items()
+            if str(agent_id).strip() and str(version_id).strip()
+        }
+        self._set_attribute("prompt_version_overrides", normalized or None)
+
+    def prompt_version_for(self, agent_id: str) -> str | None:
+        return self.prompt_version_overrides.get(agent_id)
+
     def to_agent_context(self) -> dict[str, Any]:
         salient_attributes = {}
         resolution_mode = self.attributes.get("resolution_mode")
         if resolution_mode not in (None, ""):
             salient_attributes["resolution_mode"] = resolution_mode
+        prompt_version_overrides = self.prompt_version_overrides
+        if prompt_version_overrides:
+            salient_attributes["prompt_version_overrides"] = prompt_version_overrides
         return {
             "core": self.core.model_dump(mode="json"),
             "latest_handoff_summary": self.latest_handoff_summary,

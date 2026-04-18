@@ -19,18 +19,29 @@ from app.services.compliance import FileComplianceService
 
 
 class FinalNoticeAgent:
-    def __init__(self, lender_id: str | None = None, model: str | None = None) -> None:
+    def __init__(
+        self,
+        lender_id: str | None = None,
+        prompt_version_id: str | None = None,
+        model: str | None = None,
+    ) -> None:
         self.lender_id = lender_id or os.getenv("LENDER_ID", "")
         if not self.lender_id:
             raise ValueError("LENDER_ID must be set in env or passed to FinalNoticeAgent")
 
+        self.prompt_version_id = prompt_version_id
         model_name = model or os.getenv("OPENAI_MODEL", "gpt-4o-mini")
         self.llm = ChatOpenAI(model=model_name, temperature=0)
         self.tools = build_final_notice_tools(self.lender_id)
         self.executor = self._build_executor()
 
     def _build_executor(self) -> AgentExecutor:
-        prompt_text = json_prompt_storage_service.get_active_prompt("agent_3").prompt_text
+        prompt = (
+            json_prompt_storage_service.get_prompt_version("agent_3", self.prompt_version_id)
+            if self.prompt_version_id
+            else json_prompt_storage_service.get_active_prompt("agent_3")
+        )
+        prompt_text = prompt.prompt_text
         compliance_rules = FileComplianceService().get_rules_text()
         system_prompt = self._compose_system_prompt(prompt_text, compliance_rules)
         prompt = ChatPromptTemplate.from_messages(

@@ -46,10 +46,23 @@ export type MetaEvalRunRecord = {
   lender_id: string | null;
   old_metrics_version: string;
   candidate_metrics_version: string;
+  old_evaluation_config_version: string | null;
+  candidate_evaluation_config_version: string | null;
   correctness_analysis: MetaEvalCorrectnessAnalysis[];
   metric_actions: MetaEvalMetricAction[];
   candidate_metrics: MetaEvalMetricDefinition[];
   metrics_diff_summary: string;
+  candidate_evaluation_config: {
+    version_id: string;
+    benchmark_scenario_ids: string[];
+    benchmark_max_turns: number;
+    required_mean_score_delta: number;
+    required_win_rate: number;
+    require_compliance_non_regression: boolean;
+    diff_summary: string | null;
+    created_at: string;
+  } | null;
+  evaluation_config_diff_summary: string | null;
   why_this_change: string;
   expected_improvement: string;
   validation_decision: {

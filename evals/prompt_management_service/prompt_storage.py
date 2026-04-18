@@ -46,6 +46,10 @@ class PromptStorageService(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def get_prompt_version(self, agent_id: str, version_id: str) -> PromptStorageVersion:
+        raise NotImplementedError
+
+    @abstractmethod
     def get_prompt_history(self, agent_id: str) -> list[PromptStorageVersion]:
         raise NotImplementedError
 
@@ -82,6 +86,11 @@ class JsonPromptStorageService(PromptStorageService):
         if active_version_id is None:
             raise KeyError("Active prompt not found")
         return self._get_version_from_state(state, agent_id, active_version_id)
+
+    def get_prompt_version(self, agent_id: str, version_id: str) -> PromptStorageVersion:
+        self._ensure_agent(agent_id)
+        state = self._read_state()
+        return self._get_version_from_state(state, agent_id, version_id)
 
     def get_prompt_history(self, agent_id: str) -> list[PromptStorageVersion]:
         self._ensure_agent(agent_id)

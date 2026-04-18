@@ -7,6 +7,7 @@ import {
   applyPromptChanges,
   createScenario,
   evaluateSimulation,
+  getPromptChangeJobStatus,
   getSimulationEvents,
   getSimulationStatus,
   listScenarios,
@@ -17,6 +18,7 @@ import {
   EvaluateSimulationResponse,
   PromptChangeApplyResult,
   PromptChangeBatchResponse,
+  PromptChangeJobStatusResponse,
   ScenarioCreateInput,
   ScenarioRecord,
   SimulationStatusResponse,
@@ -144,10 +146,9 @@ export function SimulationRunner() {
   const [autoActivatePromptChanges, setAutoActivatePromptChanges] = useState(true);
   const [isApplyingPromptChanges, setIsApplyingPromptChanges] = useState(false);
   const [promptChanges, setPromptChanges] = useState<PromptChangeBatchResponse | null>(null);
+  const [promptChangeJob, setPromptChangeJob] = useState<PromptChangeJobStatusResponse | null>(null);
   const [isActivatingByAgent, setIsActivatingByAgent] = useState<Record<string, boolean>>({});
   const [isRevertingByAgent, setIsRevertingByAgent] = useState<Record<string, boolean>>({});
-  const [proposalSourceRunId, setProposalSourceRunId] = useState<string | null>(null);
-  const [postProposalEvaluationRunIds, setPostProposalEvaluationRunIds] = useState<string[]>([]);
 
   async function loadScenarios() {
     setIsLoadingScenarios(true);
@@ -203,6 +204,48 @@ export function SimulationRunner() {
     };
   }, [runId]);
 
+  useEffect(() => {
+    if (!runId || !promptChangeJob || (promptChangeJob.status !== "queued" && promptChangeJob.status !== "running")) {
+      return;
+    }
+    const activeRunId = runId;
+    const activeJobId = promptChangeJob.job_id;
+    let cancelled = false;
+
+    async function pollPromptChangeJob() {
+      try {
+        const nextJob = await getPromptChangeJobStatus(activeRunId, activeJobId);
+        if (cancelled) return;
+        setPromptChangeJob(nextJob);
+        if (nextJob.status === "completed") {
+          setPromptChanges({
+            run_id: nextJob.run_id,
+            workflow_id: nextJob.workflow_id,
+            experiment_id: nextJob.experiment_id,
+            results: nextJob.results,
+          });
+          return;
+        }
+        if (nextJob.status === "failed") {
+          setError(nextJob.error || "Prompt change job failed.");
+          return;
+        }
+        if (nextJob.status === "queued" || nextJob.status === "running") {
+          window.setTimeout(pollPromptChangeJob, 900);
+        }
+      } catch (pollError) {
+        if (!cancelled) {
+          setError(pollError instanceof Error ? pollError.message : "Failed to poll prompt change job.");
+        }
+      }
+    }
+
+    void pollPromptChangeJob();
+    return () => {
+      cancelled = true;
+    };
+  }, [runId, promptChangeJob]);
+
   async function handleCreateScenario(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsCreatingScenario(true);
@@ -234,6 +277,8 @@ export function SimulationRunner() {
     setEvents([]);
     setExpandedStateLogIds([]);
     setEvaluation(null);
+    setPromptChanges(null);
+    setPromptChangeJob(null);
     setIsActivatingByAgent({});
     setIsRevertingByAgent({});
     try {
@@ -266,9 +311,6 @@ export function SimulationRunner() {
     try {
       const result = await evaluateSimulation(runId);
       setEvaluation(result);
-      if (promptChanges && proposalSourceRunId && runId !== proposalSourceRunId) {
-        setPostProposalEvaluationRunIds((current) => (current.includes(runId) ? current : [...current, runId]));
-      }
     } catch (evaluateError) {
       setError(evaluateError instanceof Error ? evaluateError.message : "Failed to evaluate simulation.");
     } finally {
@@ -282,9 +324,16 @@ export function SimulationRunner() {
     setError(null);
     try {
       const result = await applyPromptChanges(runId, autoActivatePromptChanges);
-      setPromptChanges(result);
-      setProposalSourceRunId(runId);
-      setPostProposalEvaluationRunIds([]);
+      setPromptChanges(null);
+      setPromptChangeJob({
+        ...result,
+        started_at: new Date().toISOString(),
+        finished_at: null,
+        message: "Queued prompt improvement run.",
+        error: null,
+        agent_progress: [],
+        results: [],
+      });
     } catch (applyError) {
       setError(applyError instanceof Error ? applyError.message : "Failed to apply prompt changes.");
     } finally {
@@ -306,7 +355,7 @@ export function SimulationRunner() {
             result.agent_id === item.agent_id
               ? {
                   ...result,
-                  activation_status: "active",
+                  activation_status: "candidate",
                 }
               : result
           ),
@@ -454,23 +503,65 @@ export function SimulationRunner() {
                 checked={autoActivatePromptChanges}
                 onChange={(event) => setAutoActivatePromptChanges(event.target.checked)}
               />
-              <span>Auto-activate prompt changes</span>
+              <span>Auto-activate only if benchmark passes</span>
             </label>
             <button
               type="button"
               className="button button-primary"
               onClick={handleApplyPromptChanges}
-              disabled={isApplyingPromptChanges}
+              disabled={
+                isApplyingPromptChanges ||
+                promptChangeJob?.status === "queued" ||
+                promptChangeJob?.status === "running"
+              }
             >
-              {isApplyingPromptChanges ? "Proposing..." : "Propose Prompt Changes (Agent 1, 2, 3)"}
+              {isApplyingPromptChanges || promptChangeJob?.status === "queued" || promptChangeJob?.status === "running"
+                ? "Running Prompt Improvement..."
+                : "Propose Prompt Changes (Agent 1, 2, 3)"}
             </button>
           </div>
           {promptChanges ? (
             <p className="prompt-change-note">
-              {postProposalEvaluationRunIds.length > 0
-                ? "Post-proposal simulation + judgement detected. Revert is now available per agent."
-                : "After proposing changes, run a new simulation and evaluate it to enable per-agent revert."}
+              Candidate prompt versions are benchmarked on the fixed evaluation set before they can be adopted.
             </p>
+          ) : null}
+          {promptChangeJob && (promptChangeJob.status === "queued" || promptChangeJob.status === "running") ? (
+            <div className="prompt-change-results">
+              <h4>Prompt Change Progress</h4>
+              <p>{promptChangeJob.message}</p>
+              <div className="evaluation-metrics">
+                {promptChangeJob.agent_progress.map((progress) => (
+                  <article className="metric-card" key={progress.agent_id}>
+                    <header>
+                      <strong>{progress.agent_id}</strong>
+                      <span>{progress.status.toUpperCase()}</span>
+                    </header>
+                    <p>{progress.message}</p>
+                    {progress.variant ? (
+                      <p>
+                        Current run: {progress.variant === "current_prompt" ? "current prompt" : "new prompt"}
+                      </p>
+                    ) : null}
+                    {progress.total_runs > 0 ? (
+                      <p>
+                        Scenario tests: {progress.completed_runs}/{progress.total_runs}
+                      </p>
+                    ) : null}
+                    {progress.scenario_id ? <p>Current scenario: {progress.scenario_id}</p> : null}
+                    {progress.transcript_events.length > 0 ? (
+                      <div className="live-transcript">
+                        {progress.transcript_events.map((event, index) => (
+                          <div className="live-transcript-row" key={`${progress.agent_id}-${index}`}>
+                            <strong>{actorLabel(event.actor)}</strong>
+                            <span>{event.message}</span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                  </article>
+                ))}
+              </div>
+            </div>
           ) : null}
           <div className="evaluation-metrics">
             {evaluation.result.scores.map((item) => (
@@ -498,7 +589,32 @@ export function SimulationRunner() {
                     <p>
                       Version: {result.old_version_id} {"->"} {result.new_version_id}
                     </p>
-                    {result.activation_status === "inactive" ? (
+                    {result.benchmark_result ? (
+                      <>
+                        <p>
+                          Benchmark: {result.benchmark_result.baseline_mean_score.toFixed(2)} {"->"}{" "}
+                          {result.benchmark_result.candidate_mean_score.toFixed(2)} (
+                          {result.benchmark_result.mean_score_delta >= 0 ? "+" : ""}
+                          {result.benchmark_result.mean_score_delta.toFixed(2)})
+                        </p>
+                        <p>
+                          Scenario wins: {(result.benchmark_result.candidate_win_rate * 100).toFixed(0)}% {" | "}
+                          Compliance stable: {result.benchmark_result.compliance_non_regression ? "yes" : "no"}
+                        </p>
+                        <p>{result.benchmark_result.reason}</p>
+                        {result.benchmark_result.scenario_results.length > 0 ? (
+                          <div className="meta-pill-row">
+                            {result.benchmark_result.scenario_results.map((scenarioResult) => (
+                              <span key={scenarioResult.scenario_id} className="meta-chip">
+                                {scenarioResult.scenario_id}: {scenarioResult.baseline_score.toFixed(1)} {"->"}{" "}
+                                {scenarioResult.candidate_score.toFixed(1)}
+                              </span>
+                            ))}
+                          </div>
+                        ) : null}
+                      </>
+                    ) : null}
+                    {result.activation_status === "candidate" ? (
                       <button
                         type="button"
                         className="button button-secondary"
@@ -508,7 +624,7 @@ export function SimulationRunner() {
                         {isActivatingByAgent[result.agent_id] ? "Activating..." : "Activate"}
                       </button>
                     ) : null}
-                    {postProposalEvaluationRunIds.length > 0 ? (
+                    {result.activation_status === "active" ? (
                       <button
                         type="button"
                         className="button button-secondary"

@@ -164,6 +164,7 @@ class BorrowerCollectionsWorkflow:
         borrower_case.case_status = CaseStatus.OPEN
         borrower_case.final_disposition = None
         borrower_case.resolution_mode = input.resolution_mode
+        borrower_case.prompt_version_overrides = input.prompt_version_overrides
         borrower_case = await self._activity(save_borrower_case, borrower_case)
         self.state = CollectionsWorkflowState(
             borrower_case=borrower_case,

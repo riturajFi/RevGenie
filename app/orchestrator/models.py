@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.domain.borrower_case import AgentTurnResult, BorrowerCase, ResolutionMode, Stage
 
@@ -11,6 +11,7 @@ class CollectionsWorkflowInput(BaseModel):
     borrower_id: str
     workflow_id: str
     resolution_mode: ResolutionMode = ResolutionMode.CHAT
+    prompt_version_overrides: dict[str, str] = Field(default_factory=dict)
 
 
 class CollectionsWorkflowState(BaseModel):

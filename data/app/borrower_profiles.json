@@ -24,6 +24,16 @@
     "full_name": "Rohit Iyer",
     "phone_number": "+919900000003"
   },
+  "b_007": {
+    "borrower_id": "b_007",
+    "full_name": "Priya Nair",
+    "phone_number": "+919900000712"
+  },
+  "b_008": {
+    "borrower_id": "b_008",
+    "full_name": "Karan Mehta",
+    "phone_number": "+919900000824"
+  },
   "b_284fa42e": {
     "borrower_id": "b_284fa42e",
     "full_name": "Aarav Sharma",

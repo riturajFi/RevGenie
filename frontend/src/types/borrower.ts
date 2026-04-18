@@ -121,13 +121,84 @@ export type PromptChangeApplyResult = {
   new_version_id: string;
   diff_summary: string;
   why_this_change: string;
-  activation_status: "active" | "inactive";
+  activation_status: "active" | "candidate" | "rejected" | "no_change";
+  benchmark_result: {
+    decision: string;
+    reason: string;
+    scenario_ids: string[];
+    thresholds: {
+      required_mean_score_delta: number;
+      required_win_rate: number;
+      require_compliance_non_regression: boolean;
+    };
+    baseline_mean_score: number;
+    candidate_mean_score: number;
+    mean_score_delta: number;
+    baseline_pass_rate: number;
+    candidate_pass_rate: number;
+    candidate_win_rate: number;
+    baseline_mean_compliance_score: number;
+    candidate_mean_compliance_score: number;
+    compliance_non_regression: boolean;
+    scenario_results: {
+      scenario_id: string;
+      borrower_id: string;
+      lender_id: string;
+      baseline_experiment_id: string;
+      candidate_experiment_id: string;
+      baseline_score: number;
+      candidate_score: number;
+      baseline_verdict: string;
+      candidate_verdict: string;
+      baseline_compliance_score: number;
+      candidate_compliance_score: number;
+      compliance_delta: number;
+      winner: string;
+    }[];
+  } | null;
 };
 
 export type PromptChangeBatchResponse = {
   run_id: string;
   workflow_id: string;
   experiment_id: string;
+  results: PromptChangeApplyResult[];
+};
+
+export type PromptChangeJobStartResponse = {
+  job_id: string;
+  run_id: string;
+  workflow_id: string;
+  experiment_id: string;
+  status: "queued" | "running" | "completed" | "failed";
+};
+
+export type PromptChangeAgentProgress = {
+  agent_id: string;
+  status: string;
+  stage: string | null;
+  message: string | null;
+  scenario_id: string | null;
+  variant: string | null;
+  completed_runs: number;
+  total_runs: number;
+  transcript_events: {
+    actor: string;
+    message: string;
+  }[];
+};
+
+export type PromptChangeJobStatusResponse = {
+  job_id: string;
+  run_id: string;
+  workflow_id: string;
+  experiment_id: string;
+  status: "queued" | "running" | "completed" | "failed";
+  started_at: string;
+  finished_at: string | null;
+  message: string | null;
+  error: string | null;
+  agent_progress: PromptChangeAgentProgress[];
   results: PromptChangeApplyResult[];
 };
 

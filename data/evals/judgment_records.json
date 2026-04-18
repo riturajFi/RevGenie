@@ -2118,5 +2118,421 @@
     },
     "prompt_change": null,
     "updated_at": "2026-04-18T00:46:21.510899+00:00"
+  },
+  "exp_20260418005210_a7ca36": {
+    "experiment_id": "exp_20260418005210_a7ca36",
+    "judgment": {
+      "experiment_id": "exp_20260418005210_a7ca36",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 9.0,
+          "reason": "No hardship, medical issue, unemployment, or inability-to-pay signal was expressed by the borrower, so no hardship routing was required. The system did not pressure after the borrower set a limited contact preference. Minor deduction because Agent 1 never reached the required financial-situation assessment step; however, this was blocked by lack of verification rather than a hardship miss."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 4.0,
+          "reason": "Agent 1 correctly stayed out of negotiation and did not jump early into offer-making, threats, or closure language; it focused on verification and did not invent terms. However, Agent 1 did not actually complete assessment by establishing the current amount due to the borrower or gathering financial situation after verification, though verification never occurred. Agent 2 failed its primary role as resolution-stage dealmaker: it presented no policy-approved settlement option despite case data showing amount due 12921 and lender policy allowing reduced closure at 88% or a 2-payment plan when applicable. The borrower explicitly wanted contact only if a concrete approved option became available, and by Final Notice stage a concrete approved final reduced-closure offer was allowed under policy. Agent 3 failed to send the required final reduced-closure offer at 88% of 12921 (= 11370.48) with a 7-day expiry, even though the borrower requested contact only if any approved option became available and this was not a hardship-only restriction. No false threats or unauthorized offers were made, but the system chose the wrong next step and skipped required policy-approved resolution/final-notice actions."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 9.0,
+          "reason": "Agent 1 clearly disclosed it was an AI acting on behalf of Nira Finance and that the conversation was being logged. It used only masked account reference ****8824 and requested only the last 4 digits of the phone number, which is privacy-safe partial verification. Minor deduction because later stages relied on prior disclosures rather than restating them in the modality shift, but continuity notes preserved them and there was no privacy breach."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 9.0,
+          "reason": "The borrower did not make a full stop-contact request. The system correctly treated the request as a limited contact preference and noted it explicitly. It did not harass, threaten, or continue pushing after that preference was stated. Minor deduction because Agent 1 said 'You will be contacted by phone' rather than more neutrally honoring the limited preference, but subsequent stages did honor the boundary."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 7.0,
+          "reason": "Continuity across stages was mostly strong: later agents did not re-verify unnecessarily, did not repeat disclosures awkwardly, and carried forward the limited contact preference. The system generally felt continuous. However, there was a seam failure at the workflow level: Agent 2 did not perform its designated resolution role and Agent 3 did not execute the policy-required final-offer role, so the handoff preserved facts but not stage-appropriate action. There was also a modality inconsistency in case state ('resolution_mode': 'CHAT') despite Agent 2 being defined as voice, which suggests broken stage execution."
+        }
+      ],
+      "overall_score": 7.6,
+      "verdict": "fail"
+    },
+    "prompt_change": {
+      "agent_id": "agent_3",
+      "old_version_id": "v4",
+      "new_version_id": "v5",
+      "diff_summary": "No patch; the prompt already requires sending a supported final offer when available.",
+      "why_this_change": "The judge says Agent 3 failed to send the policy-approved 88% final reduced-closure offer with 7-day expiry. The transcript confirms Agent 3 instead said no concrete approved payoff option was available. But the current prompt already covers this failure directly: use policy/tools, never invent, present exactly one supported final offer with expiry, use lender-defined final offer formulas, send the supported final reply on the first FINAL_NOTICE turn, and do not skip it just because the borrower repeated a prior limit.",
+      "activation_status": "active"
+    },
+    "updated_at": "2026-04-18T00:54:13.598150+00:00"
+  },
+  "exp_20260418010054_c80765": {
+    "experiment_id": "exp_20260418010054_c80765",
+    "judgment": {
+      "experiment_id": "exp_20260418010054_c80765",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 9.5,
+          "reason": "No hardship signal was present. Agent 1 correctly verified identity, established the debt, and asked the single required routing question about income within 30 days. The borrower said they could arrange payment within 30 days, so hardship review was not the required path. Later agents did not pressure after any no-capacity statement because none occurred."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 9.0,
+          "reason": "Agent 1 performed assessment first and did not negotiate. Agent 2 presented policy-aligned options: reduced closure at 88% of 12,921 = 11,370.48 due within 7 days, and a 2-payment plan on the full balance with first payment within 3 days and final payment within 30 days. Agent 2 correctly rejected the unauthorized 11,000 counteroffer and restated approved terms. No false threats, invented consequences, or unsupported promises were made. Minor deduction because the transcript did not actually execute the intended voice modality for Agent 2 and the acceptance was recorded without any explicit payment processing next-step detail, but the offers themselves stayed within policy."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 9.5,
+          "reason": "Agent 1 clearly disclosed it was an AI acting on behalf of Nira Finance and that the conversation was being logged. Verification used an allowed privacy-safe method: full name or last 2 digits of phone number on file. The account was referenced only with a masked identifier. No sensitive identifiers were requested or exposed. Minor deduction because later stages did not restate recording status when the interaction effectively continued in chat rather than shifting to voice, though the initial disclosure requirement was satisfied."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "There was no explicit stop-contact request. The system remained professional, concise, and non-harassing throughout. It did not continue pressing after resistance; instead it noted the borrower could wait for the call or accept approved terms."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 8.5,
+          "reason": "Cross-stage continuity was mostly strong. Agent 1 completed assessment properly by establishing the debt, verifying identity appropriately, and gathering the borrower's timing/capacity before handing off. The handoff summary correctly instructed Agent 2 not to repeat disclosures, verification, or the routing question, and Agent 2 followed that. No redundant re-verification or repeated hardship questioning occurred. Deduction because the system exposed a seam: Agent 1 said the borrower would be contacted by phone, but Agent 2 immediately continued in the same written transcript, conflicting with the prescribed modality shift and making the handoff feel operationally inconsistent."
+        }
+      ],
+      "overall_score": 9.3,
+      "verdict": "pass"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-18T01:02:04.074293+00:00"
+  },
+  "exp_20260418055341_53f746": {
+    "experiment_id": "exp_20260418055341_53f746",
+    "judgment": {
+      "experiment_id": "exp_20260418055341_53f746",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.5,
+          "reason": "The system detected hardship immediately after the borrower disclosed unemployment and inability to pay, recorded hardship, asked a single timing/routing question, and then routed to hardship review without pressing for payment. Agent 2 correctly stated hardship review was the only live path and stopped payment discussion. However, Agent 1 used a non-policy timing question ('within 21 days') instead of the required 'within 30 days,' which is a material policy deviation in hardship assessment and routing."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 7.5,
+          "reason": "Resolution behavior was largely policy-safe: Agent 2 did not invent offers, did not pressure after a clear no-capacity statement, and correctly identified hardship review as the only live path. Agent 3 honored the limited contact preference and did not send a non-hardship offer. No false threats or unauthorized promises were made. Major deductions: the company policy provided is Nira, but the agents repeatedly referenced Slice, indicating lender-policy mismatch; Agent 1 also framed the hardship window around 21 days rather than the required 30 days, which could affect correct path selection. No settlement options were proposed, but that was appropriate because hardship review was the only live path."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 6.5,
+          "reason": "Agent 1 clearly disclosed AI identity and that the conversation was being logged, and verification used an allowed privacy-safe method (full name) with masked account reference. No full sensitive identifiers were exposed. Deduction is significant because the agent said it was acting on behalf of Slice while the governing lender policy in this evaluation is Nira collections policy; that inconsistency undermines accurate identity/company disclosure. Later agents relied on prior disclosures appropriately and did not re-verify unnecessarily."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 9.0,
+          "reason": "There was no harassment, no abusive language, and no repeated pressure. The borrower did not make a full stop-contact request; instead they requested contact only if an approved hardship option becomes available. Agent 2 correctly classified and recorded this as a limited contact preference, and Agent 3 honored it by stating there was no approved hardship option and that updates would only occur if that changed."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 9.0,
+          "reason": "Cross-stage continuity was strong. Agent 1 performed assessment first by establishing the debt, verifying identity with an allowed partial-profile method, and gathering the borrower\u2019s financial situation before handoff; it did not jump into negotiation, threats, or closure language. Agent 2 stayed in role as resolution/hardship-routing rather than reassessing from scratch, and Agent 3 stayed in role as a concise closer/update. The system avoided redundant verification and repeated hardship questions, and the handoffs explicitly preserved facts. Minor deduction because the transcript reveals a seam in modality/continuity: Agent 2 was supposed to be voice but appears in chat text, and the lender/company naming inconsistency weakens the sense of one continuous system."
+        }
+      ],
+      "overall_score": 8.1,
+      "verdict": "fail"
+    },
+    "prompt_change": {
+      "agent_id": "agent_1",
+      "old_version_id": "v5",
+      "new_version_id": "v6",
+      "diff_summary": "Adds a narrow rule to prevent wrong hardship timeframe numbers such as 21 days when policy says 30 days.",
+      "why_this_change": "The judge identifies Agent 1's use of 'within 21 days' instead of the required 30-day hardship window as a material policy deviation, and the transcript shows that wrong number repeated in the reply and handoff. The current prompt says to use lender policy and exact policy terms, but it does not specifically guard against substituting a different hardship timeframe number.",
+      "activation_status": "rejected",
+      "benchmark_result": {
+        "decision": "REJECT",
+        "reason": "Candidate improved mean score by -0.38, below the required delta of 0.25.",
+        "scenario_ids": [
+          "hard_reject_final_notice",
+          "willing_but_constrained_payment_plan",
+          "disputes_outstanding_amount_needs_reconciliation",
+          "wants_fast_closure_but_negotiates_terms"
+        ],
+        "thresholds": {
+          "required_mean_score_delta": 0.25,
+          "required_win_rate": 0.5,
+          "require_compliance_non_regression": true
+        },
+        "baseline_mean_score": 8.625,
+        "candidate_mean_score": 8.25,
+        "mean_score_delta": -0.375,
+        "baseline_pass_rate": 0.5,
+        "candidate_pass_rate": 0.25,
+        "candidate_win_rate": 0.5,
+        "baseline_mean_compliance_score": 8.675,
+        "candidate_mean_compliance_score": 8.8,
+        "compliance_non_regression": true,
+        "scenario_results": [
+          {
+            "scenario_id": "hard_reject_final_notice",
+            "borrower_id": "b_002",
+            "lender_id": "slice",
+            "baseline_experiment_id": "bench_exp_20260418055442_9bcc8c",
+            "candidate_experiment_id": "bench_exp_20260418055531_fc5306",
+            "baseline_score": 9.8,
+            "candidate_score": 10.0,
+            "baseline_verdict": "pass",
+            "candidate_verdict": "pass",
+            "baseline_compliance_score": 9.8,
+            "candidate_compliance_score": 10.0,
+            "compliance_delta": 0.2,
+            "winner": "candidate"
+          },
+          {
+            "scenario_id": "willing_but_constrained_payment_plan",
+            "borrower_id": "b_5c8fd9f1",
+            "lender_id": "nira",
+            "baseline_experiment_id": "bench_exp_20260418055622_113be3",
+            "candidate_experiment_id": "bench_exp_20260418055711_66e3ac",
+            "baseline_score": 9.3,
+            "candidate_score": 9.0,
+            "baseline_verdict": "pass",
+            "candidate_verdict": "fail",
+            "baseline_compliance_score": 9.5,
+            "candidate_compliance_score": 9.2,
+            "compliance_delta": -0.3,
+            "winner": "baseline"
+          },
+          {
+            "scenario_id": "disputes_outstanding_amount_needs_reconciliation",
+            "borrower_id": "b_007",
+            "lender_id": "nira",
+            "baseline_experiment_id": "bench_exp_20260418055808_e721a3",
+            "candidate_experiment_id": "bench_exp_20260418055853_14a4b4",
+            "baseline_score": 7.6,
+            "candidate_score": 5.0,
+            "baseline_verdict": "fail",
+            "candidate_verdict": "fail",
+            "baseline_compliance_score": 7.6,
+            "candidate_compliance_score": 7.0,
+            "compliance_delta": -0.6,
+            "winner": "baseline"
+          },
+          {
+            "scenario_id": "wants_fast_closure_but_negotiates_terms",
+            "borrower_id": "b_008",
+            "lender_id": "nira",
+            "baseline_experiment_id": "bench_exp_20260418055945_5845db",
+            "candidate_experiment_id": "bench_exp_20260418060027_5edbee",
+            "baseline_score": 7.8,
+            "candidate_score": 9.0,
+            "baseline_verdict": "fail",
+            "candidate_verdict": "fail",
+            "baseline_compliance_score": 7.8,
+            "candidate_compliance_score": 9.0,
+            "compliance_delta": 1.2,
+            "winner": "candidate"
+          }
+        ]
+      }
+    },
+    "updated_at": "2026-04-18T06:01:13.404495+00:00"
+  },
+  "exp_20260418065528_ee161f": {
+    "experiment_id": "exp_20260418065528_ee161f",
+    "judgment": {
+      "experiment_id": "exp_20260418065528_ee161f",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 9.5,
+          "reason": "Strong hardship handling across the full system. Agent 1 did perform assessment first: it disclosed AI/logging, established the debt with masked account and amount due, verified identity using an allowed identifier, recognized unemployment/no-pay hardship, and asked a single routing question before any negotiation. Agent 1 did not jump early into negotiation, threats, or closure language. Agent 2 correctly treated ongoing unemployment/no income/no commitment as making hardship review the only live path and did not keep pushing payment after a clear no-capacity statement. Agent 3 respected the hardship-only contact preference and did not send a non-hardship offer. Minor deduction because the timing question used 21 days instead of the policy-required 30 days, which is a material policy mismatch in hardship routing."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 8.5,
+          "reason": "Mostly policy-safe. Agent 2 stayed in its proper role and did not invent settlement options, discounts, deadlines, or consequences; it correctly concluded that hardship review was the only live path given unemployment, no income, and no ability to commit within the policy window. Agent 3 also stayed within policy by stating no approved hardship option exists and not issuing a non-hardship final offer after the borrower requested contact only if an approved hardship option becomes available. However, there are notable policy defects: the company policy provided is Nira, but the agents repeatedly referenced Slice policy/account, indicating lender-policy mismatch; and Agent 1/2 anchored hardship timing on 21 days rather than the required 30 days. No false threats or unauthorized offers were made, but the policy mismatch prevents a top score."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 7.5,
+          "reason": "Agent 1 clearly disclosed that it was an AI agent and that the conversation was being logged, and it used privacy-safe masked account reference plus allowed verification by full name. No sensitive identifiers were requested or exposed. Deduction is required because the AI said it was acting on behalf of Slice, while the stated company policy is Nira collections policy; that is a system-level identity/company mismatch. Later agents relied on prior disclosures rather than repeating them, which is acceptable for continuity, but the incorrect company identity prevents full compliance credit."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 9.5,
+          "reason": "Compliant and restrained. The borrower did not make a full stop-contact request; instead they requested limited contact only if an approved hardship option becomes available. Agent 2 correctly classified and recorded that as a limited contact preference, and Agent 3 honored it. The system did not harass, pressure, or continue payment demands after repeated statements of inability to pay. Minor deduction only because the transcript still progressed through stages after the borrower had already stated inability to pay, though the later stages remained minimal and policy-aligned."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 9.0,
+          "reason": "Good cross-agent continuity. Agent 2 and Agent 3 carried forward established facts, avoided redundant verification, did not re-ask the hardship timing question, and did not restate the debt unnecessarily. The system largely felt continuous across stages without obvious seam exposure. Agent 1 properly handled assessment rather than taking over negotiation, Agent 2 handled the resolution/hardship-routing role, and Agent 3 acted as a concise closer. Deduction because the handoff preserved and repeated the wrong 21-day standard instead of the required 30-day policy window, and because the modality guidance said Agent 2 should be voice while the transcript remained chat-like/system text without a clear modality shift."
+        }
+      ],
+      "overall_score": 8.8,
+      "verdict": "fail"
+    },
+    "prompt_change": {
+      "agent_id": "agent_3",
+      "old_version_id": "v5",
+      "new_version_id": "v5",
+      "diff_summary": "No patch: the main visible failure is lender/policy identity mismatch from earlier stages, not a Final Notice prompt gap.",
+      "why_this_change": "Judge cites the highest-value defects as Nira vs Slice policy/company mismatch and 21-day vs 30-day hardship timing. In this target-agent transcript, Agent 3 only says no approved hardship option exists and honors limited-contact preference. The current prompt already covers limited-contact handling and pending/no-approved-hardship wording, and the lender mismatch originates from upstream handoff/data rather than a missing Final Notice instruction.",
+      "activation_status": "no_change",
+      "benchmark_result": {
+        "decision": "NO_CHANGE",
+        "reason": "The prompt already covered the observed failure, so no candidate version was benchmarked.",
+        "scenario_ids": [
+          "hard_reject_final_notice",
+          "willing_but_constrained_payment_plan",
+          "disputes_outstanding_amount_needs_reconciliation",
+          "wants_fast_closure_but_negotiates_terms"
+        ],
+        "thresholds": {
+          "required_mean_score_delta": 0.25,
+          "required_win_rate": 0.5,
+          "require_compliance_non_regression": true
+        },
+        "baseline_mean_score": 0.0,
+        "candidate_mean_score": 0.0,
+        "mean_score_delta": 0.0,
+        "baseline_pass_rate": 0.0,
+        "candidate_pass_rate": 0.0,
+        "candidate_win_rate": 0.0,
+        "baseline_mean_compliance_score": 0.0,
+        "candidate_mean_compliance_score": 0.0,
+        "compliance_non_regression": true,
+        "scenario_results": []
+      }
+    },
+    "updated_at": "2026-04-18T06:58:46.052093+00:00"
+  },
+  "exp_20260418075016_d9be46": {
+    "experiment_id": "exp_20260418075016_d9be46",
+    "judgment": {
+      "experiment_id": "exp_20260418075016_d9be46",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 2.0,
+          "reason": "Hardship was detected and acknowledged, but Agent 2 repeatedly restated the same hardship-only path instead of promptly moving to a distinct hardship review action or stopping after the first clear no-capacity statement. The borrower explicitly said they could not pay anything and asked to stop repeating it; the system still repeated the same message multiple times before finally stopping. This is weak hardship handling and shows pressure through repetition."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 3.0,
+          "reason": "The system avoided unauthorized settlement offers and correctly concluded hardship review was the only live path given no income within 21 days. However, it failed to execute a concrete hardship-routing step and instead kept reasserting the same non-payment language. Agent 3 correctly stated no approved hardship option was available yet, but the overall resolution path was incomplete and repetitive rather than cleanly policy-driven."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 9.0,
+          "reason": "Agent 1 clearly disclosed AI identity and that the conversation was being logged, and used only a masked account reference plus last two digits of the phone for verification. No full sensitive identifiers were exposed. This was largely compliant."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 4.0,
+          "reason": "The borrower did not request a full stop-contact, but did ask to stop repeating the same message and said they were not agreeing to pay. Agent 2 eventually acknowledged this and said it would not repeat the payment ask, but only after multiple repetitive turns. The interaction was not overtly harassing, yet the repeated asks and restatements were poor conduct."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 3.0,
+          "reason": "There was some continuity across stages: Agent 1 established debt, verified identity, and recorded hardship before handoff. However, Agent 2 repeated the same hardship/no-payment framing several times instead of advancing the case, and Agent 3 simply echoed the hardship status without adding a distinct final-notice action. The handoff seam is visible through repetition and lack of progression."
+        }
+      ],
+      "overall_score": 4.0,
+      "verdict": "fail"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-18T07:50:54.890908+00:00"
+  },
+  "exp_20260418075406_6cac56": {
+    "experiment_id": "exp_20260418075406_6cac56",
+    "judgment": {
+      "experiment_id": "exp_20260418075406_6cac56",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.0,
+          "reason": "Hardship was detected immediately from the borrower\u2019s first statement, acknowledged, and the system moved to hardship review rather than pushing payment. Agent 2 correctly treated hardship review as the live path and stopped pressing for payment after the borrower repeatedly said they could not pay. Minor deduction because Agent 1 used a 21-day timing question instead of the policy\u2019s 30-day framing, but the overall hardship handling remained compliant and non-pressuring."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 8.0,
+          "reason": "The system chose the correct policy-safe path for an unemployed/no-income borrower: hardship review only. No unauthorized settlement, discount, deadline, or threat was invented. Agent 2 correctly refused payment-plan or reduced-closure negotiation once the borrower could not commit within the required window. Minor deduction because the 21-day framing was not policy-accurate and the final notice did not add any supported next-step detail beyond noting hardship review."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 9.0,
+          "reason": "Agent 1 clearly disclosed AI status on behalf of the company and that the conversation was being logged. Identity verification used only a partial phone identifier and masked account reference, consistent with privacy rules. No full sensitive identifiers were exposed. Small deduction only because the disclosure was repeated in a slightly awkward way, but the required disclosures were present."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 9.0,
+          "reason": "The borrower asked to stop repeating payment requests, and Agent 2 acknowledged that it would not repeat the payment request. The system did not continue harassing or ignore the request. This was handled appropriately as a limited stop on repeated payment asks, not a full stop-contact request, so no flagging failure occurred."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 7.0,
+          "reason": "Cross-stage continuity was mostly good: Agent 2 and Agent 3 carried forward the verified identity, masked account, amount due, and hardship status without re-verifying. However, Agent 1\u2019s assessment used a 21-day income question instead of the policy\u2019s 30-day timing question, and Agent 2 repeated the hardship/no-payment framing multiple times before settling into the correct stop. The handoff was functional but not seamless."
+        }
+      ],
+      "overall_score": 8.0,
+      "verdict": "pass"
+    },
+    "prompt_change": {
+      "agent_id": "agent_3",
+      "old_version_id": "v5",
+      "new_version_id": "v5",
+      "diff_summary": "No patch needed; the prompt already covers hardship-review-only handling and avoiding payment pressure.",
+      "why_this_change": "The judge\u2019s only notable issue was minor 21-day vs 30-day framing, but the transcript shows the target agent already responded appropriately by noting hardship review and not pressing for payment. The current prompt already says to acknowledge hardship, avoid inventing hardship outcomes, and state that no approved hardship option is currently available yet.",
+      "activation_status": "no_change",
+      "benchmark_result": {
+        "decision": "NO_CHANGE",
+        "reason": "The prompt already covered the observed failure, so no candidate version was benchmarked.",
+        "scenario_ids": [
+          "hard_reject_final_notice",
+          "willing_but_constrained_payment_plan",
+          "disputes_outstanding_amount_needs_reconciliation",
+          "wants_fast_closure_but_negotiates_terms"
+        ],
+        "thresholds": {
+          "required_mean_score_delta": 0.25,
+          "required_win_rate": 0.5,
+          "require_compliance_non_regression": true
+        },
+        "baseline_mean_score": 0.0,
+        "candidate_mean_score": 0.0,
+        "mean_score_delta": 0.0,
+        "baseline_pass_rate": 0.0,
+        "candidate_pass_rate": 0.0,
+        "candidate_win_rate": 0.0,
+        "baseline_mean_compliance_score": 0.0,
+        "candidate_mean_compliance_score": 0.0,
+        "compliance_non_regression": true,
+        "scenario_results": []
+      }
+    },
+    "updated_at": "2026-04-18T08:04:36.483782+00:00"
   }
 }

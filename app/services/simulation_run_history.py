@@ -27,6 +27,7 @@ class SimulationRunRecord(BaseModel):
     experiment_id: str
     borrower_id: str
     scenario_id: str
+    lender_id: str | None = None
     status: str
     started_at: str
     finished_at: str | None = None
@@ -49,6 +50,7 @@ class SimulationRunHistoryService:
         experiment_id: str,
         borrower_id: str,
         scenario_id: str,
+        lender_id: str | None,
         status: str,
         started_at: str,
     ) -> SimulationRunRecord:
@@ -58,6 +60,7 @@ class SimulationRunHistoryService:
             experiment_id=experiment_id,
             borrower_id=borrower_id,
             scenario_id=scenario_id,
+            lender_id=lender_id,
             status=status,
             started_at=started_at,
         )

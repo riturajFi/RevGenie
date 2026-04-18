@@ -10,6 +10,7 @@ from uuid import uuid4
 from pydantic import BaseModel, Field
 
 from evals.judgment_management_service.service import StoredJudgeResult
+from evals.evaluation_config_service.service import EvaluationConfig
 from evals.metrics_management_service.service import MetricDefinition
 
 
@@ -84,10 +85,14 @@ class MetaEvalRunRecord(BaseModel):
     lender_id: str | None = None
     old_metrics_version: str
     candidate_metrics_version: str
+    old_evaluation_config_version: str | None = None
+    candidate_evaluation_config_version: str | None = None
     correctness_analysis: list[ExperimentCorrectnessAnalysis] = Field(default_factory=list)
     metric_actions: list[MetaEvalMetricAction] = Field(default_factory=list)
     candidate_metrics: list[MetricDefinition] = Field(default_factory=list)
     metrics_diff_summary: str
+    candidate_evaluation_config: EvaluationConfig | None = None
+    evaluation_config_diff_summary: str | None = None
     why_this_change: str
     expected_improvement: str
     old_validation_judgments: list[StoredJudgeResult] = Field(default_factory=list)

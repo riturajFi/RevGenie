@@ -6,6 +6,7 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 from time import time_ns
+from typing import Any, Callable
 from urllib import request
 
 from evals.logging_service import logger
@@ -107,10 +108,11 @@ class TesterAgent:
     scenario_repository: ScenarioRepository = ScenarioRepository(DEFAULT_SCENARIOS_PATH)
     borrower_case_service: FileBorrowerCaseService = FileBorrowerCaseService()
     borrower_profile_service: FileBorrowerProfileService = FileBorrowerProfileService()
+    temperature: float = 0.2
 
     def __post_init__(self) -> None:
         model_name = os.getenv("OPENAI_TESTER_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
-        self.borrower_llm = ChatOpenAI(model=model_name, temperature=0.2)
+        self.borrower_llm = ChatOpenAI(model=model_name, temperature=self.temperature)
 
     def run(
         self,
@@ -122,6 +124,8 @@ class TesterAgent:
         scenario_id: str | None = None,
         project_context: ProjectContext | None = None,
         scenario: Scenario | None = None,
+        prompt_version_overrides: dict[str, str] | None = None,
+        event_callback: Callable[[dict[str, Any]], None] | None = None,
     ) -> TesterRunResult:
         project_context = project_context or self.project_context_repository.get(project_context_id or "")
         scenario = scenario or self.scenario_repository.get(scenario_id or "")
@@ -150,11 +154,17 @@ class TesterAgent:
                 workflow_id=workflow_id,
                 actor="borrower",
             )
+            self._emit_event(
+                event_callback,
+                actor="borrower",
+                message=borrower_message,
+            )
             conversation_history.append(("borrower", borrower_message))
             response = self._post_message(
                 borrower_id=borrower_id,
                 workflow_id=workflow_id,
                 message=borrower_message,
+                prompt_version_overrides=prompt_version_overrides,
             )
             if response.reply:
                 logger.log(
@@ -162,6 +172,11 @@ class TesterAgent:
                     experiment_id=experiment_id,
                     workflow_id=workflow_id,
                     actor=current_actor,
+                )
+                self._emit_event(
+                    event_callback,
+                    actor=current_actor,
+                    message=response.reply,
                 )
                 conversation_history.append((current_actor, response.reply))
             post_turn_case = self.borrower_case_service.get_borrower_case(borrower_id)
@@ -214,6 +229,22 @@ class TesterAgent:
             scenario_id=scenario.scenario_id,
             turn_count=turn_count,
             stop_reason=stop_reason,
+        )
+
+    def _emit_event(
+        self,
+        callback: Callable[[dict[str, Any]], None] | None,
+        *,
+        actor: str,
+        message: str,
+    ) -> None:
+        if callback is None:
+            return
+        callback(
+            {
+                "actor": actor,
+                "message": message,
+            }
         )
 
     def _build_next_message(
@@ -325,6 +356,7 @@ class TesterAgent:
         borrower_id: str,
         workflow_id: str,
         message: str,
+        prompt_version_overrides: dict[str, str] | None = None,
     ) -> WorkflowMessageResponse:
         payload = json.dumps(
             {
@@ -332,6 +364,7 @@ class TesterAgent:
                 "workflow_id": workflow_id,
                 "message": message,
                 "resolution_mode": "CHAT",
+                "prompt_version_overrides": prompt_version_overrides or {},
             }
         ).encode("utf-8")
         http_request = request.Request(

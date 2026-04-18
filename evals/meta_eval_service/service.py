@@ -5,9 +5,9 @@ import os
 from pathlib import Path
 
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 
+from app.services.llm_factory import build_chat_llm
 from app.services.simulation_run_history import SimulationRunHistoryService
 from evals.evaluation_config_service.service import EvaluationConfig, EvaluationConfigService, evaluation_config_service
 from evals.logging_service.logger import get_logs
@@ -105,7 +105,15 @@ class MetaEvaluatorService:
         self.evaluation_config_service = evaluation_config_service_ or evaluation_config_service
         self.meta_eval_run_service = meta_eval_run_service or MetaEvalRunRecordService()
         self.run_history_service = run_history_service or SimulationRunHistoryService()
-        self.model_name = model or os.getenv("OPENAI_JUDGE_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
+        self.model_name = (
+            model
+            or os.getenv("LLM_JUDGE_MODEL")
+            or os.getenv("LLM_MODEL")
+            or os.getenv("OPENAI_JUDGE_MODEL")
+            or os.getenv("OPENAI_MODEL")
+            or os.getenv("CLAUDE_MODEL")
+            or os.getenv("ANTHROPIC_MODEL")
+        )
         self.validation_set_path = validation_set_path
 
     def judge(
@@ -268,7 +276,11 @@ class MetaEvaluatorService:
                 ("human", "{human_prompt}"),
             ]
         )
-        llm = ChatOpenAI(model=self.model_name, temperature=0)
+        llm = build_chat_llm(
+            model=self.model_name,
+            temperature=0,
+            model_env_keys=("OPENAI_JUDGE_MODEL", "OPENAI_MODEL", "CLAUDE_MODEL", "ANTHROPIC_MODEL"),
+        )
         chain = prompt | llm.with_structured_output(MetaEvalProposalDraft)
         return chain.invoke(
             {
@@ -316,7 +328,11 @@ class MetaEvaluatorService:
                 ("human", "{human_prompt}"),
             ]
         )
-        llm = ChatOpenAI(model=self.model_name, temperature=0)
+        llm = build_chat_llm(
+            model=self.model_name,
+            temperature=0,
+            model_env_keys=("OPENAI_JUDGE_MODEL", "OPENAI_MODEL", "CLAUDE_MODEL", "ANTHROPIC_MODEL"),
+        )
         chain = prompt | llm.with_structured_output(ValidationDecisionDraft)
         return chain.invoke(
             {

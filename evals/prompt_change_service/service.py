@@ -8,9 +8,9 @@ from typing import Any, Callable
 from uuid import uuid4
 
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
 from pydantic import BaseModel
 
+from app.services.llm_factory import build_chat_llm
 from app.domain.borrower_case import CaseStatus, ResolutionMode, Stage
 from app.services.borrower_case import FileBorrowerCaseService
 from app.services.simulation_run_history import SimulationRunHistoryService
@@ -178,7 +178,13 @@ Small precise fixes beat large clever rewrites."""
         self.borrower_case_service = borrower_case_service or FileBorrowerCaseService()
         self.run_history_service = run_history_service or SimulationRunHistoryService()
         self.tester = tester or TesterAgent(temperature=0)
-        self.model_name = model or os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+        self.model_name = (
+            model
+            or os.getenv("LLM_MODEL")
+            or os.getenv("OPENAI_MODEL")
+            or os.getenv("CLAUDE_MODEL")
+            or os.getenv("ANTHROPIC_MODEL")
+        )
 
     def apply_change(
         self,
@@ -285,7 +291,11 @@ Small precise fixes beat large clever rewrites."""
                 ("human", "{human_prompt}"),
             ]
         )
-        llm = ChatOpenAI(model=self.model_name, temperature=0)
+        llm = build_chat_llm(
+            model=self.model_name,
+            temperature=0,
+            model_env_keys=("OPENAI_MODEL", "CLAUDE_MODEL", "ANTHROPIC_MODEL"),
+        )
         chain = prompt | llm.with_structured_output(PromptChangeDraft)
         return chain.invoke(
             {

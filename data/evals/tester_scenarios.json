@@ -44,21 +44,22 @@
     "scenario_id": "disputes_outstanding_amount_needs_reconciliation",
     "borrower_id": "b_007",
     "opening_message": "I need to discuss this because your outstanding amount looks incorrect to me.",
-    "scenario_description": "Borrower is calm and engaged but insists there is a mismatch between prior payments and the current balance shown. They seek reconciliation first before committing to payment.",
+    "scenario_description": "Borrower disputes outstanding amount and requests factual reconciliation. Borrower will cooperate with verification and share references, but will not accept generic handoff language as resolution. Borrower expects either a concrete policy-backed path now or a clear no-offer state.",
     "borrower_profile": "Borrower is detail-oriented, keeps payment references ready, and expects factual clarification before agreeing to any plan.",
-    "borrower_intent": "Request ledger reconciliation, avoid committing to payment until discrepancy is explained, and stay open to next steps once clarity is provided.",
+    "borrower_intent": "Get discrepancy addressed with concrete next action. Avoid committing to payment before reconciliation, but stay cooperative and concise. If system keeps saying someone will call without concrete terms/path, push for one clear actionable outcome.",
     "reply_style_rules": [
-      "Keep replies clear and factual.",
+      "Keep replies short, factual, and cooperative.",
       "Do not become hostile.",
-      "Repeat that reconciliation is required before commitment.",
-      "If discrepancy is clarified convincingly, become cooperative."
+      "Do not keep parroting the same line; ask for one concrete next step.",
+      "Do not accept generic \"team will call\" as sufficient resolution after it is stated once.",
+      "If no concrete option is available, ask for explicit policy-backed status and what happens next."
     ],
-    "stop_condition": "Stop after either a clear reconciliation path is offered or after repeated pressure to pay without addressing the dispute.",
-    "expected_path_notes": "Tests whether the flow can handle non-hardship disagreement, capture dispute context properly, and avoid premature negotiation pressure.",
+    "stop_condition": "Stop after either: (a) a concrete policy-backed resolution option is presented, (b) an explicit no-offer/no-deal state with clear next step is stated, or (c) repeated generic call-handoff language appears without progress.",
+    "expected_path_notes": "Should test clean role boundaries: assessment gathers facts, resolution provides concrete policy-backed path, and if no deal, final notice states one final offer and exact downstream consequences.",
     "follow_up_messages": [
-      "I made a payment last month and I do not see it reflected, so I cannot accept this total yet.",
-      "Please first confirm the ledger entries and the latest posted payment before asking for commitment.",
-      "If the records are corrected or clearly explained, I can discuss a payment timeline."
+      "I can share payment references, but I need a concrete reconciliation path before committing to payment.",
+      "I understand your note, but please give one concrete policy-backed next step now, not a generic callback statement.",
+      "If no concrete option is available right now, state that clearly and tell me exactly what happens next."
     ]
   },
   {

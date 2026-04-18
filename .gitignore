@@ -4,7 +4,7 @@ __pycache__/
 .pytest_cache/
 .venv/
 .env
-data/*.json
+data/
 .codex
 frontend/node_modules/
 frontend/.next/

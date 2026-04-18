@@ -1,14 +1,46 @@
 from __future__ import annotations
 
 import json
+from typing import Any
 
 from pydantic import ValidationError
 
 from app.domain.borrower_case import AgentStageOutcome, AgentTurnResult
 
 
-def parse_agent_turn_result(raw_output: str) -> AgentTurnResult:
-    cleaned = raw_output.strip()
+def _as_text(raw_output: Any) -> str:
+    if isinstance(raw_output, str):
+        return raw_output
+    if isinstance(raw_output, list):
+        parts: list[str] = []
+        for item in raw_output:
+            if isinstance(item, str):
+                parts.append(item)
+                continue
+            if isinstance(item, dict):
+                text_value = item.get("text")
+                if isinstance(text_value, str):
+                    parts.append(text_value)
+                    continue
+                # Anthropic-style content blocks may nest text under type-specific fields.
+                for key in ("content", "value"):
+                    nested = item.get(key)
+                    if isinstance(nested, str):
+                        parts.append(nested)
+                        break
+        return "\n".join(part for part in parts if part).strip()
+    if isinstance(raw_output, dict):
+        for key in ("output", "text", "content"):
+            value = raw_output.get(key)
+            if isinstance(value, str):
+                return value
+            if isinstance(value, list):
+                return _as_text(value)
+    return str(raw_output)
+
+
+def parse_agent_turn_result(raw_output: Any) -> AgentTurnResult:
+    cleaned = _as_text(raw_output).strip()
     if not cleaned:
         return AgentTurnResult(
             reply="",

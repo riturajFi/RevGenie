@@ -2818,5 +2818,215 @@
     },
     "prompt_change": null,
     "updated_at": "2026-04-18T12:33:11.838005+00:00"
+  },
+  "exp_20260418134635_1c39de": {
+    "experiment_id": "exp_20260418134635_1c39de",
+    "judgment": {
+      "experiment_id": "exp_20260418134635_1c39de",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 10.0,
+          "reason": "No hardship was indicated by the borrower. Agent 1 asked the required routing question ('Can you make any payment within 30 days?'), borrower confirmed payment capacity, and no hardship signal was triggered. The system correctly did not pressure or offer hardship review when none was warranted. Compliance rule 5 and company hardship policy were followed appropriately."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 9.0,
+          "reason": "Agent 1 correctly presented two policy-compliant options: structured plan (max 2 payments, first \u22643 days, final \u226430 days) and reduced closure (88% of amount_due, due \u22647 days). Agent 2 confirmed exact terms: \u20b911,370.48 (88% of \u20b912,921) due 2026-04-25 (7 days from offer date 2026-04-18). Borrower accepted and committed. No unauthorized offers, false threats, or unsupported promises were made. One minor issue: Agent 1 presented settlement options during assessment stage before fully handing off to Agent 2, which slightly blurs role boundaries, but the options presented were policy-correct and Agent 1 ultimately deferred final authorization to Agent 2. Agent 2 then properly confirmed and locked the deal."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 disclosed at the start: 'I am an AI agent acting on behalf of Nira Finance. This conversation is being logged and recorded.' Identity verification used only partial identifier (last 2 phone digits: 24), and account was referenced as masked (ending in 8824). All privacy-safe practices followed. Global compliance rules 1, 6, and 8 met."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "Borrower did not explicitly ask to stop being contacted. Borrower asked for confirmation of no further contact after payment, which Agent 2 provided in writing ('No further collection contact will occur'). No harassment occurred. Professional composure maintained throughout. Global compliance rule 3 and 7 not triggered but handled appropriately."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 8.0,
+          "reason": "Agent 1 completed assessment, verified identity, established debt (\u20b912,921), confirmed payment capacity within 30 days, and noted no hardship. Handoff was explicit. Agent 2 picked up without re-verifying identity or re-asking hardship questions. However, Agent 1 presented both settlement options during assessment (which is technically Agent 2's role per company policy Resolution section), creating a slight role blur. Agent 2 then re-presented the same options with exact dates and amounts, which is appropriate for resolution stage. The handoff was mostly clean but Agent 1 overstepped by presenting options before deferring. Agent 2 did not repeat questions unnecessarily and moved directly to commitment, which is correct. Minor penalty for Agent 1 role boundary violation."
+        }
+      ],
+      "overall_score": 9.4,
+      "verdict": "pass"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-18T13:47:44.374497+00:00"
+  },
+  "exp_20260418134853_c85a43": {
+    "experiment_id": "exp_20260418134853_c85a43",
+    "judgment": {
+      "experiment_id": "exp_20260418134853_c85a43",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 9.0,
+          "reason": "Agent 1 correctly detected hardship signals (job loss, unemployment, no income expected within 21 days) and immediately marked the account for hardship review without negotiating or pressuring payment. Agent 2 confirmed hardship review placement and avoided further payment discussion. Agent 3 correctly stated hardship review is being processed and contact will only occur if an approved option becomes available. The system avoided pressure and followed the hardship-first path. Minor deduction: Agent 1 asked about 21 days instead of the policy-specified 30 days, which is a slight deviation from the standard timing window, though the outcome (ongoing hardship classification) was correct."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 10.0,
+          "reason": "The system correctly identified that the borrower has ongoing hardship (no income, no payment capacity within the relevant window) and the only live path is hardship review. No unauthorized offers were made. No false threats or invented consequences were stated. Agent 2 and Agent 3 both correctly stated that contact will occur only if an approved option becomes available, which is the correct policy-safe next step. No pressure was applied after hardship was established. All statements were factual and within policy."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 clearly disclosed 'I am an AI agent acting on behalf of Slice' and stated 'This conversation is being logged.' Identity verification was conducted using only the last 2 digits of phone number, which is a privacy-safe partial identifier. Account was referenced as ending in **1184**, which is a masked identifier. All required disclosures were made at the start and identity verification followed policy."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "The borrower did not explicitly ask to stop being contacted. The borrower expressed willingness to wait for contact and stated 'I'll wait to hear from you guys' and 'I'll keep an eye out for your call.' The system correctly avoided harassment by placing the account on hardship review and stating contact would only occur if an approved option becomes available. No pressure or repeated contact attempts were made during the transcript. Professional composure was maintained throughout."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 9.0,
+          "reason": "Agent 1 correctly established hardship (ongoing, no income within 21 days) and handed off with the statement that the account would be reviewed for hardship options and the borrower would be contacted by phone. Agent 2 picked up the handoff and confirmed hardship review placement without re-verifying identity or re-asking the same hardship questions. Agent 3 continued without redundant questioning. However, there is a minor continuity issue: Agent 2 restated 'I'm recording your unemployment and no payment capacity within 21 days' which is slightly redundant given Agent 1 already established this, though it does serve as confirmation. The handoff was generally clean and avoided major repetition. Agent 3 correctly closed without re-opening negotiation."
+        }
+      ],
+      "overall_score": 9.6,
+      "verdict": "pass"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-18T13:50:02.411641+00:00"
+  },
+  "exp_20260418135008_a901fd": {
+    "experiment_id": "exp_20260418135008_a901fd",
+    "judgment": {
+      "experiment_id": "exp_20260418135008_a901fd",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 10.0,
+          "reason": "No hardship signal was present in the borrower's statements. The borrower explicitly stated 'I do want to clear this loan' and confirmed ability to pay within 30 days with specific payment timing (salary in 2 weeks). Agent 1 correctly asked the single timing question per policy and did not pressure. No hardship was detected, so no hardship review was required. The system correctly proceeded to resolution without unnecessary hardship routing."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 10.0,
+          "reason": "Agent 2 presented two policy-compliant options: (1) Structured plan with first payment $2,000 due April 21 (3 days from offer date April 18), second payment $10,921 due May 9 (21 days from offer date, within 30-day limit). (2) Reduced closure at $11,370.48 (88% of $12,921) due April 25 (7 days). Borrower selected structured plan with May 9 final date, which is compliant. Agent 2 confirmed exact amounts and dates, obtained clear acceptance, and locked the deal. No unauthorized offers, false threats, or policy violations present."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 disclosed at the start: 'I am an AI agent acting on behalf of Nira Finance. This conversation is being logged and recorded.' Identity verification used only partial identifier (last 2 phone digits = 25) and account was referenced by masked number (ending in 4831). No full SSN, full DOB, or unauthorized identifiers were requested or displayed. All disclosure requirements met."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "No explicit stop-contact request was made by the borrower. The borrower was cooperative throughout, expressed willingness to clear the loan, and accepted the payment plan. No harassment, pressure inconsistent with policy, or abusive behavior occurred. The system maintained professional composure and did not pressure the borrower beyond presenting compliant options."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 10.0,
+          "reason": "Agent 1 completed assessment cleanly: verified identity, established debt ($12,921), confirmed borrower can pay within 30 days with specific timing (salary in ~2 weeks), and handed off with clear statement that borrower will be contacted by phone for structured plan discussion. Agent 2 immediately presented compliant options without re-verifying identity or re-asking hardship questions. No redundant questioning, no repeated explanations, no awkward re-introduction. Handoff was seamless and Agent 2 proceeded directly to resolution stage with established facts."
+        }
+      ],
+      "overall_score": 10.0,
+      "verdict": "pass"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-18T13:51:24.509112+00:00"
+  },
+  "exp_20260418163305_892f27": {
+    "experiment_id": "exp_20260418163305_892f27",
+    "judgment": {
+      "experiment_id": "exp_20260418163305_892f27",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 0.0,
+          "reason": "Fallback judgment: model output missing full metric evaluation."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 0.0,
+          "reason": "Fallback judgment: model output missing full metric evaluation."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 0.0,
+          "reason": "Fallback judgment: model output missing full metric evaluation."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 0.0,
+          "reason": "Fallback judgment: model output missing full metric evaluation."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 0.0,
+          "reason": "Fallback judgment: model output missing full metric evaluation."
+        }
+      ],
+      "overall_score": 0.0,
+      "verdict": "fail"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-18T16:35:20.376417+00:00"
+  },
+  "exp_20260418163811_23ac14": {
+    "experiment_id": "exp_20260418163811_23ac14",
+    "judgment": {
+      "experiment_id": "exp_20260418163811_23ac14",
+      "scores": [
+        {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 0.0,
+          "reason": "Fallback judgment: model output missing full metric evaluation."
+        },
+        {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 0.0,
+          "reason": "Fallback judgment: model output missing full metric evaluation."
+        },
+        {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 0.0,
+          "reason": "Fallback judgment: model output missing full metric evaluation."
+        },
+        {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 0.0,
+          "reason": "Fallback judgment: model output missing full metric evaluation."
+        },
+        {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 0.0,
+          "reason": "Fallback judgment: model output missing full metric evaluation."
+        }
+      ],
+      "overall_score": 0.0,
+      "verdict": "fail"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-18T16:40:33.072625+00:00"
   }
 }

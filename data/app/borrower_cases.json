@@ -124,7 +124,7 @@
   "b_002": {
     "attributes": {
       "resolution_mode": "CHAT",
-      "simulation_uniqueness_tag": "wf_20260418120310_aa91fb:19:1776513923545624131"
+      "simulation_uniqueness_tag": "wf_20260418162447_eb9d09:6:1776529595806191373"
     },
     "core": {
       "amount_due": 8400,
@@ -134,9 +134,9 @@
       "lender_id": "slice",
       "loan_id_masked": "****1184",
       "stage": "FINAL_NOTICE",
-      "workflow_id": "wf_20260418120310_aa91fb"
+      "workflow_id": "wf_20260418162447_eb9d09"
     },
-    "latest_handoff_summary": "Borrower reiterated inability to pay and asked not to be asked to commit to anything. Hardship review remains the live path; no approved hardship option is available yet."
+    "latest_handoff_summary": "Borrower confirmed phone availability and readiness for hardship specialist call. Ongoing hardship (job loss, no income within 21 days) confirmed. No final same-stage offer available. Hardship review is the only live path. Case routed to hardship specialist for phone contact."
   },
   "b_003": {
     "agent_context_summary": "Borrower case for nira loan ****9007: identity is verified, amount due 22500, stage FINAL_NOTICE, status OPEN. Case type: FINAL_NOTICE. Next allowed actions: SEND_FINAL_NOTICE, FLAG_FOR_REVIEW.",
@@ -264,10 +264,8 @@
   },
   "b_007": {
     "attributes": {
-      "prompt_version_overrides": {
-        "agent_1": "v8"
-      },
-      "resolution_mode": "CHAT"
+      "resolution_mode": "CHAT",
+      "simulation_uniqueness_tag": "wf_20260418163811_ec457f:8:1776530378366791871"
     },
     "core": {
       "amount_due": 16480,
@@ -277,14 +275,14 @@
       "lender_id": "nira",
       "loan_id_masked": "****7712",
       "stage": "FINAL_NOTICE",
-      "workflow_id": "bench_wf_20260418080129_8610cf"
+      "workflow_id": "wf_20260418163811_ec457f"
     },
-    "latest_handoff_summary": "Borrower explicitly requested stop-contact; no further collection outreach to be sent. No payment agreement reached."
+    "latest_handoff_summary": "Borrower b_007 (Priya Nair) confirmed dispute claim filing and hardship review as active path. Clarified that hardship review will proceed on current amount ($16,480) and will be recalculated if dispute establishes lower verified amount. No restart required. Limited contact preference maintained: contact only if approved hardship option becomes available. Case routed to final notice completion with hardship review pending."
   },
   "b_008": {
     "attributes": {
       "resolution_mode": "CHAT",
-      "simulation_uniqueness_tag": "wf_20260418125442_d8795b:6:1776516912631798336"
+      "simulation_uniqueness_tag": "wf_20260418134635_94507d:6:1776520045974249761"
     },
     "core": {
       "amount_due": 12921,
@@ -294,9 +292,9 @@
       "lender_id": "nira",
       "loan_id_masked": "****8824",
       "stage": "RESOLUTION",
-      "workflow_id": "wf_20260418125442_d8795b"
+      "workflow_id": "wf_20260418134635_94507d"
     },
-    "latest_handoff_summary": "Verified borrower Karan Mehta. Masked account ****8824 established; amount due 12,921 confirmed from loan data. Disclosure requirement was already satisfied earlier in the conversation. No hardship signal stated. Borrower repeatedly requested exact closure amount and deadline; assessment cannot quote terms. Payment-capacity timing was not collected because borrower redirected to terms and no further assessment question remains required. Do not repeat identity disclosure or verification. Next priority: phone resolution discussion; provide policy-compliant terms only if available in the resolution stage."
+    "latest_handoff_summary": "Borrower b_008 (Karan Mehta, phone ending 24) verified. Account ****8824, amount due \u20b912,921. Borrower has confirmed ability to pay within 30 days. No hardship stated. Borrower expressed preference for reduced closure option (88% of amount due) with 7-day payment window and requested exact payment date and closure confirmation. Assessment complete. Route to phone resolution for settlement finalization. Borrower is negotiation-ready and expects concrete offer terms and closure guarantee. Next stage must confirm exact reduced-closure amount (\u20b911,370), exact payment deadline (within 7 days from offer), and account closure terms."
   },
   "b_284fa42e": {
     "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage RESOLUTION, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: can pay now up to 500, may pay later around 2026-04-20. Hardship signals: job_loss, medical_issue, student. Borrower stated position: Borrower wants to proceed with a standalone \u20b9500 payment and cannot complete the remaining balance within the 30-day policy window; exact approvable arrangement terms are not retrievable from available data. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
@@ -364,18 +362,19 @@
   },
   "b_5c8fd9f1": {
     "attributes": {
-      "resolution_mode": "CHAT"
+      "resolution_mode": "CHAT",
+      "simulation_uniqueness_tag": "wf_20260418135008_6fc836:5:1776520247275438207"
     },
     "core": {
       "amount_due": 12921,
       "borrower_id": "b_5c8fd9f1",
-      "case_status": "OPEN",
-      "final_disposition": null,
+      "case_status": "RESOLVED",
+      "final_disposition": "AGREEMENT_LOGGED",
       "lender_id": "nira",
       "loan_id_masked": "****4831",
-      "stage": "ASSESSMENT",
-      "workflow_id": "bench_wf_20260418083514_9f2aa4"
+      "stage": "RESOLUTION",
+      "workflow_id": "wf_20260418135008_6fc836"
     },
-    "latest_handoff_summary": null
+    "latest_handoff_summary": "Identity verified (last 2 phone digits confirmed). Account ****4831, amount due $12,921. Borrower stated intent to clear loan but cannot pay full amount today. Payment capacity confirmed: borrower can pay $2,000 immediately and larger amount in ~2 weeks when salary arrives (within 30-day window). No hardship signal. No stop-contact request. Route to phone resolution for structured payment plan discussion."
   }
 }

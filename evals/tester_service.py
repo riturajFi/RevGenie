@@ -11,11 +11,11 @@ from urllib import request
 
 from evals.logging_service import logger
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 from app.domain.borrower_case import BorrowerCase, Stage
 from app.services.borrower_profile import FileBorrowerProfileService
 from app.services.borrower_case import FileBorrowerCaseService
+from app.services.llm_factory import build_chat_llm
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -111,8 +111,10 @@ class TesterAgent:
     temperature: float = 0.2
 
     def __post_init__(self) -> None:
-        model_name = os.getenv("OPENAI_TESTER_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
-        self.borrower_llm = ChatOpenAI(model=model_name, temperature=self.temperature)
+        self.borrower_llm = build_chat_llm(
+            temperature=self.temperature,
+            model_env_keys=("OPENAI_TESTER_MODEL", "OPENAI_MODEL", "CLAUDE_MODEL", "ANTHROPIC_MODEL"),
+        )
 
     def run(
         self,

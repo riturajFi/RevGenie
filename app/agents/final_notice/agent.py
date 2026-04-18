@@ -9,13 +9,13 @@ from evals.prompt_management_service.prompt_storage import (
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_openai import ChatOpenAI
 
 from app.agents.structured_output import parse_agent_turn_result
 from app.agents.final_notice.tools import build_final_notice_tools
 from app.domain.borrower_case import AgentTurnResult, BorrowerCase
 from app.domain.chat_message import ChatMessage
 from app.services.compliance import FileComplianceService
+from app.services.llm_factory import build_chat_llm
 
 
 class FinalNoticeAgent:
@@ -30,8 +30,11 @@ class FinalNoticeAgent:
             raise ValueError("LENDER_ID must be set in env or passed to FinalNoticeAgent")
 
         self.prompt_version_id = prompt_version_id
-        model_name = model or os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-        self.llm = ChatOpenAI(model=model_name, temperature=0)
+        self.llm = build_chat_llm(
+            model=model,
+            temperature=0,
+            model_env_keys=("OPENAI_MODEL", "CLAUDE_MODEL", "ANTHROPIC_MODEL"),
+        )
         self.tools = build_final_notice_tools(self.lender_id)
         self.executor = self._build_executor()
 
@@ -106,7 +109,9 @@ class FinalNoticeAgent:
         messages: list[BaseMessage] = []
         for item in chat_history:
             if item.sender_type == "system":
-                messages.append(SystemMessage(content=item.message))
+                # Anthropic requires the system instruction to be first and singular.
+                # Treat stage system notes as conversational context instead.
+                messages.append(HumanMessage(content=f"[System context] {item.message}"))
             elif item.sender_type == "agent":
                 messages.append(AIMessage(content=item.message))
             else:

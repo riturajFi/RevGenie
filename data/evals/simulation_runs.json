@@ -1638,5 +1638,44 @@
         }
       }
     ]
+  },
+  "sim_20260418170144_eef0df": {
+    "run_id": "sim_20260418170144_eef0df",
+    "workflow_id": "wf_20260418170144_f287b1",
+    "experiment_id": "exp_20260418170144_4cf616",
+    "borrower_id": "b_007",
+    "scenario_id": "disputes_outstanding_amount_needs_reconciliation",
+    "lender_id": "nira",
+    "status": "completed",
+    "started_at": "2026-04-18T17:01:44.503850+00:00",
+    "finished_at": "2026-04-18T17:04:32.209680+00:00",
+    "error": null,
+    "evaluations": []
+  },
+  "sim_20260418171347_fa4c58": {
+    "run_id": "sim_20260418171347_fa4c58",
+    "workflow_id": "wf_20260418171347_98e42b",
+    "experiment_id": "exp_20260418171347_527a56",
+    "borrower_id": "b_007",
+    "scenario_id": "disputes_outstanding_amount_needs_reconciliation",
+    "lender_id": "nira",
+    "status": "completed",
+    "started_at": "2026-04-18T17:13:47.359808+00:00",
+    "finished_at": "2026-04-18T17:14:55.080962+00:00",
+    "error": null,
+    "evaluations": []
+  },
+  "sim_20260418172507_0a89f7": {
+    "run_id": "sim_20260418172507_0a89f7",
+    "workflow_id": "wf_20260418172507_c39f19",
+    "experiment_id": "exp_20260418172507_8932b6",
+    "borrower_id": "b_007",
+    "scenario_id": "disputes_outstanding_amount_needs_reconciliation",
+    "lender_id": "nira",
+    "status": "completed",
+    "started_at": "2026-04-18T17:25:07.055140+00:00",
+    "finished_at": "2026-04-18T17:25:59.386096+00:00",
+    "error": null,
+    "evaluations": []
   }
 }

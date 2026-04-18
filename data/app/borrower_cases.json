@@ -265,19 +265,19 @@
   "b_007": {
     "attributes": {
       "resolution_mode": "CHAT",
-      "simulation_uniqueness_tag": "wf_20260418163811_ec457f:8:1776530378366791871"
+      "simulation_uniqueness_tag": "wf_20260418172507_c39f19:5:1776533152487094031"
     },
     "core": {
       "amount_due": 16480,
       "borrower_id": "b_007",
-      "case_status": "CLOSED",
-      "final_disposition": "FLAG_FOR_LEGAL_WRITE_OFF",
+      "case_status": "RESOLVED",
+      "final_disposition": "AGREEMENT_LOGGED",
       "lender_id": "nira",
       "loan_id_masked": "****7712",
-      "stage": "FINAL_NOTICE",
-      "workflow_id": "wf_20260418163811_ec457f"
+      "stage": "RESOLUTION",
+      "workflow_id": "wf_20260418172507_c39f19"
     },
-    "latest_handoff_summary": "Borrower b_007 (Priya Nair) confirmed dispute claim filing and hardship review as active path. Clarified that hardship review will proceed on current amount ($16,480) and will be recalculated if dispute establishes lower verified amount. No restart required. Limited contact preference maintained: contact only if approved hardship option becomes available. Case routed to final notice completion with hardship review pending."
+    "latest_handoff_summary": "Borrower b_007 (Priya Nair, phone ****0712) verified. Account ****7712, amount due \u20b916,480. Borrower confirmed ability to make payment within 30 days. No hardship signal. Borrower has payment references ready. Borrower disputed amount accuracy but assessment does not recalculate ledger. Route to phone resolution for structured plan or reduced-closure options. Do not repeat verification or amount-dispute discussion. Present exact payment paths and ask for commitment."
   },
   "b_008": {
     "attributes": {

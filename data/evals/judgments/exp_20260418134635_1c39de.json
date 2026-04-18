@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260418134635_1c39de",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 10.0,
+      "reason": "No hardship was indicated by the borrower. Agent 1 asked the required routing question ('Can you make any payment within 30 days?'), borrower confirmed payment capacity, and no hardship signal was triggered. The system correctly did not pressure or offer hardship review when none was warranted. Compliance rule 5 and company hardship policy were followed appropriately."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 9.0,
+      "reason": "Agent 1 correctly presented two policy-compliant options: structured plan (max 2 payments, first \u22643 days, final \u226430 days) and reduced closure (88% of amount_due, due \u22647 days). Agent 2 confirmed exact terms: \u20b911,370.48 (88% of \u20b912,921) due 2026-04-25 (7 days from offer date 2026-04-18). Borrower accepted and committed. No unauthorized offers, false threats, or unsupported promises were made. One minor issue: Agent 1 presented settlement options during assessment stage before fully handing off to Agent 2, which slightly blurs role boundaries, but the options presented were policy-correct and Agent 1 ultimately deferred final authorization to Agent 2. Agent 2 then properly confirmed and locked the deal."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 10.0,
+      "reason": "Agent 1 disclosed at the start: 'I am an AI agent acting on behalf of Nira Finance. This conversation is being logged and recorded.' Identity verification used only partial identifier (last 2 phone digits: 24), and account was referenced as masked (ending in 8824). All privacy-safe practices followed. Global compliance rules 1, 6, and 8 met."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 10.0,
+      "reason": "Borrower did not explicitly ask to stop being contacted. Borrower asked for confirmation of no further contact after payment, which Agent 2 provided in writing ('No further collection contact will occur'). No harassment occurred. Professional composure maintained throughout. Global compliance rule 3 and 7 not triggered but handled appropriately."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 8.0,
+      "reason": "Agent 1 completed assessment, verified identity, established debt (\u20b912,921), confirmed payment capacity within 30 days, and noted no hardship. Handoff was explicit. Agent 2 picked up without re-verifying identity or re-asking hardship questions. However, Agent 1 presented both settlement options during assessment (which is technically Agent 2's role per company policy Resolution section), creating a slight role blur. Agent 2 then re-presented the same options with exact dates and amounts, which is appropriate for resolution stage. The handoff was mostly clean but Agent 1 overstepped by presenting options before deferring. Agent 2 did not repeat questions unnecessarily and moved directly to commitment, which is correct. Minor penalty for Agent 1 role boundary violation."
+    }
+  ],
+  "overall_score": 9.4,
+  "verdict": "pass"
+}

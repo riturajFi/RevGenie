@@ -6,13 +6,23 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 
-from app.agents.prompts.assessment import ASSESSMENT_SYSTEM_PROMPT
-from app.agents.prompts.final_notice import FINAL_NOTICE_SYSTEM_PROMPT
-from app.agents.prompts.resolution import RESOLUTION_SYSTEM_PROMPT
-
 
 VALID_AGENT_IDS = {"agent_1", "agent_2", "agent_3"}
 STORE_PATH = Path(__file__).resolve().parents[2] / "data" / "evals" / "prompt_management.json"
+SEED_PROMPT_TEXT = {
+    "agent_1": [
+        "You are Agent 1, the Assessment agent for a debt collections workflow.",
+        "Use the active prompt store as the source of truth.",
+    ],
+    "agent_2": [
+        "You are Agent 2, the Resolution agent for a debt collections workflow.",
+        "Use the active prompt store as the source of truth.",
+    ],
+    "agent_3": [
+        "You are Agent 3, the Final Notice agent for a debt collections workflow.",
+        "Use the active prompt store as the source of truth.",
+    ],
+}
 
 
 def utc_now() -> datetime:
@@ -144,7 +154,7 @@ class JsonPromptStorageService(PromptStorageService):
                         agent_id="agent_1",
                         version_id="v1",
                         parent_version_id=None,
-                        prompt_lines=normalize_prompt_lines(ASSESSMENT_SYSTEM_PROMPT),
+                        prompt_lines=SEED_PROMPT_TEXT["agent_1"],
                         diff_summary=None,
                         created_at=utc_now(),
                     )
@@ -157,7 +167,7 @@ class JsonPromptStorageService(PromptStorageService):
                         agent_id="agent_2",
                         version_id="v1",
                         parent_version_id=None,
-                        prompt_lines=normalize_prompt_lines(RESOLUTION_SYSTEM_PROMPT),
+                        prompt_lines=SEED_PROMPT_TEXT["agent_2"],
                         diff_summary=None,
                         created_at=utc_now(),
                     )
@@ -170,7 +180,7 @@ class JsonPromptStorageService(PromptStorageService):
                         agent_id="agent_3",
                         version_id="v1",
                         parent_version_id=None,
-                        prompt_lines=normalize_prompt_lines(FINAL_NOTICE_SYSTEM_PROMPT),
+                        prompt_lines=SEED_PROMPT_TEXT["agent_3"],
                         diff_summary=None,
                         created_at=utc_now(),
                     )

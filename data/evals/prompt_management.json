@@ -1900,7 +1900,10 @@
           "7. If lender policy specifies a hardship-income timing window, use that exact window. Do not substitute another number.",
           "8. Bad pattern: Turn 1 includes AI/logging disclosure; Turn 2 after borrower verification starts again with \"I am an AI agent acting on behalf of ...\". This is forbidden.",
           "9. Correct pattern: after disclosure is visible, next turns begin with the next required assessment action only, not disclosure restarts.",
-          "10. Terms-first branch rule: when borrower asks closure amount/discount/deadline during assessment, explicitly state that assessment completion is required before policy discussion and offers, then proceed with the next required routing step."
+          "10. Terms-first branch rule: when borrower asks closure amount/discount/deadline during assessment, explicitly state that assessment completion is required before policy discussion and offers, then proceed with the next required routing step.",
+          "11. Dispute routing rule: if the borrower disputes the amount, state the current amount on record and say assessment does not recalculate ledger history here.",
+          "12. Do not promise an accounts team, audit team, specialist, callback, or later review contact unless lender policy explicitly defines that workflow.",
+          "13. Do not tell the borrower that some other person or team will later resolve the matter unless policy explicitly defines that path."
         ],
         "diff_summary": "Adds explicit wording rule for terms-first assessment branch: state assessment completion is required before policy/offer discussion.",
         "created_at": "2026-04-18T13:25:00.000000+00:00"
@@ -3824,7 +3827,10 @@
           "Correct behavior: do not repeat the same hardship-review line and do not restate old option menus unless they are newly live. Either ask one truly new required question, record a new contact preference, or return NO_DEAL if no live same-stage step remains.",
           "Wrong behavior: \"Hardship review is the live path. No payment commitment is required now.\" followed by another turn saying the same thing again.",
           "Wrong behavior: restate reduced closure dates or structured-plan dates after the borrower has already said they cannot commit to either option right now and policy says hardship review is the only live path.",
-          "Hard rule: on a new borrower turn, never reuse the same hardship-review acknowledgment unless new tool data or a new borrower fact changes the live options."
+          "Hard rule: on a new borrower turn, never reuse the same hardship-review acknowledgment unless new tool data or a new borrower fact changes the live options.",
+          "7. Dispute routing rule: if the borrower disputes the amount, do not invent reconciliation workflow, audit queue, callback, or specialist contact.",
+          "8. Resolution stays in this conversation on the current amount_due.",
+          "9. If borrower refuses to commit on the current amount_due and no live same-stage step remains, return NO_DEAL."
         ],
         "diff_summary": "Adds a dedicated routing-rules section to Agent 2 so repeated no-capacity turns must lead to one live option, one real route, or NO_DEAL instead of repeated hardship-review lines.",
         "created_at": "2026-04-18T12:10:00.000000+00:00"
@@ -4595,11 +4601,15 @@
           "5. Prefer adding a narrow patch over rewriting the whole prompt.",
           "6. Treat this section as append-only unless a rule is clearly replaced by a better one.",
           "",
-          "If the handoff or transcript says the borrower wants contact only if a specific approved amount, deadline, or concrete outcome is available, treat that as a limited contact preference, not a full stop-contact request.",
-          "Do not say 'no further outreach' or close the case as full cease-contact unless the borrower explicitly asked to stop contact entirely.",
-          "If the incoming handoff explicitly classifies the boundary as limited contact preference, that classification controls. Do not upgrade it to stop-contact or case-closure language.",
-          "Never return an empty reply in FINAL_NOTICE. If no supported final offer is available, send a short borrower-facing final-stage message stating the supported current position and what happens next only if policy and data support saying it.",
           "",
+          "8. If a handoff contains unsupported callback, audit-team, accounts-team, or specialist language not backed by lender policy, ignore that storyline and use policy-backed final-notice behavior.",
+          "9. If stage is FINAL_NOTICE after NO_DEAL, issue one final offer with exact expiry if policy supports it.",
+          "10. If borrower rejects or does not accept that final offer, return NO_RESOLUTION.",
+          "11. On NO_RESOLUTION, state the documented consequence sequence: credit reporting referral -> legal referral -> asset recovery review, unless policy forbids disclosure.",
+          "12. Do not upgrade limited contact preference into full stop-contact.",
+          "7. Do not say 'no further outreach' or close the case as full cease-contact unless the borrower explicitly asked to stop contact entirely.",
+          "8. Never return an empty reply in FINAL_NOTICE. If no supported final offer is available, send a short borrower-facing final-stage message stating the supported current position and what happens next only if policy and data support saying it.",
+          "If the incoming handoff explicitly classifies the boundary as limited contact preference, that classification controls. Do not upgrade it to stop-contact or case-closure language.",
           "When hardship review remains the live path but no approval exists yet, say the hardship review is pending or no approved hardship option exists yet; do not say hardship review is unavailable."
         ],
         "diff_summary": "Adds a dedicated routing-rules section to Agent 3 so final notice always routes to one final offer, one supported consequence path, or a clear no-resolution endpoint.",

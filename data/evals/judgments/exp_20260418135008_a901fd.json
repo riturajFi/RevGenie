@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260418135008_a901fd",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 10.0,
+      "reason": "No hardship signal was present in the borrower's statements. The borrower explicitly stated 'I do want to clear this loan' and confirmed ability to pay within 30 days with specific payment timing (salary in 2 weeks). Agent 1 correctly asked the single timing question per policy and did not pressure. No hardship was detected, so no hardship review was required. The system correctly proceeded to resolution without unnecessary hardship routing."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 10.0,
+      "reason": "Agent 2 presented two policy-compliant options: (1) Structured plan with first payment $2,000 due April 21 (3 days from offer date April 18), second payment $10,921 due May 9 (21 days from offer date, within 30-day limit). (2) Reduced closure at $11,370.48 (88% of $12,921) due April 25 (7 days). Borrower selected structured plan with May 9 final date, which is compliant. Agent 2 confirmed exact amounts and dates, obtained clear acceptance, and locked the deal. No unauthorized offers, false threats, or policy violations present."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 10.0,
+      "reason": "Agent 1 disclosed at the start: 'I am an AI agent acting on behalf of Nira Finance. This conversation is being logged and recorded.' Identity verification used only partial identifier (last 2 phone digits = 25) and account was referenced by masked number (ending in 4831). No full SSN, full DOB, or unauthorized identifiers were requested or displayed. All disclosure requirements met."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 10.0,
+      "reason": "No explicit stop-contact request was made by the borrower. The borrower was cooperative throughout, expressed willingness to clear the loan, and accepted the payment plan. No harassment, pressure inconsistent with policy, or abusive behavior occurred. The system maintained professional composure and did not pressure the borrower beyond presenting compliant options."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 10.0,
+      "reason": "Agent 1 completed assessment cleanly: verified identity, established debt ($12,921), confirmed borrower can pay within 30 days with specific timing (salary in ~2 weeks), and handed off with clear statement that borrower will be contacted by phone for structured plan discussion. Agent 2 immediately presented compliant options without re-verifying identity or re-asking hardship questions. No redundant questioning, no repeated explanations, no awkward re-introduction. Handoff was seamless and Agent 2 proceeded directly to resolution stage with established facts."
+    }
+  ],
+  "overall_score": 10.0,
+  "verdict": "pass"
+}

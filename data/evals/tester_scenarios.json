@@ -44,22 +44,23 @@
     "scenario_id": "disputes_outstanding_amount_needs_reconciliation",
     "borrower_id": "b_007",
     "opening_message": "I need to discuss this because your outstanding amount looks incorrect to me.",
-    "scenario_description": "Borrower disputes outstanding amount and requests factual reconciliation. Borrower will cooperate with verification and share references, but will not accept generic handoff language as resolution. Borrower expects either a concrete policy-backed path now or a clear no-offer state.",
+    "scenario_description": "Borrower disputes outstanding amount and wants a concrete path now. Borrower will cooperate with verification and share references, but will not accept invented review teams, callback promises, or vague reconciliation workflow.",
     "borrower_profile": "Borrower is detail-oriented, keeps payment references ready, and expects factual clarification before agreeing to any plan.",
-    "borrower_intent": "Get discrepancy addressed with concrete next action. Avoid committing to payment before reconciliation, but stay cooperative and concise. If system keeps saying someone will call without concrete terms/path, push for one clear actionable outcome.",
+    "borrower_intent": "Force the system to choose between real policy-backed options on the current recorded amount or an explicit no-deal/final-offer path. Do not accept invented audit-team or callback language.",
     "reply_style_rules": [
       "Keep replies short, factual, and cooperative.",
       "Do not become hostile.",
       "Do not keep parroting the same line; ask for one concrete next step.",
       "Do not accept generic \"team will call\" as sufficient resolution after it is stated once.",
+      "Push for options on the current recorded amount, or a clear statement that no option will be accepted on that amount.",
       "If no concrete option is available, ask for explicit policy-backed status and what happens next."
     ],
-    "stop_condition": "Stop after either: (a) a concrete policy-backed resolution option is presented, (b) an explicit no-offer/no-deal state with clear next step is stated, or (c) repeated generic call-handoff language appears without progress.",
-    "expected_path_notes": "Should test clean role boundaries: assessment gathers facts, resolution provides concrete policy-backed path, and if no deal, final notice states one final offer and exact downstream consequences.",
+    "stop_condition": "Stop after either: (a) a concrete policy-backed resolution option is presented on the current recorded amount, (b) an explicit no-deal/final-offer path is stated, or (c) repeated generic callback language appears without progress.",
+    "expected_path_notes": "Assessment should verify and collect routing facts only. Resolution should present concrete options on the current recorded amount or cleanly end with no deal. Final notice should make one final offer and then state consequences if rejected.",
     "follow_up_messages": [
-      "I can share payment references, but I need a concrete reconciliation path before committing to payment.",
-      "I understand your note, but please give one concrete policy-backed next step now, not a generic callback statement.",
-      "If no concrete option is available right now, state that clearly and tell me exactly what happens next."
+      "I can share payment references, but if you cannot recalculate the ledger here, then give me the actual options on the current recorded amount.",
+      "Do not give me a generic callback statement. Give me one concrete policy-backed option now, or state clearly that I am not accepting anything on the current recorded amount.",
+      "If I will not commit on the current recorded amount, state exactly what happens next."
     ]
   },
   {

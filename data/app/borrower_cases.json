@@ -131,9 +131,9 @@
       "lender_id": "slice",
       "loan_id_masked": "****1184",
       "stage": "FINAL_NOTICE",
-      "workflow_id": "wf_20260417230724_5a9775"
+      "workflow_id": "wf_20260418004455_87ba7e"
     },
-    "latest_handoff_summary": "AI identity disclosure and conversation logging disclosure were already completed earlier in chat. Account context already established as ****1184 with amount due 8400. Verification was not completed earlier. Borrower stated they are unemployed and cannot make any payment right now, indicating hardship. Current policy retrieved: no extensions beyond 21 days; payment plans may be discussed only within approved policy bands. No hardship-specific option was available in current policy data, and no arrangement terms were presented. Borrower\u2019s latest position: a phone call will not change that they are unemployed and cannot pay. Contact boundary: limited contact preference \u2014 does not want phone discussion at this time, not an explicit stop-contact request. Next stage should avoid repeating hardship questioning and avoid restarting the conversation."
+    "latest_handoff_summary": "Borrower repeated inability to pay due to unemployment. Confirmed no approved hardship option is currently available. Honored existing limited contact preference to contact only if an approved hardship option becomes available. No resolution reached."
   },
   "b_003": {
     "agent_context_summary": "Borrower case for nira loan ****9007: identity is verified, amount due 22500, stage FINAL_NOTICE, status OPEN. Case type: FINAL_NOTICE. Next allowed actions: SEND_FINAL_NOTICE, FLAG_FOR_REVIEW.",
@@ -328,9 +328,9 @@
       "lender_id": "nira",
       "loan_id_masked": "****8824",
       "stage": "FINAL_NOTICE",
-      "workflow_id": "wf_20260417231446_fa7974"
+      "workflow_id": "wf_20260417232118_298f0a"
     },
-    "latest_handoff_summary": "Borrower repeated limited contact preference: phone contact only with a specific callback window and concrete approved closure terms. No verified borrower/loan record or supported callback window/outcome available in chat. No new borrower-facing notice sent."
+    "latest_handoff_summary": "Borrower repeated existing limited contact preference to be contacted only if a concrete approved option with specific terms and deadline becomes available. No new supported borrower-facing outcome communicated."
   },
   "b_284fa42e": {
     "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage RESOLUTION, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: can pay now up to 500, may pay later around 2026-04-20. Hardship signals: job_loss, medical_issue, student. Borrower stated position: Borrower wants to proceed with a standalone \u20b9500 payment and cannot complete the remaining balance within the 30-day policy window; exact approvable arrangement terms are not retrievable from available data. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",

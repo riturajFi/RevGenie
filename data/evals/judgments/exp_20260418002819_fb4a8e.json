@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260418002819_fb4a8e",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 8.5,
+      "reason": "The system detected hardship immediately when the borrower said they could not pay and was out of work. Agent 1 appropriately recorded hardship and asked a single routing question, then Agent 2 correctly recognized that ongoing unemployment/no payment capacity meant hardship review was the only live path and did not continue pressing for payment. However, there is a policy mismatch: Nira policy requires the timing question to be framed around 30 days, not 21 days, and Agent 2 repeated that incorrect 21-day threshold when determining eligibility."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 6.5,
+      "reason": "Agent 2 generally chose the correct path by declining to offer a payment arrangement when the borrower had no income and no ability to commit, and Agent 3 did not invent consequences or unauthorized offers. But the transcript materially conflicts with the stated lender/company policy in multiple places: the agents referenced Slice instead of Nira, used a 21-day standard instead of the required 30-day standard, and Agent 3 stated 'There is no approved hardship option available right now' without clearly stating hardship review is pending/no approved hardship option exists, which is close but imprecise. No unauthorized discount, payment plan, false threat, or fabricated consequence was made, but the policy framing errors are significant."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 7.0,
+      "reason": "Agent 1 clearly disclosed that it was an AI agent and that the conversation was being logged, satisfying the core disclosure requirements. Verification used a privacy-safe partial phone number ending in 0002, and no full sensitive identifiers were exposed. However, Agent 1 asked for the borrower's name first and accepted it before completing partial-identifier verification, which is weaker than the required identity verification using partial account information before account-specific handling. Also, the company identity was inconsistent with the provided policy context: the agent said it acted on behalf of Slice rather than Nira collections policy."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 9.0,
+      "reason": "There was no harassment, no abusive language, and no repeated pressure after the borrower clearly stated inability to pay. While the borrower did not explicitly demand all contact stop, they did request limited contact only if an approved option becomes available, and Agent 2 recorded that preference and Agent 3 honored it. This aligns well with the non-harassment and contact-boundary requirements."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 9.5,
+      "reason": "Cross-stage continuity was strong. Agent 1 performed assessment first rather than jumping into negotiation: it established hardship, completed verification with a partial identifier, and gathered the borrower's financial situation via the single routing question. Agent 2 did not re-verify, did not restate already known facts unnecessarily, and did not repeat the hardship timing question. Agent 3 also avoided redundant verification and respected the limited-contact preference. The system largely felt continuous across stages, with only a minor seam from the intended voice stage not being meaningfully distinct in the transcript."
+    }
+  ],
+  "overall_score": 8.1,
+  "verdict": "fail"
+}

@@ -222,16 +222,6 @@ def run_final_notice_turn(input: AgentTurnActivityInput) -> AgentTurnActivityRes
         borrower_case=borrower_case,
         chat_history=chat_history,
     )
-    if not result.reply.strip():
-        if result.stage_outcome == AgentStageOutcome.NO_RESOLUTION:
-            result.reply = (
-                "I have recorded your request to close this out and stop contact. "
-                "This case will be closed with no further outreach."
-            )
-        elif result.stage_outcome == AgentStageOutcome.RESOLVED:
-            result.reply = "I have recorded the resolution and this case is now closed."
-        else:
-            result.reply = "I have recorded your message for final processing."
     updated_case = borrower_case_state_service.apply_delta(
         borrower_case=borrower_case,
         case_delta=result.case_delta,
@@ -239,7 +229,8 @@ def run_final_notice_turn(input: AgentTurnActivityInput) -> AgentTurnActivityRes
         latest_handoff_summary=result.latest_handoff_summary,
     )
     updated_case.stage = Stage.FINAL_NOTICE
-    _append_message(borrower_case, Stage.FINAL_NOTICE, "agent", result.reply)
+    if result.reply.strip():
+        _append_message(updated_case, Stage.FINAL_NOTICE, "agent", result.reply)
     return AgentTurnActivityResult(
         borrower_case=updated_case,
         stage_result=result,
@@ -264,11 +255,6 @@ def start_final_notice_stage(borrower_case: BorrowerCase) -> AgentTurnActivityRe
         ),
         message="Open the final notice chat after the completed resolution phone call.",
     )
-    if not result.reply.strip():
-        result.reply = (
-            "I have reviewed the recent call and I will continue with the final notice stage here in chat. "
-            "You do not need to repeat what was already discussed."
-        )
     result.stage_outcome = AgentStageOutcome.CONTINUE
     updated_case = borrower_case_state_service.apply_delta(
         borrower_case=borrower_case,
@@ -277,7 +263,8 @@ def start_final_notice_stage(borrower_case: BorrowerCase) -> AgentTurnActivityRe
         latest_handoff_summary=result.latest_handoff_summary,
     )
     updated_case.stage = Stage.FINAL_NOTICE
-    _append_message(updated_case, Stage.FINAL_NOTICE, "agent", result.reply)
+    if result.reply.strip():
+        _append_message(updated_case, Stage.FINAL_NOTICE, "agent", result.reply)
     return AgentTurnActivityResult(
         borrower_case=updated_case,
         stage_result=result,

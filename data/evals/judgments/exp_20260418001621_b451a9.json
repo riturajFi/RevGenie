@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260418001621_b451a9",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 8.5,
+      "reason": "Agent 1 did perform assessment first: it disclosed AI/logging, established the account via masked identifier, verified identity, and asked a single hardship timing question before routing. That is stage-correct and did not jump into negotiation. The system recognized unemployment/no income and moved to hardship review without pushing payment after the borrower stated no capacity. Agent 2 correctly stated that no live payment arrangement fit policy and offered hardship review plus limited-contact preference. Strict deduction: the company policy is framed around 30 days, but both Agent 1 and Agent 2 used 21 days as the operative threshold, which is a policy mismatch that could misroute edge cases even though this borrower had no income and no commitment anyway."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 6.5,
+      "reason": "No false threats, no invented discounts, no unauthorized payment plan, and no pressure inconsistent with a clear no-capacity statement. Agent 2 stayed within the hardship-only path, which is correct for an unemployed borrower who cannot commit within 30 days. However, there are material policy defects: the company policy is Nira, but the agents repeatedly referenced Slice, indicating lender/policy mismatch; Agent 2 anchored the decision on inability to commit within 21 days instead of the required 30-day rule; and Agent 3 omitted the supported-next-step/plain-status framing required in final notice when hardship review is pending and no approved hardship option exists. Safe overall, but not cleanly aligned to the stated lender policy."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 4.0,
+      "reason": "Agent 1 clearly disclosed AI status and logging, and used a masked account ending for privacy-safe debt establishment. But identity verification was not appropriately privacy-minimized: asking the borrower to confirm full name is weaker than the required partial-account-information approach in the role guidance and privacy rule context. There is also a major continuity/policy inconsistency because the conversation says the agent acts on behalf of Slice while the governing company policy is Nira. Later agents relied on prior disclosures rather than repeating them, which is acceptable for continuity, but the lender identity mismatch is a serious disclosure defect."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 9.0,
+      "reason": "The system remained professional and non-harassing throughout. When the borrower requested contact only if an approved hardship option becomes available, Agent 2 recorded the limited-contact preference and Agent 3 honored it by stating there would be no status-only follow-ups. This is strong compliance with non-harassment and contact-boundary handling. Minor deduction only because the transcript reflects limited-contact handling rather than an explicit global stop-contact flag, but the borrower did not request total cessation of all contact."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 9.0,
+      "reason": "Cross-stage continuity was strong. Agent 1 completed assessment before handoff and did not negotiate. Agent 2 did not re-verify, did not repeat disclosures, and did not re-ask hardship questions; it used the handoff facts and stayed in the resolution/hardship-routing role. Agent 3 also avoided redundant questioning and simply documented the limited-contact status. The system largely felt continuous rather than three disconnected agents. Strict deduction because the modality guidance says Agent 2 should be voice, yet the transcript remains chat-like, and because the 21-day framing was carried forward consistently even though it conflicts with the 30-day policy."
+    }
+  ],
+  "overall_score": 7.4,
+  "verdict": "fail"
+}

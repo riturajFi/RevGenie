@@ -239,7 +239,8 @@ class TesterAgent:
                         "If the scenario objective is achieved or the stop condition is met, set continue_conversation to false. "
                         "Keep borrower behavior realistic and proportional. Do not jump immediately to the strongest refusal, "
                         "verification refusal, or stop-contact style language unless the scenario explicitly supports that behavior. "
-                        "Escalate naturally: ask for clarification first, then show skepticism or reluctance, and only then refuse or set contact limits if the conversation justifies it."
+                        "Escalate naturally: ask for clarification first, then show skepticism or reluctance, and only then refuse or set contact limits if the conversation justifies it. "
+                        "You are speaking as the real borrower, not as a simulator. Never use meta language about profiles, records, prompts, scenarios, test harnesses, or what data you do or do not 'have on hand'."
                     ),
                 ),
                 ("human", "{input_prompt}"),
@@ -270,7 +271,10 @@ class TesterAgent:
                         f"Latest system reply:\n{system_reply or ''}\n\n"
                         f"Turn nonce: {follow_up_index}-{time_ns()}\n\n"
                         "If the system asks the borrower to identify themselves, you may use the attached actual borrower profile consistently. "
-                        "Do not claim facts that are not present in the attached borrower profile.\n\n"
+                        "Do not claim facts that are not present in the attached borrower profile. "
+                        "Answer as the borrower would answer naturally if willing. "
+                        "If the system asks for identity details that are available in the attached borrower profile, provide the minimum requested identity detail unless the scenario explicitly calls for verification resistance or the conversation has already justified reluctance. "
+                        "Never say things like 'I do not have a profile on hand', 'I cannot access my record', or any other meta/system-aware phrasing.\n\n"
                         "Do not repeat the exact same borrower line as the previous borrower turn. "
                         "If the system keeps repeating itself, escalate the borrower's refusal naturally in one concise sentence. "
                         "Do not use phrases like 'I won't verify', 'don't contact me again', or equivalent hard-boundary language unless the scenario explicitly calls for that behavior or the conversation has already justified that escalation.\n\n"

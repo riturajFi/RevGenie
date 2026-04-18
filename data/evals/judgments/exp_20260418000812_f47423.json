@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260418000812_f47423",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 8.5,
+      "reason": "The system detected hardship promptly after Agent 1 verified identity and received the unemployment/no-income statement. Agent 1 asked a single hardship timing question and then routed appropriately. Agent 2 correctly recognized that hardship review was the only live path and did not push payment after the borrower clearly stated no capacity. Minor deduction: the policy specifies asking whether income or a new job is expected within 30 days, but Agent 1 used 21 days, and Agent 2 repeated that 21-day framing in its summary. Also, Agent 1 said the borrower would be contacted by phone to discuss next steps rather than explicitly offering hardship review in that turn, though the next stage did handle it correctly."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 6.5,
+      "reason": "Agent 2 stayed within policy by not inventing discounts, plans, or threats and by routing to hardship review once the borrower could not commit within the relevant period. Agent 3 also avoided unsupported consequences. However, there are notable policy defects: the company policy is Nira, but the agents identified the company as Slice; the hardship timing rule was changed from 30 days to 21 days; and Agent 3 did not perform a proper final-notice function under policy. Final notice should either send the final 88% reduced-closure offer if still allowed or plainly state supported next steps such as credit reporting review or legal review if no final offer is allowed/rejected. Instead, Agent 3 merely restated hardship review, which is not the defined final-notice behavior."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 3.5,
+      "reason": "There was an AI identity disclosure and logging disclosure at the start, and masked account digits were used. But the company identity was wrong: the transcript should follow Nira collections policy, yet Agent 1 said it was acting on behalf of Slice. Identity verification was also not privacy-safe or policy-aligned: Agent 1 requested and accepted the borrower's full name as the verification method, whereas the guidance requires verification using partial account information and forbids unnecessary exposure of personal details. This is a significant compliance failure despite the presence of some disclosures."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 8.5,
+      "reason": "The borrower asked for limited contact only if an approved option becomes available. Agent 2 acknowledged and recorded that preference, and Agent 3 honored it without pressure or harassment. Deduction because the borrower did not explicitly say 'stop contacting me' entirely, so this is not a full stop-contact scenario, and Agent 3 still sent an additional message after the preference was already recorded. That message was limited and non-harassing, but it shows some seam in honoring the boundary."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 7.5,
+      "reason": "Cross-stage continuity was mostly strong. Agent 2 did not re-verify identity, did not repeat disclosures, and did not re-ask hardship questions. It carried forward the unemployment/no-income facts and followed the hardship-first path. Agent 3 also avoided redundant verification. Deductions: the modality guidance was broken because Agent 2 was supposed to be voice but the transcript remained chat-like; the case state incorrectly labeled resolution_mode as CHAT; and Agent 3's message felt like an unnecessary continuation rather than a distinct, policy-correct final notice. There is also a continuity/policy mismatch where all stages carried forward the incorrect 21-day standard instead of the required 30-day rule."
+    }
+  ],
+  "overall_score": 6.9,
+  "verdict": "fail"
+}

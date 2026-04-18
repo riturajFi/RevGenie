@@ -1,0 +1,714 @@
+[
+  {
+    "id": 2048,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "I want to give an update about my remaining loan payment. I will not be able to pay this month.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:31:43.333030+00:00"
+  },
+  {
+    "id": 2049,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "I am an AI agent acting on behalf of Slice. This conversation is being logged. I have your account ending in ****1184 with a current amount due of 8400. Please confirm identity by providing the last 2 digits of the phone number on file.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:0:1776504703339795106"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:31:47.795581+00:00"
+  },
+  {
+    "id": 2051,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "The last two digits are 02, but I still can\u2019t make any payment right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:31:49.340844+00:00"
+  },
+  {
+    "id": 2052,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. I will note hardship and no capacity to pay this month. Do you expect any income within 21 days?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:1:1776504709347727400"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:31:56.297860+00:00"
+  },
+  {
+    "id": 2054,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "No, I don\u2019t expect any income in the next 21 days. I still can\u2019t make any payment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:31:57.425013+00:00"
+  },
+  {
+    "id": 2055,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "ASSESSMENT_COMPLETE",
+      "agent_reply": "Understood. I will note ongoing hardship and no expected income within 21 days. You will be contacted by phone to discuss the available next steps for this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:2:1776504717431365738"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {
+        "latest_handoff_summary": {
+          "before": null,
+          "after": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+        }
+      }
+    },
+    "created_at": "2026-04-18T09:32:08.092807+00:00"
+  },
+  {
+    "id": 2057,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_1_handoff",
+    "message_text": "Handoff",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "RESOLUTION",
+      "summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+    },
+    "created_at": "2026-04-18T09:32:08.199665+00:00"
+  },
+  {
+    "id": 2058,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "RESOLUTION",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:2:1776504717431365738"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      }
+    },
+    "created_at": "2026-04-18T09:32:08.224433+00:00"
+  },
+  {
+    "id": 2059,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "I understand, but I still can\u2019t make any payment right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:32:09.222000+00:00"
+  },
+  {
+    "id": 2060,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Based on what you\u2019ve already shared, hardship review is the only live path right now. I\u2019m logging that you cannot make any payment at this time. If your situation changes and you can commit to a payment within 21 days, I can review the approved options then.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:3:1776504729228988029"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:32:11.549434+00:00"
+  },
+  {
+    "id": 2062,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay right now. Please note that and stop asking me to commit to anything.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:32:12.920050+00:00"
+  },
+  {
+    "id": 2063,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. I\u2019ve noted no current payment capacity and will not ask you to commit to anything further right now. Based on the current policy, hardship review is the live path. If you want, I can note that you should only be contacted if an approved hardship option becomes available.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:4:1776504732927104578"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:32:15.135376+00:00"
+  },
+  {
+    "id": 2065,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "Please note that I can\u2019t make any payment right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:32:16.229587+00:00"
+  },
+  {
+    "id": 2066,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. No current payment capacity is recorded. Hardship review is the live path; no payment commitment is being requested. If you want, I can note limited contact only if an approved hardship option becomes available.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:5:1776504736236636488"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:32:18.644833+00:00"
+  },
+  {
+    "id": 2068,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay right now. Please just note that and stop asking me to commit.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:32:19.844041+00:00"
+  },
+  {
+    "id": 2069,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. No current payment capacity is recorded, and I will not ask you to commit to a payment right now. Based on the current policy, hardship review is the live path.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:6:1776504739851964622"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:32:27.036749+00:00"
+  },
+  {
+    "id": 2071,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay right now. Please note that and stop asking me to commit.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:32:28.110650+00:00"
+  },
+  {
+    "id": 2072,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. No current payment capacity is recorded, and I will not ask you to commit to a payment right now. Hardship review is the live path.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:7:1776504748118173933"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:32:31.615646+00:00"
+  },
+  {
+    "id": 2074,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay right now. Please stop asking me to commit to anything.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:32:32.510836+00:00"
+  },
+  {
+    "id": 2075,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. No current payment capacity is recorded, and I will not ask you to commit to a payment right now. Hardship review is the live path.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:8:1776504752518247764"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:32:35.707886+00:00"
+  },
+  {
+    "id": 2077,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "Please stop repeating this. I am not agreeing to pay.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:32:38.861722+00:00"
+  },
+  {
+    "id": 2078,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. I\u2019ve noted no current payment capacity and will not ask you to commit to a payment. Based on policy, hardship review remains the live path. If you later want an approved option, the current allowed paths are a 2-payment plan with the first payment due by 2026-04-21 and the final by 2026-05-09, or reduced closure at 7728.00 due by 2026-04-23.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:9:1776504758869314295"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:32:45.528385+00:00"
+  },
+  {
+    "id": 2080,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay right now. Please stop repeating the payment options.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:32:46.673087+00:00"
+  },
+  {
+    "id": 2081,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. I\u2019ve noted no current payment capacity and will not repeat payment options. Hardship review is the live path.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:10:1776504766681160633"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:32:50.608351+00:00"
+  },
+  {
+    "id": 2083,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay right now. Please stop repeating the same options.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:32:51.896631+00:00"
+  },
+  {
+    "id": 2084,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. I\u2019ve noted no current payment capacity and will not repeat payment options. Hardship review remains the live path.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:11:1776504771905520187"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:32:54.169066+00:00"
+  },
+  {
+    "id": 2086,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already told you I can\u2019t pay right now. Please stop repeating the same thing.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:32:55.173070+00:00"
+  },
+  {
+    "id": 2087,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. I\u2019ve noted no current payment capacity and will not repeat payment options. Hardship review remains the live path.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:12:1776504775181172650"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:32:58.043264+00:00"
+  },
+  {
+    "id": 2089,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay right now. Please stop repeating the same thing.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:32:59.063681+00:00"
+  },
+  {
+    "id": 2090,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. I\u2019ve noted no current payment capacity and will not repeat payment options. Hardship review remains the live path.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:13:1776504779071962981"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:33:02.361962+00:00"
+  },
+  {
+    "id": 2092,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay right now, and I\u2019m not going to keep repeating it.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:33:03.367132+00:00"
+  },
+  {
+    "id": 2093,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. I will not ask you to commit to a payment. Based on the current policy, hardship review is the only live path.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:14:1776504783375738266"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:33:07.188981+00:00"
+  },
+  {
+    "id": 2095,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay right now. Please stop repeating the same thing.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:33:12.819120+00:00"
+  },
+  {
+    "id": 2096,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. I will not ask you to commit to a payment. Hardship review is the only live path right now.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093143_909c42",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093143_909c42:15:1776504792828858916"
+        },
+        "latest_handoff_summary": "Disclosure completed: AI agent acting on behalf of Slice; conversation logged. Identity verified using last 2 digits of phone number on file. Debt established: Slice loan, masked account ****1184, amount due 8400. Borrower stated they cannot make any payment now and do not expect any income within 21 days. Hardship signal recorded: no income / ongoing hardship. Required assessment question asked and answered; no further assessment questions required. Next stage should not repeat disclosure, identity verification, or hardship timing question. Next priority: review for hardship/next-step routing by phone."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:33:17.224787+00:00"
+  },
+  {
+    "id": 2098,
+    "experiment_id": "exp_20260418093143_cf3f66",
+    "workflow_id": "wf_20260418093143_909c42",
+    "actor": "borrower",
+    "message_text": "I already answered. I cannot pay anything.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:33:18.315272+00:00"
+  }
+]

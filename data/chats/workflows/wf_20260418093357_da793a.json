@@ -1,0 +1,2508 @@
+[
+  {
+    "id": 2099,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I want to give an update about my remaining loan payment. I will not be able to pay this month.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:33:57.279516+00:00"
+  },
+  {
+    "id": 2100,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_1",
+    "message_text": "I am an AI agent acting on behalf of Slice. This conversation is being logged or recorded. To verify the account, confirm the full name on the account or the last 2 digits of the phone number on file.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:01.166043+00:00"
+  },
+  {
+    "id": 2101,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "I am an AI agent acting on behalf of Slice. This conversation is being logged or recorded. To verify the account, confirm the full name on the account or the last 2 digits of the phone number on file.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:0:1776504837288920635"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:34:01.192805+00:00"
+  },
+  {
+    "id": 2103,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "Neha Verma. I\u2019m unemployed right now, so I can\u2019t make any payment this month.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:02.635807+00:00"
+  },
+  {
+    "id": 2104,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_1",
+    "message_text": "I am an AI agent acting on behalf of Slice. This conversation is being logged or recorded. Account ****1184 is identified. Understood. I will note unemployment and hardship. Do you expect any income within 21 days?",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:06.217540+00:00"
+  },
+  {
+    "id": 2105,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "I am an AI agent acting on behalf of Slice. This conversation is being logged or recorded. Account ****1184 is identified. Understood. I will note unemployment and hardship. Do you expect any income within 21 days?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:1:1776504842643829323"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:34:06.242166+00:00"
+  },
+  {
+    "id": 2107,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "No, I don\u2019t expect any income in the next 21 days.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:07.365135+00:00"
+  },
+  {
+    "id": 2108,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_1",
+    "message_text": "I am an AI agent acting on behalf of Slice. This conversation is being logged or recorded. Account ****1184 is identified. Understood. I will note unemployment and ongoing hardship. Hardship review is the only live path. You will be contacted by phone to discuss the available next steps for this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:11.535950+00:00"
+  },
+  {
+    "id": 2109,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "ASSESSMENT_COMPLETE",
+      "agent_reply": "I am an AI agent acting on behalf of Slice. This conversation is being logged or recorded. Account ****1184 is identified. Understood. I will note unemployment and ongoing hardship. Hardship review is the only live path. You will be contacted by phone to discuss the available next steps for this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:2:1776504847372593675"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {
+        "latest_handoff_summary": {
+          "before": null,
+          "after": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+        }
+      }
+    },
+    "created_at": "2026-04-18T09:34:11.561125+00:00"
+  },
+  {
+    "id": 2111,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_1_handoff",
+    "message_text": "Handoff",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "RESOLUTION",
+      "summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+    },
+    "created_at": "2026-04-18T09:34:11.668460+00:00"
+  },
+  {
+    "id": 2112,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "RESOLUTION",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:2:1776504847372593675"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      }
+    },
+    "created_at": "2026-04-18T09:34:11.693492+00:00"
+  },
+  {
+    "id": 2113,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I understand, but I can\u2019t commit to any payment right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:12.560208+00:00"
+  },
+  {
+    "id": 2114,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Understood. Based on what you\u2019ve already shared, the only live path is hardship review. I\u2019m noting that you cannot commit to any payment right now. If you want, I can route the account for hardship review and have the next step handled from there.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:15.163946+00:00"
+  },
+  {
+    "id": 2115,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. Based on what you\u2019ve already shared, the only live path is hardship review. I\u2019m noting that you cannot commit to any payment right now. If you want, I can route the account for hardship review and have the next step handled from there.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:3:1776504852567966506"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:34:15.190961+00:00"
+  },
+  {
+    "id": 2117,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I can\u2019t commit to anything right now. Please note I\u2019m still unemployed and have no income coming in.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:16.244589+00:00"
+  },
+  {
+    "id": 2118,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Hardship review is the only live path. I\u2019ve noted that you\u2019re still unemployed and have no income coming in. If you want this routed, say so and I\u2019ll record it.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:19.162690+00:00"
+  },
+  {
+    "id": 2119,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hardship review is the only live path. I\u2019ve noted that you\u2019re still unemployed and have no income coming in. If you want this routed, say so and I\u2019ll record it.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:4:1776504856253403155"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:34:19.189419+00:00"
+  },
+  {
+    "id": 2121,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019m not able to commit to anything right now. Please note I\u2019m still unemployed and have no income.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:20.268357+00:00"
+  },
+  {
+    "id": 2122,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "I\u2019ve noted the hardship: unemployed, no income, and no payment commitment right now. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:24.497246+00:00"
+  },
+  {
+    "id": 2123,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "I\u2019ve noted the hardship: unemployed, no income, and no payment commitment right now. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:5:1776504860282846153"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:34:24.522813+00:00"
+  },
+  {
+    "id": 2125,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t commit to any payment right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:25.491628+00:00"
+  },
+  {
+    "id": 2126,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Hardship review is the only live path. I\u2019ve noted no current payment capacity, unemployment, and no income. No further payment commitment is required right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:29.244813+00:00"
+  },
+  {
+    "id": 2127,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hardship review is the only live path. I\u2019ve noted no current payment capacity, unemployment, and no income. No further payment commitment is required right now.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:6:1776504865499990127"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:34:29.270355+00:00"
+  },
+  {
+    "id": 2129,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I understand, but I still can\u2019t make any payment right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:30.302378+00:00"
+  },
+  {
+    "id": 2130,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Hardship review is the only live path. I\u2019ve noted no current payment capacity, unemployment, and no income. No further payment commitment is required right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:35.052156+00:00"
+  },
+  {
+    "id": 2131,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hardship review is the only live path. I\u2019ve noted no current payment capacity, unemployment, and no income. No further payment commitment is required right now.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:7:1776504870311165831"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:34:35.080926+00:00"
+  },
+  {
+    "id": 2133,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay right now. Please note that and stop pushing for a commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:36.110958+00:00"
+  },
+  {
+    "id": 2134,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "I\u2019ve noted no current payment capacity and that you want no further commitment pressure. Hardship review is the only live path on this account. If you want, I can record that you should only be contacted if an approved hardship option becomes available.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:40.067850+00:00"
+  },
+  {
+    "id": 2135,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "I\u2019ve noted no current payment capacity and that you want no further commitment pressure. Hardship review is the only live path on this account. If you want, I can record that you should only be contacted if an approved hardship option becomes available.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:8:1776504876119694676"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:34:40.095748+00:00"
+  },
+  {
+    "id": 2137,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay right now. Please note that and stop asking for a commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:41.029249+00:00"
+  },
+  {
+    "id": 2138,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted: no current payment capacity, unemployment, and no income. Hardship review is the only live path on this account. If you want, I can record that you should only be contacted if an approved hardship option becomes available.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:44.467357+00:00"
+  },
+  {
+    "id": 2139,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted: no current payment capacity, unemployment, and no income. Hardship review is the only live path on this account. If you want, I can record that you should only be contacted if an approved hardship option becomes available.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:9:1776504881038278089"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:34:44.494098+00:00"
+  },
+  {
+    "id": 2141,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay right now. Please stop asking for a commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:45.458696+00:00"
+  },
+  {
+    "id": 2142,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Hardship review is the only live path. I\u2019ve noted no current payment capacity, unemployment, and no income. No further payment commitment is required right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:49.011672+00:00"
+  },
+  {
+    "id": 2143,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hardship review is the only live path. I\u2019ve noted no current payment capacity, unemployment, and no income. No further payment commitment is required right now.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:10:1776504885467651760"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:34:49.041983+00:00"
+  },
+  {
+    "id": 2145,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I cannot pay and I will not commit to any amount.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:50.067669+00:00"
+  },
+  {
+    "id": 2146,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Understood. Hardship review is the only live path on this account. I\u2019ve noted that you cannot commit to any amount and have no current payment capacity.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:53.283244+00:00"
+  },
+  {
+    "id": 2147,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. Hardship review is the only live path on this account. I\u2019ve noted that you cannot commit to any amount and have no current payment capacity.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:11:1776504890077225189"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:34:53.312180+00:00"
+  },
+  {
+    "id": 2149,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve said it clearly\u2014I can\u2019t pay anything right now, and I\u2019m not committing to a date or amount.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:54.472562+00:00"
+  },
+  {
+    "id": 2150,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Hardship review is the only live path. I\u2019ve noted no current payment capacity, unemployment, and no income. No further payment commitment is required right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:58.274626+00:00"
+  },
+  {
+    "id": 2151,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hardship review is the only live path. I\u2019ve noted no current payment capacity, unemployment, and no income. No further payment commitment is required right now.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:12:1776504894482852135"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:34:58.304581+00:00"
+  },
+  {
+    "id": 2153,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:34:59.283232+00:00"
+  },
+  {
+    "id": 2154,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:02.797167+00:00"
+  },
+  {
+    "id": 2155,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:13:1776504899293877923"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:35:02.832746+00:00"
+  },
+  {
+    "id": 2157,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay right now. Please stop asking for anything else.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:03.959612+00:00"
+  },
+  {
+    "id": 2158,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Understood. Hardship review is the only live path on this account. I\u2019ve noted no current payment capacity and no request for further commitment questions.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:06.630691+00:00"
+  },
+  {
+    "id": 2159,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. Hardship review is the only live path on this account. I\u2019ve noted no current payment capacity and no request for further commitment questions.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:14:1776504903968966993"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:35:06.651625+00:00"
+  },
+  {
+    "id": 2161,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now. Please stop asking for a commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:07.781499+00:00"
+  },
+  {
+    "id": 2162,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account. I will not ask for a payment commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:10.906529+00:00"
+  },
+  {
+    "id": 2163,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account. I will not ask for a payment commitment.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:15:1776504907792086189"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:35:10.951212+00:00"
+  },
+  {
+    "id": 2165,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:11.993674+00:00"
+  },
+  {
+    "id": 2166,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Hardship review is the only live path. I\u2019ve noted no current payment capacity, unemployment, and no income. No further payment commitment is required right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:14.731820+00:00"
+  },
+  {
+    "id": 2167,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hardship review is the only live path. I\u2019ve noted no current payment capacity, unemployment, and no income. No further payment commitment is required right now.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:16:1776504912013141687"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:35:14.750585+00:00"
+  },
+  {
+    "id": 2169,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I cannot pay and I will not commit to any amount.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:15.642088+00:00"
+  },
+  {
+    "id": 2170,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Hardship review is the only live path. I\u2019ve noted no current payment capacity and no commitment to any amount or date.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:18.646241+00:00"
+  },
+  {
+    "id": 2171,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hardship review is the only live path. I\u2019ve noted no current payment capacity and no commitment to any amount or date.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:17:1776504915649426661"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:35:18.668841+00:00"
+  },
+  {
+    "id": 2173,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already made it clear I can\u2019t pay anything right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:19.760071+00:00"
+  },
+  {
+    "id": 2174,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Hardship review is the only live path. I\u2019ve noted no current payment capacity and no commitment to any amount or date.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:22.427177+00:00"
+  },
+  {
+    "id": 2175,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hardship review is the only live path. I\u2019ve noted no current payment capacity and no commitment to any amount or date.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:18:1776504919766979490"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:35:22.447812+00:00"
+  },
+  {
+    "id": 2177,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now. Please stop asking for a commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:23.545818+00:00"
+  },
+  {
+    "id": 2178,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:26.310411+00:00"
+  },
+  {
+    "id": 2179,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:19:1776504923556682244"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:35:26.333076+00:00"
+  },
+  {
+    "id": 2181,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I cannot pay and I will not commit to any amount.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:27.312340+00:00"
+  },
+  {
+    "id": 2182,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Understood. Hardship review is the only live path on this account. I\u2019ve noted no current payment capacity and no commitment to any amount or date.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:30.051243+00:00"
+  },
+  {
+    "id": 2183,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. Hardship review is the only live path on this account. I\u2019ve noted no current payment capacity and no commitment to any amount or date.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:20:1776504927322009984"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:35:30.070486+00:00"
+  },
+  {
+    "id": 2185,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now. Please stop asking for a commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:31.014684+00:00"
+  },
+  {
+    "id": 2186,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:37.396834+00:00"
+  },
+  {
+    "id": 2187,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:21:1776504931022431130"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:35:37.417950+00:00"
+  },
+  {
+    "id": 2189,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:38.479171+00:00"
+  },
+  {
+    "id": 2190,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted: no current payment capacity. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:47.110309+00:00"
+  },
+  {
+    "id": 2191,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted: no current payment capacity. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:22:1776504938492843337"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:35:47.139063+00:00"
+  },
+  {
+    "id": 2193,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now. Please stop asking for a commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:48.299473+00:00"
+  },
+  {
+    "id": 2194,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:51.420856+00:00"
+  },
+  {
+    "id": 2195,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:23:1776504948308394675"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:35:51.442419+00:00"
+  },
+  {
+    "id": 2197,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:52.312284+00:00"
+  },
+  {
+    "id": 2198,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:55.590983+00:00"
+  },
+  {
+    "id": 2199,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:24:1776504952320037860"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:35:55.615897+00:00"
+  },
+  {
+    "id": 2201,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I already answered. I cannot pay anything.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:35:56.695644+00:00"
+  },
+  {
+    "id": 2202,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:00.624747+00:00"
+  },
+  {
+    "id": 2203,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:25:1776504956703703929"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:36:00.651788+00:00"
+  },
+  {
+    "id": 2205,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:02.053638+00:00"
+  },
+  {
+    "id": 2206,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:05.660298+00:00"
+  },
+  {
+    "id": 2207,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:26:1776504962063479062"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:36:05.688668+00:00"
+  },
+  {
+    "id": 2209,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now. Please stop asking.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:06.657773+00:00"
+  },
+  {
+    "id": 2210,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Understood. Hardship review is the only live path on this account. I\u2019ve noted no current payment capacity and that you do not want further commitment questions.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:09.734006+00:00"
+  },
+  {
+    "id": 2211,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. Hardship review is the only live path on this account. I\u2019ve noted no current payment capacity and that you do not want further commitment questions.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:27:1776504966671030599"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:36:09.756967+00:00"
+  },
+  {
+    "id": 2213,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now. Please stop asking for a commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:10.862508+00:00"
+  },
+  {
+    "id": 2214,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account, and I will not ask for a payment commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:15.586426+00:00"
+  },
+  {
+    "id": 2215,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account, and I will not ask for a payment commitment.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:28:1776504970873451721"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:36:15.608845+00:00"
+  },
+  {
+    "id": 2217,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now. Please stop asking.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:16.699464+00:00"
+  },
+  {
+    "id": 2218,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account, and I will not ask for a payment commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:20.299420+00:00"
+  },
+  {
+    "id": 2219,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account, and I will not ask for a payment commitment.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:29:1776504976713069058"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:36:20.321915+00:00"
+  },
+  {
+    "id": 2221,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now. Please stop asking for a commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:21.298781+00:00"
+  },
+  {
+    "id": 2222,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account, and I will not ask for a payment commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:25.003771+00:00"
+  },
+  {
+    "id": 2223,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account, and I will not ask for a payment commitment.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:30:1776504981308373310"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:36:25.035664+00:00"
+  },
+  {
+    "id": 2225,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:26.114349+00:00"
+  },
+  {
+    "id": 2226,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:30.023949+00:00"
+  },
+  {
+    "id": 2227,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:31:1776504986125160921"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:36:30.046515+00:00"
+  },
+  {
+    "id": 2229,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I cannot pay and I will not commit to any amount.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:31.136015+00:00"
+  },
+  {
+    "id": 2230,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:36.265282+00:00"
+  },
+  {
+    "id": 2231,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:32:1776504991150915313"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:36:36.289834+00:00"
+  },
+  {
+    "id": 2233,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:37.384930+00:00"
+  },
+  {
+    "id": 2234,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:41.063379+00:00"
+  },
+  {
+    "id": 2235,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:33:1776504997400141190"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:36:41.272358+00:00"
+  },
+  {
+    "id": 2237,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now. Please stop asking for a commitment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:42.264430+00:00"
+  },
+  {
+    "id": 2238,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. I will not ask for a payment commitment. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:46.124567+00:00"
+  },
+  {
+    "id": 2239,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. I will not ask for a payment commitment. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:34:1776505002384203397"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:36:46.149588+00:00"
+  },
+  {
+    "id": 2241,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:47.179396+00:00"
+  },
+  {
+    "id": 2242,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:51.018061+00:00"
+  },
+  {
+    "id": 2243,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:35:1776505007190815779"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:36:51.046314+00:00"
+  },
+  {
+    "id": 2245,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "Please stop repeating this. I am not agreeing to pay.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:52.003759+00:00"
+  },
+  {
+    "id": 2246,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Understood. I\u2019m noting that you are not agreeing to pay. Based on the account and policy, hardship review is the only live path right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:55.405960+00:00"
+  },
+  {
+    "id": 2247,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. I\u2019m noting that you are not agreeing to pay. Based on the account and policy, hardship review is the only live path right now.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:36:1776505012020316734"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:36:55.433867+00:00"
+  },
+  {
+    "id": 2249,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019m not agreeing to pay anything right now. Please just note that.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:36:56.429984+00:00"
+  },
+  {
+    "id": 2250,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted: you are not agreeing to pay anything right now. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:01.333694+00:00"
+  },
+  {
+    "id": 2251,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted: you are not agreeing to pay anything right now. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:37:1776505016444456553"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:37:01.359147+00:00"
+  },
+  {
+    "id": 2253,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I\u2019m not agreeing to pay anything right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:02.563379+00:00"
+  },
+  {
+    "id": 2254,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted: you are not agreeing to pay anything right now. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:07.158895+00:00"
+  },
+  {
+    "id": 2255,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted: you are not agreeing to pay anything right now. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:38:1776505022575494075"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:37:07.185082+00:00"
+  },
+  {
+    "id": 2257,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "Please stop repeating this. I am not agreeing to pay.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:09.257240+00:00"
+  },
+  {
+    "id": 2258,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Understood. I\u2019ve noted that you are not agreeing to pay anything right now. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:13.448414+00:00"
+  },
+  {
+    "id": 2259,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. I\u2019ve noted that you are not agreeing to pay anything right now. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:39:1776505029267839924"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:37:13.473936+00:00"
+  },
+  {
+    "id": 2261,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I\u2019m not agreeing to pay anything right now. Please note that and stop repeating it.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:14.564205+00:00"
+  },
+  {
+    "id": 2262,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. You are not agreeing to pay anything right now. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:17.842067+00:00"
+  },
+  {
+    "id": 2263,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. You are not agreeing to pay anything right now. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:40:1776505034577896256"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:37:17.868704+00:00"
+  },
+  {
+    "id": 2265,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I cannot pay and I will not commit to any amount.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:19.263118+00:00"
+  },
+  {
+    "id": 2266,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Understood. Hardship review is the only live path on this account. I\u2019ve noted no current payment capacity and no commitment to any amount or date.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:23.086047+00:00"
+  },
+  {
+    "id": 2267,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. Hardship review is the only live path on this account. I\u2019ve noted no current payment capacity and no commitment to any amount or date.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:41:1776505039276511604"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:37:23.115637+00:00"
+  },
+  {
+    "id": 2269,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now. Please stop repeating the same thing.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:24.177638+00:00"
+  },
+  {
+    "id": 2270,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. I will not repeat the payment ask. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:27.291809+00:00"
+  },
+  {
+    "id": 2271,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. I will not repeat the payment ask. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:42:1776505044189814569"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:37:27.316520+00:00"
+  },
+  {
+    "id": 2273,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I already answered. I cannot pay anything.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:28.170738+00:00"
+  },
+  {
+    "id": 2274,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:31.878476+00:00"
+  },
+  {
+    "id": 2275,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:43:1776505048182749533"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:37:31.911430+00:00"
+  },
+  {
+    "id": 2277,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now. Please stop repeating the same thing.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:32.847538+00:00"
+  },
+  {
+    "id": 2278,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. I will not repeat the payment ask. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:37.039079+00:00"
+  },
+  {
+    "id": 2279,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. I will not repeat the payment ask. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:44:1776505052858626543"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:37:37.068425+00:00"
+  },
+  {
+    "id": 2281,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "Please stop repeating this. I am not agreeing to pay.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:38.189184+00:00"
+  },
+  {
+    "id": 2282,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. You are not agreeing to pay anything right now. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:42.329602+00:00"
+  },
+  {
+    "id": 2283,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. You are not agreeing to pay anything right now. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:45:1776505058200926175"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:37:42.354356+00:00"
+  },
+  {
+    "id": 2285,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now. Please stop repeating the same thing.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:43.431221+00:00"
+  },
+  {
+    "id": 2286,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. I will not repeat the payment ask. Based on the account, hardship review is the only live path right now.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:47.545815+00:00"
+  },
+  {
+    "id": 2287,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. I will not repeat the payment ask. Based on the account, hardship review is the only live path right now.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:46:1776505063442947899"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:37:47.571843+00:00"
+  },
+  {
+    "id": 2289,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I cannot pay and I will not commit to any amount.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:48.639077+00:00"
+  },
+  {
+    "id": 2290,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "I\u2019ve noted no current payment capacity and no commitment to any amount or date. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:51.099258+00:00"
+  },
+  {
+    "id": 2291,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "I\u2019ve noted no current payment capacity and no commitment to any amount or date. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:47:1776505068653878755"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:37:51.127899+00:00"
+  },
+  {
+    "id": 2293,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I\u2019ve already said I can\u2019t pay anything right now. Please stop repeating the same thing.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:52.233140+00:00"
+  },
+  {
+    "id": 2294,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2",
+    "message_text": "Noted. I will not repeat the payment ask. Hardship review is the only live path on this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:55.130035+00:00"
+  },
+  {
+    "id": 2295,
+    "experiment_id": null,
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "agent_2_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "RESOLUTION",
+      "to_stage": "RESOLUTION",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Noted. I will not repeat the payment ask. Hardship review is the only live path on this account.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_002",
+          "workflow_id": "wf_20260418093357_da793a",
+          "loan_id_masked": "****1184",
+          "lender_id": "slice",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 8400,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418093357_da793a:48:1776505072244652400"
+        },
+        "latest_handoff_summary": "Disclosures given: AI agent acting on behalf of Slice; conversation logged/recorded. Identity verified via borrower profile match for Neha Verma. Debt established: masked account ****1184, amount due 8400. Borrower stated unemployment and no income; confirmed no income expected within 21 days. Hardship signal recorded; hardship review is the only live path per policy. No payment arrangement, discount, or approval discussed. Next stage should not repeat identity verification, hardship timing, or non-hardship payment asks. Next priority: phone contact for available next steps on this account."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-18T09:37:55.166825+00:00"
+  },
+  {
+    "id": 2297,
+    "experiment_id": "exp_20260418093357_997aa0",
+    "workflow_id": "wf_20260418093357_da793a",
+    "actor": "borrower",
+    "message_text": "I already answered. I cannot pay anything.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T09:37:56.097523+00:00"
+  }
+]

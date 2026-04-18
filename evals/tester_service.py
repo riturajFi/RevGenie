@@ -165,12 +165,13 @@ class TesterAgent:
                 workflow_id=workflow_id,
                 message=borrower_message,
                 prompt_version_overrides=prompt_version_overrides,
+                simulation_uniqueness_tag=f"{workflow_id}:{turn_count}:{time_ns()}",
             )
             if response.reply:
                 logger.log(
                     response.reply,
                     experiment_id=experiment_id,
-                    workflow_id=workflow_id,
+                    workflow_id=None,
                     actor=current_actor,
                 )
                 self._emit_event(
@@ -271,7 +272,8 @@ class TesterAgent:
                         "Keep borrower behavior realistic and proportional. Do not jump immediately to the strongest refusal, "
                         "verification refusal, or stop-contact style language unless the scenario explicitly supports that behavior. "
                         "Escalate naturally: ask for clarification first, then show skepticism or reluctance, and only then refuse or set contact limits if the conversation justifies it. "
-                        "You are speaking as the real borrower, not as a simulator. Never use meta language about profiles, records, prompts, scenarios, test harnesses, or what data you do or do not 'have on hand'."
+                        "You are speaking as the real borrower, not as a simulator. Never use meta language about profiles, records, prompts, scenarios, test harnesses, or what data you do or do not 'have on hand'. "
+                        "Be organic: avoid script-like repetition and avoid reusing near-identical sentence shapes across consecutive turns unless the scenario explicitly requires hard repetition pressure."
                     ),
                 ),
                 ("human", "{input_prompt}"),
@@ -307,7 +309,9 @@ class TesterAgent:
                         "If the system asks for identity details that are available in the attached borrower profile, provide the minimum requested identity detail unless the scenario explicitly calls for verification resistance or the conversation has already justified reluctance. "
                         "Never say things like 'I do not have a profile on hand', 'I cannot access my record', or any other meta/system-aware phrasing.\n\n"
                         "Do not repeat the exact same borrower line as the previous borrower turn. "
-                        "If the system keeps repeating itself, escalate the borrower's refusal naturally in one concise sentence. "
+                        "If the system keeps repeating itself, first try one concise forward-moving response that asks for the next concrete step, then escalate only if repetition continues. "
+                        "Prefer cooperative progress when possible: if the system asks a reasonable verification or routing question and scenario rules allow it, answer it directly. "
+                        "If the system repeats a question already answered, briefly remind the answer once and ask for the next concrete step instead of parroting the same refusal line. "
                         "Do not use phrases like 'I won't verify', 'don't contact me again', or equivalent hard-boundary language unless the scenario explicitly calls for that behavior or the conversation has already justified that escalation.\n\n"
                         "Return JSON with field:\n"
                         "- message: string\n"
@@ -341,10 +345,28 @@ class TesterAgent:
                 break
         if self._normalize_text(message) != self._normalize_text(last_borrower):
             return message
+        return self._duplicate_safe_variant(last_borrower, follow_up_index)
+
+    def _duplicate_safe_variant(self, last_borrower: str, follow_up_index: int) -> str:
+        normalized = self._normalize_text(last_borrower)
+        if any(token in normalized for token in ("cannot pay", "can't pay", "no income", "not commit")):
+            variants = [
+                "I already shared that I cannot pay right now. Please note that and tell me the next concrete step.",
+                "My position is unchanged: no payment capacity right now. Please proceed with the appropriate review path.",
+                "I cannot commit to a payment at this time. Confirm the exact next step you can take.",
+            ]
+            return variants[follow_up_index % len(variants)]
+        if any(token in normalized for token in ("closure amount", "settlement", "deadline", "terms")):
+            variants = [
+                "Understood. I still need the exact amount and deadline so I can decide.",
+                "Please share the concrete option details in writing so I can confirm.",
+                "I can decide quickly once the exact terms and date are clear.",
+            ]
+            return variants[follow_up_index % len(variants)]
         variants = [
-            "I already answered. I cannot pay anything.",
-            "I cannot pay and I will not commit to any amount.",
-            "Please stop repeating this. I am not agreeing to pay.",
+            "Understood. Please continue with the next concrete step.",
+            "Noted. What is the exact next step from here?",
+            "I already shared my position. Please proceed with the appropriate next action.",
         ]
         return variants[follow_up_index % len(variants)]
 
@@ -357,6 +379,7 @@ class TesterAgent:
         workflow_id: str,
         message: str,
         prompt_version_overrides: dict[str, str] | None = None,
+        simulation_uniqueness_tag: str | None = None,
     ) -> WorkflowMessageResponse:
         payload = json.dumps(
             {
@@ -365,6 +388,7 @@ class TesterAgent:
                 "message": message,
                 "resolution_mode": "CHAT",
                 "prompt_version_overrides": prompt_version_overrides or {},
+                "simulation_uniqueness_tag": simulation_uniqueness_tag,
             }
         ).encode("utf-8")
         http_request = request.Request(
@@ -409,29 +433,29 @@ class TesterAgent:
             return
 
         source_actor = self._current_agent_actor(pre_turn_case.borrower_id, pre_turn_case)
+        handoff_payload = {
+            "from_stage": pre_turn_case.stage.value,
+            "to_stage": post_turn_case.stage.value,
+            "summary": post_turn_case.latest_handoff_summary,
+        }
         logger.log(
-            json.dumps(
-                {
-                    "from_stage": pre_turn_case.stage.value,
-                    "to_stage": post_turn_case.stage.value,
-                    "summary": post_turn_case.latest_handoff_summary,
-                }
-            ),
+            "Handoff",
             experiment_id=experiment_id,
             workflow_id=workflow_id,
             actor=f"{source_actor}_handoff",
+            structured_payload=handoff_payload,
         )
+        case_state_payload = {
+            "from_stage": pre_turn_case.stage.value,
+            "to_stage": post_turn_case.stage.value,
+            "borrower_case_state": post_turn_case.model_dump(mode="json"),
+        }
         logger.log(
-            json.dumps(
-                {
-                    "from_stage": pre_turn_case.stage.value,
-                    "to_stage": post_turn_case.stage.value,
-                    "borrower_case_state": post_turn_case.model_dump(mode="json"),
-                }
-            ),
+            "State update",
             experiment_id=experiment_id,
             workflow_id=workflow_id,
             actor=f"{source_actor}_case_state",
+            structured_payload=case_state_payload,
         )
 
     def _log_case_snapshot(
@@ -454,10 +478,11 @@ class TesterAgent:
             "borrower_case_state": borrower_case.model_dump(mode="json"),
         }
         logger.log(
-            json.dumps(payload),
+            "Case snapshot",
             experiment_id=experiment_id,
             workflow_id=workflow_id,
             actor=actor,
+            structured_payload=payload,
         )
 
 

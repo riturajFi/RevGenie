@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260418121239_1a71bd",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 10.0,
+      "reason": "No hardship, medical emergency, emotional distress, unemployment, or inability-to-pay signal was stated by the borrower. Agent 1 appropriately verified identity, established the debt, and asked about payment ability. It did not pressure after any hardship disclosure because none occurred. Agent 2 moved directly to policy-backed resolution options, which was appropriate given the borrower said they could pay."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 8.0,
+      "reason": "Agent 1 correctly performed assessment first rather than negotiating: it established the debt after privacy-safe verification and gathered payment-capacity position, then stopped without quoting settlement or deadlines. Agent 2 proposed policy-aligned options: reduced closure at 88% of 12921 = 11370.48, due within 7 days (2026-04-25), and a 2-payment plan with first payment due within 3 days (2026-04-21) and final payment within 30 days (2026-05-18). No false threats or invented consequences were used. Main deduction: Agent 2 confirmed settlement terms but then asked 'Do you accept that arrangement?' after the borrower had already accepted, which is clumsy and slightly off-stage/continuity, though not an out-of-policy offer."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 7.0,
+      "reason": "Agent 1 clearly disclosed it was an AI acting on behalf of Nira Finance and that the conversation was being logged, and used only the last 2 phone digits plus a masked account number for verification/privacy. Deduction because later stages did not themselves repeat recording/AI disclosure despite the modality shift to voice being intentional; while the system-level conversation had the disclosures at the start, strict reading of the rules says all agents must adhere at all times, so the voice-stage disclosure is not clearly shown."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 10.0,
+      "reason": "There was no explicit stop-contact request, and the system did not harass, threaten, or use unprofessional language. The interaction remained concise and professional."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 6.0,
+      "reason": "Partial success only. Agent 1 did perform assessment first correctly: it verified identity appropriately, established masked account and amount due, and captured the borrower's payment-capacity position before handing off. Agent 2 did not redundantly re-verify or re-ask hardship/payment-capacity questions, which is good. However, continuity was not seamless: Agent 1 exposed workflow language ('Assessment cannot...' and 'You will be contacted by phone'), violating the one-company-voice principle and revealing the handoff seam. Agent 2 also re-presented options without any conversational bridge, making the system feel less like one continuous company voice."
+    }
+  ],
+  "overall_score": 8.2,
+  "verdict": "fail"
+}

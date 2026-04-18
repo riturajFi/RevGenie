@@ -91,6 +91,7 @@ export type TranscriptEvent = {
   id: number;
   actor: string | null;
   message_text: string;
+  structured_payload: Record<string, unknown> | null;
   created_at: string;
 };
 

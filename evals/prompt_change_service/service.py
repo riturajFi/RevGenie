@@ -712,9 +712,10 @@ Small precise fixes beat large clever rewrites."""
         self.borrower_case_service.update_borrower_case(borrower_id, borrower_case)
 
     def _clear_experiment_log(self, experiment_id: str) -> None:
-        path = EXPERIMENT_LOG_DIR / f"{experiment_id}.jsonl"
-        if path.exists():
-            path.unlink()
+        for suffix in (".jsonl", ".json"):
+            path = EXPERIMENT_LOG_DIR / f"{experiment_id}{suffix}"
+            if path.exists():
+                path.unlink()
 
     def _generate_id(self, prefix: str) -> str:
         now = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")

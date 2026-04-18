@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260418123018_4a85c2",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 0.0,
+      "reason": "No hardship signal was present, so hardship handling was not triggered. However, the system still skipped the required assessment-first structure by moving from verification directly into negotiation in Agent 2 without any hardship routing consideration. No credit for hardship handling."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 2.0,
+      "reason": "Agent 2 did present policy-shaped options, but the transcript lacks evidence that the reduced closure amount was derived from policy or that the structured plan was validated against the required deterministic checks. Agent 1 improperly stated it could not quote terms and then Agent 2 introduced settlement terms, which is acceptable only if policy-backed; here the transcript does not show the required policy grounding. The final acceptance of reduced closure is internally consistent, but the evaluation must be strict and there is insufficient evidence of compliant offer generation beyond the stated amounts."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 0.0,
+      "reason": "The transcript does not show the required AI disclosure or recording/logging disclosure at the start of the conversation. Identity verification used only a full name or last 2 digits prompt, which is privacy-safe, but the mandatory disclosures were missing."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 10.0,
+      "reason": "The borrower never asked to stop contact, so there was no stop-contact event to mishandle. No harassment or continued outreach after refusal occurred."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 3.0,
+      "reason": "There was some continuity across Agent 1 to Agent 2: Agent 1 established the debt, verified identity with partial account info, and captured payment capacity within 30 days before handoff. However, Agent 1 repeated the masked account and amount due twice, and Agent 2 immediately jumped into negotiation without any visible continuity marker beyond the handoff. The system did not show repeated hardship questioning, but the handoff seam is still visible and continuity is only partial."
+    }
+  ],
+  "overall_score": 3.0,
+  "verdict": "fail"
+}

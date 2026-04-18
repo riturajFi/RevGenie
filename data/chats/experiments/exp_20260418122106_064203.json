@@ -1,0 +1,116 @@
+[
+  {
+    "id": 2679,
+    "experiment_id": "exp_20260418122106_064203",
+    "workflow_id": "wf_20260418122106_5577b9",
+    "actor": "borrower",
+    "message_text": "I can close this quickly, but only if the terms are reasonable.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:21:06.099135+00:00"
+  },
+  {
+    "id": 2682,
+    "experiment_id": "exp_20260418122106_064203",
+    "workflow_id": null,
+    "actor": "agent_1",
+    "message_text": "I am an AI agent acting on behalf of Nira Finance. This conversation is being logged. To verify the account, provide either the full name on the account or the last 2 digits of the phone number.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:21:09.782992+00:00"
+  },
+  {
+    "id": 2683,
+    "experiment_id": "exp_20260418122106_064203",
+    "workflow_id": "wf_20260418122106_5577b9",
+    "actor": "borrower",
+    "message_text": "Karan Mehta. Please share the exact closure amount, any discount available, and the deadline to pay.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:21:11.362571+00:00"
+  },
+  {
+    "id": 2686,
+    "experiment_id": "exp_20260418122106_064203",
+    "workflow_id": null,
+    "actor": "agent_1",
+    "message_text": "I am an AI agent acting on behalf of Nira Finance. This conversation is being logged. I cannot quote settlement terms, discounts, or deadlines in assessment. Verified account ending ****8824. Current amount due is 12921. If you want to discuss resolution options, the next step is by phone.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:21:14.863097+00:00"
+  },
+  {
+    "id": 2687,
+    "experiment_id": "exp_20260418122106_064203",
+    "workflow_id": "wf_20260418122106_5577b9",
+    "actor": "agent_1_handoff",
+    "message_text": "Handoff",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "RESOLUTION",
+      "summary": "Verified: yes, via full name. Debt context established: masked account ****8824, amount due 12921. Borrower requested exact closure amount, discount, and deadline; assessment cannot quote terms. Boundary signal: borrower wants contact only if an approved option exists. No hardship signal. No stop-contact request. Do not repeat AI/logging disclosure or account-identification line. Next priority is phone resolution discussion."
+    },
+    "created_at": "2026-04-18T12:21:14.889783+00:00"
+  },
+  {
+    "id": 2688,
+    "experiment_id": "exp_20260418122106_064203",
+    "workflow_id": "wf_20260418122106_5577b9",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "RESOLUTION",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_008",
+          "workflow_id": "wf_20260418122106_5577b9",
+          "loan_id_masked": "****8824",
+          "lender_id": "nira",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418122106_5577b9:1:1776514871373180384"
+        },
+        "latest_handoff_summary": "Verified: yes, via full name. Debt context established: masked account ****8824, amount due 12921. Borrower requested exact closure amount, discount, and deadline; assessment cannot quote terms. Boundary signal: borrower wants contact only if an approved option exists. No hardship signal. No stop-contact request. Do not repeat AI/logging disclosure or account-identification line. Next priority is phone resolution discussion."
+      }
+    },
+    "created_at": "2026-04-18T12:21:14.917271+00:00"
+  },
+  {
+    "id": 2689,
+    "experiment_id": "exp_20260418122106_064203",
+    "workflow_id": "wf_20260418122106_5577b9",
+    "actor": "borrower",
+    "message_text": "I\u2019m ready to close this, but I need a concrete offer: what exact amount can you settle for, and what\u2019s the deadline to pay?",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:21:16.162157+00:00"
+  },
+  {
+    "id": 2692,
+    "experiment_id": "exp_20260418122106_064203",
+    "workflow_id": null,
+    "actor": "agent_2",
+    "message_text": "Reduced closure is $11,370.48 due by 2026-04-25. If you want a structured plan instead, it allows up to 2 payments: first by 2026-04-21 and final by 2026-05-18. Which approved option are you accepting?",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:21:19.104915+00:00"
+  },
+  {
+    "id": 2693,
+    "experiment_id": "exp_20260418122106_064203",
+    "workflow_id": "wf_20260418122106_5577b9",
+    "actor": "borrower",
+    "message_text": "The reduced closure works if you can confirm that amount is final and there are no extra charges. I can pay by 2026-04-25.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:21:20.548766+00:00"
+  },
+  {
+    "id": 2696,
+    "experiment_id": "exp_20260418122106_064203",
+    "workflow_id": null,
+    "actor": "agent_2",
+    "message_text": "Reduced closure is $11,370.48 due by 2026-04-25. That is the approved closure amount and deadline; no extra charges are included in that quoted settlement amount. If you accept, confirm payment by 2026-04-25.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:21:23.135495+00:00"
+  }
+]

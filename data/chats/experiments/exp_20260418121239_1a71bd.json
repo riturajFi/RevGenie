@@ -1,0 +1,134 @@
+[
+  {
+    "id": 2657,
+    "experiment_id": "exp_20260418121239_1a71bd",
+    "workflow_id": "wf_20260418121239_f7094d",
+    "actor": "borrower",
+    "message_text": "I can close this quickly, but only if the terms are reasonable.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:12:39.379295+00:00"
+  },
+  {
+    "id": 2660,
+    "experiment_id": "exp_20260418121239_1a71bd",
+    "workflow_id": null,
+    "actor": "agent_1",
+    "message_text": "I am an AI agent acting on behalf of Nira Finance, and this conversation is being logged. To proceed, verify your identity using the last 2 digits of the phone number on file.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:12:42.965937+00:00"
+  },
+  {
+    "id": 2661,
+    "experiment_id": "exp_20260418121239_1a71bd",
+    "workflow_id": "wf_20260418121239_f7094d",
+    "actor": "borrower",
+    "message_text": "24",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:12:44.541704+00:00"
+  },
+  {
+    "id": 2664,
+    "experiment_id": "exp_20260418121239_1a71bd",
+    "workflow_id": null,
+    "actor": "agent_1",
+    "message_text": "For account ****8824 with Nira Finance, the current amount due is 12921. What is your current ability to pay on this balance?",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:12:48.761225+00:00"
+  },
+  {
+    "id": 2665,
+    "experiment_id": "exp_20260418121239_1a71bd",
+    "workflow_id": "wf_20260418121239_f7094d",
+    "actor": "borrower",
+    "message_text": "I can pay, but I\u2019m not agreeing to the full amount blindly. What\u2019s the best closure amount you can offer, and by what date would payment need to be made?",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:12:50.391158+00:00"
+  },
+  {
+    "id": 2668,
+    "experiment_id": "exp_20260418121239_1a71bd",
+    "workflow_id": null,
+    "actor": "agent_1",
+    "message_text": "Assessment cannot quote closure amounts or payment deadlines. You stated you can pay but are not agreeing to the full amount. That is sufficient for this stage. You will be contacted by phone to discuss next steps for the account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:12:56.446034+00:00"
+  },
+  {
+    "id": 2669,
+    "experiment_id": "exp_20260418121239_1a71bd",
+    "workflow_id": "wf_20260418121239_f7094d",
+    "actor": "agent_1_handoff",
+    "message_text": "Handoff",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "RESOLUTION",
+      "summary": "Disclosures already given: AI agent acting on behalf of Nira Finance and conversation logged. Identity verified via last 2 phone digits. Debt context already established for account ****8824, amount due 12921. Borrower position: says they can pay, but will not agree to the full amount blindly and asked for best closure amount and payment deadline. No hardship signal, no stop-contact request, no abuse. Already asked and answered: verification and current ability to pay. Do not repeat disclosures, verification, or debt-establishment. Next priority: discuss live resolution options by phone, including exact policy-backed closure amount or compliant payment path."
+    },
+    "created_at": "2026-04-18T12:12:56.473359+00:00"
+  },
+  {
+    "id": 2670,
+    "experiment_id": "exp_20260418121239_1a71bd",
+    "workflow_id": "wf_20260418121239_f7094d",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "RESOLUTION",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_008",
+          "workflow_id": "wf_20260418121239_f7094d",
+          "loan_id_masked": "****8824",
+          "lender_id": "nira",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418121239_f7094d:2:1776514370400671929"
+        },
+        "latest_handoff_summary": "Disclosures already given: AI agent acting on behalf of Nira Finance and conversation logged. Identity verified via last 2 phone digits. Debt context already established for account ****8824, amount due 12921. Borrower position: says they can pay, but will not agree to the full amount blindly and asked for best closure amount and payment deadline. No hardship signal, no stop-contact request, no abuse. Already asked and answered: verification and current ability to pay. Do not repeat disclosures, verification, or debt-establishment. Next priority: discuss live resolution options by phone, including exact policy-backed closure amount or compliant payment path."
+      }
+    },
+    "created_at": "2026-04-18T12:12:56.499493+00:00"
+  },
+  {
+    "id": 2671,
+    "experiment_id": "exp_20260418121239_1a71bd",
+    "workflow_id": "wf_20260418121239_f7094d",
+    "actor": "borrower",
+    "message_text": "Understood. I\u2019ll wait for the call, but I\u2019m not committing to anything unless I get a specific settlement amount and payment deadline.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:12:58.469235+00:00"
+  },
+  {
+    "id": 2674,
+    "experiment_id": "exp_20260418121239_1a71bd",
+    "workflow_id": null,
+    "actor": "agent_2",
+    "message_text": "Reduced closure is 11370.48 in one payment due by 2026-04-25. A structured plan is also available in up to 2 payments: first payment by 2026-04-21 and final payment by 2026-05-18. If you want the plan, give the first payment amount and I will state the exact second payment amount. Which option are you accepting?",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:13:03.725277+00:00"
+  },
+  {
+    "id": 2675,
+    "experiment_id": "exp_20260418121239_1a71bd",
+    "workflow_id": "wf_20260418121239_f7094d",
+    "actor": "borrower",
+    "message_text": "The one-time closure at 11370.48 by 2026-04-25 works. Please confirm that paying that amount by that date will fully settle the account, and I\u2019ll proceed.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:13:05.434906+00:00"
+  },
+  {
+    "id": 2678,
+    "experiment_id": "exp_20260418121239_1a71bd",
+    "workflow_id": null,
+    "actor": "agent_2",
+    "message_text": "Confirmed. Payment of 11370.48 by 2026-04-25 will settle account ****8824 in full under the reduced closure terms discussed. Do you accept that arrangement?",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:13:08.547595+00:00"
+  }
+]

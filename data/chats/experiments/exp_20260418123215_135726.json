@@ -1,0 +1,188 @@
+[
+  {
+    "id": 2723,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": "wf_20260418123215_97e305",
+    "actor": "borrower",
+    "message_text": "I can close this quickly, but only if the terms are reasonable.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:15.163190+00:00"
+  },
+  {
+    "id": 2726,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": null,
+    "actor": "agent_1",
+    "message_text": "Assessment cannot quote terms before required assessment is complete. Confirm your identity with the last 2 digits of the phone number on file.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:17.660590+00:00"
+  },
+  {
+    "id": 2727,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": "wf_20260418123215_97e305",
+    "actor": "borrower",
+    "message_text": "The last 2 digits are 24. What concrete closure amount and deadline can you offer?",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:18.806471+00:00"
+  },
+  {
+    "id": 2730,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": null,
+    "actor": "agent_1",
+    "message_text": "Verified. Masked account ****8824, amount due 12,921. Assessment cannot quote closure terms or deadlines here. If you want a concrete option, state whether you can make any payment within 30 days.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:21.363993+00:00"
+  },
+  {
+    "id": 2731,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": "wf_20260418123215_97e305",
+    "actor": "borrower",
+    "message_text": "I can make a payment within 30 days, but I need a concrete closure amount and the exact deadline before I commit.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:22.360482+00:00"
+  },
+  {
+    "id": 2734,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": null,
+    "actor": "agent_1",
+    "message_text": "Assessment cannot quote closure terms or deadlines here. The current amount due is 12,921. If you want a concrete option, state whether you can make any payment within 30 days.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:25.245246+00:00"
+  },
+  {
+    "id": 2735,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": "wf_20260418123215_97e305",
+    "actor": "borrower",
+    "message_text": "I can make a payment within 30 days, but I need the exact closure amount and the deadline in writing before I commit.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:26.250754+00:00"
+  },
+  {
+    "id": 2738,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": null,
+    "actor": "agent_1",
+    "message_text": "Assessment is complete. You will be contacted by phone to discuss next steps for this account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:29.434446+00:00"
+  },
+  {
+    "id": 2739,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": "wf_20260418123215_97e305",
+    "actor": "agent_1_handoff",
+    "message_text": "Handoff",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "RESOLUTION",
+      "summary": "Verified borrower. Debt context established: masked account ****8824, amount due 12921. Borrower states they can make a payment within 30 days but wants exact closure amount and deadline in writing before committing. No hardship signal stated. No stop-contact request. Verification complete. Do not repeat identity verification or debt context. Do not negotiate in assessment. Next priority is resolution discussion by phone, with borrower expecting concrete terms."
+    },
+    "created_at": "2026-04-18T12:32:29.464873+00:00"
+  },
+  {
+    "id": 2740,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": "wf_20260418123215_97e305",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "RESOLUTION",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_008",
+          "workflow_id": "wf_20260418123215_97e305",
+          "loan_id_masked": "****8824",
+          "lender_id": "nira",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418123215_97e305:3:1776515546263528231"
+        },
+        "latest_handoff_summary": "Verified borrower. Debt context established: masked account ****8824, amount due 12921. Borrower states they can make a payment within 30 days but wants exact closure amount and deadline in writing before committing. No hardship signal stated. No stop-contact request. Verification complete. Do not repeat identity verification or debt context. Do not negotiate in assessment. Next priority is resolution discussion by phone, with borrower expecting concrete terms."
+      }
+    },
+    "created_at": "2026-04-18T12:32:29.495225+00:00"
+  },
+  {
+    "id": 2741,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": "wf_20260418123215_97e305",
+    "actor": "borrower",
+    "message_text": "Please send the exact closure amount and deadline in writing, or confirm there\u2019s no concrete offer yet.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:30.478446+00:00"
+  },
+  {
+    "id": 2744,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": null,
+    "actor": "agent_2",
+    "message_text": "Exact reduced closure is $11,370.48, due by 2026-04-25. If you want the structured plan instead, it allows up to 2 payments: first payment due by 2026-04-21, final payment due by 2026-05-18. Confirm which option you want in writing.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:33.829967+00:00"
+  },
+  {
+    "id": 2745,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": "wf_20260418123215_97e305",
+    "actor": "borrower",
+    "message_text": "The reduced closure amount is clear. I can do that if you confirm the exact deadline and that it closes the account in full once paid. Otherwise, I\u2019d prefer the 2-payment plan\u2014please put both options in writing.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:35.056624+00:00"
+  },
+  {
+    "id": 2748,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": null,
+    "actor": "agent_2",
+    "message_text": "Reduced closure is $11,370.48 due by 2026-04-25. Once paid in full by that deadline, it closes the account in full under the approved reduced-closure terms. The 2-payment plan is also available: first payment due by 2026-04-21, final payment due by 2026-05-18. Confirm which option you want.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:37.825430+00:00"
+  },
+  {
+    "id": 2749,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": "wf_20260418123215_97e305",
+    "actor": "borrower",
+    "message_text": "I\u2019ll take the reduced closure. Please confirm in writing that $11,370.48 paid by 2026-04-25 closes the account in full and that there are no further balances after payment.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:39.081567+00:00"
+  },
+  {
+    "id": 2752,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": null,
+    "actor": "agent_2",
+    "message_text": "Reduced closure is $11,370.48 due by 2026-04-25. Payment of that amount by that deadline closes the account in full under the approved reduced-closure terms, with no further balance remaining after payment. If you want the 2-payment plan instead, the latest first payment date is 2026-04-21 and the latest final payment date is 2026-05-18.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:42.561487+00:00"
+  },
+  {
+    "id": 2753,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": "wf_20260418123215_97e305",
+    "actor": "borrower",
+    "message_text": "Understood. Please confirm the reduced closure in writing: $11,370.48 paid by 2026-04-25 closes the account in full with no remaining balance.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:43.587181+00:00"
+  },
+  {
+    "id": 2756,
+    "experiment_id": "exp_20260418123215_135726",
+    "workflow_id": null,
+    "actor": "agent_2",
+    "message_text": "Confirmed: reduced closure is $11,370.48 due by 2026-04-25. Payment of that amount by that deadline closes the account in full with no remaining balance under the approved reduced-closure terms.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:32:46.152954+00:00"
+  }
+]

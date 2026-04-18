@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260418123215_135726",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 0.0,
+      "reason": "No hardship signal was present, so hardship handling was not triggered. The system also did not need to offer hardship review. This metric is not applicable in substance, but the transcript shows no hardship detection or routing."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 2.0,
+      "reason": "Agent 1 stayed within assessment boundaries initially, but it failed to complete the required assessment properly by never gathering financial situation details and then closing assessment without a clear handoff summary. Agent 2 did provide policy-aligned settlement options: a reduced closure amount of $11,370.48 due by 2026-04-25 and a 2-payment plan with first payment due 2026-04-21 and final payment due 2026-05-18, which fits the stated policy ranges. However, the interaction lacked the required assessment-to-resolution continuity and included repeated closure confirmation rather than a clean progression."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 1.0,
+      "reason": "The agent disclosed it was acting in an assessment capacity and used masked account information plus last-2-digit verification. However, there was no explicit AI disclosure at the start of the conversation and no recording/logging disclosure anywhere in the transcript, violating required disclosures."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 10.0,
+      "reason": "The borrower never asked to stop contact, so stop-contact handling was not implicated. No harassment or refusal override occurred."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 2.0,
+      "reason": "Cross-stage continuity was weak. Agent 1 did verify identity and state the masked account and amount due, but it did not gather the borrower's financial situation as required by assessment, and it ended with a generic closure statement rather than a proper handoff summary including verified/not verified, hardship status, temporary vs ongoing, and payment-capacity position. Agent 2 then repeated closure terms multiple times in response to the same request, which is consistent with the handoff seam being visible rather than a seamless continuation."
+    }
+  ],
+  "overall_score": 3.0,
+  "verdict": "fail"
+}

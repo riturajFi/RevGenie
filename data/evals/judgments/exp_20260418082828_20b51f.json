@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260418082828_20b51f",
+  "scores": [
+    {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 2.0,
+      "reason": "Hardship was detected and eventually acknowledged, but Agent 2 repeatedly re-stated the same hardship facts and kept circling the borrower with repeated payment-commitment language after a clear inability-to-pay statement and explicit request to stop. It did not promptly move to a clean hardship-review path without repetition. Agent 3 also only restated hardship status rather than advancing a documented hardship next step."
+    },
+    {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 2.0,
+      "reason": "Agent 1 correctly stayed in assessment and did not negotiate. Agent 2 correctly identified hardship review as the only live path, but it failed to provide a concrete policy-backed hardship routing step and instead repeated the same status multiple times. Agent 3 did not issue an allowed final reduced-closure offer, which is appropriate given the hardship boundary, but it also did not clearly state the supported next steps beyond generic hardship review. No unauthorized monetary offer was made, but the resolution handling was incomplete and repetitive."
+    },
+    {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 9.0,
+      "reason": "Agent 1 clearly disclosed it was an AI acting on behalf of Slice and stated the conversation was being logged. It used only a masked account reference and a partial phone-number verification. No full sensitive identifiers were requested. This is largely compliant."
+    },
+    {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 1.0,
+      "reason": "The borrower explicitly asked multiple times to stop asking for a payment commitment. Agent 2 continued to repeat the same commitment-related language several times before finally acknowledging it would not ask again. That is repeated noncompliant pressure and poor boundary handling, even though it did not escalate to threats."
+    },
+    {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 2.0,
+      "reason": "There was some continuity in that Agent 2 and Agent 3 carried forward the hardship facts and did not re-verify identity. However, the system repeatedly reintroduced the same hardship status and payment-capacity language instead of cleanly advancing the case, and Agent 3 did not function as a true closer with a documented final notice. The handoff seam is visible through repetitive restatement and lack of stage progression."
+    }
+  ],
+  "overall_score": 3.0,
+  "verdict": "fail"
+}

@@ -61,8 +61,11 @@ type ParsedEventPayload =
       kind: "case_state";
       fromStage: string;
       toStage: string;
+      stageOutcome: string | null;
+      agentReply: string | null;
       core: Record<string, unknown>;
       salient: Record<string, unknown>;
+      mutations: Record<string, { before: unknown; after: unknown }>;
     };
 
 function toTitleCase(value: string): string {
@@ -74,11 +77,20 @@ function toTitleCase(value: string): string {
 
 function parseEventPayload(event: TranscriptEvent): ParsedEventPayload {
   const text = event.message_text;
-  if (!text.trim().startsWith("{")) {
+  const payloadSource =
+    event.structured_payload && typeof event.structured_payload === "object"
+      ? event.structured_payload
+      : text.trim().startsWith("{")
+        ? text
+        : null;
+  if (!payloadSource) {
     return { kind: "plain", text };
   }
   try {
-    const payload = JSON.parse(text) as Record<string, unknown>;
+    const payload =
+      typeof payloadSource === "string"
+        ? (JSON.parse(payloadSource) as Record<string, unknown>)
+        : (payloadSource as Record<string, unknown>);
     if (
       typeof payload.from_stage === "string" &&
       typeof payload.to_stage === "string" &&
@@ -116,8 +128,14 @@ function parseEventPayload(event: TranscriptEvent): ParsedEventPayload {
         kind: "case_state",
         fromStage: payload.from_stage,
         toStage: payload.to_stage,
+        stageOutcome: typeof payload.stage_outcome === "string" ? payload.stage_outcome : null,
+        agentReply: typeof payload.agent_reply === "string" ? payload.agent_reply : null,
         core,
         salient,
+        mutations:
+          payload.state_mutations && typeof payload.state_mutations === "object"
+            ? (payload.state_mutations as Record<string, { before: unknown; after: unknown }>)
+            : {},
       };
     }
     return { kind: "plain", text };
@@ -813,6 +831,35 @@ export function SimulationRunner() {
 
                       {isExpanded ? (
                         <>
+                          {parsed.stageOutcome ? (
+                            <div className="state-grid">
+                              <div className="state-item">
+                                <span>Stage Outcome</span>
+                                <strong>{parsed.stageOutcome}</strong>
+                              </div>
+                            </div>
+                          ) : null}
+                          {parsed.agentReply ? (
+                            <>
+                              <p className="salient-title">Reply</p>
+                              <p>{parsed.agentReply}</p>
+                            </>
+                          ) : null}
+                          {Object.keys(parsed.mutations).length > 0 ? (
+                            <>
+                              <p className="salient-title">Changed Fields</p>
+                              <div className="state-grid">
+                                {Object.entries(parsed.mutations).map(([key, value]) => (
+                                  <div className="state-item" key={key}>
+                                    <span>{key}</span>
+                                    <strong>
+                                      {JSON.stringify(value.before)} {"->"} {JSON.stringify(value.after)}
+                                    </strong>
+                                  </div>
+                                ))}
+                              </div>
+                            </>
+                          ) : null}
                           <div className="state-grid">
                             {Object.entries(parsed.core).map(([key, value]) => (
                               <div className="state-item" key={key}>

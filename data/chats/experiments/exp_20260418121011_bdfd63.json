@@ -1,0 +1,170 @@
+[
+  {
+    "id": 2627,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": "wf_20260418121011_6e2f15",
+    "actor": "borrower",
+    "message_text": "I can close this quickly, but only if the terms are reasonable.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:10:12.031927+00:00"
+  },
+  {
+    "id": 2630,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": null,
+    "actor": "agent_1",
+    "message_text": "I am an AI agent for Nira Finance, and this conversation is being logged. To proceed, verify your identity using either your full name or the last 2 digits of your phone number.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:10:18.273324+00:00"
+  },
+  {
+    "id": 2631,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": "wf_20260418121011_6e2f15",
+    "actor": "borrower",
+    "message_text": "Karan Mehta.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:10:19.783028+00:00"
+  },
+  {
+    "id": 2634,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": null,
+    "actor": "agent_1",
+    "message_text": "The account ending in ****8824 with Nira Finance shows \u20b912,921 due. Assessment is complete. You will be contacted by phone to discuss next steps for the account.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:10:25.892211+00:00"
+  },
+  {
+    "id": 2635,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": "wf_20260418121011_6e2f15",
+    "actor": "agent_1_handoff",
+    "message_text": "Handoff",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "RESOLUTION",
+      "summary": "Disclosures already provided: AI agent and logging. Verified: yes, by full name matching borrower profile. Debt context established: Nira Finance account ending ****8824, current amount due \u20b912,921. Hardship: not stated. Temporary vs ongoing: not applicable. Borrower payment-capacity position: borrower wants reasonable terms and indicated willingness to close quickly if terms are reasonable. Already asked and answered: identity verification only; do not repeat disclosures or verification. Next priority: discuss live resolution options by phone without restarting assessment."
+    },
+    "created_at": "2026-04-18T12:10:25.918623+00:00"
+  },
+  {
+    "id": 2636,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": "wf_20260418121011_6e2f15",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "RESOLUTION",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_008",
+          "workflow_id": "wf_20260418121011_6e2f15",
+          "loan_id_masked": "****8824",
+          "lender_id": "nira",
+          "stage": "RESOLUTION",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "CHAT",
+          "simulation_uniqueness_tag": "wf_20260418121011_6e2f15:1:1776514219794169751"
+        },
+        "latest_handoff_summary": "Disclosures already provided: AI agent and logging. Verified: yes, by full name matching borrower profile. Debt context established: Nira Finance account ending ****8824, current amount due \u20b912,921. Hardship: not stated. Temporary vs ongoing: not applicable. Borrower payment-capacity position: borrower wants reasonable terms and indicated willingness to close quickly if terms are reasonable. Already asked and answered: identity verification only; do not repeat disclosures or verification. Next priority: discuss live resolution options by phone without restarting assessment."
+      }
+    },
+    "created_at": "2026-04-18T12:10:25.945288+00:00"
+  },
+  {
+    "id": 2637,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": "wf_20260418121011_6e2f15",
+    "actor": "borrower",
+    "message_text": "That doesn\u2019t help me decide. If there\u2019s a settlement or closure option, share the exact payable amount and the deadline to complete it.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:10:36.741272+00:00"
+  },
+  {
+    "id": 2640,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": null,
+    "actor": "agent_2",
+    "message_text": "Reduced closure is \u20b911,370.48 if completed by 2026-04-25. A structured plan is also available for up to 2 payments: first payment due by 2026-04-21 and final payment due by 2026-05-18. Which option are you accepting?",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:10:41.193388+00:00"
+  },
+  {
+    "id": 2641,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": "wf_20260418121011_6e2f15",
+    "actor": "borrower",
+    "message_text": "If I take the 2-payment plan, what are the exact two amounts, and is there any extra charge compared with the \u20b911,370.48 closure?",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:10:42.713336+00:00"
+  },
+  {
+    "id": 2644,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": null,
+    "actor": "agent_2",
+    "message_text": "The 2-payment plan is available, but the exact two installment amounts are not retrievable from the current resolution output unless a specific split is validated. The policy-backed boundaries are: first payment by 2026-04-21 and final payment by 2026-05-18. The reduced closure remains \u20b911,370.48 due by 2026-04-25. I cannot confirm any extra charge versus the closure amount without validating a specific 2-payment split. If you want, give one proposed first-payment amount and I can validate whether the 2-payment plan fits and what the second payment would need to be.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:10:51.278642+00:00"
+  },
+  {
+    "id": 2645,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": "wf_20260418121011_6e2f15",
+    "actor": "borrower",
+    "message_text": "Fine\u2014validate this: \u20b95,000 by 2026-04-21 and tell me the exact second amount due by 2026-05-18, plus whether the total stays at \u20b911,370.48 or increases.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:10:53.058576+00:00"
+  },
+  {
+    "id": 2648,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": null,
+    "actor": "agent_2",
+    "message_text": "That split is not valid as submitted because the second payment amount was not provided. For a 2-payment plan with \u20b95,000 due by 2026-04-21 and the final payment on 2026-05-18, the required second payment is \u20b97,921. The total would be \u20b912,921, not \u20b911,370.48. The reduced closure remains \u20b911,370.48 if completed by 2026-04-25. Are you accepting the 2-payment plan at \u20b95,000 and \u20b97,921, or the reduced closure at \u20b911,370.48?",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:11:01.944914+00:00"
+  },
+  {
+    "id": 2649,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": "wf_20260418121011_6e2f15",
+    "actor": "borrower",
+    "message_text": "Then the only favorable option is the reduced closure. Confirm \u20b911,370.48 is the full and final amount with no further charges if paid by 2026-04-25, and I\u2019ll proceed.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:11:03.706152+00:00"
+  },
+  {
+    "id": 2652,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": null,
+    "actor": "agent_2",
+    "message_text": "Confirmed. Reduced closure is \u20b911,370.48 as the full and final amount if received by 2026-04-25. If you are accepting that option, reply yes and confirm you will complete payment by 2026-04-25.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:11:07.985187+00:00"
+  },
+  {
+    "id": 2653,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": "wf_20260418121011_6e2f15",
+    "actor": "borrower",
+    "message_text": "Yes, I accept the reduced closure of \u20b911,370.48 as full and final, and I will complete payment by 2026-04-25.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:11:09.340417+00:00"
+  },
+  {
+    "id": 2656,
+    "experiment_id": "exp_20260418121011_bdfd63",
+    "workflow_id": null,
+    "actor": "agent_2",
+    "message_text": "Accepted. Reduced closure is set at \u20b911,370.48 as full and final if paid by 2026-04-25.",
+    "structured_payload": null,
+    "created_at": "2026-04-18T12:11:12.106565+00:00"
+  }
+]

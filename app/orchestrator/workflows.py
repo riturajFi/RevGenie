@@ -52,6 +52,8 @@ class BorrowerCollectionsWorkflow:
             await self._ensure_state(self.input)
 
         assert self.state is not None
+        self.state.borrower_case.simulation_uniqueness_tag = input.simulation_uniqueness_tag
+        self.state.borrower_case = await self._activity(save_borrower_case, self.state.borrower_case)
 
         # VOICE for interactive and chat for training
         await self._apply_resolution_mode(input.resolution_mode)
@@ -165,6 +167,7 @@ class BorrowerCollectionsWorkflow:
         borrower_case.final_disposition = None
         borrower_case.resolution_mode = input.resolution_mode
         borrower_case.prompt_version_overrides = input.prompt_version_overrides
+        borrower_case.simulation_uniqueness_tag = input.simulation_uniqueness_tag
         borrower_case = await self._activity(save_borrower_case, borrower_case)
         self.state = CollectionsWorkflowState(
             borrower_case=borrower_case,

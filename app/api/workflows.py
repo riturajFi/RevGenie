@@ -14,6 +14,7 @@ class WorkflowMessageRequest(BaseModel):
     message: str
     resolution_mode: ResolutionMode | None = None
     prompt_version_overrides: dict[str, str] | None = None
+    simulation_uniqueness_tag: str | None = None
 
 
 class WorkflowMessageResponse(BaseModel):
@@ -39,6 +40,7 @@ async def _submit_borrower_message(
             workflow_id=payload.workflow_id,
             message=payload.message,
             resolution_mode=payload.resolution_mode,
+            simulation_uniqueness_tag=payload.simulation_uniqueness_tag,
             prompt_version_overrides=payload.prompt_version_overrides,
             default_resolution_mode=default_resolution_mode,
         )

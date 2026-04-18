@@ -12,6 +12,7 @@ class CollectionsWorkflowInput(BaseModel):
     workflow_id: str
     resolution_mode: ResolutionMode = ResolutionMode.CHAT
     prompt_version_overrides: dict[str, str] = Field(default_factory=dict)
+    simulation_uniqueness_tag: str | None = None
 
 
 class CollectionsWorkflowState(BaseModel):
@@ -23,6 +24,7 @@ class CollectionsWorkflowState(BaseModel):
 class BorrowerMessageWorkflowInput(BaseModel):
     message: str
     resolution_mode: ResolutionMode | None = None
+    simulation_uniqueness_tag: str | None = None
 
 
 class AgentPromptActivityInput(BaseModel):

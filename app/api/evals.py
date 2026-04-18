@@ -90,6 +90,7 @@ class TranscriptEventResponse(BaseModel):
     id: int
     actor: str | None
     message_text: str
+    structured_payload: dict | None = None
     created_at: str
 
 
@@ -205,9 +206,10 @@ def _generate_id(prefix: str) -> str:
 
 
 def _clear_experiment_log(experiment_id: str) -> None:
-    path = Path("data/chats/experiments") / f"{experiment_id}.jsonl"
-    if path.exists():
-        path.unlink()
+    for suffix in (".jsonl", ".json"):
+        path = Path("data/chats/experiments") / f"{experiment_id}{suffix}"
+        if path.exists():
+            path.unlink()
 
 
 def _reset_case_for_simulation(borrower_id: str, workflow_id: str) -> None:
@@ -488,6 +490,7 @@ def get_simulation_events(run_id: str) -> list[TranscriptEventResponse]:
             id=event.id,
             actor=event.actor,
             message_text=event.message_text,
+            structured_payload=event.structured_payload,
             created_at=event.created_at,
         )
         for event in events

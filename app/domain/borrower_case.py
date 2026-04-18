@@ -60,6 +60,7 @@ class BorrowerCase(BaseModel):
         "resolution_call_id",
         "resolution_call_status",
         "prompt_version_overrides",
+        "simulation_uniqueness_tag",
     }
 
     @model_validator(mode="before")
@@ -235,6 +236,17 @@ class BorrowerCase(BaseModel):
     def prompt_version_for(self, agent_id: str) -> str | None:
         return self.prompt_version_overrides.get(agent_id)
 
+    @property
+    def simulation_uniqueness_tag(self) -> Optional[str]:
+        value = self._get_attribute("simulation_uniqueness_tag")
+        if value in (None, ""):
+            return None
+        return str(value)
+
+    @simulation_uniqueness_tag.setter
+    def simulation_uniqueness_tag(self, value: str | None) -> None:
+        self._set_attribute("simulation_uniqueness_tag", None if value in (None, "") else str(value))
+
     def to_agent_context(self) -> dict[str, Any]:
         salient_attributes = {}
         resolution_mode = self.attributes.get("resolution_mode")
@@ -243,6 +255,8 @@ class BorrowerCase(BaseModel):
         prompt_version_overrides = self.prompt_version_overrides
         if prompt_version_overrides:
             salient_attributes["prompt_version_overrides"] = prompt_version_overrides
+        if self.simulation_uniqueness_tag:
+            salient_attributes["simulation_uniqueness_tag"] = self.simulation_uniqueness_tag
         return {
             "core": self.core.model_dump(mode="json"),
             "latest_handoff_summary": self.latest_handoff_summary,

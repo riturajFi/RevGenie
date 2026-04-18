@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from typing import Any
 
 from temporalio import activity
@@ -14,6 +15,7 @@ from app.services.borrower_case_state import BorrowerCaseStateService
 from app.services.borrower_profile import FileBorrowerProfileService
 from app.services.chat_message import get_chat_message_service
 from app.services.retell import RetellService
+from evals.logging_service import logger
 from app.orchestrator.models import (
     AgentTurnActivityInput,
     AgentTurnActivityResult,
@@ -38,6 +40,24 @@ def _load_case(borrower_id: str) -> BorrowerCase:
 
 def _save_case(borrower_case: BorrowerCase) -> BorrowerCase:
     return borrower_case_service.update_borrower_case(borrower_case.borrower_id, borrower_case)
+
+
+def _agent_actor_for_stage(stage: Stage) -> str:
+    if stage == Stage.ASSESSMENT:
+        return "agent_1"
+    if stage == Stage.RESOLUTION:
+        return "agent_2"
+    return "agent_3"
+
+
+def _log_agent_reply(*, borrower_case: BorrowerCase, stage: Stage, reply: str) -> None:
+    if not reply.strip():
+        return
+    logger.log(
+        reply,
+        workflow_id=borrower_case.workflow_id,
+        actor=_agent_actor_for_stage(stage),
+    )
 
 
 def _append_message(
@@ -72,6 +92,51 @@ def _ensure_handoff_message(borrower_case: BorrowerCase, stage: Stage) -> None:
         workflow_id=borrower_case.workflow_id,
         agent_id=stage.value,
         summary=borrower_case.latest_handoff_summary,
+    )
+
+
+def _flatten_diffs(before: Any, after: Any, prefix: str = "") -> dict[str, dict[str, Any]]:
+    if before == after:
+        return {}
+
+    if isinstance(before, dict) and isinstance(after, dict):
+        changes: dict[str, dict[str, Any]] = {}
+        for key in sorted(set(before) | set(after)):
+            next_prefix = f"{prefix}.{key}" if prefix else key
+            changes.update(_flatten_diffs(before.get(key), after.get(key), next_prefix))
+        return changes
+
+    return {
+        prefix: {
+            "before": before,
+            "after": after,
+        }
+    }
+
+
+def _log_case_mutation(
+    *,
+    before_case: BorrowerCase,
+    after_case: BorrowerCase,
+    stage: Stage,
+    result: AgentTurnResult,
+) -> None:
+    payload = {
+        "from_stage": before_case.stage.value,
+        "to_stage": after_case.stage.value,
+        "stage_outcome": result.stage_outcome.value,
+        "agent_reply": result.reply,
+        "borrower_case_state": after_case.model_dump(mode="json"),
+        "state_mutations": _flatten_diffs(
+            before_case.model_dump(mode="json"),
+            after_case.model_dump(mode="json"),
+        ),
+    }
+    logger.log(
+        "State update",
+        workflow_id=after_case.workflow_id,
+        actor=f"{_agent_actor_for_stage(stage)}_case_state",
+        structured_payload=payload,
     )
 
 
@@ -159,6 +224,7 @@ def save_borrower_case(borrower_case: BorrowerCase) -> BorrowerCase:
 @activity.defn
 def run_assessment_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResult:
     borrower_case = input.borrower_case
+    before_case = borrower_case.model_copy(deep=True)
     chat_history = _list_stage_messages(borrower_case, Stage.ASSESSMENT)
     _append_message(borrower_case, Stage.ASSESSMENT, "borrower", input.message)
     agent = AssessmentAgent(
@@ -179,6 +245,8 @@ def run_assessment_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
     )
     updated_case.stage = Stage.ASSESSMENT
     _append_message(borrower_case, Stage.ASSESSMENT, "agent", result.reply)
+    _log_agent_reply(borrower_case=borrower_case, stage=Stage.ASSESSMENT, reply=result.reply)
+    _log_case_mutation(before_case=before_case, after_case=updated_case, stage=Stage.ASSESSMENT, result=result)
     return AgentTurnActivityResult(
         borrower_case=updated_case,
         stage_result=result,
@@ -188,6 +256,7 @@ def run_assessment_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
 @activity.defn
 def run_resolution_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResult:
     borrower_case = input.borrower_case
+    before_case = borrower_case.model_copy(deep=True)
     _ensure_handoff_message(borrower_case, Stage.RESOLUTION)
     chat_history = _list_stage_messages(borrower_case, Stage.RESOLUTION)
     _append_message(borrower_case, Stage.RESOLUTION, "borrower", input.message)
@@ -209,6 +278,8 @@ def run_resolution_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
     )
     updated_case.stage = Stage.RESOLUTION
     _append_message(borrower_case, Stage.RESOLUTION, "agent", result.reply)
+    _log_agent_reply(borrower_case=borrower_case, stage=Stage.RESOLUTION, reply=result.reply)
+    _log_case_mutation(before_case=before_case, after_case=updated_case, stage=Stage.RESOLUTION, result=result)
     return AgentTurnActivityResult(
         borrower_case=updated_case,
         stage_result=result,
@@ -218,6 +289,7 @@ def run_resolution_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResul
 @activity.defn
 def run_final_notice_turn(input: AgentTurnActivityInput) -> AgentTurnActivityResult:
     borrower_case = input.borrower_case
+    before_case = borrower_case.model_copy(deep=True)
     _ensure_handoff_message(borrower_case, Stage.FINAL_NOTICE)
     chat_history = _list_stage_messages(borrower_case, Stage.FINAL_NOTICE)
     _append_message(borrower_case, Stage.FINAL_NOTICE, "borrower", input.message)
@@ -240,6 +312,8 @@ def run_final_notice_turn(input: AgentTurnActivityInput) -> AgentTurnActivityRes
     updated_case.stage = Stage.FINAL_NOTICE
     if result.reply.strip():
         _append_message(updated_case, Stage.FINAL_NOTICE, "agent", result.reply)
+        _log_agent_reply(borrower_case=updated_case, stage=Stage.FINAL_NOTICE, reply=result.reply)
+    _log_case_mutation(before_case=before_case, after_case=updated_case, stage=Stage.FINAL_NOTICE, result=result)
     return AgentTurnActivityResult(
         borrower_case=updated_case,
         stage_result=result,
@@ -248,6 +322,7 @@ def run_final_notice_turn(input: AgentTurnActivityInput) -> AgentTurnActivityRes
 
 @activity.defn
 def start_final_notice_stage(borrower_case: BorrowerCase) -> AgentTurnActivityResult:
+    before_case = borrower_case.model_copy(deep=True)
     _ensure_handoff_message(borrower_case, Stage.FINAL_NOTICE)
     chat_history = _list_stage_messages(borrower_case, Stage.FINAL_NOTICE)
     agent = FinalNoticeAgent(
@@ -277,6 +352,8 @@ def start_final_notice_stage(borrower_case: BorrowerCase) -> AgentTurnActivityRe
     updated_case.stage = Stage.FINAL_NOTICE
     if result.reply.strip():
         _append_message(updated_case, Stage.FINAL_NOTICE, "agent", result.reply)
+        _log_agent_reply(borrower_case=updated_case, stage=Stage.FINAL_NOTICE, reply=result.reply)
+    _log_case_mutation(before_case=before_case, after_case=updated_case, stage=Stage.FINAL_NOTICE, result=result)
     return AgentTurnActivityResult(
         borrower_case=updated_case,
         stage_result=result,

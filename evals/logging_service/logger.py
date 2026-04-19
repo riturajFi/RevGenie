@@ -31,7 +31,7 @@ class LogEvent:
 
 class LogStorageService(ABC):
     @abstractmethod
-    def log(
+    def save_log(
         self,
         message: str,
         experiment_id: str | None = None,
@@ -62,7 +62,7 @@ class JsonlLogStorageService(LogStorageService):
         if not self.json_path.exists():
             self.json_path.write_text("[]")
 
-    def log(
+    def save_log(
         self,
         message: str,
         experiment_id: str | None = None,
@@ -152,9 +152,9 @@ class JsonlLogStorageService(LogStorageService):
         return payload if isinstance(payload, list) else []
 
 
-class TranscriptLogger:
-    def __init__(self, storage_service: LogStorageService) -> None:
-        self.storage_service = storage_service
+class TranscriptLoggingService:
+    def __init__(self) -> None:
+        self.storage_service: LogStorageService = JsonlLogStorageService()
 
     def log(
         self,
@@ -164,7 +164,7 @@ class TranscriptLogger:
         actor: str | None = None,
         structured_payload: dict[str, Any] | None = None,
     ) -> None:
-        self.storage_service.log(
+        self.storage_service.save_log(
             message=message,
             experiment_id=experiment_id,
             workflow_id=workflow_id,
@@ -177,31 +177,3 @@ class TranscriptLogger:
 
     def get_logs_by_workflow(self, workflow_id: str) -> list[LogEvent]:
         return self.storage_service.get_logs_by_workflow(workflow_id)
-
-
-jsonl_log_storage_service = JsonlLogStorageService()
-logger = TranscriptLogger(jsonl_log_storage_service)
-
-
-def log(
-    message: str,
-    experiment_id: str | None = None,
-    workflow_id: str | None = None,
-    actor: str | None = None,
-    structured_payload: dict[str, Any] | None = None,
-) -> None:
-    logger.log(
-        message=message,
-        experiment_id=experiment_id,
-        workflow_id=workflow_id,
-        actor=actor,
-        structured_payload=structured_payload,
-    )
-
-
-def get_logs(experiment_id: str) -> list[LogEvent]:
-    return logger.get_logs(experiment_id)
-
-
-def get_logs_by_workflow(workflow_id: str) -> list[LogEvent]:
-    return logger.get_logs_by_workflow(workflow_id)

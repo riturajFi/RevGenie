@@ -282,7 +282,7 @@
   "b_008": {
     "attributes": {
       "resolution_mode": "CHAT",
-      "simulation_uniqueness_tag": "wf_20260419071750_993e7b:10:1776583138898373207"
+      "simulation_uniqueness_tag": "wf_20260419130936_37257c:9:1776604239676560873"
     },
     "core": {
       "amount_due": 12921,
@@ -292,9 +292,9 @@
       "lender_id": "nira",
       "loan_id_masked": "****8824",
       "stage": "RESOLUTION",
-      "workflow_id": "wf_20260419071750_993e7b"
+      "workflow_id": "wf_20260419130936_37257c"
     },
-    "latest_handoff_summary": "Borrower Karan Mehta (560001) confirms identity and recognizes account ****8824 with outstanding balance of \u20b912,921. Debt is acknowledged; no dispute. Cause of delinquency: cash flow issues several months ago leading to missed payment; now resolved. Current employment: full-time, stable income. Financial capacity: borrower states funds are available to settle. No hardship or special routing signal identified. Ready for resolution-stage engagement."
+    "latest_handoff_summary": "Borrower Karan Mehta (b_008) has confirmed identity (postal code 560001). Debt acknowledged: \u20b912,921 correct. Employment: full-time. No dispute. No hardship. Borrower reports capacity to pay. No barriers to payment identified. Ready for resolution-stage contact."
   },
   "b_284fa42e": {
     "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage RESOLUTION, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: can pay now up to 500, may pay later around 2026-04-20. Hardship signals: job_loss, medical_issue, student. Borrower stated position: Borrower wants to proceed with a standalone \u20b9500 payment and cannot complete the remaining balance within the 30-day policy window; exact approvable arrangement terms are not retrievable from available data. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",

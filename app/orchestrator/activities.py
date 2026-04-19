@@ -15,7 +15,7 @@ from app.services.borrower_case_state import BorrowerCaseStateService
 from app.services.borrower_profile import FileBorrowerProfileService
 from app.services.chat_message import get_chat_message_service
 from app.services.retell import RetellService
-from evals.logging_service import logger
+from evals.logging_service import TranscriptLoggingService
 from app.orchestrator.models import (
     AgentTurnActivityInput,
     AgentTurnActivityResult,
@@ -53,7 +53,7 @@ def _agent_actor_for_stage(stage: Stage) -> str:
 def _log_agent_reply(*, borrower_case: BorrowerCase, stage: Stage, reply: str) -> None:
     if not reply.strip():
         return
-    logger.log(
+    logging_service.log(
         reply,
         workflow_id=borrower_case.workflow_id,
         actor=_agent_actor_for_stage(stage),
@@ -132,7 +132,7 @@ def _log_case_mutation(
             after_case.model_dump(mode="json"),
         ),
     }
-    logger.log(
+    logging_service.log(
         "State update",
         workflow_id=after_case.workflow_id,
         actor=f"{_agent_actor_for_stage(stage)}_case_state",
@@ -446,3 +446,4 @@ def finalize_resolution_call(input: ResolutionCallActivityInput) -> AgentTurnAct
         borrower_case=updated_case,
         stage_result=result,
     )
+logging_service = TranscriptLoggingService()

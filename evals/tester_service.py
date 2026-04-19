@@ -9,7 +9,7 @@ from time import time_ns
 from typing import Any, Callable
 from urllib import request
 
-from evals.logging_service import logger
+from evals.logging_service import TranscriptLoggingService
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
 from app.domain.borrower_case import BorrowerCase, Stage
@@ -150,7 +150,7 @@ class TesterAgent:
             #     turn_count=turn_count,
             #     borrower_message=borrower_message,
             # )
-            logger.log(
+            logging_service.log(
                 borrower_message,
                 experiment_id=experiment_id,
                 workflow_id=workflow_id,
@@ -170,7 +170,7 @@ class TesterAgent:
                 simulation_uniqueness_tag=f"{workflow_id}:{turn_count}:{time_ns()}",
             )
             if response.reply:
-                logger.log(
+                logging_service.log(
                     response.reply,
                     experiment_id=experiment_id,
                     workflow_id=None,
@@ -440,7 +440,7 @@ class TesterAgent:
             "to_stage": post_turn_case.stage.value,
             "summary": post_turn_case.latest_handoff_summary,
         }
-        logger.log(
+        logging_service.log(
             "Handoff",
             experiment_id=experiment_id,
             workflow_id=workflow_id,
@@ -452,7 +452,7 @@ class TesterAgent:
             "to_stage": post_turn_case.stage.value,
             "borrower_case_state": post_turn_case.model_dump(mode="json"),
         }
-        logger.log(
+        logging_service.log(
             "State update",
             experiment_id=experiment_id,
             workflow_id=workflow_id,
@@ -479,7 +479,7 @@ class TesterAgent:
             "agent_reply": agent_reply,
             "borrower_case_state": borrower_case.model_dump(mode="json"),
         }
-        logger.log(
+        logging_service.log(
             "Case snapshot",
             experiment_id=experiment_id,
             workflow_id=workflow_id,
@@ -513,3 +513,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+logging_service = TranscriptLoggingService()

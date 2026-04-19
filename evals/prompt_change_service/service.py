@@ -22,7 +22,8 @@ from evals.judgment_management_service.service import (
     PromptBenchmarkThresholds,
 )
 from evals.judge_service.service import JudgeResult, JudgeService
-from evals.logging_service.logger import LogEvent, get_logs
+from evals.logging_service import TranscriptLoggingService
+from evals.logging_service.logger import LogEvent
 from evals.metrics_management_service.service import MetricsRegistry
 from evals.prompt_management_service.prompt_storage import (
     PromptStorageService,
@@ -177,6 +178,7 @@ Small precise fixes beat large clever rewrites."""
         self.scenario_repository = scenario_repository or ScenarioRepository(DEFAULT_SCENARIOS_PATH)
         self.borrower_case_service = borrower_case_service or FileBorrowerCaseService()
         self.run_history_service = run_history_service or SimulationRunHistoryService()
+        self.logging_service = TranscriptLoggingService()
         self.tester = tester or TesterAgent(temperature=0)
         self.model_name = (
             model
@@ -573,7 +575,7 @@ Small precise fixes beat large clever rewrites."""
         return "No high-confidence gap identified that required a prompt update."
 
     def _load_transcript(self, experiment_id: str, target_agent_id: str) -> str:
-        events = get_logs(experiment_id)
+        events = self.logging_service.get_logs(experiment_id)
         events = self._filter_events_for_target_agent(events, target_agent_id)
         return "\n".join(
             f"[{event.created_at}] {event.actor or 'unknown'}: {event.message_text}"

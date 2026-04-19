@@ -10,7 +10,7 @@ from pydantic import BaseModel, Field
 from app.services.llm_factory import build_chat_llm
 from app.services.simulation_run_history import SimulationRunHistoryService
 from evals.evaluation_config_service.service import EvaluationConfig, EvaluationConfigService, evaluation_config_service
-from evals.logging_service.logger import get_logs
+from evals.logging_service import TranscriptLoggingService
 from evals.judge_service.service import JudgeService
 from evals.judgment_management_service.service import (
     JudgmentRecord,
@@ -105,6 +105,7 @@ class MetaEvaluatorService:
         self.evaluation_config_service = evaluation_config_service_ or evaluation_config_service
         self.meta_eval_run_service = meta_eval_run_service or MetaEvalRunRecordService()
         self.run_history_service = run_history_service or SimulationRunHistoryService()
+        self.logging_service = TranscriptLoggingService()
         self.model_name = (
             model
             or os.getenv("LLM_JUDGE_MODEL")
@@ -801,7 +802,7 @@ class MetaEvaluatorService:
         return "TIE"
 
     def _load_transcript(self, experiment_id: str) -> str:
-        events = get_logs(experiment_id)
+        events = self.logging_service.get_logs(experiment_id)
         return "\n".join(
             f"[{event.created_at}] {event.actor or 'unknown'}: {event.message_text}"
             for event in events

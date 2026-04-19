@@ -1,3 +1,3 @@
-from evals.logging_service.logger import get_logs, get_logs_by_workflow, log, logger
+from evals.logging_service.logger import TranscriptLoggingService
 
-__all__ = ["logger", "log", "get_logs", "get_logs_by_workflow"]
+__all__ = ["TranscriptLoggingService"]

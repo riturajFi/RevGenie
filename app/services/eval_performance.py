@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 
 from app.services.simulation_run_history import SimulationRunHistoryService
 from evals.judgment_management_service.service import JudgmentRecordService
-from evals.logging_service.logger import get_logs
+from evals.logging_service import TranscriptLoggingService
 from evals.tester_service import DEFAULT_SCENARIOS_PATH, ScenarioRepository
 
 
@@ -52,6 +52,7 @@ class EvalPerformanceService:
         self.run_history_service = run_history_service or SimulationRunHistoryService()
         self.judgment_record_service = judgment_record_service or JudgmentRecordService()
         self.scenario_repository = scenario_repository or ScenarioRepository(DEFAULT_SCENARIOS_PATH)
+        self.logging_service = TranscriptLoggingService()
 
     def get_dataset(self, scenario_id: str | None = None) -> EvalPerformanceDataset:
         run_by_experiment = {run.experiment_id: run for run in self.run_history_service.list_runs()}
@@ -122,7 +123,7 @@ class EvalPerformanceService:
     ) -> str:
         if run_scenario_id:
             return run_scenario_id
-        events = get_logs(experiment_id)
+        events = self.logging_service.get_logs(experiment_id)
         first_borrower_message = None
         for event in events:
             if event.actor == "borrower":
@@ -138,7 +139,7 @@ class EvalPerformanceService:
         return "unknown"
 
     def _infer_workflow_id(self, experiment_id: str) -> str | None:
-        events = get_logs(experiment_id)
+        events = self.logging_service.get_logs(experiment_id)
         for event in events:
             if event.workflow_id:
                 return event.workflow_id

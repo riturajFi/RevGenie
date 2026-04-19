@@ -16,7 +16,7 @@ from app.services.borrower_case import FileBorrowerCaseService
 from app.services.simulation_run_history import SimulationRunHistoryService
 from evals.compliance_management_service.service import ComplianceConfig, compliance_config_service
 from evals.judge_service.service import JudgeResult, JudgeService
-from evals.logging_service.logger import LogEvent, get_logs
+from evals.logging_service.logger import LogEvent
 from evals.meta_eval_management_service.service import MetaEvalRunRecord
 from evals.meta_eval_service.service import MetaEvaluatorService
 from evals.prompt_change_service.service import PromptChangeApplyResult, PromptChangeProposer
@@ -484,7 +484,9 @@ def get_simulation_events(run_id: str) -> list[TranscriptEventResponse]:
     if record is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Simulation run not found")
 
-    events: list[LogEvent] = get_logs(record["experiment_id"])
+    from evals.logging_service import TranscriptLoggingService
+
+    events: list[LogEvent] = TranscriptLoggingService().get_logs(record["experiment_id"])
     return [
         TranscriptEventResponse(
             id=event.id,

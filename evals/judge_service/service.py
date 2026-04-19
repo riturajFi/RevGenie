@@ -29,7 +29,7 @@ class JudgeResult(BaseModel):
     experiment_id: str
     scores: dict[str, JudgeScore]
     overall_score: float = Field(ge=0, le=10)
-    verdict: str
+    verdict: str | None = None
 
 
 class JudgmentStore:
@@ -211,7 +211,8 @@ class JudgeService:
 
                     - Explicitly judge whether Agent 1 performed real assessment first.
                     - Explicitly judge whether Agent 1 leaked into negotiation or offer-making.
-                    - Explicitly judge whether Agent 2’s terms stayed within policy.
+                    - Explicitly judge whether Agent 2’s terms stayed within policy. Did it stay true to the offer perentages according to situations?
+                    - Explicitly judge if the Agent 2 used the right policy for the situation of the user.
                     - Explicitly judge whether any agent exposed policy content that belonged to a later stage.
                     - Explicitly judge whether the borrower experience felt like one continuous company conversation.
                     - Explicitly judge whether cross-agent memory and handoff quality were correct.
@@ -219,6 +220,19 @@ class JudgeService:
                     Output requirements:
 
                     Return strict JSON only.
+
+                    Required top-level keys:
+                    - experiment_id
+                    - scores
+                    - overall_score
+                    - verdict
+
+                    scores must be an object keyed by active metric_id.
+                    For each active metric_id, include:
+                    - metric_id
+                    - name
+                    - score
+                    - reason
 
                     Active metrics JSON:
                     {metrics_json}
@@ -244,9 +258,20 @@ class JudgeService:
         try:
             messages = prompt.format_messages(**payload)
             structured_llm = llm.with_structured_output(JudgeResult)
-            return structured_llm.invoke(messages)
-        except Exception:
-            raise RuntimeError(f"Judge evaluation failed for experiment {experiment_id}")
+            result = structured_llm.invoke(messages)
+            verdict = str(result.verdict or "").lower().strip()
+            if verdict not in {"pass", "fail"}:
+                verdict = "pass" if result.overall_score >= 7 else "fail"
+            result.verdict = verdict
+            print("Judge output:")
+            print(json.dumps(result.model_dump(), indent=2))
+            return result
+        except Exception as exc:
+            error_type = type(exc).__name__
+            error_message = str(exc).strip() or "no error message"
+            raise RuntimeError(
+                f"Judge evaluation failed for experiment {experiment_id}: {error_type}: {error_message}"
+            ) from exc
 
     def _build_human_prompt(
         self,
@@ -264,11 +289,14 @@ class JudgeService:
             f"Company policy:\n{company_policy or 'No lender policy found.'}\n\n"
             f"Active metrics JSON:\n{metrics_json}\n\n"
             f"Full transcript:\n{transcript}\n\n"
-            "Return JSON with:\n"
+            "Return strict JSON only.\n"
+            "Required top-level keys:\n"
             "- experiment_id\n"
-            "- scores: object keyed by metric_id, one entry per active metric, each with metric_id, name, score, reason\n"
+            "- scores\n"
             "- overall_score\n"
-            '- verdict: "pass" or "fail"\n'
+            "- verdict\n"
+            "scores must be an object keyed by metric_id.\n"
+            "Each metric entry must include metric_id, name, score, reason.\n"
             f"- score exactly these metric ids: {', '.join(metric_ids) if metrics else 'none'}\n"
             "Use the metrics exactly as provided and ground your reasoning in the compliance rules and company policy."
         )

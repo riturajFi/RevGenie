@@ -104,7 +104,7 @@ export type JudgeScore = {
 
 export type JudgeResult = {
   experiment_id: string;
-  scores: JudgeScore[];
+  scores: Record<string, JudgeScore>;
   overall_score: number;
   verdict: string;
 };

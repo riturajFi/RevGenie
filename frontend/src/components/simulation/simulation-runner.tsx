@@ -587,7 +587,7 @@ export function SimulationRunner() {
             </div>
           ) : null}
           <div className="evaluation-metrics">
-            {evaluation.result.scores.map((item) => (
+            {Object.values(evaluation.result.scores).map((item) => (
               <article className="metric-card" key={item.metric_id}>
                 <header>
                   <strong>{item.name}</strong>

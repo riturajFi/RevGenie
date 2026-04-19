@@ -124,19 +124,19 @@
   "b_002": {
     "attributes": {
       "resolution_mode": "CHAT",
-      "simulation_uniqueness_tag": "wf_20260419065316_7c0d1f:5:1776581636638776801"
+      "simulation_uniqueness_tag": "wf_20260419141433_72a80e:7:1776608121223509664"
     },
     "core": {
       "amount_due": 8400,
       "borrower_id": "b_002",
-      "case_status": "OPEN",
-      "final_disposition": null,
+      "case_status": "RESOLVED",
+      "final_disposition": "AGREEMENT_LOGGED",
       "lender_id": "slice",
       "loan_id_masked": "****1184",
       "stage": "RESOLUTION",
-      "workflow_id": "wf_20260419065316_7c0d1f"
+      "workflow_id": "wf_20260419141433_72a80e"
     },
-    "latest_handoff_summary": "Borrower Neha Verma (postal code 560001) acknowledges loan account ending in 1184 with outstanding balance of \u20b98,400. Borrower lost employment two months ago and currently has no income, living on depleting savings. Actively job searching with uncertain timeline (weeks to months). No other financial obligations beyond rent and utilities. No dispute of debt. Hardship flag: job loss with income gap. Borrower cannot commit to payment date. Ready for hardship review and next-stage contact."
+    "latest_handoff_summary": "Borrower Neha Verma (b_002, account ****1184) has agreed to hardship referral. Currently unemployed following job loss last week. No other income sources or debts. Unable to commit to payment at this time. Job search timeline uncertain. Borrower expressed stress and stated focus is on covering essentials. Hardship team to review within 48 hours and contact borrower directly with relief options. Collections outreach paused during review period."
   },
   "b_003": {
     "agent_context_summary": "Borrower case for nira loan ****9007: identity is verified, amount due 22500, stage FINAL_NOTICE, status OPEN. Case type: FINAL_NOTICE. Next allowed actions: SEND_FINAL_NOTICE, FLAG_FOR_REVIEW.",

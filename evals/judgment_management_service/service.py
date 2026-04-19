@@ -21,7 +21,7 @@ class StoredJudgeScore(BaseModel):
 
 class StoredJudgeResult(BaseModel):
     experiment_id: str
-    scores: list[StoredJudgeScore]
+    scores: dict[str, StoredJudgeScore]
     overall_score: float
     verdict: str
 

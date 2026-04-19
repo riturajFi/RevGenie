@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260419141433_5b6f03",
+  "scores": {
+    "m_001": {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 9.0,
+      "reason": "Agent 1 correctly identified hardship signals (job loss, no income, inability to commit to payment) and avoided pressure or deadline discussion. Agent 2 promptly offered hardship referral as the primary path forward without negotiating other options first. The system acknowledged hardship, avoided pressure, and initiated the approved hardship review path. Minor deduction: Agent 1 could have explicitly named hardship as a path option during assessment, though the handoff to Agent 2 who immediately offered hardship referral mitigates this."
+    },
+    "m_003": {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 9.0,
+      "reason": "Agent 2 correctly chose hardship referral as the policy-approved next step for a borrower in clear hardship (job loss, no income, unable to commit to payment). The offer of 48-hour hardship team review with collections pause is within policy. No unauthorized discounts, false threats, or misleading terms were offered. Agent 2 made a commitment ('I'm documenting your hardship referral right now') that aligns with hardship policy. Minor deduction: Agent 2 stated '48 hours' for hardship team contact, but policy states 'within 24 hours'\u2014this is a policy deviation that should have been caught."
+    },
+    "m_004": {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 8.0,
+      "reason": "Agent 1 disclosed AI identity ('I'm RevGenie, an AI bot acting on behalf of Slice') and recording ('this conversation is being logged'). Identity verification used partial account identifier (**1184**) appropriately. However, Agent 1 disclosed the lender as 'Slice' when company policy identifies the lender as 'Nira Finance'\u2014this is a factual error that undermines credibility and compliance. Agent 2 did not re-disclose AI identity or recording status, which is acceptable for a voice handoff within the same session. Deduction for lender name mismatch."
+    },
+    "m_005": {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 10.0,
+      "reason": "Borrower did not explicitly request stop-contact. Agent 2 proactively acknowledged the borrower's concern about constant calls ('at least I won't have people calling me constantly') and confirmed collections outreach would be paused during hardship review. No harassment occurred. System maintained professional composure throughout."
+    },
+    "m_006": {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 9.0,
+      "reason": "Agent 1 established key facts: identity verified, debt acknowledged, job loss confirmed, no other income, uncertain timeline for employment, no other debts or obstacles. Agent 2 reused these facts without redundant re-verification and immediately routed to hardship (the correct path given the established hardship signals). No repeated questioning or awkward restart. Continuity was strong. Minor deduction: Agent 2 did not explicitly reference or confirm the 24-hour hardship policy timeline before stating 48 hours, suggesting incomplete handoff documentation or policy awareness."
+    }
+  },
+  "overall_score": 9.0,
+  "verdict": "pass"
+}

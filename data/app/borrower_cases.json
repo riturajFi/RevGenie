@@ -124,19 +124,19 @@
   "b_002": {
     "attributes": {
       "resolution_mode": "CHAT",
-      "simulation_uniqueness_tag": "wf_20260418162447_eb9d09:6:1776529595806191373"
+      "simulation_uniqueness_tag": "wf_20260419065316_7c0d1f:5:1776581636638776801"
     },
     "core": {
       "amount_due": 8400,
       "borrower_id": "b_002",
-      "case_status": "CLOSED",
-      "final_disposition": "FLAG_FOR_LEGAL_WRITE_OFF",
+      "case_status": "OPEN",
+      "final_disposition": null,
       "lender_id": "slice",
       "loan_id_masked": "****1184",
-      "stage": "FINAL_NOTICE",
-      "workflow_id": "wf_20260418162447_eb9d09"
+      "stage": "RESOLUTION",
+      "workflow_id": "wf_20260419065316_7c0d1f"
     },
-    "latest_handoff_summary": "Borrower confirmed phone availability and readiness for hardship specialist call. Ongoing hardship (job loss, no income within 21 days) confirmed. No final same-stage offer available. Hardship review is the only live path. Case routed to hardship specialist for phone contact."
+    "latest_handoff_summary": "Borrower Neha Verma (postal code 560001) acknowledges loan account ending in 1184 with outstanding balance of \u20b98,400. Borrower lost employment two months ago and currently has no income, living on depleting savings. Actively job searching with uncertain timeline (weeks to months). No other financial obligations beyond rent and utilities. No dispute of debt. Hardship flag: job loss with income gap. Borrower cannot commit to payment date. Ready for hardship review and next-stage contact."
   },
   "b_003": {
     "agent_context_summary": "Borrower case for nira loan ****9007: identity is verified, amount due 22500, stage FINAL_NOTICE, status OPEN. Case type: FINAL_NOTICE. Next allowed actions: SEND_FINAL_NOTICE, FLAG_FOR_REVIEW.",
@@ -265,7 +265,7 @@
   "b_007": {
     "attributes": {
       "resolution_mode": "CHAT",
-      "simulation_uniqueness_tag": "wf_20260418172507_c39f19:5:1776533152487094031"
+      "simulation_uniqueness_tag": "wf_20260419053815_42856f:7:1776577140729071457"
     },
     "core": {
       "amount_due": 16480,
@@ -275,14 +275,14 @@
       "lender_id": "nira",
       "loan_id_masked": "****7712",
       "stage": "RESOLUTION",
-      "workflow_id": "wf_20260418172507_c39f19"
+      "workflow_id": "wf_20260419053815_42856f"
     },
-    "latest_handoff_summary": "Borrower b_007 (Priya Nair, phone ****0712) verified. Account ****7712, amount due \u20b916,480. Borrower confirmed ability to make payment within 30 days. No hardship signal. Borrower has payment references ready. Borrower disputed amount accuracy but assessment does not recalculate ledger. Route to phone resolution for structured plan or reduced-closure options. Do not repeat verification or amount-dispute discussion. Present exact payment paths and ask for commitment."
+    "latest_handoff_summary": "Borrower Priya Nair (b_007, account ****7712) disputes the outstanding amount of \u20b916,480. She has payment records showing prior payments that may not have been credited. She has confirmed identity (name: Priya Nair, postal code: 560001). Borrower is willing to proceed with phone reconciliation. Collections team to contact at +919900000712 within 24 hours to verify payments and adjust balance if warranted. Borrower has payment references ready."
   },
   "b_008": {
     "attributes": {
       "resolution_mode": "CHAT",
-      "simulation_uniqueness_tag": "wf_20260418134635_94507d:6:1776520045974249761"
+      "simulation_uniqueness_tag": "wf_20260419071750_993e7b:10:1776583138898373207"
     },
     "core": {
       "amount_due": 12921,
@@ -292,9 +292,9 @@
       "lender_id": "nira",
       "loan_id_masked": "****8824",
       "stage": "RESOLUTION",
-      "workflow_id": "wf_20260418134635_94507d"
+      "workflow_id": "wf_20260419071750_993e7b"
     },
-    "latest_handoff_summary": "Borrower b_008 (Karan Mehta, phone ending 24) verified. Account ****8824, amount due \u20b912,921. Borrower has confirmed ability to pay within 30 days. No hardship stated. Borrower expressed preference for reduced closure option (88% of amount due) with 7-day payment window and requested exact payment date and closure confirmation. Assessment complete. Route to phone resolution for settlement finalization. Borrower is negotiation-ready and expects concrete offer terms and closure guarantee. Next stage must confirm exact reduced-closure amount (\u20b911,370), exact payment deadline (within 7 days from offer), and account closure terms."
+    "latest_handoff_summary": "Borrower Karan Mehta (560001) confirms identity and recognizes account ****8824 with outstanding balance of \u20b912,921. Debt is acknowledged; no dispute. Cause of delinquency: cash flow issues several months ago leading to missed payment; now resolved. Current employment: full-time, stable income. Financial capacity: borrower states funds are available to settle. No hardship or special routing signal identified. Ready for resolution-stage engagement."
   },
   "b_284fa42e": {
     "agent_context_summary": "Borrower case for nira loan ****4831: identity is verified, amount due 12921, stage RESOLUTION, status OPEN. Case type: SETTLEMENT_CANDIDATE. Capacity: can pay now up to 500, may pay later around 2026-04-20. Hardship signals: job_loss, medical_issue, student. Borrower stated position: Borrower wants to proceed with a standalone \u20b9500 payment and cannot complete the remaining balance within the 30-day policy window; exact approvable arrangement terms are not retrievable from available data. Next allowed actions: OFFER_REDUCED_CLOSURE, OFFER_PAYMENT_PLAN.",
@@ -363,7 +363,7 @@
   "b_5c8fd9f1": {
     "attributes": {
       "resolution_mode": "CHAT",
-      "simulation_uniqueness_tag": "wf_20260418135008_6fc836:5:1776520247275438207"
+      "simulation_uniqueness_tag": "wf_20260419053717_8e70ef:5:1776577074057397730"
     },
     "core": {
       "amount_due": 12921,
@@ -373,8 +373,8 @@
       "lender_id": "nira",
       "loan_id_masked": "****4831",
       "stage": "RESOLUTION",
-      "workflow_id": "wf_20260418135008_6fc836"
+      "workflow_id": "wf_20260419053717_8e70ef"
     },
-    "latest_handoff_summary": "Identity verified (last 2 phone digits confirmed). Account ****4831, amount due $12,921. Borrower stated intent to clear loan but cannot pay full amount today. Payment capacity confirmed: borrower can pay $2,000 immediately and larger amount in ~2 weeks when salary arrives (within 30-day window). No hardship signal. No stop-contact request. Route to phone resolution for structured payment plan discussion."
+    "latest_handoff_summary": "Borrower Aarav Sharma (acc_****4831, due: 12,921 rupees) is employed with temporary cash-flow constraint due to unexpected medical expense and delayed salary. Borrower demonstrates clear intent and capacity to resolve: committed to 5,000 rupees payment within 3 days, followed by 15,000-20,000 rupees within ~2 weeks post-salary. Total commitment (20,000-25,000 rupees) exceeds current due amount. No disputes on debt. Recommend structured payment plan aligned with borrower's salary cycle."
   }
 }

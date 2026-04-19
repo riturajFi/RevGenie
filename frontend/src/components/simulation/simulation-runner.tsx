@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 import {
   activatePromptVersion,
@@ -167,6 +167,7 @@ export function SimulationRunner() {
   const [promptChangeJob, setPromptChangeJob] = useState<PromptChangeJobStatusResponse | null>(null);
   const [isActivatingByAgent, setIsActivatingByAgent] = useState<Record<string, boolean>>({});
   const [isRevertingByAgent, setIsRevertingByAgent] = useState<Record<string, boolean>>({});
+  const transcriptEndRef = useRef<HTMLDivElement | null>(null);
 
   async function loadScenarios() {
     setIsLoadingScenarios(true);
@@ -221,6 +222,10 @@ export function SimulationRunner() {
       cancelled = true;
     };
   }, [runId]);
+
+  useEffect(() => {
+    transcriptEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [events, promptChangeJob, promptChanges]);
 
   useEffect(() => {
     if (!runId || !promptChangeJob || (promptChangeJob.status !== "queued" && promptChangeJob.status !== "running")) {
@@ -889,6 +894,7 @@ export function SimulationRunner() {
               );
             })
           )}
+          <div ref={transcriptEndRef} />
         </div>
       </div>
     </section>

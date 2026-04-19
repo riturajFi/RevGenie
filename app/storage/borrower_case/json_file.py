@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from uuid import uuid4
 from pathlib import Path
 
 from app.domain.borrower_case import BorrowerCase
@@ -9,7 +10,7 @@ from app.storage.borrower_case.base import BorrowerCaseStorage
 
 class JsonFileBorrowerCaseStorage(BorrowerCaseStorage):
     def __init__(self, file_path: str = "data/app/borrower_cases.json") -> None:
-        self.path = Path(file_path)
+        self.path = Path(file_path).resolve()
         self.path.parent.mkdir(parents=True, exist_ok=True)
         if not self.path.exists():
             self._write({})
@@ -58,7 +59,7 @@ class JsonFileBorrowerCaseStorage(BorrowerCaseStorage):
             return json.load(file)
 
     def _write(self, records: dict[str, dict]) -> None:
-        temp_path = self.path.with_suffix(f"{self.path.suffix}.tmp")
+        temp_path = self.path.with_name(f"{self.path.name}.{uuid4().hex}.tmp")
         with temp_path.open("w", encoding="utf-8") as file:
             json.dump(records, file, indent=2, sort_keys=True)
         temp_path.replace(self.path)

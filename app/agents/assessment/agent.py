@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import logging
 
 from evals.prompt_management_service.prompt_storage import (
     json_prompt_storage_service,
@@ -18,6 +19,9 @@ from app.services.compliance import FileComplianceService
 from app.services.llm_factory import build_chat_llm
 
 
+logger = logging.getLogger(__name__)
+
+
 class AssessmentAgent:
     def __init__(
         self,
@@ -25,28 +29,45 @@ class AssessmentAgent:
         prompt_version_id: str | None = None,
         model: str | None = None,
     ) -> None:
+        
+        # 1. NO GLOBAL LENDER ID
         self.lender_id = lender_id or os.getenv("LENDER_ID", "")
         if not self.lender_id:
             raise ValueError("LENDER_ID must be set in env or passed to AssessmentAgent")
 
         self.prompt_version_id = prompt_version_id
+
+        #SIMPLE ANTHROPIC
         self.llm = build_chat_llm(
             model=model,
             temperature=0,
             model_env_keys=("OPENAI_MODEL", "CLAUDE_MODEL", "ANTHROPIC_MODEL"),
         )
+
+        # SIMPLIFY
         self.tools = build_assessment_tools(self.lender_id)
         self.executor = self._build_executor()
 
     def _build_executor(self) -> AgentExecutor:
-        prompt = (
-            json_prompt_storage_service.get_prompt_version("agent_1", self.prompt_version_id)
-            if self.prompt_version_id
-            else json_prompt_storage_service.get_active_prompt("agent_1")
-        )
+
+        # SIMPLIFY
+        # prompt = (
+        #     json_prompt_storage_service.get_prompt_version("agent_1", self.prompt_version_id)
+        #     if self.prompt_version_id
+        #     else json_prompt_storage_service.get_active_prompt("agent_1")
+        # )
+        prompt = json_prompt_storage_service.get_active_prompt("agent_1")
         prompt_text = prompt.prompt_text
-        compliance_rules = FileComplianceService().get_rules_text()
-        system_prompt = self._compose_system_prompt(prompt_text, compliance_rules)
+        logger.info("AssessmentAgent prompt version: %s", getattr(prompt, "version_id", None))
+
+        # SIMPLIFY TO AN ARRAY
+        # compliance_rules = FileComplianceService().get_rules_text()
+        # system_prompt = self._compose_system_prompt(prompt_text, compliance_rules)
+        system_prompt = prompt_text
+        logger.info(
+            "AssessmentAgent system prompt:\n%s",
+            system_prompt,
+        )
         prompt = ChatPromptTemplate.from_messages(
             [
                 SystemMessage(content=system_prompt),
@@ -58,10 +79,11 @@ class AssessmentAgent:
         agent = create_tool_calling_agent(self.llm, self.tools, prompt)
         return AgentExecutor(agent=agent, tools=self.tools, verbose=False)
 
-    def _compose_system_prompt(self, prompt_text: str, compliance_rules: str) -> str:
-        if not compliance_rules:
-            return prompt_text
-        return f"{compliance_rules.strip()}\n\nAgent-specific instructions:\n{prompt_text}"
+    # SIMPLFY THIS DOGSHIT
+    # def _compose_system_prompt(self, prompt_text: str, compliance_rules: str) -> str:
+    #     if not compliance_rules:
+    #         return prompt_text
+    #     return f"{compliance_rules.strip()}\n\nAgent-specific instructions:\n{prompt_text}"
 
     def invoke(
         self,
@@ -94,7 +116,7 @@ class AssessmentAgent:
             f"Borrower ID: {borrower_id}\n"
             f"Configured lender ID: {self.lender_id}\n"
             f"Current borrower case context JSON: {json.dumps(borrower_case.to_agent_context(), ensure_ascii=True)}\n"
-            f"Operational instruction: {instruction or 'Handle the current borrower turn.'}\n"
+            f"Operational instruction: {instruction or 'Handle the current borrower message request.'}\n"
             f"Borrower message: {message}"
         )
         response = self.executor.invoke(

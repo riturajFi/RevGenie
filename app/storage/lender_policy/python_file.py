@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-import json
+import ast
 from pathlib import Path
 
 from app.domain.lender_policy import LenderPolicy
 from app.storage.lender_policy.base import LenderPolicyStorage
 
 
-class JsonFileLenderPolicyStorage(LenderPolicyStorage):
-    def __init__(self, file_path: str = "data/app/lender_policies.json") -> None:
+class PythonFileLenderPolicyStorage(LenderPolicyStorage):
+    def __init__(self, file_path: str = "data/app/lender_policies.py") -> None:
         self.path = Path(file_path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         if not self.path.exists():
@@ -50,9 +50,25 @@ class JsonFileLenderPolicyStorage(LenderPolicyStorage):
         return True
 
     def _read(self) -> dict[str, dict]:
-        with self.path.open("r", encoding="utf-8") as file:
-            return json.load(file)
+        raw = self.path.read_text(encoding="utf-8")
+        if not raw.strip():
+            return {}
+        namespace: dict[str, object] = {}
+        exec(compile(raw, str(self.path), "exec"), namespace)
+        records = namespace.get("LENDER_POLICIES", {})
+        if isinstance(records, dict):
+            return records  # type: ignore[return-value]
+        return ast.literal_eval(raw)
 
     def _write(self, records: dict[str, dict]) -> None:
-        with self.path.open("w", encoding="utf-8") as file:
-            json.dump(records, file, indent=2, sort_keys=True)
+        lines = ["LENDER_POLICIES = {"]
+        for lender_id, record in sorted(records.items()):
+            policy = record["policy"].replace('"""', '\\"\\"\\"')
+            lines.append(f'    "{lender_id}": {{')
+            lines.append(f'        "lender_id": "{record["lender_id"]}",')
+            lines.append('        "policy": """')
+            lines.append(policy)
+            lines.append('""",')
+            lines.append("    },")
+        lines.append("}")
+        self.path.write_text("\n".join(lines) + "\n", encoding="utf-8")

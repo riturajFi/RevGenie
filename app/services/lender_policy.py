@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 
 from app.domain.lender_policy import LenderPolicy
 from app.storage.lender_policy.base import LenderPolicyStorage
-from app.storage.lender_policy.json_file import JsonFileLenderPolicyStorage
+from app.storage.lender_policy.python_file import PythonFileLenderPolicyStorage
 
 
 class LenderPolicyService(ABC):
@@ -30,8 +30,8 @@ class LenderPolicyService(ABC):
 
 
 class FileLenderPolicyService(LenderPolicyService):
-    def __init__(self, file_path: str = "data/app/lender_policies.json") -> None:
-        self.storage: LenderPolicyStorage = JsonFileLenderPolicyStorage(file_path)
+    def __init__(self, file_path: str = "data/app/lender_policies.py") -> None:
+        self.storage: LenderPolicyStorage = PythonFileLenderPolicyStorage(file_path)
 
     def create_lender_policy(self, lender_policy: LenderPolicy) -> LenderPolicy:
         return self.storage.create_lender_policy(lender_policy)

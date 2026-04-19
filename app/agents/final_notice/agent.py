@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import logging
 
 from evals.prompt_management_service.prompt_storage import (
     json_prompt_storage_service,
@@ -16,6 +17,9 @@ from app.domain.borrower_case import AgentTurnResult, BorrowerCase
 from app.domain.chat_message import ChatMessage
 from app.services.compliance import FileComplianceService
 from app.services.llm_factory import build_chat_llm
+
+
+logger = logging.getLogger(__name__)
 
 
 class FinalNoticeAgent:
@@ -45,8 +49,13 @@ class FinalNoticeAgent:
             else json_prompt_storage_service.get_active_prompt("agent_3")
         )
         prompt_text = prompt.prompt_text
+        logger.info("FinalNoticeAgent prompt version: %s", getattr(prompt, "version_id", None))
         compliance_rules = FileComplianceService().get_rules_text()
         system_prompt = self._compose_system_prompt(prompt_text, compliance_rules)
+        logger.info(
+            "FinalNoticeAgent system prompt:\n%s",
+            system_prompt,
+        )
         prompt = ChatPromptTemplate.from_messages(
             [
                 SystemMessage(content=system_prompt),

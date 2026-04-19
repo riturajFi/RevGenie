@@ -6,7 +6,6 @@ from pathlib import Path
 from app.domain.borrower_profile import BorrowerProfile
 from app.storage.borrower_profile.base import BorrowerProfileStorage
 
-
 class JsonFileBorrowerProfileStorage(BorrowerProfileStorage):
     def __init__(self, file_path: str = "data/app/borrower_profiles.json") -> None:
         self.path = Path(file_path)

@@ -48,6 +48,8 @@ class BorrowerCollectionsWorkflow:
 
     @workflow.update
     async def handle_borrower_message(self, input: BorrowerMessageWorkflowInput) -> CollectionsWorkflowState:
+
+        # TODO: Do we need this?
         if self.state is None:
             await self._ensure_state(self.input)
 

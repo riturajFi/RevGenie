@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import concurrent.futures
+import logging
 import os
 import sys
 from pathlib import Path
@@ -31,6 +32,7 @@ from app.orchestrator.workflows import BorrowerCollectionsWorkflow
 
 
 async def main() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
     client = await Client.connect(
         os.getenv("TEMPORAL_ADDRESS", "localhost:7233"),
         namespace=os.getenv("TEMPORAL_NAMESPACE", "default"),

@@ -3,12 +3,11 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime, timezone
-import json
 from pathlib import Path
 
 
 VALID_AGENT_IDS = {"agent_1", "agent_2", "agent_3"}
-STORE_PATH = Path(__file__).resolve().parents[2] / "data" / "evals" / "prompt_management.json"
+STORE_PATH = Path(__file__).resolve().parents[2] / "data" / "evals" / "prompt_management.py"
 SEED_PROMPT_TEXT = {
     "agent_1": [
         "You are Agent 1, the Assessment agent for a debt collections workflow.",
@@ -32,6 +31,8 @@ def utc_now() -> datetime:
 def normalize_prompt_lines(prompt_value: str | list[str]) -> list[str]:
     if isinstance(prompt_value, list):
         return [str(line) for line in prompt_value]
+    if "\n" in prompt_value:
+        return prompt_value.splitlines()
     return prompt_value.splitlines()
 
 
@@ -82,7 +83,7 @@ class PromptStorageService(ABC):
         raise NotImplementedError
 
 
-class JsonPromptStorageService(PromptStorageService):
+class PythonFilePromptStorageService(PromptStorageService):
     def __init__(self, path: Path = STORE_PATH) -> None:
         self.path = path
         self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -202,10 +203,15 @@ class JsonPromptStorageService(PromptStorageService):
             raise KeyError("Agent prompt not found")
 
     def _read_state(self) -> dict:
-        return json.loads(self.path.read_text())
+        namespace: dict[str, object] = {}
+        exec(self.path.read_text(), {"__builtins__": {}}, namespace)
+        state = namespace.get("STATE")
+        if not isinstance(state, dict):
+            raise ValueError("Prompt storage file is invalid")
+        return state
 
     def _write_state(self, state: dict) -> None:
-        self.path.write_text(json.dumps(state, indent=2))
+        self.path.write_text(self._format_state(state))
 
     def _get_version_from_state(self, state: dict, agent_id: str, version_id: str) -> PromptStorageVersion:
         for item in state["versions_by_agent"].get(agent_id, []):
@@ -220,13 +226,20 @@ class JsonPromptStorageService(PromptStorageService):
             "agent_id": version.agent_id,
             "version_id": version.version_id,
             "parent_version_id": version.parent_version_id,
-            "prompt_text": version.prompt_lines,
+            "prompt_text": version.prompt_text,
             "diff_summary": version.diff_summary,
             "created_at": version.created_at.isoformat(),
         }
 
     def _deserialize_version(self, payload: dict) -> PromptStorageVersion:
         prompt_payload = payload.get("prompt_text", payload.get("prompt_lines", ""))
+        created_at_value = payload.get("created_at")
+        if isinstance(created_at_value, datetime):
+            created_at = created_at_value
+        elif isinstance(created_at_value, str):
+            created_at = datetime.fromisoformat(created_at_value)
+        else:
+            created_at = utc_now()
         return PromptStorageVersion(
             id=payload["id"],
             agent_id=payload["agent_id"],
@@ -234,8 +247,47 @@ class JsonPromptStorageService(PromptStorageService):
             parent_version_id=payload.get("parent_version_id"),
             prompt_lines=normalize_prompt_lines(prompt_payload),
             diff_summary=payload.get("diff_summary"),
-            created_at=datetime.fromisoformat(payload["created_at"]),
+            created_at=created_at,
         )
 
+    def _format_state(self, state: dict) -> str:
+        lines: list[str] = ["STATE = {"]
+        lines.append(f'  "next_id": {state["next_id"]},')
+        lines.append('  "active_versions": {')
+        for agent_id, version_id in state["active_versions"].items():
+            lines.append(f'    "{agent_id}": "{version_id}",')
+        lines.append("  },")
+        lines.append('  "versions_by_agent": {')
+        for agent_id, versions in state["versions_by_agent"].items():
+            lines.append(f'    "{agent_id}": [')
+            for version in versions:
+                lines.append("      {")
+                lines.append(f'        "id": {version["id"]},')
+                lines.append(f'        "agent_id": "{version["agent_id"]}",')
+                lines.append(f'        "version_id": "{version["version_id"]}",')
+                parent = "None" if version.get("parent_version_id") is None else f'"{version["parent_version_id"]}"'
+                lines.append(f'        "parent_version_id": {parent},')
+                lines.append('        "prompt_text": """')
+                lines.extend(["        " + line for line in normalize_prompt_lines(version["prompt_text"])])
+                lines.append('        """,')
+                diff_summary = version.get("diff_summary")
+                if diff_summary is None:
+                    lines.append('        "diff_summary": None,')
+                else:
+                    lines.append(f'        "diff_summary": {diff_summary!r},')
+                created_at = version.get("created_at")
+                if created_at is None:
+                    lines.append('        "created_at": None')
+                else:
+                    lines.append(f'        "created_at": {created_at!r}')
+                lines.append("      },")
+            lines.append("    ],")
+        lines.append("  }")
+        lines.append("}")
+        lines.append("")
+        return "\n".join(lines)
 
-json_prompt_storage_service = JsonPromptStorageService()
+
+python_file_prompt_storage_service = PythonFilePromptStorageService()
+JsonPromptStorageService = PythonFilePromptStorageService
+json_prompt_storage_service = python_file_prompt_storage_service

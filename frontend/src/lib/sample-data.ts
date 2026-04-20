@@ -26,6 +26,11 @@ export const sidebarItems = [
     description: "Run live tester vs collector transcript simulations.",
   },
   {
+    id: "conversation-logs",
+    label: "Conversation Logs",
+    description: "Browse persisted live borrower workflow logs.",
+  },
+  {
     id: "eval-reports",
     label: "Eval Reports",
     description: "Review scoring output and saved reports later.",

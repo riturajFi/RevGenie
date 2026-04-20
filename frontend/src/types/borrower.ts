@@ -89,9 +89,34 @@ export type SimulationStatusResponse = {
 
 export type TranscriptEvent = {
   id: number;
+  experiment_id?: string | null;
+  workflow_id?: string | null;
   actor: string | null;
   message_text: string;
   structured_payload: Record<string, unknown> | null;
+  created_at: string;
+};
+
+export type ConversationLogSummary = {
+  workflow_id: string;
+  borrower_id: string | null;
+  lender_id: string | null;
+  stage: string | null;
+  case_status: string | null;
+  message_count: number;
+  first_message_at: string | null;
+  last_message_at: string | null;
+  last_message_text: string | null;
+};
+
+export type ConversationMessage = {
+  id: string;
+  workflow_id: string;
+  borrower_id: string;
+  agent_id: string;
+  sender_type: string;
+  message_text: string;
+  visible_to_borrower: boolean;
   created_at: string;
 };
 

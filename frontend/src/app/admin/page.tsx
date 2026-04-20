@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { BorrowerProfileForm } from "@/components/forms/borrower-profile-form";
+import { ConversationLogDashboard } from "@/components/conversation/conversation-log-dashboard";
 import { AdminSidebar } from "@/components/navigation/admin-sidebar";
 import { ComplianceDashboard } from "@/components/compliance/compliance-dashboard";
 import { LenderPolicyDashboard } from "@/components/lender-policy/lender-policy-dashboard";
@@ -19,6 +20,7 @@ export default function AdminDashboardPage() {
       <AdminSidebar activeTab={activeTab} onSelectTab={setActiveTab} />
       <div className="admin-content">
         {activeTab === "create-borrower" ? <BorrowerProfileForm /> : null}
+        {activeTab === "conversation-logs" ? <ConversationLogDashboard /> : null}
         {activeTab === "run-simulation" ? <SimulationRunner /> : null}
         {activeTab === "eval-reports" ? <PerformanceDashboard /> : null}
         {activeTab === "prompt-evolution" ? <PromptEvolutionDashboard /> : null}

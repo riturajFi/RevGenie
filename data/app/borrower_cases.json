@@ -1,21 +1,21 @@
 {
   "b_001": {
     "attributes": {
-      "resolution_call_id": "call_c6578e195fa1bcbfe8a3a0867bd",
-      "resolution_call_status": "registered",
+      "resolution_call_id": "call_def1cfab41f160fdc962901c1ba",
+      "resolution_call_status": "ended",
       "resolution_mode": "VOICE"
     },
     "core": {
       "amount_due": 12921,
       "borrower_id": "b_001",
-      "case_status": "OPEN",
-      "final_disposition": null,
+      "case_status": "RESOLVED",
+      "final_disposition": "RESOLUTION_LOGGED",
       "lender_id": "nira",
       "loan_id_masked": "****4831",
-      "stage": "RESOLUTION",
-      "workflow_id": "wf_20260417231422_nira_hardship_settlement"
+      "stage": "FINAL_NOTICE",
+      "workflow_id": "wf_20260420150943_e5d9ae"
     },
-    "latest_handoff_summary": "Disclosures completed: AI identity and logging disclosed. Verification completed using last 2 digits of phone on file; borrower matched 31. Debt established with borrower as Nira Finance account ****4831, amount due 12921. After verification, borrower answered the required routing question: no income/new job expected within 30 days, stated 'maybe after 2 months.' Hardship signal present; record as ongoing hardship and hardship review needed. Assessment asked and answered the single policy-required timing question; do not repeat verification, disclosures, debt establishment, or the 30-day income question. Next step: phone contact to discuss available next steps consistent with hardship review path."
+    "latest_handoff_summary": "Borrower b_001 (****4831) finalized 2-month structured payment plan for $12,921 balance. Payment method: online. Employment status: unemployed. Settlement agreement closed. Borrower to receive payment portal and schedule within 24 hours."
   },
   "b_001_20260413133008185530_baseline": {
     "amount_due": 12921,

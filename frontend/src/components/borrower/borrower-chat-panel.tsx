@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { getBorrowerRealtimeWebSocketUrl } from "@/lib/api";
+import { getBorrowerRealtimeWebSocketUrl, resetBorrowerPortalSession } from "@/lib/api";
 import {
   BorrowerChatMessage,
   BorrowerPortalLoginResponse,
@@ -11,6 +11,7 @@ import {
 } from "@/types/borrower";
 
 const BORROWER_SESSION_STORAGE_KEY = "revgenie.borrower.session";
+const BORROWER_SKIP_RESET_ONCE_KEY = "revgenie.borrower.skip_reset_once";
 
 function nowIso() {
   return new Date().toISOString();
@@ -43,14 +44,39 @@ export function BorrowerChatPanel() {
       router.replace("/borrower/login");
       return;
     }
+    const rawSession = raw;
 
-    try {
-      const parsed = JSON.parse(raw) as BorrowerPortalLoginResponse;
-      setSession(parsed);
-    } catch {
-      sessionStorage.removeItem(BORROWER_SESSION_STORAGE_KEY);
-      router.replace("/borrower/login");
+    let cancelled = false;
+
+    async function loadSession() {
+      try {
+        const parsed = JSON.parse(rawSession) as BorrowerPortalLoginResponse;
+        const skipResetOnce = sessionStorage.getItem(BORROWER_SKIP_RESET_ONCE_KEY) === "1";
+        if (skipResetOnce) {
+          sessionStorage.removeItem(BORROWER_SKIP_RESET_ONCE_KEY);
+          if (!cancelled) {
+            setSession(parsed);
+          }
+          return;
+        }
+
+        const resetSession = await resetBorrowerPortalSession(parsed.borrower_profile.borrower_id);
+        sessionStorage.setItem(BORROWER_SESSION_STORAGE_KEY, JSON.stringify(resetSession));
+        if (!cancelled) {
+          setSession(resetSession);
+        }
+      } catch {
+        sessionStorage.removeItem(BORROWER_SESSION_STORAGE_KEY);
+        if (!cancelled) {
+          router.replace("/borrower/login");
+        }
+      }
     }
+
+    void loadSession();
+    return () => {
+      cancelled = true;
+    };
   }, [router]);
 
   useEffect(() => {

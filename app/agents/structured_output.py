@@ -76,6 +76,19 @@ def parse_agent_turn_result(raw_output: Any) -> AgentTurnResult:
     try:
         return AgentTurnResult.model_validate(payload)
     except ValidationError as error:
+        if isinstance(payload, dict):
+            reply_value = payload.get("reply")
+            if reply_value is None:
+                payload = dict(payload)
+                payload["reply"] = ""
+                return AgentTurnResult.model_validate(payload)
+            if isinstance(reply_value, str):
+                return AgentTurnResult(
+                    reply=reply_value,
+                    stage_outcome=AgentStageOutcome.CONTINUE,
+                    case_delta={},
+                    latest_handoff_summary=None,
+                )
         if isinstance(payload, dict) and isinstance(payload.get("reply"), str):
             return AgentTurnResult(
                 reply=payload["reply"],

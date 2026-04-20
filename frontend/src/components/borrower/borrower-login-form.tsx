@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { borrowerPortalLogin } from "@/lib/api";
 
 const BORROWER_SESSION_STORAGE_KEY = "revgenie.borrower.session";
+const BORROWER_SKIP_RESET_ONCE_KEY = "revgenie.borrower.skip_reset_once";
 
 export function BorrowerLoginForm() {
   const router = useRouter();
@@ -23,6 +24,7 @@ export function BorrowerLoginForm() {
     try {
       const result = await borrowerPortalLogin(phoneNumber, password);
       sessionStorage.setItem(BORROWER_SESSION_STORAGE_KEY, JSON.stringify(result));
+      sessionStorage.setItem(BORROWER_SKIP_RESET_ONCE_KEY, "1");
       router.push("/borrower/chat");
     } catch (loginError) {
       setError(loginError instanceof Error ? loginError.message : "Failed borrower login");

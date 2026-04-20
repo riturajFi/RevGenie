@@ -29,3 +29,6 @@ class InMemoryChatMessageStorage(ChatMessageStorage):
             for message in self.messages
             if message.user_id == user_id and message.workflow_id == workflow_id
         ]
+
+    def list_all_messages(self) -> list[ChatMessage]:
+        return list(self.messages)

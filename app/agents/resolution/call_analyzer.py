@@ -42,7 +42,7 @@ class ResolutionCallAnalyzer:
             if self.prompt_version_id
             else json_prompt_storage_service.get_active_prompt("agent_2")
         )
-        prompt_text = prompt.prompt_text
+        prompt_text = self._escape_prompt_literals(prompt.prompt_text)
         compliance_rules = FileComplianceService().get_rules_text()
         system_prompt = self._compose_system_prompt(prompt_text, compliance_rules)
         prompt = ChatPromptTemplate.from_messages(
@@ -59,6 +59,9 @@ class ResolutionCallAnalyzer:
         if not compliance_rules:
             return prompt_text
         return f"{compliance_rules.strip()}\n\nAgent-specific instructions:\n{prompt_text}"
+
+    def _escape_prompt_literals(self, prompt_text: str) -> str:
+        return prompt_text.replace("{", "{{").replace("}", "}}")
 
     def analyze_completed_call(
         self,

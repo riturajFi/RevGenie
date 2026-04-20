@@ -2,8 +2,10 @@ import {
   BorrowerPortalLoginResponse,
   ResolutionMode,
   BorrowerWorkflowMessageResponse,
+  ConversationMessage,
   BorrowerProfileCreateInput,
   BorrowerProfileRecord,
+  ConversationLogSummary,
   EvaluateSimulationResponse,
   PromptChangeBatchResponse,
   PromptVersionActivateResponse,
@@ -78,6 +80,17 @@ export async function borrowerPortalLogin(
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(detail || "Failed borrower login");
+  }
+  return response.json();
+}
+
+export async function resetBorrowerPortalSession(borrowerId: string): Promise<BorrowerPortalLoginResponse> {
+  const response = await fetch(`${API_BASE_URL}/borrower-auth/reset/${encodeURIComponent(borrowerId)}`, {
+    method: "POST",
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to reset borrower session");
   }
   return response.json();
 }
@@ -184,6 +197,24 @@ export async function getSimulationEvents(runId: string): Promise<TranscriptEven
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(detail || "Failed to fetch simulation transcript");
+  }
+  return response.json();
+}
+
+export async function listConversationLogs(): Promise<ConversationLogSummary[]> {
+  const response = await fetch(`${API_BASE_URL}/evals/conversations`);
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to fetch conversation logs");
+  }
+  return response.json();
+}
+
+export async function getConversationMessages(workflowId: string): Promise<ConversationMessage[]> {
+  const response = await fetch(`${API_BASE_URL}/evals/conversations/${encodeURIComponent(workflowId)}/messages`);
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || "Failed to fetch conversation messages");
   }
   return response.json();
 }

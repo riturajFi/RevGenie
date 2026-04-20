@@ -24256,5 +24256,2236 @@
     "message_text": "Perfect, Neha. The hardship team will reach out within 48 hours. They'll call you at the number on file\u2014please keep an eye out for their contact. They'll work with you on a plan that fits your actual situation. In the meantime, focus on your job search. You're doing the right thing by being upfront about this.",
     "structured_payload": null,
     "created_at": "2026-04-20T12:10:39.682785+00:00"
+  },
+  {
+    "id": 5238,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1",
+    "message_text": "Hi, I'm RevGenie, an AI bot acting on behalf of Nira Finance, and this conversation is being logged. We're discussing the account ending in **4831**. To proceed, please confirm your full name and postal code.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:21:34.464202+00:00"
+  },
+  {
+    "id": 5239,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hi, I'm RevGenie, an AI bot acting on behalf of Nira Finance, and this conversation is being logged. We're discussing the account ending in **4831**. To proceed, please confirm your full name and postal code.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420142124_1df577",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:21:34.519635+00:00"
+  },
+  {
+    "id": 5240,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1",
+    "message_text": "Thank you. I have your name on file as Aarav Sharma. To verify your identity, please confirm your postal code.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:22:19.514615+00:00"
+  },
+  {
+    "id": 5241,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Thank you. I have your name on file as Aarav Sharma. To verify your identity, please confirm your postal code.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420142124_1df577",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:22:19.566694+00:00"
+  },
+  {
+    "id": 5242,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1",
+    "message_text": "I need to verify your identity to proceed. Do you have access to the address associated with this account? If so, please provide the city and state, or any other identifying information you can confirm.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:23:06.620165+00:00"
+  },
+  {
+    "id": 5243,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "I need to verify your identity to proceed. Do you have access to the address associated with this account? If so, please provide the city and state, or any other identifying information you can confirm.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420142124_1df577",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:23:06.673506+00:00"
+  },
+  {
+    "id": 5244,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1",
+    "message_text": "Thank you. I have your address on file as Bangalore, Koramangla. Identity verified.\n\nThis account is overdue with an outstanding balance. Do you recognize this loan and acknowledge the debt?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:24:25.532127+00:00"
+  },
+  {
+    "id": 5245,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Thank you. I have your address on file as Bangalore, Koramangla. Identity verified.\n\nThis account is overdue with an outstanding balance. Do you recognize this loan and acknowledge the debt?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420142124_1df577",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:24:25.589118+00:00"
+  },
+  {
+    "id": 5246,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1",
+    "message_text": "Understood. You recognize the debt on this account.\n\nWhat is your current employment or income situation?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:24:38.162039+00:00"
+  },
+  {
+    "id": 5247,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. You recognize the debt on this account.\n\nWhat is your current employment or income situation?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420142124_1df577",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:24:38.219607+00:00"
+  },
+  {
+    "id": 5248,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1",
+    "message_text": "Thank you for confirming you are employed. \n\nWhat is preventing you from making payment on this account right now?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:24:58.241384+00:00"
+  },
+  {
+    "id": 5249,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Thank you for confirming you are employed. \n\nWhat is preventing you from making payment on this account right now?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420142124_1df577",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:24:58.301952+00:00"
+  },
+  {
+    "id": 5250,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1",
+    "message_text": "I understand you want to clear the amount. Before we proceed further, I need to complete the assessment.\n\nYou mentioned you are employed and can pay. What is the specific reason you haven't made payment on this account until now\u2014is it reduced income, competing obligations, or a temporary cash-flow issue?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:25:26.298992+00:00"
+  },
+  {
+    "id": 5251,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "I understand you want to clear the amount. Before we proceed further, I need to complete the assessment.\n\nYou mentioned you are employed and can pay. What is the specific reason you haven't made payment on this account until now\u2014is it reduced income, competing obligations, or a temporary cash-flow issue?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420142124_1df577",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:25:26.353594+00:00"
+  },
+  {
+    "id": 5252,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1",
+    "message_text": "Understood. So you lost your job previously, but you are employed again now. That's helpful context.\n\nSince you are now employed and able to pay, what was the main reason the account fell behind during the period when you were without employment?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:25:48.826231+00:00"
+  },
+  {
+    "id": 5253,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. So you lost your job previously, but you are employed again now. That's helpful context.\n\nSince you are now employed and able to pay, what was the main reason the account fell behind during the period when you were without employment?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420142124_1df577",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:25:48.884394+00:00"
+  },
+  {
+    "id": 5254,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1",
+    "message_text": "Understood. You just secured employment yesterday and are ready to pay today. That's clear.\n\nBefore we move forward, I have what I need for assessment. You have confirmed your identity, you recognize the debt, you were previously unemployed which caused the delinquency, and you are now employed and willing to pay.\n\nA specialist will contact you by phone to discuss next steps. Is the phone number on file the best way to reach you?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:26:25.912162+00:00"
+  },
+  {
+    "id": 5255,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. You just secured employment yesterday and are ready to pay today. That's clear.\n\nBefore we move forward, I have what I need for assessment. You have confirmed your identity, you recognize the debt, you were previously unemployed which caused the delinquency, and you are now employed and willing to pay.\n\nA specialist will contact you by phone to discuss next steps. Is the phone number on file the best way to reach you?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420142124_1df577",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:26:25.967498+00:00"
+  },
+  {
+    "id": 5256,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1",
+    "message_text": "Thank you. A specialist will contact you by phone shortly to discuss next steps.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:26:48.215236+00:00"
+  },
+  {
+    "id": 5257,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420142124_1df577",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "ASSESSMENT_COMPLETE",
+      "agent_reply": "Thank you. A specialist will contact you by phone shortly to discuss next steps.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420142124_1df577",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": "Borrower Aarav Sharma, account ending 4831, identity verified via name and address (Bangalore, Koramangla). Borrower acknowledges debt of 12,921. Previously unemployed causing delinquency; secured full-time employment yesterday. Currently employed and willing to pay immediately. No dispute on debt. No hardship claim. Ready for resolution stage. Route to voice channel for payment discussion."
+      },
+      "state_mutations": {
+        "latest_handoff_summary": {
+          "before": null,
+          "after": "Borrower Aarav Sharma, account ending 4831, identity verified via name and address (Bangalore, Koramangla). Borrower acknowledges debt of 12,921. Previously unemployed causing delinquency; secured full-time employment yesterday. Currently employed and willing to pay immediately. No dispute on debt. No hardship claim. Ready for resolution stage. Route to voice channel for payment discussion."
+        }
+      }
+    },
+    "created_at": "2026-04-20T14:26:48.273418+00:00"
+  },
+  {
+    "id": 5258,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420143153_00cec8",
+    "actor": "agent_1",
+    "message_text": "Hi, I'm RevGenie, an AI bot acting on behalf of Nira Finance, and this conversation is being logged. We're discussing the account ending in **4831**. To proceed, please confirm your full name and postal code.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:32:06.836748+00:00"
+  },
+  {
+    "id": 5259,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420143153_00cec8",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hi, I'm RevGenie, an AI bot acting on behalf of Nira Finance, and this conversation is being logged. We're discussing the account ending in **4831**. To proceed, please confirm your full name and postal code.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420143153_00cec8",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:32:06.893234+00:00"
+  },
+  {
+    "id": 5260,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420143153_00cec8",
+    "actor": "agent_1",
+    "message_text": "Thank you, Aarav. Identity verified. This account has an outstanding balance of \u20b912,921. Do you recognize this loan and acknowledge the debt?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:33:50.531791+00:00"
+  },
+  {
+    "id": 5261,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420143153_00cec8",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Thank you, Aarav. Identity verified. This account has an outstanding balance of \u20b912,921. Do you recognize this loan and acknowledge the debt?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420143153_00cec8",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:33:50.582679+00:00"
+  },
+  {
+    "id": 5262,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420143153_00cec8",
+    "actor": "agent_1",
+    "message_text": "Understood. You've acknowledged the debt and mentioned job loss. Let me gather a bit more information to understand your situation better.\n\nDo you currently have any income source at all\u2014even partial, freelance, or irregular work?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:34:18.180002+00:00"
+  },
+  {
+    "id": 5263,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420143153_00cec8",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. You've acknowledged the debt and mentioned job loss. Let me gather a bit more information to understand your situation better.\n\nDo you currently have any income source at all\u2014even partial, freelance, or irregular work?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420143153_00cec8",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:34:18.301092+00:00"
+  },
+  {
+    "id": 5264,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420143153_00cec8",
+    "actor": "agent_1",
+    "message_text": "Understood. So you have no current income source at this time.\n\nWhen did you lose your job, and do you expect to find employment soon, or is this situation likely to continue for a longer period?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:34:27.807019+00:00"
+  },
+  {
+    "id": 5265,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420143153_00cec8",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. So you have no current income source at this time.\n\nWhen did you lose your job, and do you expect to find employment soon, or is this situation likely to continue for a longer period?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420143153_00cec8",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:34:27.862170+00:00"
+  },
+  {
+    "id": 5266,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420143153_00cec8",
+    "actor": "agent_1",
+    "message_text": "Understood. So you're actively looking for employment and expect to find work within the next 6 months. You've indicated you can make a partial payment now but not the full amount.\n\nBefore we move forward, I need to clarify: do you dispute any part of the outstanding balance of \u20b912,921, or do you acknowledge the full amount as correct?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:35:19.619649+00:00"
+  },
+  {
+    "id": 5267,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420143153_00cec8",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. So you're actively looking for employment and expect to find work within the next 6 months. You've indicated you can make a partial payment now but not the full amount.\n\nBefore we move forward, I need to clarify: do you dispute any part of the outstanding balance of \u20b912,921, or do you acknowledge the full amount as correct?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420143153_00cec8",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:35:19.677284+00:00"
+  },
+  {
+    "id": 5268,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420143153_00cec8",
+    "actor": "agent_1",
+    "message_text": "Understood. You do not dispute the outstanding balance of \u20b912,921. I have completed the assessment. You will be contacted by phone to discuss next steps.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:35:51.159875+00:00"
+  },
+  {
+    "id": 5269,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420143153_00cec8",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "ASSESSMENT_COMPLETE",
+      "agent_reply": "Understood. You do not dispute the outstanding balance of \u20b912,921. I have completed the assessment. You will be contacted by phone to discuss next steps.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420143153_00cec8",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": "Borrower Aarav Sharma (ID: b_001, account ending 4831) has acknowledged the debt of \u20b912,921 with no dispute. Identity verified via name and postal code. Currently unemployed with no income source; actively seeking employment with expected timeline of 6 months. Borrower indicates ability to make partial payment now but cannot pay full amount. Situation appears to be temporary hardship due to job loss. No dispute on debt amount. Ready for resolution-stage contact."
+      },
+      "state_mutations": {
+        "latest_handoff_summary": {
+          "before": null,
+          "after": "Borrower Aarav Sharma (ID: b_001, account ending 4831) has acknowledged the debt of \u20b912,921 with no dispute. Identity verified via name and postal code. Currently unemployed with no income source; actively seeking employment with expected timeline of 6 months. Borrower indicates ability to make partial payment now but cannot pay full amount. Situation appears to be temporary hardship due to job loss. No dispute on debt amount. Ready for resolution-stage contact."
+        }
+      }
+    },
+    "created_at": "2026-04-20T14:35:51.215976+00:00"
+  },
+  {
+    "id": 5270,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1",
+    "message_text": "Hi, I'm RevGenie, an AI bot acting on behalf of Nira Finance, and this conversation is being logged. We're discussing the account ending in **4831**. To proceed, please confirm your full name and postal code.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:41:18.222591+00:00"
+  },
+  {
+    "id": 5271,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hi, I'm RevGenie, an AI bot acting on behalf of Nira Finance, and this conversation is being logged. We're discussing the account ending in **4831**. To proceed, please confirm your full name and postal code.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144108_39d371",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:41:18.343336+00:00"
+  },
+  {
+    "id": 5272,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1",
+    "message_text": "Thank you. I have your information on file. This account is overdue with an outstanding balance. Do you recognize this loan and this account?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:41:36.664711+00:00"
+  },
+  {
+    "id": 5273,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Thank you. I have your information on file. This account is overdue with an outstanding balance. Do you recognize this loan and this account?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144108_39d371",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:41:36.716328+00:00"
+  },
+  {
+    "id": 5274,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1",
+    "message_text": "Understood. What is your current employment or income situation?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:42:02.661703+00:00"
+  },
+  {
+    "id": 5275,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. What is your current employment or income situation?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144108_39d371",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:42:02.718708+00:00"
+  },
+  {
+    "id": 5276,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1",
+    "message_text": "I need to understand your current financial situation better. Are you currently employed, between jobs, or dealing with other circumstances affecting your ability to pay?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:42:47.728081+00:00"
+  },
+  {
+    "id": 5277,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "I need to understand your current financial situation better. Are you currently employed, between jobs, or dealing with other circumstances affecting your ability to pay?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144108_39d371",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:42:47.787866+00:00"
+  },
+  {
+    "id": 5278,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1",
+    "message_text": "Thank you for that information. You mentioned you're unemployed but can pay a partial amount. Can you tell me what caused the account to fall behind\u2014was this a recent job loss, or has the situation been ongoing for a while?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:43:12.403837+00:00"
+  },
+  {
+    "id": 5279,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Thank you for that information. You mentioned you're unemployed but can pay a partial amount. Can you tell me what caused the account to fall behind\u2014was this a recent job loss, or has the situation been ongoing for a while?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144108_39d371",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:43:12.527876+00:00"
+  },
+  {
+    "id": 5280,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1",
+    "message_text": "Understood. So the unemployment has been ongoing for a while. You mentioned you can pay a partial amount now\u2014is this a temporary situation, or do you expect the employment difficulty to continue for a longer period?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:43:42.402876+00:00"
+  },
+  {
+    "id": 5281,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. So the unemployment has been ongoing for a while. You mentioned you can pay a partial amount now\u2014is this a temporary situation, or do you expect the employment difficulty to continue for a longer period?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144108_39d371",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:43:42.454581+00:00"
+  },
+  {
+    "id": 5282,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1",
+    "message_text": "Understood. So the unemployment is temporary and you expect the situation to improve. \n\nTo complete the assessment, I need to clarify: apart from the employment situation, is there anything else preventing you from paying the full amount right now\u2014such as other obligations, medical expenses, or other competing debts?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:44:02.980633+00:00"
+  },
+  {
+    "id": 5283,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. So the unemployment is temporary and you expect the situation to improve. \n\nTo complete the assessment, I need to clarify: apart from the employment situation, is there anything else preventing you from paying the full amount right now\u2014such as other obligations, medical expenses, or other competing debts?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144108_39d371",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:44:03.039093+00:00"
+  },
+  {
+    "id": 5284,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1",
+    "message_text": "Thank you for that information. A specialist will contact you by phone to discuss your account further.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:44:34.222980+00:00"
+  },
+  {
+    "id": 5285,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144108_39d371",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "ASSESSMENT_COMPLETE",
+      "agent_reply": "Thank you for that information. A specialist will contact you by phone to discuss your account further.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144108_39d371",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": "Borrower Aarav Sharma (postal code 8900098) confirmed recognition of account ending in 4831 with outstanding balance of 12,921. Identity verified. Borrower is currently unemployed (temporary situation, expected to improve), which is the cause of delinquency. Borrower indicates ability to make partial payment now. No other competing obligations or hardship factors identified. Ready for resolution-stage contact via voice channel."
+      },
+      "state_mutations": {
+        "latest_handoff_summary": {
+          "before": null,
+          "after": "Borrower Aarav Sharma (postal code 8900098) confirmed recognition of account ending in 4831 with outstanding balance of 12,921. Identity verified. Borrower is currently unemployed (temporary situation, expected to improve), which is the cause of delinquency. Borrower indicates ability to make partial payment now. No other competing obligations or hardship factors identified. Ready for resolution-stage contact via voice channel."
+        }
+      }
+    },
+    "created_at": "2026-04-20T14:44:34.277275+00:00"
+  },
+  {
+    "id": 5286,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1",
+    "message_text": "Hi, I'm RevGenie, an AI bot acting on behalf of Nira Finance, and this conversation is being logged. We're discussing the account ending in **4831**. To proceed, please confirm your full name and postal code.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:47:24.820373+00:00"
+  },
+  {
+    "id": 5287,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hi, I'm RevGenie, an AI bot acting on behalf of Nira Finance, and this conversation is being logged. We're discussing the account ending in **4831**. To proceed, please confirm your full name and postal code.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144638_04e772",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:47:24.879621+00:00"
+  },
+  {
+    "id": 5288,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1",
+    "message_text": "Thank you. This account is overdue with an outstanding balance. Do you recognize this loan and this account?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:47:56.558821+00:00"
+  },
+  {
+    "id": 5289,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Thank you. This account is overdue with an outstanding balance. Do you recognize this loan and this account?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144638_04e772",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:47:56.612618+00:00"
+  },
+  {
+    "id": 5290,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1",
+    "message_text": "Thank you for confirming. What is your current employment or income situation?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:48:12.870659+00:00"
+  },
+  {
+    "id": 5291,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Thank you for confirming. What is your current employment or income situation?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144638_04e772",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:48:12.928570+00:00"
+  },
+  {
+    "id": 5292,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1",
+    "message_text": "Understood. Are you currently receiving any income from any source\u2014unemployment benefits, freelance work, family support, or anything else?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:49:06.599800+00:00"
+  },
+  {
+    "id": 5293,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. Are you currently receiving any income from any source\u2014unemployment benefits, freelance work, family support, or anything else?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144638_04e772",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:49:06.652173+00:00"
+  },
+  {
+    "id": 5294,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1",
+    "message_text": "Understood. What amount are you able to pay right now?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:49:25.492959+00:00"
+  },
+  {
+    "id": 5295,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. What amount are you able to pay right now?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144638_04e772",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:49:25.616374+00:00"
+  },
+  {
+    "id": 5296,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1",
+    "message_text": "I need to complete the assessment first. Let me ask: what is preventing you from making full payment on this account right now?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:50:01.274753+00:00"
+  },
+  {
+    "id": 5297,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "I need to complete the assessment first. Let me ask: what is preventing you from making full payment on this account right now?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144638_04e772",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:50:01.331967+00:00"
+  },
+  {
+    "id": 5298,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1",
+    "message_text": "I understand you're currently unemployed with no income sources. Let me clarify: is this unemployment recent, or has it been ongoing for a while?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:50:19.708404+00:00"
+  },
+  {
+    "id": 5299,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "I understand you're currently unemployed with no income sources. Let me clarify: is this unemployment recent, or has it been ongoing for a while?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144638_04e772",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:50:19.764302+00:00"
+  },
+  {
+    "id": 5300,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1",
+    "message_text": "Understood. When did you lose your employment?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:50:39.574298+00:00"
+  },
+  {
+    "id": 5301,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. When did you lose your employment?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144638_04e772",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:50:39.633587+00:00"
+  },
+  {
+    "id": 5302,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1",
+    "message_text": "Thank you. So you lost your job about a month ago. Do you expect to find employment soon, or is this situation likely to continue for a longer period?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:50:53.504568+00:00"
+  },
+  {
+    "id": 5303,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Thank you. So you lost your job about a month ago. Do you expect to find employment soon, or is this situation likely to continue for a longer period?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144638_04e772",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:50:53.623593+00:00"
+  },
+  {
+    "id": 5304,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1",
+    "message_text": "Understood. So you're facing a longer-term employment challenge, with possible work in about six months.\n\nLet me ask: when this account fell behind, was it due to the job loss, or were there payment difficulties before that?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:51:08.659403+00:00"
+  },
+  {
+    "id": 5305,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. So you're facing a longer-term employment challenge, with possible work in about six months.\n\nLet me ask: when this account fell behind, was it due to the job loss, or were there payment difficulties before that?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144638_04e772",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:51:08.715396+00:00"
+  },
+  {
+    "id": 5306,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1",
+    "message_text": "Understood. So the delinquency is directly tied to your recent job loss.\n\nBefore I complete the assessment, let me ask: do you dispute the amount currently shown as due on this account, or do you acknowledge the debt?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:51:28.825528+00:00"
+  },
+  {
+    "id": 5307,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. So the delinquency is directly tied to your recent job loss.\n\nBefore I complete the assessment, let me ask: do you dispute the amount currently shown as due on this account, or do you acknowledge the debt?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144638_04e772",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T14:51:28.873424+00:00"
+  },
+  {
+    "id": 5308,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1",
+    "message_text": "Understood. You acknowledge the debt. Based on what you've shared\u2014recent job loss, no current income, no savings, and a longer-term employment outlook\u2014I have enough information to complete the assessment. You will be contacted by phone to discuss next steps.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T14:51:44.097947+00:00"
+  },
+  {
+    "id": 5309,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "ASSESSMENT_COMPLETE",
+      "agent_reply": "Understood. You acknowledge the debt. Based on what you've shared\u2014recent job loss, no current income, no savings, and a longer-term employment outlook\u2014I have enough information to complete the assessment. You will be contacted by phone to discuss next steps.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144638_04e772",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": "Borrower Aarav Sharma (postal code 890098) confirms recognition of account ending in 4831 with outstanding balance of 12,921. Identity verified. Borrower is currently unemployed as of last month with no income sources and no savings. Employment prospects uncertain, possibly 6 months. Delinquency directly caused by recent job loss. Borrower acknowledges full debt with no disputes. Longer-term financial hardship indicated. Borrower expressed willingness to pay partial amount pending terms discussion. Routed for voice resolution."
+      },
+      "state_mutations": {
+        "latest_handoff_summary": {
+          "before": null,
+          "after": "Borrower Aarav Sharma (postal code 890098) confirms recognition of account ending in 4831 with outstanding balance of 12,921. Identity verified. Borrower is currently unemployed as of last month with no income sources and no savings. Employment prospects uncertain, possibly 6 months. Delinquency directly caused by recent job loss. Borrower acknowledges full debt with no disputes. Longer-term financial hardship indicated. Borrower expressed willingness to pay partial amount pending terms discussion. Routed for voice resolution."
+        }
+      }
+    },
+    "created_at": "2026-04-20T14:51:44.153537+00:00"
+  },
+  {
+    "id": 5310,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_3",
+    "message_text": "Hello Aarav, this is Agent 3, an AI agent assisting on behalf of Nira Finance. I'm following up on your call with our team. Thank you for your openness to discussing resolution options\u2014I appreciate your willingness to work toward a solution.\n\nBased on our conversation, I understand you're currently navigating unemployment and want to resolve your account balance of $12,921. I have three concrete options available to you:\n\n1. **Hardship Referral**: Our hardship team can contact you within 24 hours to explore tailored support options.\n2. **Structured Payment Plan**: We can extend your timeline by up to 2 months to help manage payments during this period.\n3. **Lump-Sum Discount**: If your employment situation changes to partial employment, we can offer a discount of up to 20% on the balance if you're able to make a lump-sum payment.\n\nWhich of these options would you like to explore further? I'm here to help find the best path forward for your situation.\n\nPlease note: This conversation is being logged for quality and compliance purposes.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:09:31.704283+00:00"
+  },
+  {
+    "id": 5311,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420144638_04e772",
+    "actor": "agent_3_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "FINAL_NOTICE",
+      "to_stage": "FINAL_NOTICE",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hello Aarav, this is Agent 3, an AI agent assisting on behalf of Nira Finance. I'm following up on your call with our team. Thank you for your openness to discussing resolution options\u2014I appreciate your willingness to work toward a solution.\n\nBased on our conversation, I understand you're currently navigating unemployment and want to resolve your account balance of $12,921. I have three concrete options available to you:\n\n1. **Hardship Referral**: Our hardship team can contact you within 24 hours to explore tailored support options.\n2. **Structured Payment Plan**: We can extend your timeline by up to 2 months to help manage payments during this period.\n3. **Lump-Sum Discount**: If your employment situation changes to partial employment, we can offer a discount of up to 20% on the balance if you're able to make a lump-sum payment.\n\nWhich of these options would you like to explore further? I'm here to help find the best path forward for your situation.\n\nPlease note: This conversation is being logged for quality and compliance purposes.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420144638_04e772",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "FINAL_NOTICE",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_call_id": "call_d4645fcdd7f2d485892d352d13c",
+          "resolution_call_status": "ended",
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": "Borrower Aarav Sharma (postal code 890098, account ****4831, balance $12,921) confirmed interest in discussing available resolution options during voice call. Borrower is currently unemployed with no income and no savings; employment prospects uncertain (~6 months). Borrower acknowledged full debt with no disputes and expressed willingness to resolve. Agent attempted specialist transfer but was unable to connect. Call ended without specific settlement offer presented or accepted. Borrower remains engaged and open to options. Recommend Agent 3 to present concrete settlement options: (1) hardship referral for 24-hour team contact per policy, (2) structured payment plan (max 2 months extension per policy given unemployment status), or (3) lump-sum discount up to 20% if partial employment status changes. Borrower ready for next contact."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T15:09:31.809565+00:00"
+  },
+  {
+    "id": 5312,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1",
+    "message_text": "Hi, I'm RevGenie, an AI bot acting on behalf of Nira Finance, and this conversation is being logged. We're discussing the account ending in **4831**. To proceed, please confirm your full name and postal code.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:09:53.202637+00:00"
+  },
+  {
+    "id": 5313,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hi, I'm RevGenie, an AI bot acting on behalf of Nira Finance, and this conversation is being logged. We're discussing the account ending in **4831**. To proceed, please confirm your full name and postal code.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T15:09:53.248872+00:00"
+  },
+  {
+    "id": 5314,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1",
+    "message_text": "Thank you, Aarav Sharma. Identity verified. This account is overdue with an outstanding balance. Do you recognize this loan and acknowledge the debt?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:10:14.512250+00:00"
+  },
+  {
+    "id": 5315,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Thank you, Aarav Sharma. Identity verified. This account is overdue with an outstanding balance. Do you recognize this loan and acknowledge the debt?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T15:10:14.566068+00:00"
+  },
+  {
+    "id": 5316,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1",
+    "message_text": "I need to complete the assessment first. Let me gather some information about your current situation.\n\nAre you currently employed, or what is your income situation right now?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:10:31.305360+00:00"
+  },
+  {
+    "id": 5317,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "I need to complete the assessment first. Let me gather some information about your current situation.\n\nAre you currently employed, or what is your income situation right now?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T15:10:31.356823+00:00"
+  },
+  {
+    "id": 5318,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1",
+    "message_text": "Understood. So you are not currently employed. Do you have any income source at all\u2014such as freelance work, part-time work, or other irregular income?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:10:44.692763+00:00"
+  },
+  {
+    "id": 5319,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. So you are not currently employed. Do you have any income source at all\u2014such as freelance work, part-time work, or other irregular income?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T15:10:44.752086+00:00"
+  },
+  {
+    "id": 5320,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1",
+    "message_text": "Understood. So you don't have income available right now. What is causing the payment difficulty at this moment\u2014job loss, reduced hours, unexpected expenses, or something else?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:11:00.396582+00:00"
+  },
+  {
+    "id": 5321,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. So you don't have income available right now. What is causing the payment difficulty at this moment\u2014job loss, reduced hours, unexpected expenses, or something else?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T15:11:00.447462+00:00"
+  },
+  {
+    "id": 5322,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1",
+    "message_text": "Understood. Job loss is a significant change. Is this recent, or has it been ongoing for a while now?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:11:14.314364+00:00"
+  },
+  {
+    "id": 5323,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. Job loss is a significant change. Is this recent, or has it been ongoing for a while now?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T15:11:14.367773+00:00"
+  },
+  {
+    "id": 5324,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1",
+    "message_text": "Understood. So the job loss is recent. Do you expect to find employment soon, or is this likely to be a longer-term situation for you?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:11:27.423917+00:00"
+  },
+  {
+    "id": 5325,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. So the job loss is recent. Do you expect to find employment soon, or is this likely to be a longer-term situation for you?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T15:11:27.479234+00:00"
+  },
+  {
+    "id": 5326,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1",
+    "message_text": "Understood. So you're looking at a longer-term situation right now, but you expect employment within about six months.\n\nApart from the job loss, is there anything else affecting your ability to pay\u2014such as other debts, medical expenses, or family obligations?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:11:43.471856+00:00"
+  },
+  {
+    "id": 5327,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. So you're looking at a longer-term situation right now, but you expect employment within about six months.\n\nApart from the job loss, is there anything else affecting your ability to pay\u2014such as other debts, medical expenses, or family obligations?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T15:11:43.523233+00:00"
+  },
+  {
+    "id": 5328,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1",
+    "message_text": "Understood. Let me confirm what we've established so far:\n\n- You recognize and acknowledge the debt on this account.\n- You recently lost your job and currently have no income.\n- You expect to find employment within approximately six months.\n- There are no other significant obligations affecting your ability to pay right now.\n\nIs that correct?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:11:59.789111+00:00"
+  },
+  {
+    "id": 5329,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Understood. Let me confirm what we've established so far:\n\n- You recognize and acknowledge the debt on this account.\n- You recently lost your job and currently have no income.\n- You expect to find employment within approximately six months.\n- There are no other significant obligations affecting your ability to pay right now.\n\nIs that correct?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": null
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T15:11:59.841739+00:00"
+  },
+  {
+    "id": 5330,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1",
+    "message_text": "Thank you for confirming. Based on what you've shared, you are currently without employment and facing a temporary income gap. A specialist will contact you by phone to discuss your situation further and explore available options.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:12:10.843291+00:00"
+  },
+  {
+    "id": 5331,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_1_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "ASSESSMENT",
+      "to_stage": "ASSESSMENT",
+      "stage_outcome": "ASSESSMENT_COMPLETE",
+      "agent_reply": "Thank you for confirming. Based on what you've shared, you are currently without employment and facing a temporary income gap. A specialist will contact you by phone to discuss your situation further and explore available options.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "ASSESSMENT",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": "Borrower Aarav Sharma (ID: b_001, account ending 4831) has acknowledged the outstanding debt of $12,921. Identity verified via name and postal code. Current situation: Recently lost employment, no current income, expects to return to work within approximately 6 months. No other significant financial obligations reported. Borrower is cooperative and willing to engage. Routing signal: Hardship (recent job loss, temporary income gap). Recommended for specialist review and resolution-stage contact via phone."
+      },
+      "state_mutations": {
+        "latest_handoff_summary": {
+          "before": null,
+          "after": "Borrower Aarav Sharma (ID: b_001, account ending 4831) has acknowledged the outstanding debt of $12,921. Identity verified via name and postal code. Current situation: Recently lost employment, no current income, expects to return to work within approximately 6 months. No other significant financial obligations reported. Borrower is cooperative and willing to engage. Routing signal: Hardship (recent job loss, temporary income gap). Recommended for specialist review and resolution-stage contact via phone."
+        }
+      }
+    },
+    "created_at": "2026-04-20T15:12:10.897467+00:00"
+  },
+  {
+    "id": 5332,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3",
+    "message_text": "Hello Aarav, this is an AI agent on behalf of Nira Finance. Thank you for your willingness to resolve your account during our earlier call. I'm reaching out to present the settlement options we discussed. Please note this conversation is being logged for quality and compliance purposes.\n\nBased on your situation, we have two paths forward:\n\n**Option 1: Hardship Support** \u2013 Given your recent employment transition, our hardship team can contact you within 24 hours to explore tailored assistance options.\n\n**Option 2: Structured Resolution** \u2013 We can offer either:\n- A structured payment plan (up to 2 months to settle your $12,921 balance), or\n- A lump-sum discount (up to 20% if you confirm partially employed status and can settle immediately)\n\nWhich option works best for your situation right now?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:13:29.068211+00:00"
+  },
+  {
+    "id": 5333,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "FINAL_NOTICE",
+      "to_stage": "FINAL_NOTICE",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Hello Aarav, this is an AI agent on behalf of Nira Finance. Thank you for your willingness to resolve your account during our earlier call. I'm reaching out to present the settlement options we discussed. Please note this conversation is being logged for quality and compliance purposes.\n\nBased on your situation, we have two paths forward:\n\n**Option 1: Hardship Support** \u2013 Given your recent employment transition, our hardship team can contact you within 24 hours to explore tailored assistance options.\n\n**Option 2: Structured Resolution** \u2013 We can offer either:\n- A structured payment plan (up to 2 months to settle your $12,921 balance), or\n- A lump-sum discount (up to 20% if you confirm partially employed status and can settle immediately)\n\nWhich option works best for your situation right now?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "FINAL_NOTICE",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_call_id": "call_def1cfab41f160fdc962901c1ba",
+          "resolution_call_status": "ended",
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": "Agent 3 opening FINAL_NOTICE stage. Presented hardship referral and structured settlement options (payment plan or lump-sum discount up to 20%) per policy. Awaiting borrower response on preferred resolution path."
+      },
+      "state_mutations": {
+        "latest_handoff_summary": {
+          "before": "Borrower Aarav Sharma (b_001, account ****4831) confirmed willingness to resolve outstanding balance of $12,921 during voice call. Call ended before settlement options were presented. Borrower remains cooperative and engaged. Recommended next steps: (1) Hardship referral given recent job loss and 6-month employment gap (per policy: hardship team contacts within 24 hours), or (2) Resume contact with structured payment plan option (max 2-month extension per policy) or lump-sum discount (up to 20% if partially employed status confirmed). Account ready for specialist follow-up.",
+          "after": "Agent 3 opening FINAL_NOTICE stage. Presented hardship referral and structured settlement options (payment plan or lump-sum discount up to 20%) per policy. Awaiting borrower response on preferred resolution path."
+        }
+      }
+    },
+    "created_at": "2026-04-20T15:13:29.120687+00:00"
+  },
+  {
+    "id": 5334,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3",
+    "message_text": "Great, Aarav. You've chosen structured resolution. To finalize the best option for you, I need to confirm your current employment status. Are you currently partially employed or fully employed? This will determine whether we can offer the payment plan (up to 2 months) or the lump-sum discount (up to 20% if partially employed and paying immediately).",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:14:30.806442+00:00"
+  },
+  {
+    "id": 5335,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "FINAL_NOTICE",
+      "to_stage": "FINAL_NOTICE",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Great, Aarav. You've chosen structured resolution. To finalize the best option for you, I need to confirm your current employment status. Are you currently partially employed or fully employed? This will determine whether we can offer the payment plan (up to 2 months) or the lump-sum discount (up to 20% if partially employed and paying immediately).",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "FINAL_NOTICE",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_call_id": "call_def1cfab41f160fdc962901c1ba",
+          "resolution_call_status": "ended",
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": "Borrower selected structured resolution. Awaiting employment status confirmation to determine eligibility for payment plan (2-month extension) or lump-sum discount (up to 20% if partially employed)."
+      },
+      "state_mutations": {
+        "latest_handoff_summary": {
+          "before": "Agent 3 opening FINAL_NOTICE stage. Presented hardship referral and structured settlement options (payment plan or lump-sum discount up to 20%) per policy. Awaiting borrower response on preferred resolution path.",
+          "after": "Borrower selected structured resolution. Awaiting employment status confirmation to determine eligibility for payment plan (2-month extension) or lump-sum discount (up to 20% if partially employed)."
+        }
+      }
+    },
+    "created_at": "2026-04-20T15:14:30.862290+00:00"
+  },
+  {
+    "id": 5336,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3",
+    "message_text": "Thank you for confirming, Aarav. Since you're currently unemployed, the lump-sum discount option isn't available at this time. However, we can still offer you a structured payment plan with up to 2 months to settle your $12,921 balance. This gives you time to stabilize your situation. Alternatively, given your recent job loss, I'd recommend our hardship team contact you within 24 hours\u2014they can explore additional support options tailored to your circumstances. Which would you prefer: the 2-month payment plan or the hardship referral?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:14:49.152143+00:00"
+  },
+  {
+    "id": 5337,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "FINAL_NOTICE",
+      "to_stage": "FINAL_NOTICE",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Thank you for confirming, Aarav. Since you're currently unemployed, the lump-sum discount option isn't available at this time. However, we can still offer you a structured payment plan with up to 2 months to settle your $12,921 balance. This gives you time to stabilize your situation. Alternatively, given your recent job loss, I'd recommend our hardship team contact you within 24 hours\u2014they can explore additional support options tailored to your circumstances. Which would you prefer: the 2-month payment plan or the hardship referral?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "FINAL_NOTICE",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_call_id": "call_def1cfab41f160fdc962901c1ba",
+          "resolution_call_status": "ended",
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": "Borrower confirmed unemployed status. Lump-sum discount ineligible. Offered: (1) 2-month structured payment plan for $12,921, or (2) hardship team referral for additional support. Awaiting borrower selection."
+      },
+      "state_mutations": {
+        "latest_handoff_summary": {
+          "before": "Borrower selected structured resolution. Awaiting employment status confirmation to determine eligibility for payment plan (2-month extension) or lump-sum discount (up to 20% if partially employed).",
+          "after": "Borrower confirmed unemployed status. Lump-sum discount ineligible. Offered: (1) 2-month structured payment plan for $12,921, or (2) hardship team referral for additional support. Awaiting borrower selection."
+        }
+      }
+    },
+    "created_at": "2026-04-20T15:14:49.210759+00:00"
+  },
+  {
+    "id": 5338,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3",
+    "message_text": "I need clarification, Aarav. You said \"I agree\"\u2014which option are you selecting?\n\n1. **2-month structured payment plan** for your $12,921 balance, or\n2. **Hardship team referral** for additional support options?\n\nPlease confirm which one you'd like to proceed with.",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:15:33.598295+00:00"
+  },
+  {
+    "id": 5339,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "FINAL_NOTICE",
+      "to_stage": "FINAL_NOTICE",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "I need clarification, Aarav. You said \"I agree\"\u2014which option are you selecting?\n\n1. **2-month structured payment plan** for your $12,921 balance, or\n2. **Hardship team referral** for additional support options?\n\nPlease confirm which one you'd like to proceed with.",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "FINAL_NOTICE",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_call_id": "call_def1cfab41f160fdc962901c1ba",
+          "resolution_call_status": "ended",
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": "Borrower confirmed unemployed status. Lump-sum discount ineligible. Offered: (1) 2-month structured payment plan for $12,921, or (2) hardship team referral for additional support. Awaiting borrower selection."
+      },
+      "state_mutations": {}
+    },
+    "created_at": "2026-04-20T15:15:33.652924+00:00"
+  },
+  {
+    "id": 5340,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3",
+    "message_text": "Perfect, Aarav. You've selected the 2-month structured payment plan for your $12,921 balance. Here's what happens next: You'll receive a formal payment schedule within 24 hours outlining your monthly installments. Your first payment will be due [date], and your final payment by [date]. You can set up automatic payments or pay manually. Is there a preferred payment method you'd like us to use?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:15:48.337727+00:00"
+  },
+  {
+    "id": 5341,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "FINAL_NOTICE",
+      "to_stage": "FINAL_NOTICE",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Perfect, Aarav. You've selected the 2-month structured payment plan for your $12,921 balance. Here's what happens next: You'll receive a formal payment schedule within 24 hours outlining your monthly installments. Your first payment will be due [date], and your final payment by [date]. You can set up automatic payments or pay manually. Is there a preferred payment method you'd like us to use?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "FINAL_NOTICE",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_call_id": "call_def1cfab41f160fdc962901c1ba",
+          "resolution_call_status": "ended",
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": "Borrower b_001 (****4831) selected 2-month structured payment plan for $12,921 balance. Unemployed status confirmed. Lump-sum discount ineligible. Awaiting payment method preference and schedule confirmation."
+      },
+      "state_mutations": {
+        "latest_handoff_summary": {
+          "before": "Borrower confirmed unemployed status. Lump-sum discount ineligible. Offered: (1) 2-month structured payment plan for $12,921, or (2) hardship team referral for additional support. Awaiting borrower selection.",
+          "after": "Borrower b_001 (****4831) selected 2-month structured payment plan for $12,921 balance. Unemployed status confirmed. Lump-sum discount ineligible. Awaiting payment method preference and schedule confirmation."
+        }
+      }
+    },
+    "created_at": "2026-04-20T15:15:48.392761+00:00"
+  },
+  {
+    "id": 5342,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3",
+    "message_text": "Excellent, Aarav. Online payment is confirmed as your payment method. You'll receive a secure payment portal link via email within 24 hours with your 2-month payment schedule. Your first installment will be due 30 days from now, and your final payment 60 days from now. You can log in anytime to make payments or set up automatic recurring payments. Is there anything else you need before we finalize this plan?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:16:05.952996+00:00"
+  },
+  {
+    "id": 5343,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "FINAL_NOTICE",
+      "to_stage": "FINAL_NOTICE",
+      "stage_outcome": "CONTINUE",
+      "agent_reply": "Excellent, Aarav. Online payment is confirmed as your payment method. You'll receive a secure payment portal link via email within 24 hours with your 2-month payment schedule. Your first installment will be due 30 days from now, and your final payment 60 days from now. You can log in anytime to make payments or set up automatic recurring payments. Is there anything else you need before we finalize this plan?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "FINAL_NOTICE",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_call_id": "call_def1cfab41f160fdc962901c1ba",
+          "resolution_call_status": "ended",
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": "Borrower b_001 (****4831) confirmed 2-month structured payment plan for $12,921 balance with online payment method. Unemployed status confirmed. Awaiting final confirmation to close settlement agreement."
+      },
+      "state_mutations": {
+        "latest_handoff_summary": {
+          "before": "Borrower b_001 (****4831) selected 2-month structured payment plan for $12,921 balance. Unemployed status confirmed. Lump-sum discount ineligible. Awaiting payment method preference and schedule confirmation.",
+          "after": "Borrower b_001 (****4831) confirmed 2-month structured payment plan for $12,921 balance with online payment method. Unemployed status confirmed. Awaiting final confirmation to close settlement agreement."
+        }
+      }
+    },
+    "created_at": "2026-04-20T15:16:06.068030+00:00"
+  },
+  {
+    "id": 5344,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3",
+    "message_text": "Perfect, Aarav. Your 2-month structured payment plan for $12,921 is now finalized. You'll receive a secure payment portal link and detailed schedule via email within 24 hours. Your first payment is due in 30 days, final payment in 60 days. Online payments can be made anytime through the portal. Thank you for working with us to resolve this. Is there anything else I can help clarify?",
+    "structured_payload": null,
+    "created_at": "2026-04-20T15:16:19.462965+00:00"
+  },
+  {
+    "id": 5345,
+    "experiment_id": null,
+    "workflow_id": "wf_20260420150943_e5d9ae",
+    "actor": "agent_3_case_state",
+    "message_text": "State update",
+    "structured_payload": {
+      "from_stage": "FINAL_NOTICE",
+      "to_stage": "FINAL_NOTICE",
+      "stage_outcome": "RESOLVED",
+      "agent_reply": "Perfect, Aarav. Your 2-month structured payment plan for $12,921 is now finalized. You'll receive a secure payment portal link and detailed schedule via email within 24 hours. Your first payment is due in 30 days, final payment in 60 days. Online payments can be made anytime through the portal. Thank you for working with us to resolve this. Is there anything else I can help clarify?",
+      "borrower_case_state": {
+        "core": {
+          "borrower_id": "b_001",
+          "workflow_id": "wf_20260420150943_e5d9ae",
+          "loan_id_masked": "****4831",
+          "lender_id": "nira",
+          "stage": "FINAL_NOTICE",
+          "case_status": "OPEN",
+          "amount_due": 12921,
+          "final_disposition": null
+        },
+        "attributes": {
+          "resolution_call_id": "call_def1cfab41f160fdc962901c1ba",
+          "resolution_call_status": "ended",
+          "resolution_mode": "VOICE"
+        },
+        "latest_handoff_summary": "Borrower b_001 (****4831) finalized 2-month structured payment plan for $12,921 balance. Payment method: online. Employment status: unemployed. Settlement agreement closed. Borrower to receive payment portal and schedule within 24 hours."
+      },
+      "state_mutations": {
+        "latest_handoff_summary": {
+          "before": "Borrower b_001 (****4831) confirmed 2-month structured payment plan for $12,921 balance with online payment method. Unemployed status confirmed. Awaiting final confirmation to close settlement agreement.",
+          "after": "Borrower b_001 (****4831) finalized 2-month structured payment plan for $12,921 balance. Payment method: online. Employment status: unemployed. Settlement agreement closed. Borrower to receive payment portal and schedule within 24 hours."
+        }
+      }
+    },
+    "created_at": "2026-04-20T15:16:19.515980+00:00"
   }
 ]

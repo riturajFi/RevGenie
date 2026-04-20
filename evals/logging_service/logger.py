@@ -15,7 +15,6 @@ def utc_now() -> str:
 LOG_PATH = Path(__file__).resolve().parents[2] / "data" / "chats" / "transcript_events.jsonl"
 LOG_JSON_PATH = LOG_PATH.with_suffix(".json")
 EXPERIMENT_LOGS_DIR = LOG_PATH.parent / "experiments"
-WORKFLOW_LOGS_DIR = LOG_PATH.parent / "workflows"
 
 
 @dataclass
@@ -49,14 +48,12 @@ class LogStorageService(ABC):
     def get_logs_by_workflow(self, workflow_id: str) -> list[LogEvent]:
         raise NotImplementedError
 
-
 class JsonlLogStorageService(LogStorageService):
     def __init__(self, path: Path = LOG_PATH) -> None:
         self.path = path
         self.json_path = LOG_JSON_PATH
         self.path.parent.mkdir(parents=True, exist_ok=True)
         EXPERIMENT_LOGS_DIR.mkdir(parents=True, exist_ok=True)
-        WORKFLOW_LOGS_DIR.mkdir(parents=True, exist_ok=True)
         if not self.path.exists():
             self.path.write_text("")
         if not self.json_path.exists():
@@ -87,8 +84,6 @@ class JsonlLogStorageService(LogStorageService):
             with experiment_path.open("a", encoding="utf-8") as handle:
                 handle.write(json.dumps(event.__dict__) + "\n")
             self._append_json_event(self._experiment_json_path(experiment_id), event)
-        if workflow_id:
-            self._append_json_event(self._workflow_json_path(workflow_id), event)
 
     def get_logs(self, experiment_id: str) -> list[LogEvent]:
         experiment_path = self._experiment_log_path(experiment_id)
@@ -129,10 +124,6 @@ class JsonlLogStorageService(LogStorageService):
     def _experiment_json_path(self, experiment_id: str) -> Path:
         safe_name = experiment_id.replace("/", "_")
         return EXPERIMENT_LOGS_DIR / f"{safe_name}.json"
-
-    def _workflow_json_path(self, workflow_id: str) -> Path:
-        safe_name = workflow_id.replace("/", "_")
-        return WORKFLOW_LOGS_DIR / f"{safe_name}.json"
 
     def _append_json_event(self, path: Path, event: LogEvent) -> None:
         events = self._read_json_events(path)

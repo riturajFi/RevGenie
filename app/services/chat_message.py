@@ -40,6 +40,10 @@ class ChatMessageService:
         messages = self.storage.list_workflow_messages(user_id, workflow_id)
         return sorted(messages, key=lambda item: item.created_at)
 
+    def list_all_messages(self) -> list[ChatMessage]:
+        messages = self.storage.list_all_messages()
+        return sorted(messages, key=lambda item: item.created_at)
+
     def list_visible_workflow_messages(self, user_id: str, workflow_id: str) -> list[ChatMessage]:
         return [
             item

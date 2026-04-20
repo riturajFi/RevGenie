@@ -13,9 +13,11 @@ from app.domain.borrower_case import CaseStatus, ResolutionMode, Stage
 from app.services.eval_performance import EvalPerformanceDataset, EvalPerformanceService
 from app.services.prompt_evolution import PromptEvolutionResponse, PromptEvolutionService
 from app.services.borrower_case import FileBorrowerCaseService
+from app.services.chat_message import get_chat_message_service
 from app.services.simulation_run_history import SimulationRunHistoryService
 from evals.compliance_management_service.service import ComplianceConfig, compliance_config_service
 from evals.judge_service.service import JudgeResult, JudgeService
+from evals.logging_service import TranscriptLoggingService
 from evals.logging_service.logger import LogEvent
 from evals.meta_eval_management_service.service import MetaEvalRunRecord
 from evals.meta_eval_service.service import MetaEvaluatorService
@@ -28,6 +30,7 @@ router = APIRouter(prefix="/evals", tags=["evals"])
 
 scenario_repository = ScenarioRepository(DEFAULT_SCENARIOS_PATH)
 borrower_case_service = FileBorrowerCaseService()
+chat_message_service = get_chat_message_service()
 simulation_executor = ThreadPoolExecutor(max_workers=2)
 simulation_lock = Lock()
 simulation_runs: dict[str, dict] = {}
@@ -39,6 +42,7 @@ performance_service = EvalPerformanceService(
     run_history_service=run_history_service,
 )
 prompt_evolution_service = PromptEvolutionService()
+logging_service = TranscriptLoggingService()
 
 
 class ScenarioCreateRequest(BaseModel):
@@ -85,9 +89,34 @@ class SimulationStatusResponse(BaseModel):
 
 class TranscriptEventResponse(BaseModel):
     id: int
+    experiment_id: str | None = None
+    workflow_id: str | None = None
     actor: str | None
     message_text: str
     structured_payload: dict | None = None
+    created_at: str
+
+
+class ConversationLogSummaryResponse(BaseModel):
+    workflow_id: str
+    borrower_id: str | None = None
+    lender_id: str | None = None
+    stage: str | None = None
+    case_status: str | None = None
+    message_count: int
+    first_message_at: str | None = None
+    last_message_at: str | None = None
+    last_message_text: str | None = None
+
+
+class ConversationMessageResponse(BaseModel):
+    id: str
+    workflow_id: str
+    borrower_id: str
+    agent_id: str
+    sender_type: str
+    message_text: str
+    visible_to_borrower: bool
     created_at: str
 
 
@@ -341,18 +370,75 @@ def get_simulation_events(run_id: str) -> list[TranscriptEventResponse]:
     if record is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Simulation run not found")
 
-    from evals.logging_service import TranscriptLoggingService
-
-    events: list[LogEvent] = TranscriptLoggingService().get_logs(record["experiment_id"])
+    events: list[LogEvent] = logging_service.get_logs(record["experiment_id"])
     return [
         TranscriptEventResponse(
             id=event.id,
+            experiment_id=event.experiment_id,
+            workflow_id=event.workflow_id,
             actor=event.actor,
             message_text=event.message_text,
             structured_payload=event.structured_payload,
             created_at=event.created_at,
         )
         for event in events
+    ]
+
+
+@router.get("/conversations", response_model=list[ConversationLogSummaryResponse])
+def list_conversation_logs() -> list[ConversationLogSummaryResponse]:
+    borrower_cases_by_workflow = {
+        borrower_case.workflow_id: borrower_case
+        for borrower_case in borrower_case_service.list_borrower_cases()
+    }
+    simulation_workflow_ids = {run.workflow_id for run in run_history_service.list_runs()}
+    grouped_messages: dict[str, list] = {}
+    for message in chat_message_service.list_all_messages():
+        if message.workflow_id in simulation_workflow_ids:
+            continue
+        grouped_messages.setdefault(message.workflow_id, []).append(message)
+
+    responses: list[ConversationLogSummaryResponse] = []
+    for workflow_id, messages in grouped_messages.items():
+        messages = sorted(messages, key=lambda item: item.created_at)
+        borrower_case = borrower_cases_by_workflow.get(workflow_id)
+        responses.append(
+            ConversationLogSummaryResponse(
+                workflow_id=workflow_id,
+                borrower_id=borrower_case.borrower_id if borrower_case is not None else messages[0].user_id,
+                lender_id=borrower_case.lender_id if borrower_case is not None else None,
+                stage=borrower_case.stage.value if borrower_case is not None else None,
+                case_status=borrower_case.case_status.value if borrower_case is not None else None,
+                message_count=len(messages),
+                first_message_at=messages[0].created_at.isoformat(),
+                last_message_at=messages[-1].created_at.isoformat(),
+                last_message_text=messages[-1].message,
+            )
+        )
+    return sorted(responses, key=lambda item: item.last_message_at or "", reverse=True)
+
+
+@router.get("/conversations/{workflow_id}/messages", response_model=list[ConversationMessageResponse])
+def get_conversation_messages(workflow_id: str) -> list[ConversationMessageResponse]:
+    messages = [
+        message
+        for message in chat_message_service.list_all_messages()
+        if message.workflow_id == workflow_id
+    ]
+    if not messages:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Conversation not found")
+    return [
+        ConversationMessageResponse(
+            id=f"{index}_{message.agent_id}_{message.created_at.isoformat()}",
+            workflow_id=message.workflow_id,
+            borrower_id=message.user_id,
+            agent_id=message.agent_id,
+            sender_type=message.sender_type,
+            message_text=message.message,
+            visible_to_borrower=message.visible_to_borrower,
+            created_at=message.created_at.isoformat(),
+        )
+        for index, message in enumerate(messages)
     ]
 
 

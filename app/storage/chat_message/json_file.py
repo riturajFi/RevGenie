@@ -36,6 +36,9 @@ class JsonFileChatMessageStorage(ChatMessageStorage):
             if message.user_id == user_id and message.workflow_id == workflow_id
         ]
 
+    def list_all_messages(self) -> list[ChatMessage]:
+        return [ChatMessage.model_validate(record) for record in self._read()]
+
     def _read(self) -> list[dict]:
         with self.path.open("r", encoding="utf-8") as file:
             return json.load(file)

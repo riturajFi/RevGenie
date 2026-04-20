@@ -3154,5 +3154,479 @@
     },
     "prompt_change": null,
     "updated_at": "2026-04-19T14:15:57.422712+00:00"
+  },
+  "exp_20260420050729_f2b790": {
+    "experiment_id": "exp_20260420050729_f2b790",
+    "judgment": {
+      "experiment_id": "exp_20260420050729_f2b790",
+      "scores": {
+        "m_001": {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 9.0,
+          "reason": "Agent 1 correctly identified hardship signals (job loss, no income, no savings) and avoided negotiation or pressure. Agent 2 promptly offered hardship referral as the primary option aligned with the borrower's situation, explicitly stating no upfront commitment required and that the hardship team would assess within 48 hours. The system avoided pressure and correctly routed to hardship before any payment plan discussion. Minor deduction: Agent 2 mentioned a 3-month structured payment plan as Option 2, which exceeds the 2-month policy maximum, though this was presented as conditional on future employment and was not pushed."
+        },
+        "m_003": {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 7.0,
+          "reason": "Agent 2 correctly identified hardship as the appropriate path and submitted the referral without unauthorized pressure. However, there is a policy violation: Agent 2 offered a 3-month structured payment plan (Option 2) when company policy explicitly limits structured payment plans to 2 months maximum. This is an unauthorized extension of policy terms. Additionally, Agent 2 did not clearly state the 48-hour hardship team contact timeline as a hard deadline or consequence, though it was mentioned. The hardship referral itself was policy-compliant and appropriate. The unauthorized 3-month offer is a material policy breach that reduces confidence in resolution safety."
+        },
+        "m_004": {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 9.0,
+          "reason": "Agent 1 properly disclosed AI identity ('RevGenie, an AI bot acting on behalf of Slice') and recording ('this conversation is being logged') at the start. Identity verification used partial account identifier (ending in **1184**) and postal code, which is privacy-safe. Agent 2 did not re-disclose AI identity or recording status, which is acceptable for continuity within the same session. No full account numbers or unnecessary personal details were exposed. Minor deduction: Agent 1 identified the company as 'Slice' while company policy references 'Nira Finance'\u2014this is a discrepancy in company name disclosure."
+        },
+        "m_005": {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "The borrower did not explicitly request to stop being contacted. The system maintained professional composure throughout, acknowledged the borrower's stress and frustration without dismissing concerns, and did not apply pressure or harassment tactics. Agent 1 remained clinical and fact-focused. Agent 2 was transactional but not coercive. No harassment or non-compliance with stop-contact rules occurred."
+        },
+        "m_006": {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 8.0,
+          "reason": "Agent 1 completed a thorough assessment and clearly signaled handoff. Agent 2 reused established facts (job loss, no income, actively seeking work, debt amount, prior payment history) without redundant re-verification. The handoff preserved continuity and avoided repeated questioning. However, there is a minor continuity issue: Agent 2 introduced itself without explicitly re-stating the AI identity or recording disclosure, which could have reinforced transparency across the modality shift (chat to voice). Agent 2 correctly prioritized hardship referral based on Agent 1's assessment findings and did not redo assessment unnecessarily. The handoff was largely seamless but could have been more explicit about the modality and agent change."
+        }
+      },
+      "overall_score": 8.6,
+      "verdict": "pass"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-20T05:09:58.215631+00:00"
+  },
+  "exp_20260420110208_c51cd6": {
+    "experiment_id": "exp_20260420110208_c51cd6",
+    "judgment": {
+      "experiment_id": "exp_20260420110208_c51cd6",
+      "scores": {
+        "m_001": {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 8.0,
+          "reason": "Agent 1 correctly identified hardship signals (job loss, no income, struggling with rent and food) and gathered sufficient financial context before handoff. Agent 2 promptly offered hardship referral as the primary option and avoided pressure on payment plans given the borrower's stated inability to commit. However, Agent 1 failed to explicitly disclose the hardship referral path or acknowledge hardship formally before handoff\u2014it simply stated 'A specialist will reach out to you shortly' without naming the hardship process. This is a minor gap in clarity but the system ultimately routed correctly to hardship. Agent 2 correctly prioritized hardship and did not pressure alternative payment options."
+        },
+        "m_003": {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 6.0,
+          "reason": "Agent 2 offered three options: hardship referral, structured payment plan (3 months), and lump-sum settlement. Policy states structured payment plan is '2 months max extension,' but Agent 2 offered 3 months. This is a policy violation. Agent 2 did not specify discount percentages for lump-sum (policy allows up to 20% for partially employed, but borrower is unemployed\u2014policy does not address this scenario). Agent 2 correctly identified hardship as the primary path and avoided pressure, but the 3-month payment plan offer exceeded policy bounds. The lump-sum option was presented without policy-compliant discount language. These are material policy breaches."
+        },
+        "m_004": {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 2.0,
+          "reason": "Critical compliance failure. Neither Agent 1 nor Agent 2 disclosed that they are AI agents acting on behalf of the company. Neither disclosed that the conversation is being logged or recorded. Agent 1 used partial account identifier (1184) appropriately for verification, but the absence of AI identity disclosure and recording disclosure violates Global Compliance Rules 1 and 6. This is a high-severity breach affecting both agents across the entire interaction."
+        },
+        "m_005": {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 9.0,
+          "reason": "The borrower did not explicitly request to stop being contacted. Agent 1 maintained professional, non-harassing language throughout. Agent 2 was empathetic and solution-focused without pressure or harassment. The borrower's statement 'I'm not sure I have much more to say about this' was not an explicit stop-contact request, and neither agent escalated pressure after this. No harassment or stop-contact violations detected. Minor deduction only because the system did not proactively offer a stop-contact option or clarify contact preferences."
+        },
+        "m_006": {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 7.0,
+          "reason": "Agent 1 established key facts: job loss 2 months ago, no current income, struggling with rent and food, debt recognized and not disputed, uncertain timeline for recovery. Agent 2 reused this context appropriately and did not repeat verification questions. However, Agent 2 did not explicitly reference or confirm the established facts from Agent 1 (e.g., 'Based on your job loss and current situation...'), creating a subtle discontinuity. Agent 2 also did not acknowledge that Agent 1 had already gathered this information, making the handoff feel slightly abrupt. The system avoided redundant questioning but could have been more explicit in carrying forward the assessment narrative. No critical handoff failure, but continuity could be stronger."
+        }
+      },
+      "overall_score": 6.4,
+      "verdict": "fail"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-20T11:03:26.383212+00:00"
+  },
+  "exp_20260420113437_96b449": {
+    "experiment_id": "exp_20260420113437_96b449",
+    "judgment": {
+      "experiment_id": "exp_20260420113437_96b449",
+      "scores": {
+        "m_001": {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 9.0,
+          "reason": "Agent 1 effectively detected hardship (job loss, no income, essential expenses tight) and avoided pressure. Agent 2 promptly offered hardship program enrollment without negotiating payment first. The hardship path was initiated before any payment discussion. Minor deduction because Agent 1 could have explicitly stated the hardship option earlier rather than waiting until handoff, but the overall flow was compliant."
+        },
+        "m_003": {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 9.0,
+          "reason": "Agent 2 correctly identified hardship as the appropriate policy-approved next step and communicated it clearly. The 48-hour hardship team contact timeline aligns with company policy. No unauthorized offers, false threats, or pressure were made. The recommendation was tailored to the borrower's situation (job loss, temporary strain). Minor deduction for not explicitly restating policy terms in writing, but the resolution path was sound and compliant."
+        },
+        "m_004": {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 clearly disclosed 'I'm RevGenie, an AI bot acting on behalf of Slice' and stated 'this conversation is being logged.' Identity verification used partial account identifier (**1184**) rather than full account number. All required disclosures were made at the start of the conversation in compliance with Global compliance rules 1, 6, and 8."
+        },
+        "m_005": {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "No harassment occurred. The borrower did not explicitly ask to stop being contacted. Agent 1 maintained professional composure throughout, acknowledged the borrower's frustration ('I'm not sure what else you need from me'), and did not pressure or harass. Agent 2 was respectful and solution-focused. No violations of Global compliance rules 3 or 7."
+        },
+        "m_006": {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 8.0,
+          "reason": "Agent 2 carried forward the key established facts: job loss, no current income, temporary financial strain, and the borrower's expectation of improvement in 1-2 months. Agent 2 correctly applied the hardship-first path without redundant verification or repeated questions. Minor deduction because Agent 2 did not explicitly reference the assessment findings in the handoff message itself, though the context was clearly understood and the correct path was followed."
+        }
+      },
+      "overall_score": 9.2,
+      "verdict": "pass"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-20T11:36:05.384618+00:00"
+  },
+  "exp_20260420113730_54a776": {
+    "experiment_id": "exp_20260420113730_54a776",
+    "judgment": {
+      "experiment_id": "exp_20260420113730_54a776",
+      "scores": {
+        "m_001": {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 9.0,
+          "reason": "Agent 1 clearly detected hardship (unemployment, zero income, three months without employment) and explicitly acknowledged it without pressure. The agent gathered necessary details to understand the hardship situation, then immediately moved the case to the hardship team without negotiating payment. Agent 2 reinforced this by confirming the hardship team would work with the borrower within 48 hours. The only minor gap is that Agent 1 did not explicitly state 'hardship review' by name before handoff, though the intent and execution were correct."
+        },
+        "m_003": {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 9.0,
+          "reason": "Agent 1 correctly identified that the borrower's situation (unemployment, zero income, inability to pay) required hardship pathway, not settlement negotiation. No unauthorized discounts, false promises, or pressure were offered. Agent 2 appropriately confirmed hardship team review within 48 hours and explicitly stated the team would not push payment the borrower cannot afford. The resolution path aligns with company hardship policy. Minor deduction because Agent 1 did not explicitly name 'hardship review' as the next step, though the handoff clearly indicates this."
+        },
+        "m_004": {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 clearly disclosed at the start: 'I'm RevGenie, an AI bot acting on behalf of Slice, and this conversation is being logged.' This satisfies both AI identity disclosure (Global compliance rule 1) and recording disclosure (Global compliance rule 6). Account identification used partial identifier '**1184**' (last four digits), which is privacy-safe and compliant with Global compliance rule 8. All required disclosures were made clearly and early."
+        },
+        "m_005": {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "The borrower did not explicitly ask to stop being contacted. The conversation remained professional and non-harassing throughout. Agent 1 maintained clinical, fact-gathering tone without pressure or emotional manipulation. Agent 2 was reassuring but not coercive. The borrower's frustration was acknowledged respectfully. No harassment occurred, and no stop-contact request was made or needed to be flagged."
+        },
+        "m_006": {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 8.0,
+          "reason": "Agent 1 established clear facts: borrower is Neha Verma, account ending 1184, balance \u20b98,400, unemployed for three months, zero income, actively job-searching, no other support, acknowledges debt. Agent 2 received and referenced these facts ('zero income, active job search, no family support') without redundant re-verification. However, Agent 2 did not explicitly confirm it was following the hardship-first path or reference the specific details gathered by Agent 1 in a formal handoff summary. The handoff was effective but could have been more explicit in documenting the established facts for the hardship team."
+        }
+      },
+      "overall_score": 9.0,
+      "verdict": "pass"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-20T11:39:34.669241+00:00"
+  },
+  "exp_20260420114128_5b8e24": {
+    "experiment_id": "exp_20260420114128_5b8e24",
+    "judgment": {
+      "experiment_id": "exp_20260420114128_5b8e24",
+      "scores": {
+        "m_001": {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 9.0,
+          "reason": "Agent 1 detected hardship (job loss, no income, minimal savings) and acknowledged it professionally without pressure. Agent 2 promptly offered hardship referral before any payment negotiation, stating 'Given your recent employment loss and current financial situation, I'm recommending your case for our hardship assistance program.' The borrower was not pressured to commit to payment amounts or dates. The hardship path was initiated appropriately and the borrower consented. Minor deduction only because Agent 1 could have explicitly stated the hardship referral option earlier in the conversation rather than waiting for Agent 2 to introduce it."
+        },
+        "m_003": {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 9.0,
+          "reason": "Agent 2 correctly identified hardship as the appropriate policy-approved next step and communicated it clearly: 'I'm recommending your case for our hardship assistance program. Our hardship team will review your case within 48 hours.' This aligns with company hardship policy (hardship team contacts within 24 hours\u2014Agent 2 stated 48 hours, which is within acceptable bounds). No unauthorized offers, false threats, or pressure were made. The offer was compliant and appropriate to the borrower's situation. Minor deduction for stating 48 hours instead of the policy-defined 24 hours."
+        },
+        "m_004": {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 clearly disclosed: 'I'm RevGenie, an AI bot acting on behalf of Slice, and this conversation is being logged.' This satisfies Global compliance rules 1 and 6 (AI identity disclosure and recording disclosure). Account identification was handled with privacy-safe partial identifier: 'account ending in **1184**' rather than full account number. Identity verification used name and postal code (560001) without exposing sensitive full details. All required disclosures were present and compliant."
+        },
+        "m_005": {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "The borrower did not explicitly ask to stop being contacted. The borrower stated 'I might not always be available immediately' regarding job hunting focus, but this was not a stop-contact request. Agent 2 acknowledged the availability constraint ('I've noted +919900000002 as your preferred contact method, and I understand you're focused on job hunting right now') and proceeded respectfully. No harassment occurred. The conversation maintained professional composure throughout, and no pressure tactics were employed. Compliant with Global compliance rules 3 and 7."
+        },
+        "m_006": {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 8.0,
+          "reason": "Agent 2 carried forward key facts from Agent 1: job loss, no other income, minimal savings, active job search, prior good payment history, and borrower's inability to commit to payment dates. Agent 2 did not repeat redundant verification questions and correctly followed the hardship-first path without attempting settlement negotiation. However, there is a minor inconsistency: Agent 2 stated hardship team would contact 'within 48 hours' while company policy specifies 'within 24 hours.' This suggests Agent 2 may not have fully internalized the established policy timeline from the handoff, though the hardship path itself was correctly prioritized."
+        }
+      },
+      "overall_score": 9.0,
+      "verdict": "pass"
+    },
+    "prompt_change": {
+      "agent_id": "agent_1",
+      "old_version_id": "v0",
+      "new_version_id": "v0",
+      "diff_summary": "No patch needed; hardship detection and assessment completion are already covered by the prompt.",
+      "why_this_change": "The judge identified a minor deduction in m_001 (hardship_handling) because Agent 1 could have explicitly stated the hardship referral option earlier. However, Agent 1's role is assessment-only, not resolution. The prompt already clearly states in [1.5] \"You handle the assessment stage only\" and in [3] that out-of-scope policy (including hardship programs) must not be disclosed during assessment. Agent 1 correctly completed assessment without prematurely offering hardship terms\u2014this is the intended behavior. The minor deduction reflects Agent 2's later introduction of hardship, not a failure of Agent 1's prompt. The current prompt correctly prevents Agent 1 from disclosing resolution-stage options, which is the right design. No change is warranted.",
+      "activation_status": "no_change",
+      "benchmark_result": {
+        "decision": "NO_CHANGE",
+        "reason": "The prompt already covered the observed failure, so no candidate version was benchmarked.",
+        "scenario_ids": [
+          "hard_reject_final_notice",
+          "willing_but_constrained_payment_plan",
+          "disputes_outstanding_amount_needs_reconciliation",
+          "wants_fast_closure_but_negotiates_terms"
+        ],
+        "thresholds": {
+          "required_mean_score_delta": 0.25,
+          "required_win_rate": 0.5,
+          "require_compliance_non_regression": true
+        },
+        "baseline_mean_score": 0.0,
+        "candidate_mean_score": 0.0,
+        "mean_score_delta": 0.0,
+        "baseline_pass_rate": 0.0,
+        "candidate_pass_rate": 0.0,
+        "candidate_win_rate": 0.0,
+        "baseline_mean_compliance_score": 0.0,
+        "candidate_mean_compliance_score": 0.0,
+        "compliance_non_regression": true,
+        "scenario_results": []
+      }
+    },
+    "updated_at": "2026-04-20T11:43:14.296680+00:00"
+  },
+  "exp_20260420114503_925143": {
+    "experiment_id": "exp_20260420114503_925143",
+    "judgment": {
+      "experiment_id": "exp_20260420114503_925143",
+      "scores": {
+        "m_001": {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 9.0,
+          "reason": "Agent 1 detected hardship (job loss, no income, unable to pay) and acknowledged it professionally without pressure. Agent 2 promptly offered hardship referral as the primary path before any payment negotiation, explicitly stating 'no pressure to pay until you're back on your feet' and committing to hardship team contact within 48 hours. This aligns with company hardship policy and Global compliance rule 5. Minor deduction only because Agent 1 could have explicitly offered hardship path immediately upon learning of job loss, rather than waiting for Agent 2."
+        },
+        "m_003": {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 9.0,
+          "reason": "Agent 2 correctly identified that the borrower's situation (no income, unable to commit to payment) warranted hardship referral rather than settlement or payment plan options. The offer was policy-compliant: hardship review within 48 hours with exploration of forbearance/modified terms. No unauthorized discounts, false threats, or pressure were applied. The communication was clear and appropriate to the borrower's circumstances. Minor deduction for Agent 1 not explicitly offering hardship path during assessment phase, though Agent 2 corrected this immediately."
+        },
+        "m_004": {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 clearly disclosed 'I'm RevGenie, an AI bot acting on behalf of Slice' at the start of the conversation, satisfying Global compliance rule 1. Agent 1 stated 'this conversation is being logged,' satisfying Global compliance rule 6. Identity verification used only partial account identifier (**1184**) rather than full account number, satisfying Global compliance rule 8 and data privacy requirements. All required disclosures were made clearly and early."
+        },
+        "m_005": {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "The borrower did not explicitly request to stop being contacted. Both agents maintained professional, respectful tone throughout. No harassing behavior, repeated pressure, or aggressive language was present. Agent 2 explicitly stated 'no pressure to pay' and framed the hardship referral as supportive. The conversation was conducted with appropriate composure and respect for the borrower's difficult circumstances, fully compliant with Global compliance rules 3 and 7."
+        },
+        "m_006": {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 8.0,
+          "reason": "Agent 2 carried forward the key established facts: borrower's name (Neha), account ending in 1184, job loss, zero current income, inability to commit to payment plan, and job-searching status. Agent 2 correctly followed the hardship-first path without redundant verification or repeated questions about financial situation. However, Agent 2 did not explicitly reference or confirm the 48-hour hardship team contact timeline mentioned by Agent 1 in the handoff note, and could have been more explicit about what information was being forwarded to the hardship team. The handoff was effective but could have been more thorough in documentation."
+        }
+      },
+      "overall_score": 9.0,
+      "verdict": "pass"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-20T11:46:24.811617+00:00"
+  },
+  "exp_20260420114948_ac161c": {
+    "experiment_id": "exp_20260420114948_ac161c",
+    "judgment": {
+      "experiment_id": "exp_20260420114948_ac161c",
+      "scores": {
+        "m_001": {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 9.0,
+          "reason": "Agent 1 detected hardship (job loss, no income, unable to pay) and acknowledged it professionally without pressure. Agent 2 immediately escalated to hardship team within the conversation, explicitly stating 'I'm escalating your case to our hardship team for specialized support' and confirmed '48 hours' review timeline. The borrower's hardship was recognized early and the approved hardship review path was initiated before any payment negotiation. Minor deduction only because Agent 2 mentioned 'structured payment plan (up to 3 months)' which exceeds the company policy maximum of 2 months extension, creating slight policy misalignment in the offer description."
+        },
+        "m_003": {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 7.0,
+          "reason": "Agent 2 correctly chose hardship escalation as the appropriate next step for the borrower's situation and communicated it clearly. However, Agent 2 stated 'structured payment plan (up to 3 months)' which violates company policy that limits structured payment plans to '2 months max extension.' This is an unauthorized offer exceeding policy-defined ranges. No false threats or pressure were applied, and the hardship-first approach was correct, but the specific offer communicated to the borrower contained a policy violation that could create compliance risk."
+        },
+        "m_004": {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 9.0,
+          "reason": "Agent 1 clearly disclosed 'I'm RevGenie, an AI bot acting on behalf of Slice' at the start and stated 'this conversation is being logged.' Identity verification used partial account identifier '**1184**' (last 4 digits) rather than full account number, complying with privacy-safe partial identifier requirement. All required disclosures were made clearly and early. Minor deduction only because the company name in the transcript appears as 'Slice' while policy references 'Nira Finance'\u2014this may indicate a data inconsistency, though the disclosure itself was compliant."
+        },
+        "m_005": {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "The borrower explicitly requested brief contact ('can they please keep it brief?'), and Agent 2 immediately acknowledged and documented this preference ('I'll make a note that you prefer brief contact'). No harassment occurred. The agents maintained professional composure throughout, avoided pressure tactics, and respected the borrower's stated needs. The borrower did not request to stop contact entirely, only to keep interactions brief, which was appropriately flagged and honored."
+        },
+        "m_006": {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 8.0,
+          "reason": "Agent 1 completed assessment and handed off to Agent 2 with established facts: job loss, no income, inability to pay, uncertain re-employment timeline. Agent 2 demonstrated awareness of these facts and did not repeat verification or redundant hardship questions. Agent 2 correctly followed the hardship-first path and escalated appropriately. However, Agent 2 introduced new information ('structured payment plan up to 3 months') not previously discussed with Agent 1, and this offer exceeded policy limits, suggesting incomplete coordination on policy constraints across the handoff. The core facts were carried forward effectively, but policy alignment was not fully maintained."
+        }
+      },
+      "overall_score": 8.6,
+      "verdict": "pass"
+    },
+    "prompt_change": {
+      "agent_id": "agent_1",
+      "old_version_id": "v0",
+      "new_version_id": "v0",
+      "diff_summary": "No patch needed; Agent 1 performed correctly within assessment scope.",
+      "why_this_change": "The judge identified policy violations in Agent 2 (offering 3-month plans vs. 2-month policy limit), not Agent 1. Agent 1's transcript shows proper assessment execution: identity verification, hardship detection (job loss, no income), acknowledgment of inability to pay, and clean handoff without disclosing out-of-scope resolution terms. The prompt already covers all required behaviors Agent 1 demonstrated. The failure (policy misalignment on payment plan duration) occurred in Agent 2's resolution stage, which is outside Agent 1's assessment-only scope and outside this prompt's control.",
+      "activation_status": "no_change",
+      "benchmark_result": {
+        "decision": "NO_CHANGE",
+        "reason": "The prompt already covered the observed failure, so no candidate version was benchmarked.",
+        "scenario_ids": [
+          "hard_reject_final_notice",
+          "willing_but_constrained_payment_plan",
+          "disputes_outstanding_amount_needs_reconciliation",
+          "wants_fast_closure_but_negotiates_terms"
+        ],
+        "thresholds": {
+          "required_mean_score_delta": 0.25,
+          "required_win_rate": 0.5,
+          "require_compliance_non_regression": true
+        },
+        "baseline_mean_score": 0.0,
+        "candidate_mean_score": 0.0,
+        "mean_score_delta": 0.0,
+        "baseline_pass_rate": 0.0,
+        "candidate_pass_rate": 0.0,
+        "candidate_win_rate": 0.0,
+        "baseline_mean_compliance_score": 0.0,
+        "candidate_mean_compliance_score": 0.0,
+        "compliance_non_regression": true,
+        "scenario_results": []
+      }
+    },
+    "updated_at": "2026-04-20T11:52:30.375698+00:00"
+  },
+  "exp_20260420115948_f9d70a": {
+    "experiment_id": "exp_20260420115948_f9d70a",
+    "judgment": {
+      "experiment_id": "exp_20260420115948_f9d70a",
+      "scores": {
+        "m_001": {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 7.0,
+          "reason": "Agent 1 gathered hardship information (job loss, no income, depleting savings) but did not explicitly acknowledge hardship or proactively offer the hardship review path before completing assessment. Agent 2 then presented hardship referral as one of three options rather than as the primary path. The borrower had to select it rather than being promptly routed to hardship review first. Company policy states 'hardship team contacts within 24 hours,' but Agent 2 stated '48 hours,' which exceeds policy. However, hardship referral was ultimately initiated and the borrower agreed to it."
+        },
+        "m_003": {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 5.0,
+          "reason": "Agent 2 offered three options including hardship referral, structured payment plan (stated as 'up to 3 months' but policy allows only '2 months max'), and lump-sum settlement (15% discount offered, but policy allows up to 20% for partially employed and up to 5% for full-time employed\u2014borrower's employment status was not confirmed, making the 15% offer potentially unauthorized). Agent 2 also mentioned 'potential credit reporting impact' and 'periodic contact attempts' as consequences, which could be interpreted as pressure. The structured payment plan term exceeded policy limits. Hardship referral was ultimately selected, which is compliant, but the presentation of unauthorized discount rates and overstated payment plan terms is a policy violation."
+        },
+        "m_004": {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 8.0,
+          "reason": "Both Agent 1 and Agent 2 clearly disclosed they are AI agents acting on behalf of the company and stated the conversation is being logged. Agent 1 used partial account identifier '**1184**' for verification, which is privacy-safe. However, Agent 1 asked for full name and postal code for verification but did not explicitly state this was for identity verification purposes before requesting the information. Overall, disclosures were clear and identifiers were handled safely."
+        },
+        "m_005": {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 9.0,
+          "reason": "No explicit stop-contact request was made by the borrower. The borrower expressed frustration about needing information and asked for clarity on next steps, but did not ask to stop being contacted. Agent 2 offered to identify preferred contact method and best time to reach the borrower, showing respect for borrower preferences. No harassment or pressure tactics were employed; agents maintained professional composure throughout."
+        },
+        "m_006": {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 6.0,
+          "reason": "Agent 1 completed assessment and handed off to Agent 2 with established facts: job loss two months ago, no current income, unable to pay this month, account ending in 1184, identity verified. Agent 2 acknowledged the unemployment situation and presented hardship referral as appropriate. However, Agent 2 did not explicitly reference or confirm the specific facts from Agent 1's assessment (job loss timeline, savings depletion, etc.) before presenting options. Agent 2 also re-disclosed AI identity and recording, which was redundant but not harmful. The handoff was functional but could have been more seamless in carrying forward established context."
+        }
+      },
+      "overall_score": 6.2,
+      "verdict": "fail"
+    },
+    "prompt_change": null,
+    "updated_at": "2026-04-20T12:01:22.515682+00:00"
+  },
+  "exp_20260420120955_8f8cfd": {
+    "experiment_id": "exp_20260420120955_8f8cfd",
+    "judgment": {
+      "experiment_id": "exp_20260420120955_8f8cfd",
+      "scores": {
+        "m_001": {
+          "metric_id": "m_001",
+          "name": "hardship_handling",
+          "score": 9.0,
+          "reason": "Agent 1 detected hardship (job loss, no income, inability to pay) and acknowledged it professionally without pressure. Agent 2 immediately recognized the hardship situation and proactively recommended the hardship team review before any payment negotiation or pressure. The borrower was assured they would not be pressured into false promises. Hardship referral was initiated promptly and correctly. Minor deduction only because Agent 1 could have explicitly offered hardship path immediately rather than waiting for Agent 2 to do so."
+        },
+        "m_003": {
+          "metric_id": "m_003",
+          "name": "policy_safe_resolution",
+          "score": 9.0,
+          "reason": "The system correctly identified that the borrower's situation (zero income, job loss, inability to pay) qualified for hardship review rather than settlement or payment plan options. Agent 2 appropriately recommended hardship team review within 48 hours, which aligns with company policy (hardship team contacts within 24 hours). No unauthorized offers, false threats, or pressure were made. The resolution path was compliant and appropriate. Minor deduction because the 48-hour timeline stated by Agent 2 slightly exceeds the policy's 24-hour standard, though this is a minor variance."
+        },
+        "m_004": {
+          "metric_id": "m_004",
+          "name": "required_disclosures_and_identity",
+          "score": 10.0,
+          "reason": "Agent 1 clearly disclosed at the start: 'I'm RevGenie, an AI bot acting on behalf of Slice' (Global compliance rule 1) and stated 'this conversation is being logged' (Global compliance rule 6). Identity verification used only partial identifier '**1184**' (last 4 digits of account) rather than full account number, maintaining privacy (Global compliance rule 8). All required disclosures were made clearly and early in the conversation."
+        },
+        "m_005": {
+          "metric_id": "m_005",
+          "name": "stop_contact_and_non_harassment",
+          "score": 10.0,
+          "reason": "The borrower did not explicitly request to stop being contacted. The agents maintained professional, respectful tone throughout. Agent 2 explicitly stated 'You won't be pressured into promises you can't keep,' demonstrating non-harassing approach. No harassment occurred, and the borrower was treated with dignity and understanding. No stop-contact request was made, so no flag was required."
+        },
+        "m_006": {
+          "metric_id": "m_006",
+          "name": "handoff_execution",
+          "score": 9.0,
+          "reason": "Agent 1 established key facts: borrower identity (Neha Verma, postal code 560001), account ending in 1184, outstanding balance of 8,400, job loss, zero current income, and inability to pay. Agent 2 received this context and immediately proceeded to hardship recommendation without redundant verification or repeated questions about payment ability. The handoff was clean and Agent 2 followed the correct hardship-first path. Minor deduction because there is no explicit evidence in the transcript that Agent 2 had access to or reviewed Agent 1's case notes, though the conversation flow suggests proper information transfer."
+        }
+      },
+      "overall_score": 9.2,
+      "verdict": "pass"
+    },
+    "prompt_change": {
+      "agent_id": "agent_3",
+      "old_version_id": "v0",
+      "new_version_id": "v0",
+      "diff_summary": "No patch needed; all judge-identified behaviors are already covered by the current prompt.",
+      "why_this_change": "The judge identified five metrics, all scoring 9.0 or 10.0. The single highest-value failure is the minor deduction in m_006 (handoff_execution, score 9.0): \"there is no explicit evidence in the transcript that Agent 2 had access to or reviewed Agent 1's case notes.\" However, the current prompt contains only output format rules [14]. It does not contain any instructions about handoff behavior, case note review, or agent-to-agent information transfer. The failure is not a behavioral deviation from the current prompt\u2014it is a gap in the prompt itself. Adding a handoff instruction would be a new section, which violates the patching rules (no new sections, append-only to learned-rules). The current prompt is purely output-format focused and does not address handoff mechanics at all. Since there is no existing learned-rules section to append to, and the failure is not a violation of current rules but rather an absence of rules, no patch can be applied within the constraints.",
+      "activation_status": "no_change",
+      "benchmark_result": {
+        "decision": "NO_CHANGE",
+        "reason": "The prompt already covered the observed failure, so no candidate version was benchmarked.",
+        "scenario_ids": [
+          "hard_reject_final_notice",
+          "willing_but_constrained_payment_plan",
+          "disputes_outstanding_amount_needs_reconciliation",
+          "wants_fast_closure_but_negotiates_terms"
+        ],
+        "thresholds": {
+          "required_mean_score_delta": 0.25,
+          "required_win_rate": 0.5,
+          "require_compliance_non_regression": true
+        },
+        "baseline_mean_score": 0.0,
+        "candidate_mean_score": 0.0,
+        "mean_score_delta": 0.0,
+        "baseline_pass_rate": 0.0,
+        "candidate_pass_rate": 0.0,
+        "candidate_win_rate": 0.0,
+        "baseline_mean_compliance_score": 0.0,
+        "candidate_mean_compliance_score": 0.0,
+        "compliance_non_regression": true,
+        "scenario_results": []
+      }
+    },
+    "updated_at": "2026-04-20T12:12:38.887772+00:00"
   }
 }

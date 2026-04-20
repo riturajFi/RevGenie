@@ -31,9 +31,6 @@ borrower_case_service = FileBorrowerCaseService()
 simulation_executor = ThreadPoolExecutor(max_workers=2)
 simulation_lock = Lock()
 simulation_runs: dict[str, dict] = {}
-prompt_change_executor = ThreadPoolExecutor(max_workers=1)
-prompt_change_lock = Lock()
-prompt_change_jobs: dict[str, dict] = {}
 judge_service = JudgeService()
 prompt_change_proposer = PromptChangeProposer()
 meta_evaluator_service = MetaEvaluatorService()
@@ -119,40 +116,6 @@ class PromptChangeBatchResponse(BaseModel):
     results: list[PromptChangeApplyResult]
 
 
-class PromptChangeAgentProgress(BaseModel):
-    agent_id: str
-    status: str
-    stage: str | None = None
-    message: str | None = None
-    scenario_id: str | None = None
-    variant: str | None = None
-    completed_runs: int = 0
-    total_runs: int = 0
-    transcript_events: list[dict[str, str]] = Field(default_factory=list)
-
-
-class PromptChangeJobStartResponse(BaseModel):
-    job_id: str
-    run_id: str
-    workflow_id: str
-    experiment_id: str
-    status: str
-
-
-class PromptChangeJobStatusResponse(BaseModel):
-    job_id: str
-    run_id: str
-    workflow_id: str
-    experiment_id: str
-    status: str
-    started_at: str
-    finished_at: str | None = None
-    message: str | None = None
-    error: str | None = None
-    agent_progress: list[PromptChangeAgentProgress] = Field(default_factory=list)
-    results: list[PromptChangeApplyResult] = Field(default_factory=list)
-
-
 class PromptVersionActivateRequest(BaseModel):
     agent_id: str
     version_id: str
@@ -187,7 +150,6 @@ class ComplianceUpdateRequest(BaseModel):
 class MetaEvalRunRequest(BaseModel):
     metrics_key: str = "collections_agent_eval"
     lender_id: str | None = "nira"
-    force_activate: bool = True
 
 
 class MetaEvalLatestPairResponse(BaseModel):
@@ -273,111 +235,6 @@ def _run_simulation_job(
             status="failed",
             finished_at=simulation_runs[run_id]["finished_at"],
             error=str(error),
-        )
-
-
-def _update_prompt_change_job(job_id: str, **updates) -> None:
-    with prompt_change_lock:
-        job = prompt_change_jobs.get(job_id)
-        if job is None:
-            return
-        job.update(updates)
-
-
-def _update_prompt_change_agent_progress(job_id: str, payload: dict) -> None:
-    with prompt_change_lock:
-        job = prompt_change_jobs.get(job_id)
-        if job is None:
-            return
-        agent_id = str(payload.get("agent_id") or "")
-        if not agent_id:
-            return
-        progress = dict(job["agent_progress"].get(agent_id, {}))
-        progress.update(
-            {
-                "agent_id": agent_id,
-                "status": payload.get("status") or progress.get("status") or "running",
-                "stage": payload.get("stage"),
-                "message": payload.get("message"),
-                "scenario_id": payload.get("scenario_id"),
-                "variant": payload.get("variant") or progress.get("variant"),
-                "completed_runs": int(payload.get("completed_runs") or progress.get("completed_runs") or 0),
-                "total_runs": int(payload.get("total_runs") or progress.get("total_runs") or 0),
-            }
-        )
-        if payload.get("reset_transcript"):
-            progress["transcript_events"] = []
-        transcript_events = list(progress.get("transcript_events") or [])
-        new_event = payload.get("transcript_event")
-        if isinstance(new_event, dict):
-            actor = str(new_event.get("actor") or "").strip()
-            message = str(new_event.get("message") or "").strip()
-            if actor and message:
-                transcript_events.append({"actor": actor, "message": message})
-                progress["transcript_events"] = transcript_events[-12:]
-        job["agent_progress"][agent_id] = progress
-        if progress.get("message"):
-            job["message"] = progress["message"]
-
-
-def _run_prompt_change_job(
-    job_id: str,
-    run_id: str,
-    workflow_id: str,
-    experiment_id: str,
-    target_agent_ids: list[str],
-    force_activate: bool,
-) -> None:
-    _update_prompt_change_job(job_id, status="running", message="Starting prompt improvement run.")
-    results: list[PromptChangeApplyResult] = []
-    try:
-        for index, target_agent_id in enumerate(target_agent_ids, start=1):
-            _update_prompt_change_agent_progress(
-                job_id,
-                {
-                    "agent_id": target_agent_id,
-                    "status": "running",
-                    "stage": "queued",
-                    "message": f"Starting agent {index} of {len(target_agent_ids)}.",
-                },
-            )
-            result = prompt_change_proposer.apply_change(
-                experiment_id=experiment_id,
-                target_agent_id=target_agent_id,
-                force_activate=force_activate,
-                progress_callback=lambda payload, agent_id=target_agent_id: _update_prompt_change_agent_progress(
-                    job_id,
-                    {"agent_id": agent_id, "status": "running", **payload},
-                ),
-            )
-            results.append(result)
-            _update_prompt_change_agent_progress(
-                job_id,
-                {
-                    "agent_id": target_agent_id,
-                    "status": "completed",
-                    "stage": "completed",
-                    "message": result.benchmark_result.reason if result.benchmark_result else "Completed.",
-                    "completed_runs": (
-                        len(result.benchmark_result.scenario_results) * 2 if result.benchmark_result else 0
-                    ),
-                    "total_runs": len(result.benchmark_result.scenario_results) * 2 if result.benchmark_result else 0,
-                },
-            )
-        _update_prompt_change_job(
-            job_id,
-            status="completed",
-            finished_at=_utc_now(),
-            message="Prompt improvement run completed.",
-            results=results,
-        )
-    except Exception as error:
-        _update_prompt_change_job(
-            job_id,
-            status="failed",
-            finished_at=_utc_now(),
-            error=str(error),
-            message="Prompt improvement run failed.",
         )
 
 
@@ -577,8 +434,8 @@ def reset_compliance() -> ComplianceConfig:
     return compliance_config_service.reset_to_default()
 
 
-@router.post("/simulations/{run_id}/prompt-changes/apply", response_model=PromptChangeJobStartResponse)
-def apply_prompt_changes(run_id: str, request: PromptChangeBatchRequest) -> PromptChangeJobStartResponse:
+@router.post("/simulations/{run_id}/prompt-changes/apply", response_model=PromptChangeBatchResponse)
+def apply_prompt_changes(run_id: str, request: PromptChangeBatchRequest) -> PromptChangeBatchResponse:
     with simulation_lock:
         record = simulation_runs.get(run_id)
     if record is None:
@@ -589,67 +446,23 @@ def apply_prompt_changes(run_id: str, request: PromptChangeBatchRequest) -> Prom
             detail="Simulation must be completed before proposing prompt changes",
         )
 
-    job_id = _generate_id("prompt_job")
-    with prompt_change_lock:
-        prompt_change_jobs[job_id] = {
-            "job_id": job_id,
-            "run_id": run_id,
-            "workflow_id": record["workflow_id"],
-            "experiment_id": record["experiment_id"],
-            "status": "queued",
-            "started_at": _utc_now(),
-            "finished_at": None,
-            "message": "Queued prompt improvement run.",
-            "error": None,
-            "agent_progress": {},
-            "results": [],
-        }
+    results: list[PromptChangeApplyResult] = []
+    try:
+        for target_agent_id in request.target_agent_ids:
+            result = prompt_change_proposer.apply_change(
+                experiment_id=record["experiment_id"],
+                target_agent_id=target_agent_id,
+                force_activate=request.force_activate,
+            )
+            results.append(result)
+    except Exception as error:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error)) from error
 
-    prompt_change_executor.submit(
-        _run_prompt_change_job,
-        job_id,
+    return PromptChangeBatchResponse(
         run_id=run_id,
         workflow_id=record["workflow_id"],
         experiment_id=record["experiment_id"],
-        target_agent_ids=request.target_agent_ids,
-        force_activate=request.force_activate,
-    )
-
-    return PromptChangeJobStartResponse(
-        job_id=job_id,
-        run_id=run_id,
-        workflow_id=record["workflow_id"],
-        experiment_id=record["experiment_id"],
-        status="queued",
-    )
-
-
-@router.get(
-    "/simulations/{run_id}/prompt-changes/jobs/{job_id}",
-    response_model=PromptChangeJobStatusResponse,
-)
-def get_prompt_change_job_status(run_id: str, job_id: str) -> PromptChangeJobStatusResponse:
-    with prompt_change_lock:
-        record = prompt_change_jobs.get(job_id)
-    if record is None or record["run_id"] != run_id:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Prompt change job not found")
-
-    agent_progress = [
-        PromptChangeAgentProgress.model_validate(item)
-        for _, item in sorted(record["agent_progress"].items())
-    ]
-    return PromptChangeJobStatusResponse(
-        job_id=record["job_id"],
-        run_id=record["run_id"],
-        workflow_id=record["workflow_id"],
-        experiment_id=record["experiment_id"],
-        status=record["status"],
-        started_at=record["started_at"],
-        finished_at=record["finished_at"],
-        message=record["message"],
-        error=record["error"],
-        agent_progress=agent_progress,
-        results=record["results"],
+        results=results,
     )
 
 
@@ -753,7 +566,6 @@ def run_meta_eval(request: MetaEvalRunRequest) -> MetaEvalRunRecord:
             after_experiment_id=latest_ids[0],
             metrics_key=request.metrics_key,
             lender_id=request.lender_id,
-            force_activate=request.force_activate,
         )
     except Exception as error:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error)) from error

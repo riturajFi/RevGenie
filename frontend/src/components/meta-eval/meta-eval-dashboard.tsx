@@ -8,7 +8,6 @@ import { MetaEvalRunRecord } from "@/types/meta-eval";
 export function MetaEvalDashboard() {
   const [metricsKey, setMetricsKey] = useState("collections_agent_eval");
   const [lenderId, setLenderId] = useState("nira");
-  const [forceActivate, setForceActivate] = useState(true);
   const [beforeExperimentId, setBeforeExperimentId] = useState<string | null>(null);
   const [afterExperimentId, setAfterExperimentId] = useState<string | null>(null);
   const [totalEvaluatedExperiments, setTotalEvaluatedExperiments] = useState(0);
@@ -61,6 +60,28 @@ export function MetaEvalDashboard() {
     () => runs.find((item) => item.run_id === selectedRunId) ?? (runs.length > 0 ? runs[0] : null),
     [runs, selectedRunId]
   );
+  const metricsEvolutionSummary = useMemo(() => {
+    if (!selectedRun) {
+      return {
+        keep: 0,
+        rewrite: 0,
+        add: 0,
+        delete: 0,
+      };
+    }
+    return selectedRun.metric_actions.reduce(
+      (summary, action) => {
+        summary[action.action] += 1;
+        return summary;
+      },
+      {
+        keep: 0,
+        rewrite: 0,
+        add: 0,
+        delete: 0,
+      }
+    );
+  }, [selectedRun]);
   const canRunMetaEval = Boolean(beforeExperimentId && afterExperimentId);
 
   async function handleRunMetaEval() {
@@ -71,7 +92,6 @@ export function MetaEvalDashboard() {
       const result = await runMetaEval({
         metrics_key: metricsKey.trim() || "collections_agent_eval",
         lender_id: lenderId.trim(),
-        force_activate: forceActivate,
       });
       await loadData();
       setSelectedRunId(result.run_id);
@@ -129,14 +149,6 @@ export function MetaEvalDashboard() {
           <span>Lender ID</span>
           <input value={lenderId} onChange={(event) => setLenderId(event.target.value)} />
         </label>
-        <label className="checkbox-inline">
-          <input
-            type="checkbox"
-            checked={forceActivate}
-            onChange={(event) => setForceActivate(event.target.checked)}
-          />
-          <span>Auto activate candidate metrics</span>
-        </label>
       </div>
 
       <div className="form-actions">
@@ -182,39 +194,7 @@ export function MetaEvalDashboard() {
               <div className="meta-summary-grid">
                 <div className="meta-summary-card">
                   <span>Metrics Version</span>
-                  <strong>
-                    {selectedRun.old_metrics_version} {"->"} {selectedRun.candidate_metrics_version}
-                  </strong>
-                </div>
-                <div className="meta-summary-card">
-                  <span>Eval Config Version</span>
-                  <strong>
-                    {selectedRun.old_evaluation_config_version ?? "-"} {"->"}{" "}
-                    {selectedRun.candidate_evaluation_config_version ?? "-"}
-                  </strong>
-                </div>
-                <div className="meta-summary-card">
-                  <span>Activation Status</span>
-                  <strong>{selectedRun.activation_status}</strong>
-                </div>
-                <div className="meta-summary-card">
-                  <span>Validation Decision</span>
-                  <strong>{selectedRun.validation_decision.decision}</strong>
-                </div>
-                <div className="meta-summary-card">
-                  <span>Held-out Validation Experiments</span>
-                  <strong>{selectedRun.validation_experiment_ids.length}</strong>
-                </div>
-                <div className="meta-summary-card">
-                  <span>Expectation Match</span>
-                  <strong>
-                    {selectedRun.validation_decision.old_expectation_matches} {"->"}{" "}
-                    {selectedRun.validation_decision.candidate_expectation_matches}
-                  </strong>
-                </div>
-                <div className="meta-summary-card">
-                  <span>Total Expectation Checks</span>
-                  <strong>{selectedRun.validation_decision.total_expectation_checks}</strong>
+                  <strong>{selectedRun.old_metrics_version}</strong>
                 </div>
               </div>
 
@@ -233,49 +213,43 @@ export function MetaEvalDashboard() {
                 <p>{selectedRun.metrics_diff_summary}</p>
               </div>
 
-              {selectedRun.evaluation_config_diff_summary ? (
-                <div className="meta-section">
-                  <h3>Evaluation Config Diff</h3>
-                  <p>{selectedRun.evaluation_config_diff_summary}</p>
-                  {selectedRun.candidate_evaluation_config ? (
-                    <div className="meta-list">
-                      <article className="meta-list-item">
-                        <header>
-                          <strong>{selectedRun.candidate_evaluation_config.version_id}</strong>
-                        </header>
-                        <p>
-                          Benchmark scenarios: {selectedRun.candidate_evaluation_config.benchmark_scenario_ids.join(", ")}
-                        </p>
-                        <p>Benchmark max turns: {selectedRun.candidate_evaluation_config.benchmark_max_turns}</p>
-                        <p>
-                          Required mean score delta: {selectedRun.candidate_evaluation_config.required_mean_score_delta}
-                        </p>
-                        <p>
-                          Required win rate: {selectedRun.candidate_evaluation_config.required_win_rate}
-                        </p>
-                        <p>
-                          Compliance non-regression:{" "}
-                          {selectedRun.candidate_evaluation_config.require_compliance_non_regression ? "yes" : "no"}
-                        </p>
-                      </article>
-                    </div>
-                  ) : null}
-                </div>
-              ) : null}
-
               <div className="meta-section">
-                <h3>Validation Summary</h3>
-                <p>{selectedRun.validation_decision.reason}</p>
-                {selectedRun.validation_experiment_ids.length > 0 ? (
-                  <div className="meta-pill-row">
-                    {selectedRun.validation_experiment_ids.map((experimentId) => (
-                      <span key={experimentId} className="meta-chip">
-                        {experimentId}
-                      </span>
+                <h3>Metrics Evolution</h3>
+                <div className="meta-summary-grid">
+                  <div className="meta-summary-card">
+                    <span>Keep</span>
+                    <strong>{metricsEvolutionSummary.keep}</strong>
+                  </div>
+                  <div className="meta-summary-card">
+                    <span>Rewrite</span>
+                    <strong>{metricsEvolutionSummary.rewrite}</strong>
+                  </div>
+                  <div className="meta-summary-card">
+                    <span>Add</span>
+                    <strong>{metricsEvolutionSummary.add}</strong>
+                  </div>
+                  <div className="meta-summary-card">
+                    <span>Delete</span>
+                    <strong>{metricsEvolutionSummary.delete}</strong>
+                  </div>
+                </div>
+                {selectedRun.metric_actions.length === 0 ? (
+                  <p className="meta-eval-empty">No metric evolution found.</p>
+                ) : (
+                  <div className="meta-list">
+                    {selectedRun.metric_actions.map((action, index) => (
+                      <article key={`${action.metric_name}-evolution-${index}`} className="meta-list-item">
+                        <header>
+                          <strong>
+                            {action.metric_name}
+                          </strong>
+                          <small>{action.action.toUpperCase()}</small>
+                        </header>
+                        {action.metric_id ? <p>Metric ID: {action.metric_id}</p> : null}
+                        <p>{action.rationale}</p>
+                      </article>
                     ))}
                   </div>
-                ) : (
-                  <p className="meta-eval-empty">No held-out validation experiments were available.</p>
                 )}
               </div>
 
@@ -301,39 +275,21 @@ export function MetaEvalDashboard() {
               </div>
 
               <div className="meta-section">
-                <h3>Validation Results</h3>
-                {selectedRun.validation_decision.experiment_results.length === 0 ? (
-                  <p className="meta-eval-empty">No held-out comparison results found.</p>
+                <h3>Candidate Metrics</h3>
+                {selectedRun.candidate_metrics.length === 0 ? (
+                  <p className="meta-eval-empty">No candidate metrics found.</p>
                 ) : (
                   <div className="meta-list">
-                    {selectedRun.validation_decision.experiment_results.map((result) => (
-                      <article key={result.experiment_id} className="meta-list-item">
+                    {selectedRun.candidate_metrics.map((metric) => (
+                      <article key={metric.metric_id} className="meta-list-item">
                         <header>
-                          <strong>{result.experiment_id}</strong>
-                          <small>Winner: {result.winner}</small>
+                          <strong>{metric.name}</strong>
+                          <small>{metric.metric_id}</small>
                         </header>
-                        {result.scenario_id ? <p>Scenario: {result.scenario_id}</p> : null}
-                        {result.purpose ? <p>Purpose: {result.purpose}</p> : null}
-                        {(result.expected_verdict || result.expected_fail_metrics.length > 0 || result.expected_pass_metrics.length > 0) ? (
-                          <p>
-                            Expected: {result.expected_verdict ? `verdict ${result.expected_verdict}` : "no verdict label"}
-                            {result.expected_fail_metrics.length > 0
-                              ? ` | fail metrics ${result.expected_fail_metrics.join(", ")}`
-                              : ""}
-                            {result.expected_pass_metrics.length > 0
-                              ? ` | pass metrics ${result.expected_pass_metrics.join(", ")}`
-                              : ""}
-                          </p>
-                        ) : null}
-                        <p>{result.reason}</p>
+                        <p>{metric.description}</p>
+                        <p>Score type: {metric.score_type}</p>
                         <p>
-                          Expectation match: {result.old_matched_checks}/{result.total_checks} {"->"}{" "}
-                          {result.candidate_matched_checks}/{result.total_checks}
-                        </p>
-                        <p>
-                          Old: {result.old_judgment.verdict} ({result.old_judgment.overall_score.toFixed(2)}) {" | "}
-                          Candidate: {result.candidate_judgment.verdict} (
-                          {result.candidate_judgment.overall_score.toFixed(2)})
+                          Policy refs: {metric.policy_references.length > 0 ? metric.policy_references.join(", ") : "None"}
                         </p>
                       </article>
                     ))}

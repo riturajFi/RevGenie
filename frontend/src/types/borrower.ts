@@ -166,43 +166,6 @@ export type PromptChangeBatchResponse = {
   results: PromptChangeApplyResult[];
 };
 
-export type PromptChangeJobStartResponse = {
-  job_id: string;
-  run_id: string;
-  workflow_id: string;
-  experiment_id: string;
-  status: "queued" | "running" | "completed" | "failed";
-};
-
-export type PromptChangeAgentProgress = {
-  agent_id: string;
-  status: string;
-  stage: string | null;
-  message: string | null;
-  scenario_id: string | null;
-  variant: string | null;
-  completed_runs: number;
-  total_runs: number;
-  transcript_events: {
-    actor: string;
-    message: string;
-  }[];
-};
-
-export type PromptChangeJobStatusResponse = {
-  job_id: string;
-  run_id: string;
-  workflow_id: string;
-  experiment_id: string;
-  status: "queued" | "running" | "completed" | "failed";
-  started_at: string;
-  finished_at: string | null;
-  message: string | null;
-  error: string | null;
-  agent_progress: PromptChangeAgentProgress[];
-  results: PromptChangeApplyResult[];
-};
-
 export type PromptVersionActivateResponse = {
   run_id: string;
   agent_id: string;

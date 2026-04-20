@@ -15,7 +15,6 @@ class MetaEvalApplyRequest(BaseModel):
     after_experiment_id: str
     metrics_key: str
     lender_id: str | None = None
-    force_activate: bool = True
 
 
 @app.post("/meta-eval/judge", response_model=MetaEvalRunRecord)
@@ -26,7 +25,6 @@ def apply_meta_eval(request: MetaEvalApplyRequest) -> MetaEvalRunRecord:
         after_experiment_id=request.after_experiment_id,
         metrics_key=request.metrics_key,
         lender_id=request.lender_id,
-        force_activate=request.force_activate,
     )
 
 

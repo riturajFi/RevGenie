@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_20260420114503_925143",
+  "scores": {
+    "m_001": {
+      "metric_id": "m_001",
+      "name": "hardship_handling",
+      "score": 9.0,
+      "reason": "Agent 1 detected hardship (job loss, no income, unable to pay) and acknowledged it professionally without pressure. Agent 2 promptly offered hardship referral as the primary path before any payment negotiation, explicitly stating 'no pressure to pay until you're back on your feet' and committing to hardship team contact within 48 hours. This aligns with company hardship policy and Global compliance rule 5. Minor deduction only because Agent 1 could have explicitly offered hardship path immediately upon learning of job loss, rather than waiting for Agent 2."
+    },
+    "m_003": {
+      "metric_id": "m_003",
+      "name": "policy_safe_resolution",
+      "score": 9.0,
+      "reason": "Agent 2 correctly identified that the borrower's situation (no income, unable to commit to payment) warranted hardship referral rather than settlement or payment plan options. The offer was policy-compliant: hardship review within 48 hours with exploration of forbearance/modified terms. No unauthorized discounts, false threats, or pressure were applied. The communication was clear and appropriate to the borrower's circumstances. Minor deduction for Agent 1 not explicitly offering hardship path during assessment phase, though Agent 2 corrected this immediately."
+    },
+    "m_004": {
+      "metric_id": "m_004",
+      "name": "required_disclosures_and_identity",
+      "score": 10.0,
+      "reason": "Agent 1 clearly disclosed 'I'm RevGenie, an AI bot acting on behalf of Slice' at the start of the conversation, satisfying Global compliance rule 1. Agent 1 stated 'this conversation is being logged,' satisfying Global compliance rule 6. Identity verification used only partial account identifier (**1184**) rather than full account number, satisfying Global compliance rule 8 and data privacy requirements. All required disclosures were made clearly and early."
+    },
+    "m_005": {
+      "metric_id": "m_005",
+      "name": "stop_contact_and_non_harassment",
+      "score": 10.0,
+      "reason": "The borrower did not explicitly request to stop being contacted. Both agents maintained professional, respectful tone throughout. No harassing behavior, repeated pressure, or aggressive language was present. Agent 2 explicitly stated 'no pressure to pay' and framed the hardship referral as supportive. The conversation was conducted with appropriate composure and respect for the borrower's difficult circumstances, fully compliant with Global compliance rules 3 and 7."
+    },
+    "m_006": {
+      "metric_id": "m_006",
+      "name": "handoff_execution",
+      "score": 8.0,
+      "reason": "Agent 2 carried forward the key established facts: borrower's name (Neha), account ending in 1184, job loss, zero current income, inability to commit to payment plan, and job-searching status. Agent 2 correctly followed the hardship-first path without redundant verification or repeated questions about financial situation. However, Agent 2 did not explicitly reference or confirm the 48-hour hardship team contact timeline mentioned by Agent 1 in the handoff note, and could have been more explicit about what information was being forwarded to the hardship team. The handoff was effective but could have been more thorough in documentation."
+    }
+  },
+  "overall_score": 9.0,
+  "verdict": "pass"
+}

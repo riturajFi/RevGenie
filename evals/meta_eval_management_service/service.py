@@ -9,8 +9,6 @@ from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
-from evals.judgment_management_service.service import StoredJudgeResult
-from evals.evaluation_config_service.service import EvaluationConfig
 from evals.metrics_management_service.service import MetricDefinition
 
 
@@ -49,56 +47,20 @@ class MetaEvalMetricAction(BaseModel):
     evidence: EvidenceBundle = Field(default_factory=EvidenceBundle)
 
 
-class ExperimentValidationAnalysis(BaseModel):
-    experiment_id: str
-    scenario_id: str | None = None
-    purpose: str | None = None
-    expected_verdict: str | None = None
-    expected_fail_metrics: list[str] = Field(default_factory=list)
-    expected_pass_metrics: list[str] = Field(default_factory=list)
-    old_matched_checks: int = 0
-    candidate_matched_checks: int = 0
-    total_checks: int = 0
-    winner: str
-    reason: str
-    old_judgment: StoredJudgeResult
-    candidate_judgment: StoredJudgeResult
-    evidence: EvidenceBundle = Field(default_factory=EvidenceBundle)
-
-
-class ValidationDecision(BaseModel):
-    decision: str
-    reason: str
-    old_expectation_matches: int = 0
-    candidate_expectation_matches: int = 0
-    total_expectation_checks: int = 0
-    experiment_results: list[ExperimentValidationAnalysis] = Field(default_factory=list)
-
-
 class MetaEvalRunRecord(BaseModel):
     run_id: str
     created_at: str
     before_experiment_id: str
     after_experiment_id: str
-    validation_experiment_ids: list[str] = Field(default_factory=list)
     metrics_key: str
     lender_id: str | None = None
     old_metrics_version: str
-    candidate_metrics_version: str
-    old_evaluation_config_version: str | None = None
-    candidate_evaluation_config_version: str | None = None
     correctness_analysis: list[ExperimentCorrectnessAnalysis] = Field(default_factory=list)
     metric_actions: list[MetaEvalMetricAction] = Field(default_factory=list)
     candidate_metrics: list[MetricDefinition] = Field(default_factory=list)
     metrics_diff_summary: str
-    candidate_evaluation_config: EvaluationConfig | None = None
-    evaluation_config_diff_summary: str | None = None
     why_this_change: str
     expected_improvement: str
-    old_validation_judgments: list[StoredJudgeResult] = Field(default_factory=list)
-    candidate_validation_judgments: list[StoredJudgeResult] = Field(default_factory=list)
-    validation_decision: ValidationDecision
-    activation_status: str
 
 
 class MetaEvalRunStorageService(ABC):

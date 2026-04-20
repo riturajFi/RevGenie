@@ -766,6 +766,26 @@ Small precise fixes beat large clever rewrites."""
         callback: Callable[[dict[str, Any]], None] | None,
         **payload: Any,
     ) -> None:
+        # Print every prompt-change progress update so terminal logs show live progress.
+        agent_id = str(payload.get("agent_id", "unknown_agent"))
+        stage = str(payload.get("stage", "unknown_stage"))
+        message = str(payload.get("message", "")).strip()
+        scenario_id = str(payload.get("scenario_id", "")).strip()
+        variant = str(payload.get("variant", "")).strip()
+        completed_runs = payload.get("completed_runs")
+        total_runs = payload.get("total_runs")
+
+        progress_parts = [f"[prompt-change] agent={agent_id}", f"stage={stage}"]
+        if message:
+            progress_parts.append(f"message={message}")
+        if scenario_id:
+            progress_parts.append(f"scenario={scenario_id}")
+        if variant:
+            progress_parts.append(f"variant={variant}")
+        if completed_runs is not None and total_runs is not None:
+            progress_parts.append(f"runs={completed_runs}/{total_runs}")
+        print(" | ".join(progress_parts))
+
         if callback is None:
             return
         callback(payload)

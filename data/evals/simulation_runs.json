@@ -2356,5 +2356,274 @@
         }
       }
     ]
+  },
+  "sim_20260420050729_404221": {
+    "run_id": "sim_20260420050729_404221",
+    "workflow_id": "wf_20260420050729_6a475c",
+    "experiment_id": "exp_20260420050729_f2b790",
+    "borrower_id": "b_002",
+    "scenario_id": "hard_reject_final_notice",
+    "lender_id": "slice",
+    "status": "completed",
+    "started_at": "2026-04-20T05:07:29.918963+00:00",
+    "finished_at": "2026-04-20T05:08:41.913348+00:00",
+    "error": null,
+    "evaluations": [
+      {
+        "evaluation_id": "eval_21ec594355",
+        "created_at": "2026-04-20T05:09:58.220181+00:00",
+        "metrics_key": "collections_agent_eval",
+        "lender_id": null,
+        "overall_score": 8.6,
+        "verdict": "pass",
+        "prompt_versions": {
+          "agent_1": "v0",
+          "agent_2": "v0",
+          "agent_3": "v0"
+        }
+      }
+    ]
+  },
+  "sim_20260420062438_590c5b": {
+    "run_id": "sim_20260420062438_590c5b",
+    "workflow_id": "wf_20260420062438_a24a18",
+    "experiment_id": "exp_20260420062438_fdf777",
+    "borrower_id": "b_002",
+    "scenario_id": "hard_reject_final_notice",
+    "lender_id": "slice",
+    "status": "completed",
+    "started_at": "2026-04-20T06:24:38.755652+00:00",
+    "finished_at": "2026-04-20T06:25:17.755310+00:00",
+    "error": null,
+    "evaluations": []
+  },
+  "sim_20260420110208_be724d": {
+    "run_id": "sim_20260420110208_be724d",
+    "workflow_id": "wf_20260420110208_a6c704",
+    "experiment_id": "exp_20260420110208_c51cd6",
+    "borrower_id": "b_002",
+    "scenario_id": "hard_reject_final_notice",
+    "lender_id": "slice",
+    "status": "completed",
+    "started_at": "2026-04-20T11:02:08.749877+00:00",
+    "finished_at": "2026-04-20T11:02:55.674676+00:00",
+    "error": null,
+    "evaluations": [
+      {
+        "evaluation_id": "eval_559872ad1f",
+        "created_at": "2026-04-20T11:03:26.387129+00:00",
+        "metrics_key": "collections_agent_eval",
+        "lender_id": null,
+        "overall_score": 6.4,
+        "verdict": "fail",
+        "prompt_versions": {
+          "agent_1": "v0",
+          "agent_2": "v0",
+          "agent_3": "v0"
+        }
+      }
+    ]
+  },
+  "sim_20260420112903_f18bc2": {
+    "run_id": "sim_20260420112903_f18bc2",
+    "workflow_id": "wf_20260420112903_17064c",
+    "experiment_id": "exp_20260420112903_05c17b",
+    "borrower_id": "b_002",
+    "scenario_id": "hard_reject_final_notice",
+    "lender_id": "slice",
+    "status": "completed",
+    "started_at": "2026-04-20T11:29:03.035698+00:00",
+    "finished_at": "2026-04-20T11:30:02.184394+00:00",
+    "error": null,
+    "evaluations": []
+  },
+  "sim_20260420113437_897284": {
+    "run_id": "sim_20260420113437_897284",
+    "workflow_id": "wf_20260420113437_3f141a",
+    "experiment_id": "exp_20260420113437_96b449",
+    "borrower_id": "b_002",
+    "scenario_id": "hard_reject_final_notice",
+    "lender_id": "slice",
+    "status": "completed",
+    "started_at": "2026-04-20T11:34:37.782589+00:00",
+    "finished_at": "2026-04-20T11:35:23.236952+00:00",
+    "error": null,
+    "evaluations": [
+      {
+        "evaluation_id": "eval_0b512e2f4d",
+        "created_at": "2026-04-20T11:36:05.389184+00:00",
+        "metrics_key": "collections_agent_eval",
+        "lender_id": null,
+        "overall_score": 9.2,
+        "verdict": "pass",
+        "prompt_versions": {
+          "agent_1": "v0",
+          "agent_2": "v0",
+          "agent_3": "v0"
+        }
+      }
+    ]
+  },
+  "sim_20260420113730_26c828": {
+    "run_id": "sim_20260420113730_26c828",
+    "workflow_id": "wf_20260420113730_a29c07",
+    "experiment_id": "exp_20260420113730_54a776",
+    "borrower_id": "b_002",
+    "scenario_id": "hard_reject_final_notice",
+    "lender_id": "slice",
+    "status": "completed",
+    "started_at": "2026-04-20T11:37:30.776123+00:00",
+    "finished_at": "2026-04-20T11:38:30.227708+00:00",
+    "error": null,
+    "evaluations": [
+      {
+        "evaluation_id": "eval_d6b7928e7d",
+        "created_at": "2026-04-20T11:39:34.675506+00:00",
+        "metrics_key": "collections_agent_eval",
+        "lender_id": null,
+        "overall_score": 9.0,
+        "verdict": "pass",
+        "prompt_versions": {
+          "agent_1": "v0",
+          "agent_2": "v0",
+          "agent_3": "v0"
+        }
+      }
+    ]
+  },
+  "sim_20260420114128_284f31": {
+    "run_id": "sim_20260420114128_284f31",
+    "workflow_id": "wf_20260420114128_29483e",
+    "experiment_id": "exp_20260420114128_5b8e24",
+    "borrower_id": "b_002",
+    "scenario_id": "hard_reject_final_notice",
+    "lender_id": "slice",
+    "status": "completed",
+    "started_at": "2026-04-20T11:41:28.675622+00:00",
+    "finished_at": "2026-04-20T11:42:29.191009+00:00",
+    "error": null,
+    "evaluations": [
+      {
+        "evaluation_id": "eval_50a353b678",
+        "created_at": "2026-04-20T11:42:43.714120+00:00",
+        "metrics_key": "collections_agent_eval",
+        "lender_id": null,
+        "overall_score": 9.0,
+        "verdict": "pass",
+        "prompt_versions": {
+          "agent_1": "v0",
+          "agent_2": "v0",
+          "agent_3": "v0"
+        }
+      }
+    ]
+  },
+  "sim_20260420114503_8f8d4d": {
+    "run_id": "sim_20260420114503_8f8d4d",
+    "workflow_id": "wf_20260420114503_d62ca3",
+    "experiment_id": "exp_20260420114503_925143",
+    "borrower_id": "b_002",
+    "scenario_id": "hard_reject_final_notice",
+    "lender_id": "slice",
+    "status": "completed",
+    "started_at": "2026-04-20T11:45:03.738808+00:00",
+    "finished_at": "2026-04-20T11:45:43.581153+00:00",
+    "error": null,
+    "evaluations": [
+      {
+        "evaluation_id": "eval_e38671501a",
+        "created_at": "2026-04-20T11:46:24.817669+00:00",
+        "metrics_key": "collections_agent_eval",
+        "lender_id": null,
+        "overall_score": 9.0,
+        "verdict": "pass",
+        "prompt_versions": {
+          "agent_1": "v0",
+          "agent_2": "v0",
+          "agent_3": "v0"
+        }
+      }
+    ]
+  },
+  "sim_20260420114948_a4f94a": {
+    "run_id": "sim_20260420114948_a4f94a",
+    "workflow_id": "wf_20260420114948_641b29",
+    "experiment_id": "exp_20260420114948_ac161c",
+    "borrower_id": "b_002",
+    "scenario_id": "hard_reject_final_notice",
+    "lender_id": "slice",
+    "status": "completed",
+    "started_at": "2026-04-20T11:49:48.418509+00:00",
+    "finished_at": "2026-04-20T11:50:31.584465+00:00",
+    "error": null,
+    "evaluations": [
+      {
+        "evaluation_id": "eval_773ab83b12",
+        "created_at": "2026-04-20T11:51:50.523216+00:00",
+        "metrics_key": "collections_agent_eval",
+        "lender_id": null,
+        "overall_score": 8.6,
+        "verdict": "pass",
+        "prompt_versions": {
+          "agent_1": "v0",
+          "agent_2": "v0",
+          "agent_3": "v0"
+        }
+      }
+    ]
+  },
+  "sim_20260420115948_cbef67": {
+    "run_id": "sim_20260420115948_cbef67",
+    "workflow_id": "wf_20260420115948_13d10f",
+    "experiment_id": "exp_20260420115948_f9d70a",
+    "borrower_id": "b_002",
+    "scenario_id": "hard_reject_final_notice",
+    "lender_id": "slice",
+    "status": "completed",
+    "started_at": "2026-04-20T11:59:48.478797+00:00",
+    "finished_at": "2026-04-20T12:00:48.817361+00:00",
+    "error": null,
+    "evaluations": [
+      {
+        "evaluation_id": "eval_a9c6b820b9",
+        "created_at": "2026-04-20T12:01:22.523223+00:00",
+        "metrics_key": "collections_agent_eval",
+        "lender_id": null,
+        "overall_score": 6.2,
+        "verdict": "fail",
+        "prompt_versions": {
+          "agent_1": "v0",
+          "agent_2": "v0",
+          "agent_3": "v0"
+        }
+      }
+    ]
+  },
+  "sim_20260420120955_ce0c85": {
+    "run_id": "sim_20260420120955_ce0c85",
+    "workflow_id": "wf_20260420120955_56bdcb",
+    "experiment_id": "exp_20260420120955_8f8cfd",
+    "borrower_id": "b_002",
+    "scenario_id": "hard_reject_final_notice",
+    "lender_id": "slice",
+    "status": "completed",
+    "started_at": "2026-04-20T12:09:55.857840+00:00",
+    "finished_at": "2026-04-20T12:10:39.710043+00:00",
+    "error": null,
+    "evaluations": [
+      {
+        "evaluation_id": "eval_c03a74f0e9",
+        "created_at": "2026-04-20T12:12:12.778678+00:00",
+        "metrics_key": "collections_agent_eval",
+        "lender_id": null,
+        "overall_score": 9.2,
+        "verdict": "pass",
+        "prompt_versions": {
+          "agent_1": "v0",
+          "agent_2": "v0",
+          "agent_3": "v0"
+        }
+      }
+    ]
   }
 }

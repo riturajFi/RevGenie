@@ -6,8 +6,6 @@ import {
   BorrowerProfileRecord,
   EvaluateSimulationResponse,
   PromptChangeBatchResponse,
-  PromptChangeJobStartResponse,
-  PromptChangeJobStatusResponse,
   PromptVersionActivateResponse,
   PromptVersionRevertResponse,
   ScenarioCreateInput,
@@ -211,7 +209,7 @@ export async function evaluateSimulation(runId: string): Promise<EvaluateSimulat
 export async function applyPromptChanges(
   runId: string,
   forceActivate: boolean
-): Promise<PromptChangeJobStartResponse> {
+): Promise<PromptChangeBatchResponse> {
   const response = await fetch(`${API_BASE_URL}/evals/simulations/${runId}/prompt-changes/apply`, {
     method: "POST",
     headers: {
@@ -225,18 +223,6 @@ export async function applyPromptChanges(
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(detail || "Failed to apply prompt changes");
-  }
-  return response.json();
-}
-
-export async function getPromptChangeJobStatus(
-  runId: string,
-  jobId: string
-): Promise<PromptChangeJobStatusResponse> {
-  const response = await fetch(`${API_BASE_URL}/evals/simulations/${runId}/prompt-changes/jobs/${jobId}`);
-  if (!response.ok) {
-    const detail = await response.text();
-    throw new Error(detail || "Failed to fetch prompt change job status");
   }
   return response.json();
 }
@@ -433,7 +419,6 @@ export async function runMetaEval(payload: MetaEvalRunRequest): Promise<MetaEval
     body: JSON.stringify({
       metrics_key: payload.metrics_key,
       lender_id: payload.lender_id,
-      force_activate: payload.force_activate,
     }),
   });
   if (!response.ok) {

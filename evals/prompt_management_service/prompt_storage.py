@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -7,7 +8,8 @@ from pathlib import Path
 
 
 VALID_AGENT_IDS = {"agent_1", "agent_2", "agent_3"}
-STORE_PATH = Path(__file__).resolve().parents[2] / "data" / "evals" / "prompt_management.py"
+STORE_PATH = Path(__file__).resolve().parents[2] / "data" / "evals" / "prompt_management.json"
+LEGACY_STORE_PATH = Path(__file__).resolve().parents[2] / "data" / "evals" / "prompt_management.py"
 SEED_PROMPT_TEXT = {
     "agent_1": [
         "You are Agent 1, the Assessment agent for a debt collections workflow.",
@@ -31,9 +33,7 @@ def utc_now() -> datetime:
 def normalize_prompt_lines(prompt_value: str | list[str]) -> list[str]:
     if isinstance(prompt_value, list):
         return [str(line) for line in prompt_value]
-    if "\n" in prompt_value:
-        return prompt_value.splitlines()
-    return prompt_value.splitlines()
+    return str(prompt_value).splitlines()
 
 
 @dataclass
@@ -83,12 +83,13 @@ class PromptStorageService(ABC):
         raise NotImplementedError
 
 
-class PythonFilePromptStorageService(PromptStorageService):
-    def __init__(self, path: Path = STORE_PATH) -> None:
+class JsonPromptStorageService(PromptStorageService):
+    def __init__(self, path: Path = STORE_PATH, legacy_path: Path = LEGACY_STORE_PATH) -> None:
         self.path = path
+        self.legacy_path = legacy_path
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        if not self.path.exists():
-            self._write_state(self._seed_state())
+        self._ensure_store_exists()
+        self._migrate_legacy_python_store_if_newer()
 
     def get_active_prompt(self, agent_id: str) -> PromptStorageVersion:
         self._ensure_agent(agent_id)
@@ -145,6 +146,23 @@ class PythonFilePromptStorageService(PromptStorageService):
 
     def rollback(self, agent_id: str, version_id: str) -> str:
         return self.activate_version(agent_id, version_id)
+
+    def _ensure_store_exists(self) -> None:
+        if self.path.exists():
+            return
+        self._write_state(self._seed_state())
+
+    def _migrate_legacy_python_store_if_newer(self) -> None:
+        if not self.legacy_path.exists():
+            return
+
+        legacy_state = self._read_python_state(self.legacy_path)
+        current_state = self._read_state()
+        legacy_next_id = int(legacy_state.get("next_id", 0))
+        current_next_id = int(current_state.get("next_id", 0))
+
+        if legacy_next_id > current_next_id:
+            self._write_state(legacy_state)
 
     def _seed_state(self) -> dict:
         seeded_versions = {
@@ -203,15 +221,21 @@ class PythonFilePromptStorageService(PromptStorageService):
             raise KeyError("Agent prompt not found")
 
     def _read_state(self) -> dict:
+        payload = json.loads(self.path.read_text())
+        if not isinstance(payload, dict):
+            raise ValueError("Prompt storage file is invalid")
+        return payload
+
+    def _read_python_state(self, path: Path) -> dict:
         namespace: dict[str, object] = {}
-        exec(self.path.read_text(), {"__builtins__": {}}, namespace)
+        exec(path.read_text(), {"__builtins__": {}}, namespace)
         state = namespace.get("STATE")
         if not isinstance(state, dict):
-            raise ValueError("Prompt storage file is invalid")
+            raise ValueError("Legacy prompt storage file is invalid")
         return state
 
     def _write_state(self, state: dict) -> None:
-        self.path.write_text(self._format_state(state))
+        self.path.write_text(json.dumps(state, indent=2))
 
     def _get_version_from_state(self, state: dict, agent_id: str, version_id: str) -> PromptStorageVersion:
         for item in state["versions_by_agent"].get(agent_id, []):
@@ -250,44 +274,7 @@ class PythonFilePromptStorageService(PromptStorageService):
             created_at=created_at,
         )
 
-    def _format_state(self, state: dict) -> str:
-        lines: list[str] = ["STATE = {"]
-        lines.append(f'  "next_id": {state["next_id"]},')
-        lines.append('  "active_versions": {')
-        for agent_id, version_id in state["active_versions"].items():
-            lines.append(f'    "{agent_id}": "{version_id}",')
-        lines.append("  },")
-        lines.append('  "versions_by_agent": {')
-        for agent_id, versions in state["versions_by_agent"].items():
-            lines.append(f'    "{agent_id}": [')
-            for version in versions:
-                lines.append("      {")
-                lines.append(f'        "id": {version["id"]},')
-                lines.append(f'        "agent_id": "{version["agent_id"]}",')
-                lines.append(f'        "version_id": "{version["version_id"]}",')
-                parent = "None" if version.get("parent_version_id") is None else f'"{version["parent_version_id"]}"'
-                lines.append(f'        "parent_version_id": {parent},')
-                lines.append('        "prompt_text": """')
-                lines.extend(["        " + line for line in normalize_prompt_lines(version["prompt_text"])])
-                lines.append('        """,')
-                diff_summary = version.get("diff_summary")
-                if diff_summary is None:
-                    lines.append('        "diff_summary": None,')
-                else:
-                    lines.append(f'        "diff_summary": {diff_summary!r},')
-                created_at = version.get("created_at")
-                if created_at is None:
-                    lines.append('        "created_at": None')
-                else:
-                    lines.append(f'        "created_at": {created_at!r}')
-                lines.append("      },")
-            lines.append("    ],")
-        lines.append("  }")
-        lines.append("}")
-        lines.append("")
-        return "\n".join(lines)
 
-
-python_file_prompt_storage_service = PythonFilePromptStorageService()
-JsonPromptStorageService = PythonFilePromptStorageService
-json_prompt_storage_service = python_file_prompt_storage_service
+json_prompt_storage_service = JsonPromptStorageService()
+python_file_prompt_storage_service = json_prompt_storage_service
+PythonFilePromptStorageService = JsonPromptStorageService

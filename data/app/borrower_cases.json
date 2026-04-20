@@ -124,7 +124,7 @@
   "b_002": {
     "attributes": {
       "resolution_mode": "CHAT",
-      "simulation_uniqueness_tag": "wf_20260419141433_72a80e:7:1776608121223509664"
+      "simulation_uniqueness_tag": "wf_20260420120955_56bdcb:5:1776687035021486392"
     },
     "core": {
       "amount_due": 8400,
@@ -134,9 +134,9 @@
       "lender_id": "slice",
       "loan_id_masked": "****1184",
       "stage": "RESOLUTION",
-      "workflow_id": "wf_20260419141433_72a80e"
+      "workflow_id": "wf_20260420120955_56bdcb"
     },
-    "latest_handoff_summary": "Borrower Neha Verma (b_002, account ****1184) has agreed to hardship referral. Currently unemployed following job loss last week. No other income sources or debts. Unable to commit to payment at this time. Job search timeline uncertain. Borrower expressed stress and stated focus is on covering essentials. Hardship team to review within 48 hours and contact borrower directly with relief options. Collections outreach paused during review period."
+    "latest_handoff_summary": "Borrower Neha Verma (b_002, account ****1184) has agreed to hardship team review. Borrower lost job last month, currently unemployed with no income this month. Actively job-seeking. Debt of 8,400 acknowledged and not disputed. Borrower appreciates understanding approach and will be available for hardship team contact within 48 hours. No false promises made. Referred to hardship team for structured support."
   },
   "b_003": {
     "agent_context_summary": "Borrower case for nira loan ****9007: identity is verified, amount due 22500, stage FINAL_NOTICE, status OPEN. Case type: FINAL_NOTICE. Next allowed actions: SEND_FINAL_NOTICE, FLAG_FOR_REVIEW.",

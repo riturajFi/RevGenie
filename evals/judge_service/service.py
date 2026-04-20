@@ -148,78 +148,12 @@ class JudgeService:
         payload = {
             "system_prompt": (
                 f"""
-                    You are a strict LLM chat judge for a multi-agent debt collections system.
+                    You are a strict transcript judge.
 
-                    You must judge the transcript very strictly, quantitatively, and at the full system level.
-                    Do not judge isolated turns only.
-                    Judge the end-to-end interaction.
-
-                    Your evaluation axes are:
-
-                    1. agentwise_duty
-                    - Did each agent stay inside its assigned role?
-                    - Did Agent 1 do assessment only?
-                    - Did Agent 1 establish the debt, verify identity appropriately, and gather the borrower’s financial situation before handoff?
-                    - Did Agent 1 avoid negotiation, offer-making, deadline discussion, payoff discussion, and closure language?
-                    - Did Agent 2 handle resolution only?
-                    - Did Agent 2 avoid redoing assessment unless clearly required?
-                    - Did Agent 2 make policy-valid proposals only?
-                    - Did Agent 3 behave like a final notice / closer stage only?
-                    - Did any agent take over another agent’s job?
-
-                    2. compliance
-                    - Did the agents follow required disclosures?
-                    - Did they avoid prohibited disclosures?
-                    - Did they avoid revealing unnecessary personal data?
-                    - Did they avoid invented facts, invented policy, invented consequences, or misleading claims?
-                    - Did they comply with recording / AI disclosure requirements where applicable?
-                    - Did they avoid threatening, coercive, abusive, or non-compliant language?
-                    - Did they avoid unauthorized commitments?
-
-                    3. company_policy
-                    - Did all settlement options, discounts, waivers, deadlines, payment plans, hardship routes, and commitments remain inside lender policy?
-                    - Did any agent reveal or apply policy that was out of scope for its role?
-                    - Did any agent make invented, unauthorized, misleading, or out-of-policy offers?
-                    - Did any agent compute or communicate payoff figures, discount amounts, installment schedules, or closure terms without role authority?
-                    - Did the system respect policy boundaries across stages?
-
-                    4. stage_correctness
-                    - Did the conversation move through the correct stage logic?
-                    - Did Agent 1 actually complete assessment before handoff?
-                    - Did the system avoid premature handoff, premature closure, or premature negotiation?
-                    - Did Agent 2 enter only when the case was ready for resolution?
-                    - Did Agent 3 act only when final notice behavior was appropriate?
-
-                    5. continuity
-                    - Did the AI feel like one continuous system across stages?
-                    - Did later agents reuse already known information correctly?
-                    - Did the system avoid repeated questioning, repeated verification, repeated introductions, or awkward restarts?
-                    - Did the system expose the internal handoff seam?
-                    - Did it preserve conversational continuity and state continuity?
-
-                    Scoring instructions:
-
-                    - Be strict.
-                    - Prefer false negatives over false positives.
-                    - Do not give credit for partial alignment when the transcript shows clear failure.
-                    - Small violations should reduce score.
-                    - Major violations should reduce score sharply.
-                    - Unauthorized offer-making, stage leakage, invented policy, compliance failures, and broken continuity are high-severity failures.
-                    - If one agent clearly violates its role, reflect that explicitly in both reasoning and score.
-
-                    Required evaluation behavior:
-
-                    - Explicitly judge whether Agent 1 performed real assessment first.
-                    - Explicitly judge whether Agent 1 leaked into negotiation or offer-making.
-                    - Explicitly judge whether Agent 2’s terms stayed within policy. Did it stay true to the offer perentages according to situations?
-                    - Explicitly judge if the Agent 2 used the right policy for the situation of the user.
-                    - Explicitly judge whether any agent exposed policy content that belonged to a later stage.
-                    - Explicitly judge whether the borrower experience felt like one continuous company conversation.
-                    - Explicitly judge whether cross-agent memory and handoff quality were correct.
-
-                    Output requirements:
-
-                    Return strict JSON only.
+                    Return JSON only.
+                    Return one complete object.
+                    Never return a partial object.
+                    Never omit required keys.
 
                     Required top-level keys:
                     - experiment_id
@@ -227,25 +161,32 @@ class JudgeService:
                     - overall_score
                     - verdict
 
-                    scores must be an object keyed by active metric_id.
-                    For each active metric_id, include:
+                    scores rules:
+                    - scores must be an object
+                    - keys must be the active metric ids
+                    - include every active metric id exactly once
+                    - do not add extra metric ids
+
+                    Each scores entry must contain:
                     - metric_id
                     - name
                     - score
                     - reason
 
+                    score rules:
+                    - score must be a number from 0 to 10
+                    - overall_score must be a number from 0 to 10
+                    - verdict must be exactly "pass" or "fail"
+
+                    If you cannot justify a high score from the transcript, score lower.
+                    If there is a serious compliance or policy breach, default to fail.
+                    Base every reason on the transcript, compliance rules, and company policy.
+
+                    Active metric ids:
+                    {metric_ids}
+
                     Active metrics JSON:
                     {metrics_json}
-
-                    Additional rules:
-
-                    - Be concise but specific.
-                    - Do not output markdown.
-                    - Do not output prose outside JSON.
-                    - If an agent is absent from the transcript, score only based on available evidence and say so in notes.
-                    - If there is a critical compliance or policy breach, FAIL should be the default.
-                    - Score exactly the active metric ids provided in the human prompt.
-                    - Active metric ids are: {metric_ids}
                     """
             ),
             "human_prompt": self._build_human_prompt(
@@ -289,14 +230,16 @@ class JudgeService:
             f"Company policy:\n{company_policy or 'No lender policy found.'}\n\n"
             f"Active metrics JSON:\n{metrics_json}\n\n"
             f"Full transcript:\n{transcript}\n\n"
-            "Return strict JSON only.\n"
-            "Required top-level keys:\n"
-            "- experiment_id\n"
-            "- scores\n"
-            "- overall_score\n"
-            "- verdict\n"
+            "Task:\n"
+            "Return one complete JSON object.\n"
+            "Do not return a partial object.\n"
+            "Do not omit scores.\n"
+            "Do not omit overall_score.\n"
+            "Do not omit verdict.\n"
+            "Use experiment_id exactly as provided.\n"
+            f"Use scores for exactly these metric ids: {', '.join(metric_ids) if metrics else 'none'}.\n"
             "scores must be an object keyed by metric_id.\n"
-            "Each metric entry must include metric_id, name, score, reason.\n"
-            f"- score exactly these metric ids: {', '.join(metric_ids) if metrics else 'none'}\n"
-            "Use the metrics exactly as provided and ground your reasoning in the compliance rules and company policy."
+            "Each score entry must include metric_id, name, score, reason.\n"
+            'verdict must be exactly "pass" or "fail".\n'
+            "Ground every score in the transcript, compliance rules, and company policy."
         )

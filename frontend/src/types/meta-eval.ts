@@ -41,65 +41,18 @@ export type MetaEvalRunRecord = {
   created_at: string;
   before_experiment_id: string;
   after_experiment_id: string;
-  validation_experiment_ids: string[];
   metrics_key: string;
   lender_id: string | null;
   old_metrics_version: string;
-  candidate_metrics_version: string;
-  old_evaluation_config_version: string | null;
-  candidate_evaluation_config_version: string | null;
   correctness_analysis: MetaEvalCorrectnessAnalysis[];
   metric_actions: MetaEvalMetricAction[];
   candidate_metrics: MetaEvalMetricDefinition[];
   metrics_diff_summary: string;
-  candidate_evaluation_config: {
-    version_id: string;
-    benchmark_scenario_ids: string[];
-    benchmark_max_turns: number;
-    required_mean_score_delta: number;
-    required_win_rate: number;
-    require_compliance_non_regression: boolean;
-    diff_summary: string | null;
-    created_at: string;
-  } | null;
-  evaluation_config_diff_summary: string | null;
   why_this_change: string;
   expected_improvement: string;
-  validation_decision: {
-    decision: string;
-    reason: string;
-    old_expectation_matches: number;
-    candidate_expectation_matches: number;
-    total_expectation_checks: number;
-    experiment_results: {
-      experiment_id: string;
-      scenario_id: string | null;
-      purpose: string | null;
-      expected_verdict: string | null;
-      expected_fail_metrics: string[];
-      expected_pass_metrics: string[];
-      old_matched_checks: number;
-      candidate_matched_checks: number;
-      total_checks: number;
-      winner: string;
-      reason: string;
-      old_judgment: {
-        experiment_id: string;
-        overall_score: number;
-        verdict: string;
-      };
-      candidate_judgment: {
-        experiment_id: string;
-        overall_score: number;
-        verdict: string;
-      };
-    }[];
-  };
-  activation_status: string;
 };
 
 export type MetaEvalRunRequest = {
   metrics_key: string;
   lender_id: string;
-  force_activate: boolean;
 };

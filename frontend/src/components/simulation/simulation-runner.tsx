@@ -7,7 +7,6 @@ import {
   applyPromptChanges,
   createScenario,
   evaluateSimulation,
-  getPromptChangeJobStatus,
   getSimulationEvents,
   getSimulationStatus,
   listScenarios,
@@ -18,7 +17,6 @@ import {
   EvaluateSimulationResponse,
   PromptChangeApplyResult,
   PromptChangeBatchResponse,
-  PromptChangeJobStatusResponse,
   ScenarioCreateInput,
   ScenarioRecord,
   SimulationStatusResponse,
@@ -164,7 +162,6 @@ export function SimulationRunner() {
   const [autoActivatePromptChanges, setAutoActivatePromptChanges] = useState(true);
   const [isApplyingPromptChanges, setIsApplyingPromptChanges] = useState(false);
   const [promptChanges, setPromptChanges] = useState<PromptChangeBatchResponse | null>(null);
-  const [promptChangeJob, setPromptChangeJob] = useState<PromptChangeJobStatusResponse | null>(null);
   const [isActivatingByAgent, setIsActivatingByAgent] = useState<Record<string, boolean>>({});
   const [isRevertingByAgent, setIsRevertingByAgent] = useState<Record<string, boolean>>({});
   const transcriptEndRef = useRef<HTMLDivElement | null>(null);
@@ -175,11 +172,15 @@ export function SimulationRunner() {
     try {
       const loaded = await listScenarios();
       setScenarios(loaded);
-      if (!selectedScenarioId && loaded.length > 0) {
-        const firstScenario = loaded[0];
-        setSelectedScenarioId(firstScenario.scenario_id);
-        if (firstScenario.borrower_id) {
-          setBorrowerId(firstScenario.borrower_id);
+      // Always keep the selected scenario aligned with the latest loaded list.
+      if (loaded.length === 0) {
+        setSelectedScenarioId("");
+      } else {
+        const resolvedScenario =
+          loaded.find((scenario) => scenario.scenario_id === selectedScenarioId) ?? loaded[0];
+        setSelectedScenarioId(resolvedScenario.scenario_id);
+        if (resolvedScenario.borrower_id) {
+          setBorrowerId(resolvedScenario.borrower_id);
         }
       }
     } catch (loadError) {
@@ -225,49 +226,7 @@ export function SimulationRunner() {
 
   useEffect(() => {
     transcriptEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [events, promptChangeJob, promptChanges]);
-
-  useEffect(() => {
-    if (!runId || !promptChangeJob || (promptChangeJob.status !== "queued" && promptChangeJob.status !== "running")) {
-      return;
-    }
-    const activeRunId = runId;
-    const activeJobId = promptChangeJob.job_id;
-    let cancelled = false;
-
-    async function pollPromptChangeJob() {
-      try {
-        const nextJob = await getPromptChangeJobStatus(activeRunId, activeJobId);
-        if (cancelled) return;
-        setPromptChangeJob(nextJob);
-        if (nextJob.status === "completed") {
-          setPromptChanges({
-            run_id: nextJob.run_id,
-            workflow_id: nextJob.workflow_id,
-            experiment_id: nextJob.experiment_id,
-            results: nextJob.results,
-          });
-          return;
-        }
-        if (nextJob.status === "failed") {
-          setError(nextJob.error || "Prompt change job failed.");
-          return;
-        }
-        if (nextJob.status === "queued" || nextJob.status === "running") {
-          window.setTimeout(pollPromptChangeJob, 900);
-        }
-      } catch (pollError) {
-        if (!cancelled) {
-          setError(pollError instanceof Error ? pollError.message : "Failed to poll prompt change job.");
-        }
-      }
-    }
-
-    void pollPromptChangeJob();
-    return () => {
-      cancelled = true;
-    };
-  }, [runId, promptChangeJob]);
+  }, [events, promptChanges]);
 
   async function handleCreateScenario(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -300,8 +259,8 @@ export function SimulationRunner() {
     setEvents([]);
     setExpandedStateLogIds([]);
     setEvaluation(null);
+    setIsApplyingPromptChanges(false);
     setPromptChanges(null);
-    setPromptChangeJob(null);
     setIsActivatingByAgent({});
     setIsRevertingByAgent({});
     try {
@@ -333,6 +292,8 @@ export function SimulationRunner() {
     setError(null);
     try {
       const result = await evaluateSimulation(runId);
+      setIsApplyingPromptChanges(false);
+      setPromptChanges(null);
       setEvaluation(result);
     } catch (evaluateError) {
       setError(evaluateError instanceof Error ? evaluateError.message : "Failed to evaluate simulation.");
@@ -345,23 +306,16 @@ export function SimulationRunner() {
     if (!runId || !evaluation) return;
     setIsApplyingPromptChanges(true);
     setError(null);
+    setPromptChanges(null);
     try {
       const result = await applyPromptChanges(runId, autoActivatePromptChanges);
-      setPromptChanges(null);
-      setPromptChangeJob({
-        ...result,
-        started_at: new Date().toISOString(),
-        finished_at: null,
-        message: "Queued prompt improvement run.",
-        error: null,
-        agent_progress: [],
-        results: [],
-      });
+      setPromptChanges(result);
     } catch (applyError) {
       setError(applyError instanceof Error ? applyError.message : "Failed to apply prompt changes.");
-    } finally {
       setIsApplyingPromptChanges(false);
+      return;
     }
+    setIsApplyingPromptChanges(false);
   }
 
   async function handleActivatePromptChange(item: PromptChangeApplyResult) {
@@ -453,8 +407,11 @@ export function SimulationRunner() {
                 className="select-input"
                 value={selectedScenarioId}
                 onChange={(event) => handleSelectScenario(event.target.value)}
-                disabled={isLoadingScenarios}
+                disabled={isLoadingScenarios || scenarios.length === 0}
               >
+              <option value="" disabled>
+                {isLoadingScenarios ? "Loading scenarios..." : "Select a scenario"}
+              </option>
               {scenarios.map((scenario) => (
                 <option value={scenario.scenario_id} key={scenario.scenario_id}>
                   {scenario.scenario_id}
@@ -532,59 +489,15 @@ export function SimulationRunner() {
               type="button"
               className="button button-primary"
               onClick={handleApplyPromptChanges}
-              disabled={
-                isApplyingPromptChanges ||
-                promptChangeJob?.status === "queued" ||
-                promptChangeJob?.status === "running"
-              }
+              disabled={isApplyingPromptChanges}
             >
-              {isApplyingPromptChanges || promptChangeJob?.status === "queued" || promptChangeJob?.status === "running"
-                ? "Running Prompt Improvement..."
-                : "Propose Prompt Changes (Agent 1, 2, 3)"}
+              {isApplyingPromptChanges ? "Proposing Prompt Changes..." : "Propose Prompt Changes (Agent 1, 2, 3)"}
             </button>
           </div>
           {promptChanges ? (
             <p className="prompt-change-note">
               Candidate prompt versions are benchmarked on the fixed evaluation set before they can be adopted.
             </p>
-          ) : null}
-          {promptChangeJob && (promptChangeJob.status === "queued" || promptChangeJob.status === "running") ? (
-            <div className="prompt-change-results">
-              <h4>Prompt Change Progress</h4>
-              <p>{promptChangeJob.message}</p>
-              <div className="evaluation-metrics">
-                {promptChangeJob.agent_progress.map((progress) => (
-                  <article className="metric-card" key={progress.agent_id}>
-                    <header>
-                      <strong>{progress.agent_id}</strong>
-                      <span>{progress.status.toUpperCase()}</span>
-                    </header>
-                    <p>{progress.message}</p>
-                    {progress.variant ? (
-                      <p>
-                        Current run: {progress.variant === "current_prompt" ? "current prompt" : "new prompt"}
-                      </p>
-                    ) : null}
-                    {progress.total_runs > 0 ? (
-                      <p>
-                        Scenario tests: {progress.completed_runs}/{progress.total_runs}
-                      </p>
-                    ) : null}
-                    {progress.scenario_id ? <p>Current scenario: {progress.scenario_id}</p> : null}
-                    {progress.transcript_events.length > 0 ? (
-                      <div className="live-transcript">
-                        {progress.transcript_events.map((event, index) => (
-                          <div className="live-transcript-row" key={`${progress.agent_id}-${index}`}>
-                            <strong>{actorLabel(event.actor)}</strong>
-                            <span>{event.message}</span>
-                          </div>
-                        ))}
-                      </div>
-                    ) : null}
-                  </article>
-                ))}
-              </div>
-            </div>
           ) : null}
           <div className="evaluation-metrics">
             {Object.values(evaluation.result.scores).map((item) => (
